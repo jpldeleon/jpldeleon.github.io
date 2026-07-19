@@ -1744,7 +1744,7 @@ section,
 
 .portfolio .portfolio-wrap .portfolio-info .category {
   display: inline-block;
-  color: var(--accent-color);
+  color: white;
   font-size: 14px;
   font-weight: 500;
   text-transform: uppercase;
