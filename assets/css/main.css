@@ -2323,3 +2323,103 @@ section,
   src: url('../fonts/bootstrap-icons.woff2') format('woff2');
   font-display: swap;
 }
+
+/* Gallery Carousel Section */
+.gallery-carousel-section {
+  background-color: var(--surface-color);
+}
+
+.gallery-carousel-section .swiper {
+  padding-bottom: 50px;
+  position: relative;
+}
+
+.gallery-item {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: var(--background-color);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+.gallery-item a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover a {
+  opacity: 1;
+}
+
+.gallery-item a i {
+  font-size: 32px;
+  color: white;
+}
+
+/* Swiper Navigation */
+.gallery-swiper .swiper-button-next,
+.gallery-swiper .swiper-button-prev {
+  color: var(--accent-highlight);
+  background-color: rgba(24, 140, 122, 0.1);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.gallery-swiper .swiper-button-next:hover,
+.gallery-swiper .swiper-button-prev:hover {
+  background-color: var(--accent-highlight);
+  color: white;
+}
+
+.gallery-swiper .swiper-button-next:after,
+.gallery-swiper .swiper-button-prev:after {
+  font-size: 18px;
+}
+
+.gallery-swiper .swiper-pagination-bullet {
+  background-color: color-mix(in srgb, var(--default-color), transparent 60%);
+  opacity: 0.7;
+}
+
+.gallery-swiper .swiper-pagination-bullet-active {
+  background-color: var(--accent-highlight);
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .gallery-item {
+    height: 200px;
+  }
+
+  .gallery-swiper .swiper-button-next,
+  .gallery-swiper .swiper-button-prev {
+    width: 36px;
+    height: 36px;
+  }
+}
