@@ -1753,6 +1753,27 @@ section,
   margin-bottom: 8px;
 }
 
+.portfolio-thumb-crop {
+  width: 100% !important;
+  height: 280px !important; /* Adjust height as needed */
+  object-fit: cover !important;
+  object-position: top !important;
+}
+
+.portfolio-fixed-height {
+  height: 280px !important;
+  overflow: hidden;
+}
+
+.portfolio-fixed-height img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: top !important;
+}
+
+
+
 .portfolio .portfolio-wrap .portfolio-info h4 {
   font-size: 20px;
   color: var(--contrast-color);
