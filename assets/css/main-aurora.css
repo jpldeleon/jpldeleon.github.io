@@ -17,38 +17,38 @@
   --nav-font: "Nunito", sans-serif;
 }
 
-/* Global Colors - Nord Frost and Aurora Theme */
+/* Global Colors - Nord Aurora Theme (Warm Variant) */
 :root {
   --background-color: #2E3440;
   /* Nord Polar Night 2 - Dark background for entire website */
   --default-color: #ECEFF4;
   /* Nord Frost 1 - Light text throughout website */
-  --heading-color: #ECEFF4;
-  /* Nord Frost 1 - Bright white for headings */
-  --accent-color: #81A1C1;
-  /* Nord Frost 3 - Medium blue for links and accents */
-  --accent-highlight: #A3BE8C;
-  /* Nord Aurora Green - Warm accent for buttons, borders, highlights */
+  --heading-color: #EBCB8B;
+  /* Nord Aurora Yellow - Warm headings */
+  --accent-color: #D08770;
+  /* Nord Aurora Orange - Warm accent for links */
+  --accent-highlight: #BF616A;
+  /* Nord Aurora Red - Bold highlight for buttons and CTAs */
   --surface-color: #3B4252;
   /* Nord Polar Night 3 - Slightly lighter background for cards and boxes */
   --contrast-color: #ECEFF4;
   /* Nord Frost 1 - High contrast text on accent backgrounds */
 }
 
-/* Nav Menu Colors - Nord Theme */
+/* Nav Menu Colors - Nord Aurora Theme */
 :root {
   --nav-color: #D8DEE9;
   /* Nord Frost 2 - Default nav links */
-  --nav-hover-color: #A3BE8C;
-  /* Nord Aurora Green - Active/hover state */
+  --nav-hover-color: #BF616A;
+  /* Nord Aurora Red - Active/hover state */
   --nav-mobile-background-color: #2E3440;
   /* Nord Polar Night 2 - Mobile nav background */
   --nav-dropdown-background-color: #3B4252;
   /* Nord Polar Night 3 - Dropdown background */
   --nav-dropdown-color: #ECEFF4;
   /* Nord Frost 1 - Dropdown text */
-  --nav-dropdown-hover-color: #A3BE8C;
-  /* Nord Aurora Green - Dropdown hover */
+  --nav-dropdown-hover-color: #D08770;
+  /* Nord Aurora Orange - Dropdown hover */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -65,8 +65,8 @@
   /* Nord Polar Night 2 - Main dark background */
   --default-color: #ECEFF4;
   /* Nord Frost 1 - Light text */
-  --heading-color: #ECEFF4;
-  /* Nord Frost 1 - Light headings */
+  --heading-color: #EBCB8B;
+  /* Nord Aurora Yellow - Warm headings */
   --surface-color: #3B4252;
   /* Nord Polar Night 3 - Slightly lighter */
   --contrast-color: #ECEFF4;
@@ -166,8 +166,8 @@ h6 {
 .header {
   --background-color: #2E3440;
   /* Nord Polar Night 2 - Dark header background */
-  --contrast-color: #81A1C1;
-  /* Nord Frost 3 - Subtle text contrast */
+  --contrast-color: #D08770;
+  /* Nord Aurora Orange - Warm text contrast */
   color: var(--default-color);
   position: fixed;
   top: 0;
@@ -411,7 +411,7 @@ h6 {
   position: fixed;
   top: calc(50% - 30px);
   left: calc(50% - 30px);
-  border: 6px solid #178C7A;
+  border: 6px solid var(--accent-highlight);
   border-color: var(--accent-highlight) transparent var(--accent-highlight) transparent;
   border-radius: 50%;
   width: 60px;
@@ -617,13 +617,18 @@ section,
   animation: blob-float 10s ease-in-out infinite alternate;
 }
 
-/* Individual Positioning */
+/* Aurora Blob Colors - Northern Lights Theme */
 .background-elements .bg-blob.blob-1 {
   width: 450px;
   height: 450px;
   top: -10%;
   left: -5%;
   animation-delay: 0s;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, #BF616A, transparent 40%),
+    transparent 70%
+  );
 }
 
 .background-elements .bg-blob.blob-2 {
@@ -632,6 +637,11 @@ section,
   top: 40%;
   right: -10%;
   animation-delay: 3s;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, #D08770, transparent 40%),
+    transparent 70%
+  );
 }
 
 .background-elements .bg-blob.blob-3 {
@@ -640,6 +650,11 @@ section,
   bottom: -5%;
   left: 25%;
   animation-delay: 6s;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, #EBCB8B, transparent 40%),
+    transparent 70%
+  );
 }
 
 /* Subtle Floating Movement */
@@ -1271,27 +1286,27 @@ section,
 }
 
 .stats .stats-item:nth-child(2) .icon-wrapper {
-  background-color: color-mix(in srgb, #ff7e00, transparent 85%);
+  background-color: color-mix(in srgb, #D08770, transparent 85%);
 }
 
 .stats .stats-item:nth-child(2) .icon-wrapper i {
-  color: color-mix(in srgb, #ff7e00, transparent 10%);
+  color: color-mix(in srgb, #D08770, transparent 10%);
 }
 
 .stats .stats-item:nth-child(3) .icon-wrapper {
-  background-color: color-mix(in srgb, #00c875, transparent 85%);
+  background-color: color-mix(in srgb, #EBCB8B, transparent 85%);
 }
 
 .stats .stats-item:nth-child(3) .icon-wrapper i {
-  color: color-mix(in srgb, #00c875, transparent 10%);
+  color: color-mix(in srgb, #EBCB8B, transparent 10%);
 }
 
 .stats .stats-item:nth-child(4) .icon-wrapper {
-  background-color: color-mix(in srgb, #e83e8c, transparent 85%);
+  background-color: color-mix(in srgb, #BF616A, transparent 85%);
 }
 
 .stats .stats-item:nth-child(4) .icon-wrapper i {
-  color: color-mix(in srgb, #e83e8c, transparent 10%);
+  color: color-mix(in srgb, #BF616A, transparent 10%);
 }
 
 .stats .stats-item .icon-wrapper {
@@ -1416,7 +1431,7 @@ section,
 }
 
 .skill-item:hover {
-  background-color: rgba(23, 140, 122, 0.1);
+  background-color: rgba(191, 97, 106, 0.1);
 }
 
 .skill-tooltip {
@@ -1664,7 +1679,7 @@ section,
 }
 
 .skill-category:hover {
-  background-color: rgba(23, 140, 122, 0.1);
+  background-color: rgba(191, 97, 106, 0.1);
 }
 
 .skill-list li {
@@ -2432,8 +2447,8 @@ section,
 .gallery-swiper .swiper-button-next,
 .gallery-swiper .swiper-button-prev {
   color: var(--accent-highlight);
-  background-color: rgba(163, 190, 140, 0.1);
-  /* Nord Aurora Green with transparency */
+  background-color: rgba(191, 97, 106, 0.1);
+  /* Nord Aurora Red with transparency */
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -2445,8 +2460,8 @@ section,
 .gallery-swiper .swiper-button-next:hover,
 .gallery-swiper .swiper-button-prev:hover {
   background-color: var(--accent-highlight);
-  color: #2E3440;
-  /* Dark text on light green background */
+  color: #ECEFF4;
+  /* Light text on red background */
 }
 
 .gallery-swiper .swiper-button-next:after,
@@ -2490,33 +2505,33 @@ section,
   cursor: pointer;
 }
 
-/* Live Demo Button (Solid to Outlined) - Nord Aurora Green */
+/* Live Demo Button (Solid to Outlined) - Nord Aurora Red */
 .btn-live {
-  background-color: #A3BE8C;
-  color: #2E3440;
-  border: 2px solid #A3BE8C;
+  background-color: #BF616A;
+  color: #ECEFF4;
+  border: 2px solid #BF616A;
 }
 
 .btn-live:hover {
   background-color: transparent;
-  color: #A3BE8C;
+  color: #BF616A;
 }
 
-/* GitHub Button (Outlined to Solid) - Nord Aurora Green */
+/* GitHub Button (Outlined to Solid) - Nord Aurora Red */
 .btn-github {
   background-color: transparent;
-  color: #A3BE8C;
-  border: 2px solid #A3BE8C;
+  color: #BF616A;
+  border: 2px solid #BF616A;
 }
 
 .btn-github:hover {
-  background-color: #A3BE8C;
-  color: #2E3440;
+  background-color: #BF616A;
+  color: #ECEFF4;
 }
 
 .features .feature-item {
-  background: rgba(163, 190, 140, 0.08); /* Transparent Nord Aurora Green background */
-  border: 1px solid rgba(163, 190, 140, 0.25); /* Subtle Aurora Green border */
+  background: rgba(191, 97, 106, 0.08); /* Transparent Nord Aurora Red background */
+  border: 1px solid rgba(191, 97, 106, 0.25); /* Subtle Aurora Red border */
   border-radius: 10px;
   padding: 25px;
   transition: all 0.3s ease;
@@ -2524,16 +2539,16 @@ section,
 
 /* Optional hover effect for card interaction */
 .features .feature-item:hover {
-  background: rgba(163, 190, 140, 0.15);
-  border-color: rgba(163, 190, 140, 0.5);
+  background: rgba(191, 97, 106, 0.15);
+  border-color: rgba(191, 97, 106, 0.5);
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(163, 190, 140, 0.15);
+  box-shadow: 0 8px 20px rgba(191, 97, 106, 0.15);
 }
 
 /* Accent color for the icons */
 .features .feature-item i {
-  color: #A3BE8C;
-  /* Nord Aurora Green */
+  color: #BF616A;
+  /* Nord Aurora Red */
   font-size: 1.8rem;
   margin-bottom: 12px;
   display: inline-block;
@@ -2543,7 +2558,7 @@ section,
 .features .feature-item .icon-wrapper {
   width: 50px;
   height: 50px;
-  background-color: rgba(163, 190, 140, 0.15); /* Transparent Aurora Green fill */
+  background-color: rgba(191, 97, 106, 0.15); /* Transparent Aurora Red fill */
   border-radius: 50%; /* Perfect circle */
   display: flex;
   align-items: center;
@@ -2553,7 +2568,8 @@ section,
 
 /* Icon Color inside the Circle */
 .features .feature-item .icon-wrapper i {
-  color: #A3BE8C; /* Nord Aurora Green icon */
+  color: #BF616A; /* Nord Aurora Red icon */
   font-size: 1.25rem;
   margin: 0;
 }
+

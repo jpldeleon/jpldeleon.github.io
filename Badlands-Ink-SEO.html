@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Badlands Ink: Technical, Local & E-Commerce SEO Project</title>
+  <title>Badlands Ink | SEO Case Study</title>
   <meta name="description"
     content="Technical SEO portfolio project showcasing WordPress optimization and structured data implementation">
   <meta name="keywords" content="technical seo, wordpress, schema markup, portfolio">
@@ -28,10 +28,16 @@
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/main-aurora.css" rel="stylesheet">
 </head>
 
 <body class="portfolio-details-page">
+
+  <div class="background-elements">
+    <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+</div>
 
   <header id="header" class="header dark-background d-flex flex-column justify-content-center">
     <i class="header-toggle d-xl-none bi bi-list"></i>
@@ -39,20 +45,27 @@
     <div class="header-container d-flex flex-column align-items-start">
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html"><i class="bi bi-house navicon"></i>Home</a></li>
-          <li><a href="index.html#about"><i class="bi bi-person navicon"></i> About</a></li>
-          <li><a href="index.html#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
-          <li><a href="index.html#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
-          <li><a href="index.html#services"><i class="bi bi-hdd-stack navicon"></i> Services</a></li>
-          <li><a href="index.html#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
+          <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
+          <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
+          <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
+          <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
+          </li>
+          <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
         </ul>
       </nav>
 
       <div class="social-links text-center">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+
+        <a href="https://teams.microsoft.com/l/chat/0/0?users=jpleonard.deleon@gmail.com" class="google-plus"
+          title="Microsoft Teams"><i class="bi bi-microsoft-teams"></i></a>
+        <a href="https://www.linkedin.com/in/jpldl/" class="linkedin" title="LinkedIn"><i
+            class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/jpldeleon" target="_blank" title="GitHub" class="github">
+          <i class="bi bi-github"></i>
+          <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork"
+            class="text-badge badge-upwork">Up</a>
+          <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance"
+            class="text-badge badge-golance">Go</a>
       </div>
 
     </div>
@@ -64,11 +77,18 @@
     <!-- Page Title -->
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Case Study: Badlands Ink - WordPress, On-Page, Technical, Local & E-Commerce SEO Implementation</h1>
+        <div class="page-header">
+          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
+            WordPress, Technical &amp; E-Commerce SEO
+          </span>
+          <h1 class="h2 fw-bold mb-3">
+            Case Study: Badlands Ink
+          </h1>
+        </div>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">Portfolio Details</li>
+            <li class="current">Badlands Ink</li>
           </ol>
         </nav>
       </div>
@@ -98,12 +118,12 @@
             <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
               <h3>Project Information</h3>
               <ul>
-                <li><strong>Category</strong>: Technical, Local & E-Commerce SEO + WordPress Development</li>
-                <li><strong>Project</strong>: Badlands Ink</li>
-                <li><strong>Type</strong>: Hands-On SEO Sandbox & Practice Project</li>
-                <li><strong>Focus</strong>: Technical SEO, Schema Markup, Local SEO & E-Commerce Integration
+                <li><strong>Category:</strong>Technical, Local & E-Commerce SEO + WordPress Development</li>
+                <li><strong>Project:</strong>Badlands Ink</li>
+                <li><strong>Type:</strong>Hands-On SEO Sandbox & Practice Project</li>
+                <li><strong>Focus:</strong>Technical SEO, Schema Markup, Local SEO & E-Commerce Integration
                 </li>
-                <li><strong>Tools</strong>: Local WP, WordPress, Elementor, Rank Math SEO, WooCommerce, Screaming Frog,
+                <li><strong>Tools:</strong>Local WP, WordPress, Elementor, Rank Math SEO, WooCommerce, Screaming Frog,
                   Google Lighthouse</li>
               </ul>
             </div>
@@ -111,20 +131,36 @@
 
           <div class="col-lg-12">
             <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-              <h2>Badlands Ink - Complete Technical, Local & E-Commerce SEO Implementation</h2>
 
               <h4>Project Overview</h4>
               <p>
-                Badlands Ink is a custom WordPress case study built locally using LocalWP. The goal of this project was to construct a fully functional website incorporating blog content, a service presence, and a WooCommerce storefront from the ground up. It serves as a practical demonstration of integrating web development, e-commerce architecture, and technical search engine optimization in a single WordPress environment.</p>
+                Badlands Ink is a custom WordPress case study built locally using LocalWP. The goal of this project was
+                to construct a fully functional website incorporating blog content, a service presence, and a
+                WooCommerce storefront from the ground up. It serves as a practical demonstration of integrating web
+                development, e-commerce architecture, and technical search engine optimization in a single WordPress
+                environment.</p>
 
               <h4>Problem & Objective</h4>
               <p>
-                Many websites suffer from weak search engine visibility due to poor technical foundations, missing structured data, and unoptimized page speeds. The primary objective of this case study was to demonstrate how building a site with SEO best practices baked into the core architecture (rather than added as an afterthought) results in higher crawl efficiency, complete schema coverage, and optimal user performance across desktop and mobile devices.</p>
+                Many websites suffer from weak search engine visibility due to poor technical foundations, missing
+                structured data, and unoptimized page speeds. The primary objective of this case study was to
+                demonstrate how building a site with SEO best practices baked into the core architecture (rather than
+                added as an afterthought) results in higher crawl efficiency, complete schema coverage, and optimal user
+                performance across desktop and mobile devices.</p>
 
               <h4>Technical Implementation</h4>
               <p>
-                Built locally using LocalWP, this project executes end-to-end technical and structural SEO across multiple core disciplines. For local search optimization, Name, Address, and Phone (NAP) details were established alongside LocalBusiness JSON-LD structured data to provide search engines with distinct geographic and entity signals. E-commerce architecture was built out using WooCommerce, featuring dedicated catalog pages, individual product layouts, and Product rich snippet schema to enhance search engine visibility for store items.</p>
-                <p>On-page optimization was managed through Rank Math SEO, focusing on focus keyword integration, custom meta titles and descriptions, and strategic internal anchor text placement. Overall crawlability and performance were audited using Screaming Frog to evaluate directory depth and URL hierarchy. Finally, crawl management was established using custom robots.txt directives and dynamic XML sitemaps, while site speed was validated using desktop and mobile Google Lighthouse performance audits.</p>
+                Built locally using LocalWP, this project executes end-to-end technical and structural SEO across
+                multiple core disciplines. For local search optimization, Name, Address, and Phone (NAP) details were
+                established alongside LocalBusiness JSON-LD structured data to provide search engines with distinct
+                geographic and entity signals. E-commerce architecture was built out using WooCommerce, featuring
+                dedicated catalog pages, individual product layouts, and Product rich snippet schema to enhance search
+                engine visibility for store items.</p>
+              <p>On-page optimization was managed through Rank Math SEO, focusing on focus keyword integration, custom
+                meta titles and descriptions, and strategic internal anchor text placement. Overall crawlability and
+                performance were audited using Screaming Frog to evaluate directory depth and URL hierarchy. Finally,
+                crawl management was established using custom robots.txt directives and dynamic XML sitemaps, while site
+                speed was validated using desktop and mobile Google Lighthouse performance audits.</p>
 
               <div class="features mt-4">
                 <h3>Implemented Case Study Features</h3>
@@ -133,7 +169,9 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
                       <i class="bi bi-code-square"></i>
                       <h4>Schema & Structured Data</h4>
-                      <p>Implementation of JSON-LD schema including LocalBusiness, Product, BlogPosting, Organization, and WebSite markup. This ensures full eligibility for rich snippets across local queries, product searches, and article listings.</p>
+                      <p>Implementation of JSON-LD schema including LocalBusiness, Product, BlogPosting, Organization,
+                        and WebSite markup. This ensures full eligibility for rich snippets across local queries,
+                        product searches, and article listings.</p>
                     </div>
                   </div>
 
@@ -141,7 +179,9 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
                       <i class="bi bi-diagram-3"></i>
                       <h4>Site & E-Commerce Architecture</h4>
-                      <p>Clean hierarchical URL structure integrated directly with the WooCommerce catalog. Includes breadcrumb navigation, balanced internal link equity distribution, and optimized anchor text for seamless crawl paths.</p>
+                      <p>Clean hierarchical URL structure integrated directly with the WooCommerce catalog. Includes
+                        breadcrumb navigation, balanced internal link equity distribution, and optimized anchor text for
+                        seamless crawl paths.</p>
                     </div>
                   </div>
 
@@ -149,7 +189,9 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
                       <i class="bi bi-speedometer"></i>
                       <h4>Performance & Responsiveness</h4>
-                      <p>Fully responsive design tested across desktop and mobile viewports. Verified through Google Lighthouse audits to maintain strong Core Web Vitals scores and high technical SEO compliance.</p>
+                      <p>Fully responsive design tested across desktop and mobile viewports. Verified through Google
+                        Lighthouse audits to maintain strong Core Web Vitals scores and high technical SEO compliance.
+                      </p>
                     </div>
                   </div>
 
@@ -157,37 +199,49 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
                       <i class="bi bi-robot"></i>
                       <h4>Crawl & Index Management</h4>
-                      <p>Strategic robots.txt configuration, dynamic XML sitemap generation, and Screaming Frog crawl audits to prevent index bloat and ensure efficient search bot discovery.</p>
+                      <p>Strategic robots.txt configuration, dynamic XML sitemap generation, and Screaming Frog crawl
+                        audits to prevent index bloat and ensure efficient search bot discovery.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <h4 class="mt-4">Key Outcome & Takeaways</h4>
-              <p>This case study proves the capability to deploy an end-to-end WordPress project that satisfies search engine algorithms and human users alike. By combining structured data, clean URL architecture, e-commerce functionality, and technical crawl management, the site is fully prepared for search indexation and competitive ranking.</p>
+              <p>This case study proves the capability to deploy an end-to-end WordPress project that satisfies search
+                engine algorithms and human users alike. By combining structured data, clean URL architecture,
+                e-commerce functionality, and technical crawl management, the site is fully prepared for search
+                indexation and competitive ranking.</p>
 
-             <h3 class="mt-4">Video Overview</h3>
-<p>The video demonstration covers the full end-to-end technical SEO and e-commerce build across key areas:</p>
-<ul>
-  <li><strong>LocalWP Environment:</strong> Local host configuration and sandbox site deployment.</li>
-  <li><strong>Local SEO Setup:</strong> Verification of Name, Address, and Phone (NAP) details and LocalBusiness schema.</li>
-  <li><strong>WooCommerce Catalog:</strong> E-commerce shop structure, product page layouts, and Product rich snippet implementation.</li>
-  <li><strong>Rank Math Dashboard:</strong> On-page keyword scoring, meta title and description management, and module settings.</li>
-  <li><strong>Site Architecture & Links:</strong> Screaming Frog crawl verification showing directory tree hierarchy and internal link flow.</li>
-  <li><strong>JSON-LD Schema Testing:</strong> Structured data validation across local, e-commerce, and blog page types.</li>
-  <li><strong>Indexation Control:</strong> Configuration of custom robots.txt directives and dynamic XML sitemap generation.</li>
-  <li><strong>Lighthouse Performance:</strong> Desktop and mobile Core Web Vitals audit execution.</li>
-</ul>
+              <h3 class="mt-4">Video Overview</h3>
+              <p>The video demonstration covers the full end-to-end technical SEO and e-commerce build across key areas:
+              </p>
+              <ul>
+                <li><strong>LocalWP Environment:</strong> Local host configuration and sandbox site deployment.</li>
+                <li><strong>Local SEO Setup:</strong> Verification of Name, Address, and Phone (NAP) details and
+                  LocalBusiness schema.</li>
+                <li><strong>WooCommerce Catalog:</strong> E-commerce shop structure, product page layouts, and Product
+                  rich snippet implementation.</li>
+                <li><strong>Rank Math Dashboard:</strong> On-page keyword scoring, meta title and description
+                  management, and module settings.</li>
+                <li><strong>Site Architecture & Links:</strong> Screaming Frog crawl verification showing directory tree
+                  hierarchy and internal link flow.</li>
+                <li><strong>JSON-LD Schema Testing:</strong> Structured data validation across local, e-commerce, and
+                  blog page types.</li>
+                <li><strong>Indexation Control:</strong> Configuration of custom robots.txt directives and dynamic XML
+                  sitemap generation.</li>
+                <li><strong>Lighthouse Performance:</strong> Desktop and mobile Core Web Vitals audit execution.</li>
+              </ul>
 
-<h3 class="mt-4">Technologies & Tools Used</h3>
-<ul>
-  <li><strong>Core Platform:</strong> WordPress CMS</li>
-  <li><strong>E-Commerce:</strong> WooCommerce</li>
-  <li><strong>SEO & Metadata:</strong> Rank Math SEO Plugin</li>
-  <li><strong>Local & Technical Schema:</strong> JSON-LD Structured Data (LocalBusiness, Product, BlogPosting)</li>
-  <li><strong>Auditing & Crawling:</strong> Screaming Frog SEO Spider, Google Lighthouse</li>
-  <li><strong>Development Environment:</strong> LocalWP</li>
-</ul>
+              <h3 class="mt-4">Technologies & Tools Used</h3>
+              <ul>
+                <li><strong>Core Platform:</strong> WordPress CMS</li>
+                <li><strong>E-Commerce:</strong> WooCommerce</li>
+                <li><strong>SEO & Metadata:</strong> Rank Math SEO Plugin</li>
+                <li><strong>Local & Technical Schema:</strong> JSON-LD Structured Data (LocalBusiness, Product,
+                  BlogPosting)</li>
+                <li><strong>Auditing & Crawling:</strong> Screaming Frog SEO Spider, Google Lighthouse</li>
+                <li><strong>Development Environment:</strong> LocalWP</li>
+              </ul>
             </div>
           </div>
 
