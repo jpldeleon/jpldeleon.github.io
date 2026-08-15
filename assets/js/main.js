@@ -93,7 +93,7 @@
    * Init typed.js
    */
   const selectTyped = document.querySelector('.typed');
-  if (selectTyped) {
+  if (selectTyped && typeof Typed !== 'undefined') {
     let typed_strings = selectTyped.getAttribute('data-typed-items');
     typed_strings = typed_strings.split(',');
     new Typed('.typed', {
@@ -108,7 +108,9 @@
   /**
    * Initiate Pure Counter
    */
-  new PureCounter();
+  if (typeof PureCounter !== 'undefined') {
+    new PureCounter();
+  }
 
   /**
    * Animate the skills items on reveal
@@ -225,5 +227,35 @@
   }
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
+
+  /**
+   * Theme toggle (Aurora / Frost)
+   */
+  const themeToggleBtn = document.querySelector('#theme-toggle');
+
+  if (themeToggleBtn) {
+    const themeIcon = themeToggleBtn.querySelector('i');
+
+    function setThemeIcon(theme) {
+      themeIcon.className = theme === 'frost' ? 'bi bi-sun' : 'bi bi-snow2';
+      themeToggleBtn.title = theme === 'frost' ? 'Switch to Aurora theme' : 'Switch to Frost theme';
+    }
+
+    setThemeIcon(document.documentElement.getAttribute('data-theme') === 'frost' ? 'frost' : 'aurora');
+
+    themeToggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isFrost = document.documentElement.getAttribute('data-theme') === 'frost';
+      if (isFrost) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('site-theme', 'aurora');
+        setThemeIcon('aurora');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'frost');
+        localStorage.setItem('site-theme', 'frost');
+        setThemeIcon('frost');
+      }
+    });
+  }
 
 })();

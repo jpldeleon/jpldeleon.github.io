@@ -2,6 +2,16 @@
 <html lang="en">
 
 <head>
+  <!-- Apply saved theme before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('site-theme');
+      if (saved === 'frost') {
+        document.documentElement.setAttribute('data-theme', 'frost');
+      }
+    })();
+  </script>
+
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>John Paul De Leon | SEO Specialist</title>
@@ -27,7 +37,7 @@
   <!-- <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"> -->
 
   <!-- Main CSS File -->
-  <link href="assets/css/main-aurora.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: SnapFolio
@@ -43,15 +53,13 @@
   <header id="header" class="header dark-background d-flex flex-column justify-content-center">
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
-    <div class="header-container d-flex flex-column align-items-start">
+    <div class="header-container d-flex flex-row align-items-center">
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
-          <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
-          <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
-          <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
-          </li>
-          <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
+          <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i><span class="nav-label">Home</span></a></li>
+          <li><a href="#about"><i class="bi bi-person navicon"></i><span class="nav-label"> About</span></a></li>
+          <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label"> Resume</span></a></li>
+          <li><a href="#portfolio"><i class="bi bi-images navicon"></i><span class="nav-label"> Portfolio</span></a></li>
         </ul>
       </nav>
 
@@ -62,11 +70,11 @@
         <a href="https://www.linkedin.com/in/jpldl/" class="linkedin" title="LinkedIn"><i
             class="bi bi-linkedin"></i></a>
         <a href="https://github.com/jpldeleon" target="_blank" title="GitHub" class="github">
-          <i class="bi bi-github"></i>
-          <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork"
-            class="text-badge badge-upwork">Up</a>
-          <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance"
-            class="text-badge badge-golance">Go</a>
+          <i class="bi bi-github"></i></a>
+        <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork"
+          class="text-badge badge-upwork">Up</a>
+        <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance"
+          class="text-badge badge-golance">Go</a>
       </div>
 
     </div>
@@ -813,6 +821,10 @@
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Theme Toggle -->
+  <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+    title="Switch color theme"><i class="bi bi-snow2"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

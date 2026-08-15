@@ -28,7 +28,7 @@
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="assets/css/main-aurora.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
 </head>
 
 <body class="portfolio-details-page">
@@ -756,15 +756,48 @@
               font-weight: 700;
             }
 
+            .screenshots-swiper .swiper-pagination-bullet {
+              background: rgba(255, 255, 255, 0.5);
+              opacity: 1;
+            }
+
             .screenshots-swiper .swiper-pagination-bullet-active {
               background: var(--accent-highlight, #178C7A);
             }
 
             @media (max-width: 575px) {
 
+              .screenshots-swiper {
+                padding: 10px 10px 80px;
+              }
+
+              /* Dots stay centered, higher up */
+              .screenshots-swiper .swiper-pagination {
+                bottom: 38px;
+              }
+
+              /* Arrows drop into their own centered row below the dots */
               .screenshots-swiper .swiper-button-prev,
               .screenshots-swiper .swiper-button-next {
-                display: none;
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                right: auto;
+                width: 32px;
+                height: 32px;
+              }
+
+              .screenshots-swiper .swiper-button-prev:after,
+              .screenshots-swiper .swiper-button-next:after {
+                font-size: 13px;
+              }
+
+              .screenshots-swiper .swiper-button-prev {
+                transform: translateX(calc(-100% - 8px));
+              }
+
+              .screenshots-swiper .swiper-button-next {
+                transform: translateX(8px);
               }
             }
           </style>
@@ -787,6 +820,9 @@
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
+
+      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+    title="Switch color theme"><i class="bi bi-snow2"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

@@ -17,38 +17,40 @@
   --nav-font: "Nunito", sans-serif;
 }
 
-/* Global Colors - Nord Frost and Aurora Theme */
+/* Global Colors - Nord Aurora Theme (Warm Variant) */
 :root {
   --background-color: #2E3440;
   /* Nord Polar Night 2 - Dark background for entire website */
   --default-color: #ECEFF4;
   /* Nord Frost 1 - Light text throughout website */
-  --heading-color: #ECEFF4;
-  /* Nord Frost 1 - Bright white for headings */
-  --accent-color: #81A1C1;
-  /* Nord Frost 3 - Medium blue for links and accents */
-  --accent-highlight: #A3BE8C;
-  /* Nord Aurora Green - Warm accent for buttons, borders, highlights */
+  --heading-color: #EBCB8B;
+  /* Nord Aurora Yellow - Warm headings */
+  --accent-color: #D08770;
+  /* Nord Aurora Orange - Warm accent for links */
+  --accent-highlight: #BF616A;
+  /* Nord Aurora Red - Bold highlight for buttons and CTAs */
+  --accent-highlight-rgb: 191, 97, 106;
+  /* RGB channels of --accent-highlight, for use in rgba() */
   --surface-color: #3B4252;
   /* Nord Polar Night 3 - Slightly lighter background for cards and boxes */
   --contrast-color: #ECEFF4;
   /* Nord Frost 1 - High contrast text on accent backgrounds */
 }
 
-/* Nav Menu Colors - Nord Theme */
+/* Nav Menu Colors - Nord Aurora Theme */
 :root {
   --nav-color: #D8DEE9;
   /* Nord Frost 2 - Default nav links */
-  --nav-hover-color: #A3BE8C;
-  /* Nord Aurora Green - Active/hover state */
+  --nav-hover-color: #BF616A;
+  /* Nord Aurora Red - Active/hover state */
   --nav-mobile-background-color: #2E3440;
   /* Nord Polar Night 2 - Mobile nav background */
   --nav-dropdown-background-color: #3B4252;
   /* Nord Polar Night 3 - Dropdown background */
   --nav-dropdown-color: #ECEFF4;
   /* Nord Frost 1 - Dropdown text */
-  --nav-dropdown-hover-color: #A3BE8C;
-  /* Nord Aurora Green - Dropdown hover */
+  --nav-dropdown-hover-color: #D08770;
+  /* Nord Aurora Orange - Dropdown hover */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -65,12 +67,24 @@
   /* Nord Polar Night 2 - Main dark background */
   --default-color: #ECEFF4;
   /* Nord Frost 1 - Light text */
-  --heading-color: #ECEFF4;
-  /* Nord Frost 1 - Light headings */
   --surface-color: #3B4252;
   /* Nord Polar Night 3 - Slightly lighter */
   --contrast-color: #ECEFF4;
   /* Nord Frost 1 - High contrast */
+}
+
+/* Nord Frost Theme (Cool Variant) - toggled via [data-theme="frost"] on <html> */
+[data-theme="frost"] {
+  --heading-color: #88C0D0;
+  /* Nord Frost - light blue headings */
+  --accent-color: #81A1C1;
+  /* Nord Frost - blue accent for links */
+  --accent-highlight: #5E81AC;
+  /* Nord Frost - deep blue highlight for buttons/CTAs */
+  --accent-highlight-rgb: 94, 129, 172;
+  --nav-color: #D8DEE9;
+  --nav-hover-color: #5E81AC;
+  /* Nord Frost - deep blue nav hover */
 }
 
 /* Smooth scroll */
@@ -85,6 +99,7 @@ body {
   color: var(--default-color);
   background-color: var(--background-color);
   font-family: var(--default-font);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 a {
@@ -161,34 +176,120 @@ h6 {
 }
 
 /*--------------------------------------------------------------
-# Global Header
+# Floating Bottom Pill Navigation - Aurora Theme
 --------------------------------------------------------------*/
+
+/* Hide original sidebar layout */
 .header {
-  --background-color: #2E3440;
-  /* Nord Polar Night 2 - Dark header background */
-  --contrast-color: #81A1C1;
-  /* Nord Frost 3 - Subtle text contrast */
-  color: var(--default-color);
   position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  padding: 0 15px;
-  width: 300px;
-  transition: all ease-in-out 0.3s;
-  overflow-y: auto;
+  bottom: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
   z-index: 997;
+  display: none;
+}
+
+/* Floating Pill Container */
+.header {
+  display: flex !important;
+  bottom: 30px !important;
+  top: auto !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  overflow: visible !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .header .header-container {
-  border-radius: 20px;
-  padding: 15px;
-  background-color: var(--background-color);
-  border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+  background: rgba(46, 52, 64, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(var(--accent-highlight-rgb), 0.3);
+  border-radius: 50px;
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  box-shadow: 0 8px 32px rgba(var(--accent-highlight-rgb), 0.15);
+  transition: all 0.3s ease;
 }
 
+.header .header-container:hover {
+  background: rgba(46, 52, 64, 0.95);
+  border-color: rgba(var(--accent-highlight-rgb), 0.5);
+  box-shadow: 0 12px 40px rgba(var(--accent-highlight-rgb), 0.25);
+}
+
+/* Navigation Menu - Horizontal */
+.header .navmenu {
+  padding: 0;
+  margin: 0;
+}
+
+.header .navmenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.header .navmenu a,
+.header .navmenu a:focus {
+  color: var(--nav-color);
+  padding: 8px 14px;
+  font-family: var(--nav-font);
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  width: auto;
+  border-radius: 8px;
+}
+
+.header .navmenu a .navicon {
+  font-size: 16px;
+  margin-right: 6px;
+  display: none;
+}
+
+.header .navmenu a:hover,
+.header .navmenu .active,
+.header .navmenu .active:focus {
+  color: var(--accent-highlight);
+  background-color: rgba(var(--accent-highlight-rgb), 0.15);
+}
+
+.header .navmenu a:hover .navicon,
+.header .navmenu .active .navicon,
+.header .navmenu .active:focus .navicon {
+  color: var(--accent-highlight);
+}
+
+/* Hide dropdown toggle since we're not using dropdowns in pill */
+.header .navmenu a .toggle-dropdown {
+  display: none !important;
+}
+
+/* Social Links - Horizontal */
 .header .social-links {
-  margin: 0 0 10px 0;
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  align-items: center;
+  padding-left: 20px;
+  border-left: 1px solid rgba(var(--accent-highlight-rgb), 0.2);
 }
 
 .header .social-links a {
@@ -196,61 +297,130 @@ h6 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--default-color), transparent 90%);
-  color: var(--default-color);
-  margin: 0 2px;
+  background: rgba(var(--accent-highlight-rgb), 0.1);
+  color: var(--accent-highlight);
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   text-align: center;
-  width: 40px;
-  height: 40px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--accent-highlight-rgb), 0.2);
 }
 
 .header .social-links a:hover {
-  color: var(--contrast-color);
+  color: #ECEFF4;
   background: var(--accent-highlight);
+  border-color: var(--accent-highlight);
+  transform: scale(1.1);
 }
 
-@media (min-width: 1200px) {
+/* Text badges for Upwork/GoLance */
+.header .social-links a.text-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+}
 
-  .header~main,
-  .header~#footer {
-    margin-left: 330px;
+/* Hide header toggle button */
+.header .header-toggle {
+  display: none !important;
+}
+
+/* Adjust main content to account for floating pill */
+@media (min-width: 1200px) {
+  .header ~ main,
+  .header ~ #footer {
+    margin-left: 0;
+    padding-bottom: 100px;
   }
 }
 
 @media (max-width: 1199px) {
-  .header {
-    left: -100%;
+  .header ~ main,
+  .header ~ #footer {
+    padding-bottom: 130px;
   }
 }
 
-.header.header-show {
-  left: 0;
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .header .header-container {
+    padding: 10px 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header .navmenu ul {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header .navmenu a {
+    padding: 8px;
+    font-size: 13px;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+  }
+
+  .header .navmenu a .navicon {
+    display: inline-block;
+    margin-right: 0;
+    font-size: 16px;
+  }
+
+  .header .navmenu a .nav-label {
+    display: none;
+  }
+
+  .header .social-links {
+    border-left: none;
+    border-top: 1px solid rgba(var(--accent-highlight-rgb), 0.2);
+    padding-left: 0;
+    padding-top: 10px;
+    gap: 6px;
+  }
+
+  .header .social-links a {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
 }
 
-.header .header-toggle {
-  color: var(--contrast-color);
-  background-color: var(--accent-highlight);
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 9999;
-  transition: background-color 0.3s;
+/* Ultra mobile - very compact */
+@media (max-width: 480px) {
+  .header .header-container {
+    padding: 8px 16px;
+    gap: 10px;
+  }
+
+  .header .navmenu a {
+    padding: 6px;
+    font-size: 12px;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+  }
+
+  .header .navmenu a .navicon {
+    font-size: 15px;
+  }
+
+  .header .social-links a {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
 }
 
-.header .header-toggle:hover {
-  color: var(--contrast-color);
-  background-color: color-mix(in srgb, var(--accent-highlight) 90%, white 15%);
-}
+
+
+
 
 /*--------------------------------------------------------------
 # Navigation Menu
@@ -411,7 +581,7 @@ h6 {
   position: fixed;
   top: calc(50% - 30px);
   left: calc(50% - 30px);
-  border: 6px solid #178C7A;
+  border: 6px solid var(--accent-highlight);
   border-color: var(--accent-highlight) transparent var(--accent-highlight) transparent;
   border-radius: 50%;
   width: 60px;
@@ -461,6 +631,45 @@ h6 {
   visibility: visible;
   opacity: 1;
   bottom: 15px;
+}
+
+/*--------------------------------------------------------------
+# Theme Toggle Button (Aurora / Frost)
+--------------------------------------------------------------*/
+.theme-toggle {
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  left: 15px;
+  bottom: -15px;
+  z-index: 99999;
+  background-color: var(--accent-highlight);
+  width: 44px;
+  height: 44px;
+  border-radius: 50px;
+  transition: all 0.4s;
+}
+
+.theme-toggle i {
+  font-size: 22px;
+  color: var(--contrast-color);
+  line-height: 0;
+  transition: transform 0.4s ease;
+}
+
+.theme-toggle:hover {
+  background-color: color-mix(in srgb, var(--accent-highlight), transparent 20%);
+  color: var(--contrast-color);
+}
+
+.theme-toggle.active {
+  visibility: visible;
+  opacity: 1;
+  bottom: 15px;
+}
+
+[data-theme="frost"] .theme-toggle i {
+  transform: rotate(180deg);
 }
 
 /*--------------------------------------------------------------
@@ -617,13 +826,18 @@ section,
   animation: blob-float 10s ease-in-out infinite alternate;
 }
 
-/* Individual Positioning */
+/* Aurora Blob Colors - Northern Lights Theme */
 .background-elements .bg-blob.blob-1 {
   width: 450px;
   height: 450px;
   top: -10%;
   left: -5%;
   animation-delay: 0s;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent-highlight), transparent 40%),
+    transparent 70%
+  );
 }
 
 .background-elements .bg-blob.blob-2 {
@@ -632,6 +846,11 @@ section,
   top: 40%;
   right: -10%;
   animation-delay: 3s;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent-color), transparent 40%),
+    transparent 70%
+  );
 }
 
 .background-elements .bg-blob.blob-3 {
@@ -640,6 +859,11 @@ section,
   bottom: -5%;
   left: 25%;
   animation-delay: 6s;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--heading-color), transparent 40%),
+    transparent 70%
+  );
 }
 
 /* Subtle Floating Movement */
@@ -857,6 +1081,14 @@ section,
     margin-bottom: 50px;
   }
 
+  .hero .hero-actions {
+    justify-content: center;
+  }
+
+  .hero .social-links {
+    justify-content: center;
+  }
+
   .hero .hero-text h1 {
     font-size: 56px;
   }
@@ -1056,6 +1288,14 @@ section,
 @media (max-width: 991px) {
   .about .about-content {
     padding-left: 0;
+  }
+
+  .about .about-content .section-header {
+    text-align: center;
+  }
+
+  .about .about-content .cta-section {
+    justify-content: center;
   }
 }
 
@@ -1271,27 +1511,27 @@ section,
 }
 
 .stats .stats-item:nth-child(2) .icon-wrapper {
-  background-color: color-mix(in srgb, #ff7e00, transparent 85%);
+  background-color: color-mix(in srgb, var(--accent-color), transparent 85%);
 }
 
 .stats .stats-item:nth-child(2) .icon-wrapper i {
-  color: color-mix(in srgb, #ff7e00, transparent 10%);
+  color: color-mix(in srgb, var(--accent-color), transparent 10%);
 }
 
 .stats .stats-item:nth-child(3) .icon-wrapper {
-  background-color: color-mix(in srgb, #00c875, transparent 85%);
+  background-color: color-mix(in srgb, var(--heading-color), transparent 85%);
 }
 
 .stats .stats-item:nth-child(3) .icon-wrapper i {
-  color: color-mix(in srgb, #00c875, transparent 10%);
+  color: color-mix(in srgb, var(--heading-color), transparent 10%);
 }
 
 .stats .stats-item:nth-child(4) .icon-wrapper {
-  background-color: color-mix(in srgb, #e83e8c, transparent 85%);
+  background-color: color-mix(in srgb, var(--accent-highlight), transparent 85%);
 }
 
 .stats .stats-item:nth-child(4) .icon-wrapper i {
-  color: color-mix(in srgb, #e83e8c, transparent 10%);
+  color: color-mix(in srgb, var(--accent-highlight), transparent 10%);
 }
 
 .stats .stats-item .icon-wrapper {
@@ -1416,7 +1656,7 @@ section,
 }
 
 .skill-item:hover {
-  background-color: rgba(23, 140, 122, 0.1);
+  background-color: rgba(var(--accent-highlight-rgb), 0.1);
 }
 
 .skill-tooltip {
@@ -1664,7 +1904,7 @@ section,
 }
 
 .skill-category:hover {
-  background-color: rgba(23, 140, 122, 0.1);
+  background-color: rgba(var(--accent-highlight-rgb), 0.1);
 }
 
 .skill-list li {
@@ -1762,7 +2002,7 @@ section,
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
   height: 100%;
 }
 
@@ -1855,6 +2095,7 @@ section,
 
 .portfolio .portfolio-wrap:hover {
   transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 4px 14px rgba(var(--accent-highlight-rgb), 0.25);
 }
 
 .portfolio .portfolio-wrap:hover img {
@@ -2432,8 +2673,8 @@ section,
 .gallery-swiper .swiper-button-next,
 .gallery-swiper .swiper-button-prev {
   color: var(--accent-highlight);
-  background-color: rgba(163, 190, 140, 0.1);
-  /* Nord Aurora Green with transparency */
+  background-color: rgba(var(--accent-highlight-rgb), 0.1);
+  /* Nord Aurora Red with transparency */
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -2445,8 +2686,8 @@ section,
 .gallery-swiper .swiper-button-next:hover,
 .gallery-swiper .swiper-button-prev:hover {
   background-color: var(--accent-highlight);
-  color: #2E3440;
-  /* Dark text on light green background */
+  color: #ECEFF4;
+  /* Light text on red background */
 }
 
 .gallery-swiper .swiper-button-next:after,
@@ -2490,33 +2731,33 @@ section,
   cursor: pointer;
 }
 
-/* Live Demo Button (Solid to Outlined) - Nord Aurora Green */
+/* Live Demo Button (Solid to Outlined) - Nord Aurora Red */
 .btn-live {
-  background-color: #A3BE8C;
-  color: #2E3440;
-  border: 2px solid #A3BE8C;
+  background-color: var(--accent-highlight);
+  color: #ECEFF4;
+  border: 2px solid var(--accent-highlight);
 }
 
 .btn-live:hover {
   background-color: transparent;
-  color: #A3BE8C;
+  color: var(--accent-highlight);
 }
 
-/* GitHub Button (Outlined to Solid) - Nord Aurora Green */
+/* GitHub Button (Outlined to Solid) - Nord Aurora Red */
 .btn-github {
   background-color: transparent;
-  color: #A3BE8C;
-  border: 2px solid #A3BE8C;
+  color: var(--accent-highlight);
+  border: 2px solid var(--accent-highlight);
 }
 
 .btn-github:hover {
-  background-color: #A3BE8C;
-  color: #2E3440;
+  background-color: var(--accent-highlight);
+  color: #ECEFF4;
 }
 
 .features .feature-item {
-  background: rgba(163, 190, 140, 0.08); /* Transparent Nord Aurora Green background */
-  border: 1px solid rgba(163, 190, 140, 0.25); /* Subtle Aurora Green border */
+  background: rgba(var(--accent-highlight-rgb), 0.08); /* Transparent Nord Aurora Red background */
+  border: 1px solid rgba(var(--accent-highlight-rgb), 0.25); /* Subtle Aurora Red border */
   border-radius: 10px;
   padding: 25px;
   transition: all 0.3s ease;
@@ -2524,16 +2765,16 @@ section,
 
 /* Optional hover effect for card interaction */
 .features .feature-item:hover {
-  background: rgba(163, 190, 140, 0.15);
-  border-color: rgba(163, 190, 140, 0.5);
+  background: rgba(var(--accent-highlight-rgb), 0.15);
+  border-color: rgba(var(--accent-highlight-rgb), 0.5);
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(163, 190, 140, 0.15);
+  box-shadow: 0 8px 20px rgba(var(--accent-highlight-rgb), 0.15);
 }
 
 /* Accent color for the icons */
 .features .feature-item i {
-  color: #A3BE8C;
-  /* Nord Aurora Green */
+  color: var(--accent-highlight);
+  /* Nord Aurora Red */
   font-size: 1.8rem;
   margin-bottom: 12px;
   display: inline-block;
@@ -2543,7 +2784,7 @@ section,
 .features .feature-item .icon-wrapper {
   width: 50px;
   height: 50px;
-  background-color: rgba(163, 190, 140, 0.15); /* Transparent Aurora Green fill */
+  background-color: rgba(var(--accent-highlight-rgb), 0.15); /* Transparent Aurora Red fill */
   border-radius: 50%; /* Perfect circle */
   display: flex;
   align-items: center;
@@ -2553,7 +2794,7 @@ section,
 
 /* Icon Color inside the Circle */
 .features .feature-item .icon-wrapper i {
-  color: #A3BE8C; /* Nord Aurora Green icon */
+  color: var(--accent-highlight); /* Nord Aurora Red icon */
   font-size: 1.25rem;
   margin: 0;
 }
