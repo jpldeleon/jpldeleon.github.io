@@ -330,16 +330,18 @@ h6 {
 
 /* Adjust main content to account for floating pill */
 @media (min-width: 1200px) {
-  .header ~ main,
-  .header ~ #footer {
+
+  .header~main,
+  .header~#footer {
     margin-left: 0;
     padding-bottom: 100px;
   }
 }
 
 @media (max-width: 1199px) {
-  .header ~ main,
-  .header ~ #footer {
+
+  .header~main,
+  .header~#footer {
     padding-bottom: 130px;
   }
 }
@@ -769,6 +771,280 @@ section,
 }
 
 /*--------------------------------------------------------------
+# Hero Sidebar (Fixed Left)
+--------------------------------------------------------------*/
+.hero-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 380px;
+  height: 100vh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 60px 40px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: transparent;
+  border-right: 1px solid rgba(var(--accent-highlight-rgb), 0.15);
+}
+
+.hero-sidebar-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+/* Sidebar Avatar with Orbiting Rings */
+.sidebar-avatar {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 28px;
+}
+
+.sidebar-avatar .profile-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  border-radius: 50%;
+  z-index: 2;
+  border: 3px solid var(--background-color);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+}
+
+.avatar-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0.7;
+}
+
+.avatar-ring.ring-outer {
+  border: 2px solid var(--accent-highlight);
+  animation: ring-pulse 3s ease-out infinite;
+}
+
+.avatar-ring.ring-inner {
+  border: 2px solid var(--accent-color);
+  animation: ring-pulse 3s ease-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes ring-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.7;
+  }
+
+  70% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+}
+
+.hero-sidebar h1 {
+  width: 100%;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  padding-bottom: 6px;
+  color: var(--heading-color);
+  overflow-wrap: break-word;
+}
+
+.hero-sidebar h1 .accent-text {
+  color: var(--accent-color);
+  position: relative;
+  display: inline-block;
+}
+
+/* Header wrapper keeps the name and typed box tight */
+.sidebar-header-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px; /* Tighter spacing between name and typed box */
+  width: 100%;
+}
+
+/* Ensure h1 and code container margins don't conflict */
+.sidebar-header-block h1,
+.sidebar-header-block .code-container {
+  margin: 0 !important;
+}
+
+.hero-sidebar h1 .accent-text::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-highlight), color-mix(in srgb, var(--accent-highlight), transparent 50%));
+}
+
+.hero-sidebar .lead {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 32px;
+  color: var(--default-color);
+  text-align: center;
+}
+
+.hero-sidebar .lead span {
+  color: var(--accent-color);
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent-highlight);
+  padding-bottom: 2px;
+}
+
+.hero-sidebar .social-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.hero-sidebar .social-links a {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-color);
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  border-radius: 50%;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.hero-sidebar .social-links a:hover {
+  color: var(--contrast-color);
+  background-color: var(--accent-highlight);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+}
+
+.hero-sidebar .social-links a.text-badge {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.5px;
+}
+
+.hero-sidebar .social-links a.badge-upwork {
+  font-size: 13px;
+}
+
+.hero-sidebar .social-links a.badge-golance {
+  font-size: 11px;
+}
+
+.hero-sidebar .sidebar-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.hero-sidebar .sidebar-contact-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--default-color);
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.hero-sidebar .sidebar-contact-item:hover {
+  color: var(--accent-highlight);
+}
+
+.hero-sidebar .sidebar-contact-item i {
+  color: var(--accent-color);
+  font-size: 16px;
+}
+
+/* Push page content over to make room for the fixed sidebar */
+@media (min-width: 992px) {
+
+  .hero-sidebar~main,
+  .hero-sidebar~#footer {
+    margin-left: 380px;
+  }
+}
+
+/* Below 992px the sidebar drops into normal flow at the top of the page */
+@media (max-width: 991px) {
+  .hero-sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 70px 30px 40px;
+  }
+
+  .hero-sidebar h1 {
+    font-size: 32px;
+  }
+
+  .hero-sidebar .social-links {
+    justify-content: center;
+  }
+
+  .sidebar-avatar {
+    margin: 0 auto 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-sidebar h1 {
+    font-size: 28px;
+  }
+
+  .hero-sidebar .lead {
+    font-size: 16px;
+  }
+
+  .sidebar-avatar,
+  .sidebar-avatar .profile-image,
+  .avatar-ring {
+    width: 180px;
+    height: 180px;
+  }
+
+  .sidebar-avatar .profile-image,
+  .avatar-ring {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
 .hero {
@@ -777,17 +1053,6 @@ section,
   overflow: hidden;
   display: flex;
   align-items: center;
-}
-
-.background-elements {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
 }
 
 .background-elements {
@@ -807,10 +1072,12 @@ section,
   position: absolute;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(255,0,128,0.4) 0%, rgba(255,255,255,0) 70%);
+  background: radial-gradient(circle, rgba(255, 0, 128, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
   border-radius: 50%;
-  filter: blur(40px); /* Optional glow effect */
-  z-index: 0; /* Keep behind content */
+  filter: blur(40px);
+  /* Optional glow effect */
+  z-index: 0;
+  /* Keep behind content */
 }
 
 .background-elements .bg-blob {
@@ -818,11 +1085,9 @@ section,
   border-radius: 50%;
   filter: blur(90px);
   opacity: 0.22;
-  background: radial-gradient(
-    circle, 
-    color-mix(in srgb, var(--accent-highlight), transparent 40%), 
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      color-mix(in srgb, var(--accent-highlight), transparent 40%),
+      transparent 70%);
   animation: blob-float 10s ease-in-out infinite alternate;
 }
 
@@ -833,11 +1098,9 @@ section,
   top: -10%;
   left: -5%;
   animation-delay: 0s;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--accent-highlight), transparent 40%),
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      color-mix(in srgb, var(--accent-highlight), transparent 40%),
+      transparent 70%);
 }
 
 .background-elements .bg-blob.blob-2 {
@@ -846,11 +1109,9 @@ section,
   top: 40%;
   right: -10%;
   animation-delay: 3s;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--accent-color), transparent 40%),
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      color-mix(in srgb, var(--accent-color), transparent 40%),
+      transparent 70%);
 }
 
 .background-elements .bg-blob.blob-3 {
@@ -859,11 +1120,9 @@ section,
   bottom: -5%;
   left: 25%;
   animation-delay: 6s;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--heading-color), transparent 40%),
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      color-mix(in srgb, var(--heading-color), transparent 40%),
+      transparent 70%);
 }
 
 /* Subtle Floating Movement */
@@ -871,6 +1130,7 @@ section,
   0% {
     transform: translate(0, 0) scale(1);
   }
+
   100% {
     transform: translate(30px, -40px) scale(1.08);
   }
@@ -1464,9 +1724,12 @@ section,
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  justify-items: center;  /* Add this */
-  max-width: 900px;       /* Add this */
-  margin: 0 auto;         /* Add this */
+  justify-items: center;
+  /* Add this */
+  max-width: 900px;
+  /* Add this */
+  margin: 0 auto;
+  /* Add this */
 }
 
 @media (max-width: 992px) {
@@ -1648,6 +1911,7 @@ section,
   opacity: 1;
   transform: translateY(0);
 }
+
 .skill-item {
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1673,8 +1937,13 @@ section,
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .skills .skill-box {
@@ -1910,7 +2179,8 @@ section,
 .skill-list li {
   font-size: 16px;
   color: var(--default-color);
-  margin-bottom: 15px;  /* More spacing */
+  margin-bottom: 15px;
+  /* More spacing */
   padding-left: 0;
   line-height: 1.6;
 }
@@ -1919,10 +2189,14 @@ section,
   padding-bottom: 8px;
   margin-bottom: 10px;
   display: flex;
-  align-items: center;  /* Already there, keeps vertical center */
-  justify-content: flex-start;  /* Add this */
-  gap: 10px;  /* Adjust spacing if needed */
+  align-items: center;
+  /* Already there, keeps vertical center */
+  justify-content: flex-start;
+  /* Add this */
+  gap: 10px;
+  /* Adjust spacing if needed */
 }
+
 /*--------------------------------------------------------------
 # Portfolio Section
 --------------------------------------------------------------*/
@@ -2007,11 +2281,13 @@ section,
 }
 
 .portfolio-wrap img {
-  image-rendering: -webkit-optimize-contrast; /* Crisp text rendering in Chrome/Safari */
+  image-rendering: -webkit-optimize-contrast;
+  /* Crisp text rendering in Chrome/Safari */
   image-rendering: crisp-edges;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Prevents squishing/stretching */
+  object-fit: cover;
+  /* Prevents squishing/stretching */
 }
 
 .portfolio .portfolio-wrap .portfolio-info {
@@ -2044,7 +2320,8 @@ section,
 
 .portfolio-thumb-crop {
   width: 100% !important;
-  height: 280px !important; /* Adjust height as needed */
+  height: 280px !important;
+  /* Adjust height as needed */
   object-fit: cover !important;
   object-position: top !important;
 }
@@ -2756,8 +3033,10 @@ section,
 }
 
 .features .feature-item {
-  background: rgba(var(--accent-highlight-rgb), 0.08); /* Transparent Nord Aurora Red background */
-  border: 1px solid rgba(var(--accent-highlight-rgb), 0.25); /* Subtle Aurora Red border */
+  background: rgba(var(--accent-highlight-rgb), 0.08);
+  /* Transparent Nord Aurora Red background */
+  border: 1px solid rgba(var(--accent-highlight-rgb), 0.25);
+  /* Subtle Aurora Red border */
   border-radius: 10px;
   padding: 25px;
   transition: all 0.3s ease;
@@ -2784,8 +3063,10 @@ section,
 .features .feature-item .icon-wrapper {
   width: 50px;
   height: 50px;
-  background-color: rgba(var(--accent-highlight-rgb), 0.15); /* Transparent Aurora Red fill */
-  border-radius: 50%; /* Perfect circle */
+  background-color: rgba(var(--accent-highlight-rgb), 0.15);
+  /* Transparent Aurora Red fill */
+  border-radius: 50%;
+  /* Perfect circle */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2794,7 +3075,44 @@ section,
 
 /* Icon Color inside the Circle */
 .features .feature-item .icon-wrapper i {
-  color: var(--accent-highlight); /* Nord Aurora Red icon */
+  color: var(--accent-highlight);
+  /* Nord Aurora Red icon */
   font-size: 1.25rem;
   margin: 0;
+}
+
+
+/* Direct mapping to your existing CSS variables without changing your JS */
+.code-container {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: #1e1e2e;
+  padding: 12px 20px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 1.1rem;
+}
+
+.punctuation {
+  color: var(--heading-color);
+}
+
+/* Map to heading color */
+.property {
+  color: var(--accent-highlight);
+}
+
+/* Map to highlight color */
+.variable {
+  color: var(--accent-color);
+}
+
+/* Map to primary accent */
+.string {
+  color: var(--nav-hover-color);
+}
+
+Map to active/hover color .typed,
+.typed-cursor {
+  color: var(--default-color);
+  font-family: 'JetBrains Mono', monospace;
 }
