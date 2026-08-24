@@ -575,27 +575,28 @@ h6 {
 /*--------------------------------------------------------------
 # Global Footer
 --------------------------------------------------------------*/
-.footer {
-  color: var(--default-color);
-  background-color: var(--background-color);
-  font-size: 14px;
-  padding: 0 0 40px 0;
-  position: relative;
+#footer, footer {
+  position: absolute;
+  bottom: 1px;
+  right: 25px;
+  text-align: right;
+  z-index: 1;
 }
 
-.footer .copyright {
-  padding-top: 40px;
-  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+#footer p, .copyright, .credits {
+  color: var(--nav-dropdown-background-color);
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.4;
 }
 
-.footer .copyright p {
-  margin-bottom: 0;
+#footer a, .credits a {
+  color: var(--nav-dropdown-background-color);
+  text-decoration: none;
 }
 
-.footer .credits {
-  margin-top: 4px;
-  font-size: 13px;
-  text-align: center;
+#footer a:hover, .credits a:hover {
+  color: var(--nav-dropdown-background-color);
 }
 
 /*--------------------------------------------------------------
