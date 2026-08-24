@@ -38,7 +38,8 @@
   <meta name="twitter:image" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
 
   <!-- Favicons -->
- <link rel="icon" type="image/png" href="assets/img/jp_favicon.png">
+  <link href="assets/img/favicon.webp" rel="icon">
+  <link href="assets/img/apple-touch-icon.webp" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -79,6 +80,10 @@
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="header-container d-flex flex-row align-items-center">
+      <!-- Theme Toggle -->
+      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+        title="Switch color theme"><i class="bi bi-snow2"></i></a>
+
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i><span class="nav-label">Home</span></a>
@@ -91,7 +96,9 @@
         </ul>
       </nav>
 
-     
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+          class="bi bi-arrow-up-short"></i></a>
 
     </div>
 
@@ -109,10 +116,10 @@
 
       <div class="sidebar-header-block">
         <h1>John Paul <span class="accent-text">De Leon</span></h1>
-        <div class="code-container">
-          <span class="punctuation">{"</span><span class="typed"
-            data-typed-items="technicalSeoSpecialist, seoSpecialist, wordpressDeveloper, webDeveloper"></span><span
-            class="punctuation">"}</span>
+         <div class="code-container">
+          <span class="punctuation">{</span><span class="quote">"</span><span class="typed"
+            data-typed-items="technicalSeoSpecialist, seoSpecialist, wordpressDeveloper, webDeveloper"></span><span class="quote">"</span><span
+            class="punctuation">}</span>
         </div>
       </div>
       <div class="sidebar-contact">
@@ -128,6 +135,17 @@
           <i class="bi bi-telephone"></i>
           <span>Phone</span>
         </button>
+
+        <!-- Copy Toast (Email / Phone) -->
+        <div class="copy-toast-container">
+          <div id="copyToast" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
+            <div class="toast-body d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill"></i>
+              <span id="copyToastBody">Copied to clipboard.</span>
+              <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="social-links">
@@ -805,25 +823,6 @@
     </div>
 
   </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Copy Toast (Email / Phone) -->
-  <div class="copy-toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
-    <div id="copyToast" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
-      <div class="toast-body d-flex align-items-center gap-2">
-        <i class="bi bi-check-circle-fill"></i>
-        <span id="copyToastBody">Copied to clipboard.</span>
-        <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Theme Toggle -->
-  <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
-    title="Switch color theme"><i class="bi bi-snow2"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

@@ -264,7 +264,7 @@
    */
   const copyToastEl = document.getElementById('copyToast');
   const copyToastBody = document.getElementById('copyToastBody');
-  const copyToast = window.bootstrap ? new bootstrap.Toast(copyToastEl, { delay: 3500 }) : null;
+  const copyToast = window.bootstrap ? new bootstrap.Toast(copyToastEl, { delay: 1500 }) : null;
 
   function showCopyToast(type, success) {
     if (!copyToastBody) return;
