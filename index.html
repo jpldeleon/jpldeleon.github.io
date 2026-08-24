@@ -38,8 +38,7 @@
   <meta name="twitter:image" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.webp" rel="icon">
-  <link href="assets/img/apple-touch-icon.webp" rel="apple-touch-icon">
+ <link rel="icon" type="image/png" href="assets/img/jp_favicon.png">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -117,14 +116,18 @@
         </div>
       </div>
       <div class="sidebar-contact">
-        <a href="mailto:jpleonard.deleon@gmail.com" class="sidebar-contact-item">
+        <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
+          data-copy-value="jpleonard.deleon@gmail.com">
+          <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
           <i class="bi bi-envelope"></i>
-          jpleonard.deleon@gmail.com
-        </a>
-        <a href="tel:+639760109942" class="sidebar-contact-item">
+          <span>Email</span>
+        </button>
+        <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone"
+          data-copy-value="+639760109942">
+          <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
           <i class="bi bi-telephone"></i>
-          +63 976 010 9942
-        </a>
+          <span>Phone</span>
+        </button>
       </div>
 
       <div class="social-links">
@@ -806,6 +809,17 @@
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Copy Toast (Email / Phone) -->
+  <div class="copy-toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div id="copyToast" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
+      <div class="toast-body d-flex align-items-center gap-2">
+        <i class="bi bi-check-circle-fill"></i>
+        <span id="copyToastBody">Copied to clipboard.</span>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
 
   <!-- Theme Toggle -->
   <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"

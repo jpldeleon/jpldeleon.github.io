@@ -258,4 +258,38 @@
     });
   }
 
+  /**
+   * Contact buttons (Email / Phone) -> copy to clipboard + toast
+   * Keeps the raw address/number out of visible link text.
+   */
+  const copyToastEl = document.getElementById('copyToast');
+  const copyToastBody = document.getElementById('copyToastBody');
+  const copyToast = window.bootstrap ? new bootstrap.Toast(copyToastEl, { delay: 3500 }) : null;
+
+  function showCopyToast(type, success) {
+    if (!copyToastBody) return;
+    const label = type === 'phone' ? 'Phone number' : 'Email';
+    copyToastBody.textContent = success
+      ? label + ' copied to clipboard!'
+      : 'Could not copy ' + label.toLowerCase() + ' automatically.';
+    if (copyToast) {
+      copyToast.show();
+    }
+  }
+
+  document.querySelectorAll('.js-copy-trigger').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const value = btn.getAttribute('data-copy-value');
+      const type = btn.getAttribute('data-copy-type');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value)
+          .then(() => showCopyToast(type, true))
+          .catch(() => showCopyToast(type, false));
+      } else {
+        showCopyToast(type, false);
+      }
+    });
+  });
+
 })();

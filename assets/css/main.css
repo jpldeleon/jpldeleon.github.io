@@ -705,6 +705,70 @@ h6 {
 }
 
 /*--------------------------------------------------------------
+# GLightbox Theming (Aurora / Frost)
+# Uses --accent-highlight-rgb so it automatically re-colors
+# whenever [data-theme="frost"] is toggled on <html>.
+--------------------------------------------------------------*/
+.goverlay {
+  background: radial-gradient(circle at center,
+      rgba(var(--accent-highlight-rgb), 0.22) 0%,
+      rgba(var(--accent-highlight-rgb), 0.08) 35%,
+      rgba(10, 10, 14, 0.92) 100%) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.4s ease;
+}
+
+.gclose {
+  background-color: var(--surface-color) !important;
+  border: 1px solid rgba(var(--accent-highlight-rgb), 0.65);
+  border-radius: 50%;
+  box-shadow: 0 0 14px 2px rgba(var(--accent-highlight-rgb), 0.55);
+  opacity: 1 !important;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.25s ease, background-color 0.4s ease;
+}
+
+.gclose:hover {
+  box-shadow: 0 0 22px 5px rgba(var(--accent-highlight-rgb), 0.85);
+  transform: scale(1.08);
+}
+
+.gclose svg,
+.gclose .gicon {
+  fill: var(--accent-color) !important;
+  transition: fill 0.4s ease;
+}
+
+.gnext,
+.gprev {
+  background-color: var(--surface-color) !important;
+  border: 1px solid rgba(var(--accent-highlight-rgb), 0.5);
+  box-shadow: 0 0 12px 1px rgba(var(--accent-highlight-rgb), 0.4);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, background-color 0.4s ease;
+}
+
+.gnext:hover,
+.gprev:hover {
+  box-shadow: 0 0 18px 3px rgba(var(--accent-highlight-rgb), 0.75);
+}
+
+.gnext svg,
+.gprev svg {
+  fill: var(--accent-color) !important;
+}
+
+.gslide-image img,
+.gslide-inline,
+.ginlined-content {
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(var(--accent-highlight-rgb), 0.45),
+    0 0 30px 6px rgba(var(--accent-highlight-rgb), 0.5),
+    0 0 60px 14px rgba(var(--accent-highlight-rgb), 0.2);
+  transition: box-shadow 0.4s ease;
+}
+
+/*--------------------------------------------------------------
 # Disable aos animation delay on mobile devices
 --------------------------------------------------------------*/
 @media screen and (max-width: 1024px) {
@@ -1001,6 +1065,7 @@ section,
 .hero-sidebar .sidebar-contact-item {
   display: flex;
   align-items: center;
+  justify-content: center; /* Centers children horizontally */
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   background-color: color-mix(in srgb, var(--surface-color), var(--background-color) 50%);
@@ -1009,18 +1074,111 @@ section,
   color: var(--default-color);
   transition: all 0.3s;
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  font: inherit;
+  width: 100%;
+  text-align: center; /* Centers the text alignment */
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: visible;
 }
 
 .hero-sidebar .sidebar-contact-item:hover {
    background-color: var(--accent-highlight);
   color: var(--contrast-color);
   transform: translateY(-2px);
-  box-shadow: 0 5px 20px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+  box-shadow: 0 5px 20px color-mix(in srgb, var(--accent-highlight), transparent 70%),
+    0 0 14px color-mix(in srgb, var(--accent-highlight), transparent 45%);
 }
 
 .hero-sidebar .sidebar-contact-item i {
   color: var(--accent-color);
   font-size: 16px;
+}
+
+/* "Hot" rising smoke cue — colors follow whichever theme (Aurora/Frost) is active
+   because they're built from --accent-highlight, which the [data-theme="frost"]
+   override already redefines. */
+.contact-smoke {
+  position: absolute;
+  top: -4px;
+  left: 43%; /* Centers it along the top if preferred */
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.contact-smoke span {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-highlight), transparent 10%) 0%, transparent 70%);
+  opacity: 0;
+  filter: blur(1px);
+  animation: contact-smoke-rise 2.6s ease-in infinite;
+}
+
+.contact-smoke span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.contact-smoke span:nth-child(2) {
+  left: 35%;
+  animation-delay: 0.85s;
+}
+
+.contact-smoke span:nth-child(3) {
+  left: 65%;
+  animation-delay: 1.7s;
+}
+
+.hero-sidebar .sidebar-contact-item:hover .contact-smoke span {
+  animation-duration: 1.4s;
+}
+
+@keyframes contact-smoke-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+
+  20% {
+    opacity: 0.65;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-22px) scale(1.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-smoke span {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Copy-to-clipboard toast (Email / Phone) */
+.copy-toast-container {
+  z-index: 11000;
+}
+
+.copy-toast {
+  background-color: var(--surface-color);
+  color: var(--default-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.copy-toast .toast-body i {
+  color: var(--accent-highlight);
 }
 
 /* Push page content over to make room for the fixed sidebar */
