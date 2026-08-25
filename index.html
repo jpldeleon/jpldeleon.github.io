@@ -79,6 +79,8 @@
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="header-container d-flex flex-row align-items-center">
+      <span class="profile-smoke profile-smoke-navpill" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+
       <!-- Theme Toggle -->
       <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
         title="Switch color theme"><i class="bi bi-snow2"></i></a>
@@ -107,10 +109,14 @@
   <aside id="hero" class="hero-sidebar">
     <div class="hero-sidebar-inner">
       <div class="sidebar-avatar">
+        <span class="profile-smoke profile-smoke-avatar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
         <span class="avatar-ring ring-outer"></span>
         <span class="avatar-ring ring-inner"></span>
-        <img src="assets/img/profile/jpleonard_profile_1.webp" alt="John Paul De Leon" class="profile-image"
+        <img src="assets/img/profile/jp_profile_1.webp" alt="John Paul De Leon" class="profile-image"
           fetchpriority="high">
+        <img src="assets/img/profile/jp-profile-1-pop.webp" alt="" aria-hidden="true"
+          class="avatar-pop-image">
+        <span class="avatar-pop-tint" aria-hidden="true"></span>
       </div>
 
       <div class="sidebar-header-block">
@@ -121,7 +127,7 @@
             class="punctuation">}</span>
         </div>
       </div>
-      <div class="sidebar-contact">
+      <div class="sidebar-contact contact-block">
         <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
           data-copy-value="jpleonard.deleon@gmail.com">
           <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -148,10 +154,6 @@
       </div>
 
       <div class="social-links">
-        <a href="https://teams.microsoft.com/l/chat/0/0?users=jpleonard.deleon@gmail.com" title="Microsoft Teams"
-          class="microsoft-teams">
-          <i class="bi bi-microsoft-teams"></i>
-        </a>
         <a href="https://www.linkedin.com/in/jpldl/" target="_blank" title="LinkedIn">
           <i class="bi bi-linkedin"></i>
         </a>
@@ -178,8 +180,12 @@
           <div class="col-lg-5" data-aos="zoom-in" data-aos-delay="200">
             <div class="profile-card">
               <div class="profile-header">
+                <span class="profile-smoke profile-smoke-about" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
                 <div class="profile-image">
-                  <img src="assets/img/profile/jpleonard_profile_2.webp" alt="John Paul De Leon" class="img-fluid">
+                  <img src="assets/img/profile/jp-profile-2.webp" alt="John Paul De Leon" class="img-fluid">
+                  <img src="assets/img/profile/jp-profile-2-pop.webp" alt="" aria-hidden="true"
+                    class="about-pop-image">
+                  <span class="about-pop-tint" aria-hidden="true"></span>
                 </div>
                 <div class="profile-badge">
                   <i class="bi bi-check-circle-fill"></i>
@@ -402,8 +408,12 @@
           <div class="col-lg-4">
             <div class="resume-side" data-aos="fade-right" data-aos-delay="100">
               <div class="profile-img mb-4">
-                <img src="assets/img/profile/jpleonard_profile_3.webp" alt="John Paul De Leon"
+                <span class="profile-smoke profile-smoke-resume" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+                <img src="assets/img/profile/jp-profile-3.webp" alt="John Paul De Leon"
                   class="img-fluid rounded">
+                <img src="assets/img/profile/jp-profile-3-pop.webp" alt="" aria-hidden="true"
+                  class="resume-pop-image">
+                <span class="resume-pop-tint" aria-hidden="true"></span>
               </div>
 
               <h3>Professional Summary</h3>
@@ -415,12 +425,35 @@
                 long-term career.</p>
 
               <h3 class="mt-4">Contact Information</h3>
-              <ul class="contact-info list-unstyled">
-                <li><i class="bi bi-geo-alt"></i> Metro Manila, Philippines</li>
-                <li><i class="bi bi-envelope"></i> jpleonard.deleon@gmail.com</li>
-                <li><i class="bi bi-phone"></i> +63 976 010 9942</li>
-                <li><i class="bi bi-linkedin"></i> linkedin.com/in/jpldl/</li>
-              </ul>
+              <div class="contact-block">
+                <ul class="contact-info list-unstyled">
+                  <li><i class="bi bi-geo-alt"></i> Metro Manila, Philippines</li>
+                  <li>
+                    <button type="button" class="contact-info-copy js-copy-trigger" data-copy-type="email"
+                      data-copy-value="jpleonard.deleon@gmail.com">
+                      <i class="bi bi-envelope"></i> ••••••deleon@gmail.com
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="contact-info-copy js-copy-trigger" data-copy-type="phone"
+                      data-copy-value="+639760109942">
+                      <i class="bi bi-phone"></i> +63 ••• ••• 9942
+                    </button>
+                  </li>
+                  <li><a href="https://www.linkedin.com/in/jpldl/"><i class="bi bi-linkedin"></i> linkedin.com/in/jpldl/</a></li>
+                </ul>
+
+                <!-- Copy Toast (Email / Phone) -->
+                <div class="copy-toast-container">
+                  <div id="copyToastResume" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
+                    <div class="toast-body d-flex align-items-center gap-2">
+                      <i class="bi bi-check-circle-fill"></i>
+                      <span id="copyToastResumeBody">Copied to clipboard.</span>
+                      <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div class="skills-animation mt-4">
                 <h3>Technical Skills</h3>

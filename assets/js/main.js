@@ -262,18 +262,32 @@
    * Contact buttons (Email / Phone) -> copy to clipboard + toast
    * Keeps the raw address/number out of visible link text.
    */
-  const copyToastEl = document.getElementById('copyToast');
-  const copyToastBody = document.getElementById('copyToastBody');
-  const copyToast = window.bootstrap ? new bootstrap.Toast(copyToastEl, { delay: 1500 }) : null;
+  // Each copy-toast-container is initialised independently, so a trigger
+  // inside the sidebar shows the sidebar's toast, and a trigger inside the
+  // resume contact info shows the resume's toast, instead of them sharing one.
+  const toastInstances = new Map();
 
-  function showCopyToast(type, success) {
-    if (!copyToastBody) return;
+  function getToastEl(triggerBtn) {
+    const scope = triggerBtn.closest('.contact-block') || document;
+    return scope.querySelector('.copy-toast');
+  }
+
+  function showCopyToast(toastEl, type, success) {
+    if (!toastEl) return;
+    const bodyEl = toastEl.querySelector('.toast-body span');
+    if (!bodyEl) return;
     const label = type === 'phone' ? 'Phone number' : 'Email';
-    copyToastBody.textContent = success
+    bodyEl.textContent = success
       ? label + ' copied to clipboard!'
       : 'Could not copy ' + label.toLowerCase() + ' automatically.';
-    if (copyToast) {
-      copyToast.show();
+
+    if (window.bootstrap) {
+      let instance = toastInstances.get(toastEl);
+      if (!instance) {
+        instance = new bootstrap.Toast(toastEl, { delay: 1500 });
+        toastInstances.set(toastEl, instance);
+      }
+      instance.show();
     }
   }
 
@@ -282,12 +296,13 @@
       e.preventDefault();
       const value = btn.getAttribute('data-copy-value');
       const type = btn.getAttribute('data-copy-type');
+      const toastEl = getToastEl(btn);
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(value)
-          .then(() => showCopyToast(type, true))
-          .catch(() => showCopyToast(type, false));
+          .then(() => showCopyToast(toastEl, type, true))
+          .catch(() => showCopyToast(toastEl, type, false));
       } else {
-        showCopyToast(type, false);
+        showCopyToast(toastEl, type, false);
       }
     });
   });
