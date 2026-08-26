@@ -45,25 +45,40 @@
 <body class="portfolio-details-page">
 
   <div class="background-elements">
-   <div class="bg-blob blob-1"></div>
-  <div class="bg-blob blob-2"></div>
-  <div class="bg-blob blob-3"></div>
-</div>
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+  </div>
 
   <header id="header" class="header dark-background d-flex flex-column justify-content-center">
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="header-container d-flex flex-row align-items-center">
+      <span class="profile-smoke profile-smoke-navpill"
+        aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+
+      <!-- Theme Toggle -->
+      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+        title="Switch color theme"><i class="bi bi-snow"></i></a>
+
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html#hero"><i class="bi bi-house navicon"></i><span class="nav-label">Home</span></a></li>
-          <li><a href="auditkit-capstone.html#portfolio-details"><i class="bi-play-circle navicon"></i><span class="nav-label"> Video</span></a></li>
-          <li><a href="auditkit-capstone.html#details"><i class="bi-info-circle navicon"></i><span class="nav-label"> Details</span></a></li>
-          <li><a href="auditkit-capstone.html#project-screenshots" class="active"><i class="bi-grid-3x3-gap navicon"></i><span class="nav-label"> Gallery</span></a></li>
+          <li><a href="https://jpldeleon.github.io/" class="active"><i class="bi bi-house navicon"></i><span
+                class="nav-label">Home</span></a>
+          </li>
+          <li><a href="#portfolio-details"><i class="bi bi-person navicon"></i><span class="nav-label"> Video</span></a>
+          </li>
+          <li><a href="#details"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
+                Details</span></a></li>
+          <li><a href="#project-screenshots"><i class="bi bi-images navicon"></i><span class="nav-label">
+                Gallery</span></a>
+          </li>
         </ul>
       </nav>
 
-      
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+          class="bi bi-arrow-up-short"></i></a>
 
     </div>
 
@@ -137,21 +152,26 @@
 
               <h4>Project Overview</h4>
               <p>
-                AuditKit is a lightweight web tool built as a capstone project for Angela Yu’s Complete Full-Stack Web
-                Development Bootcamp. It helps automate quick technical SEO checks by fetching on-page metadata, parsing
+                AuditKit is a lightweight web tool built as a capstone project for Angela Yu’s Complete Full-Stack
+                Web
+                Development Bootcamp. It helps automate quick technical SEO checks by fetching on-page metadata,
+                parsing
                 page structure, and displaying basic performance metrics in a single view.</p>
 
               <h4>Problem & Objective</h4>
               <p>
-                Checking basic SEO elements across different tools can take unnecessary time. The goal of this project
+                Checking basic SEO elements across different tools can take unnecessary time. The goal of this
+                project
                 was to build a simple, single-page dashboard that fetches and displays essential technical data
                 automatically.</p>
 
               <h4>Technical Implementation</h4>
               <p>
                 The application runs on a simple Node.js and Express.js server that processes user URL inputs and
-                manages server-side logic. When a user submits a URL, Axios sends HTTP requests to the Google PageSpeed
-                Insights API to retrieve mobile and desktop performance benchmarks. At the same time, Cheerio parses the
+                manages server-side logic. When a user submits a URL, Axios sends HTTP requests to the Google
+                PageSpeed
+                Insights API to retrieve mobile and desktop performance benchmarks. At the same time, Cheerio parses
+                the
                 raw HTML document to extract essential on-page SEO signals, including title tags, meta descriptions,
                 heading structures, and Open Graph data. The parsed data and API responses are then passed into EJS
                 templates to dynamically render a clean, readable audit report for the user.</p>
@@ -164,7 +184,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
                       <i class="bi bi-code-square"></i>
                       <h4>On-Page SEO Extraction</h4>
-                      <p>Automated server-side extraction of title tags, meta descriptions, open graph tags, and heading
+                      <p>Automated server-side extraction of title tags, meta descriptions, open graph tags, and
+                        heading
                         structures using Cheerio.</p>
                     </div>
                   </div>
@@ -191,7 +212,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
                       <i class="bi bi-layout-text-window-reverse"></i>
                       <h4>Clean UI & Reporting</h4>
-                      <p>Dynamic presentation of parsed audit data rendered cleanly with EJS templates and responsive
+                      <p>Dynamic presentation of parsed audit data rendered cleanly with EJS templates and
+                        responsive
                         CSS.</p>
                     </div>
                   </div>
@@ -199,15 +221,18 @@
               </div>
 
               <h4 class="mt-4">Key Outcome & Takeaways</h4>
-              <p>This project demonstrates how to build a functional, server-side web application that solves a real SEO
+              <p>This project demonstrates how to build a functional, server-side web application that solves a real
+                SEO
                 workflow problem. By combining public API integration, HTML parsing, and clean templating, AuditKit
                 provides a fast way to evaluate core technical SEO factors in one place.</p>
 
               <h3 class="mt-4">Video Overview</h3>
-              <p>The video demonstration covers the full end-to-end technical SEO and e-commerce build across key areas:
+              <p>The video demonstration covers the full end-to-end technical SEO and e-commerce build across key
+                areas:
               </p>
               <ul>
-                <li><strong>Node.js & Express Setup:</strong> Server initialization, route setup, and request handling.
+                <li><strong>Node.js & Express Setup:</strong> Server initialization, route setup, and request
+                  handling.
                 </li>
                 <li><strong>Metadata Extraction:</strong> Scraping page structure and meta tags using Cheerio.</li>
                 <li><strong>API Integration:</strong> Querying Google PageSpeed Insights for real-time performance
@@ -420,13 +445,6 @@
 
   </footer>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Theme Toggle -->
-  <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
-    title="Switch color theme"><i class="bi bi-snow2"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

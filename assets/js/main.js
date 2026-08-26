@@ -237,7 +237,7 @@
     const themeIcon = themeToggleBtn.querySelector('i');
 
     function setThemeIcon(theme) {
-      themeIcon.className = theme === 'frost' ? 'bi bi-sun' : 'bi bi-snow2';
+      themeIcon.className = theme === 'frost' ? 'bi bi-brightness-low' : 'bi bi-snow';
       themeToggleBtn.title = theme === 'frost' ? 'Switch to Aurora theme' : 'Switch to Frost theme';
     }
 
@@ -308,3 +308,4 @@
   });
 
 })();
+

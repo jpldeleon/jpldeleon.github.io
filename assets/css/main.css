@@ -38,6 +38,7 @@
   --quote-color: #a3be8c;
 }
 
+
 /* Nav Menu Colors - Nord Aurora Theme */
 :root {
   --nav-color: #D8DEE9;
@@ -53,6 +54,7 @@
   --nav-dropdown-hover-color: #D08770;
   /* Nord Aurora Orange - Dropdown hover */
   --typed-color: #8fbcbb;
+  
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -89,6 +91,7 @@
   --nav-hover-color: #5E81AC;
   /* Nord Frost - deep blue nav hover */
   --surface-color: #3B4252;
+  --quote-color: #8fbcbb;
 }
 
 /* Smooth scroll */
@@ -264,13 +267,15 @@ h6 {
   align-items: center;
   white-space: nowrap;
   transition: all 0.3s ease;
-  width: auto; /* Lets text expand naturally */
-  border-radius: 9999px; /* Smooth pill shape for text buttons */
+  width: auto;
+  /* Lets text expand naturally */
+  border-radius: 9999px;
+  /* Smooth pill shape for text buttons */
 }
 
 /* Hide icons on desktop if you only want text, or keep them spaced */
 .header .navmenu a .navicon {
-  display: none; 
+  display: none;
 }
 
 .header .navmenu a:hover,
@@ -302,21 +307,24 @@ h6 {
 
   .header .navmenu a,
   .header .navmenu a:focus {
-    width: 40px; /* Fixed width for icon circles */
+    width: 40px;
+    /* Fixed width for icon circles */
     height: 40px;
     padding: 0;
     justify-content: center;
     border-radius: 50%;
     /* Hides text nodes on mobile while preserving accessibility */
-    font-size: 0; 
+    font-size: 0;
   }
 
   .header .navmenu a .navicon {
     display: inline-block !important;
-    font-size: 18px; /* Restores icon size */
+    font-size: 18px;
+    /* Restores icon size */
     margin-right: 0 !important;
   }
 }
+
 /* Social Links - Horizontal */
 .header .social-links {
   display: flex;
@@ -578,7 +586,8 @@ h6 {
 /*--------------------------------------------------------------
 # Global Footer
 --------------------------------------------------------------*/
-#footer, footer {
+#footer,
+footer {
   position: absolute;
   bottom: 1px;
   right: 25px;
@@ -586,19 +595,23 @@ h6 {
   z-index: 1;
 }
 
-#footer p, .copyright, .credits {
+#footer p,
+.copyright,
+.credits {
   color: var(--nav-dropdown-background-color);
   font-size: 12px;
   margin: 0;
   line-height: 1.4;
 }
 
-#footer a, .credits a {
+#footer a,
+.credits a {
   color: var(--nav-dropdown-background-color);
   text-decoration: none;
 }
 
-#footer a:hover, .credits a:hover {
+#footer a:hover,
+.credits a:hover {
   color: var(--nav-dropdown-background-color);
 }
 
@@ -709,6 +722,7 @@ h6 {
 }
 
 @media (max-width: 768px) {
+
   .theme-toggle,
   .scroll-top {
     width: 22px;
@@ -948,44 +962,6 @@ section,
   --smoke-rise: 200px;
 }
 
-.sidebar-avatar .avatar-pop-image {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  object-position: 50% 1%;
-  border-radius: 50%;
-  z-index: 3;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-  border: 4px solid var(--accent-highlight);
-}
-
-.sidebar-avatar .avatar-pop-tint {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  z-index: 4;
-  background: var(--accent-highlight);
-  mix-blend-mode: color;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
-.sidebar-avatar:hover .avatar-pop-image,
-.sidebar-avatar:hover .avatar-pop-tint {
-  opacity: 1;
-}
-
 
 .hero-sidebar h1 {
   width: 100%;
@@ -1009,7 +985,8 @@ section,
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px; /* Tighter spacing between name and typed box */
+  gap: 8px;
+  /* Tighter spacing between name and typed box */
   width: 100%;
 }
 
@@ -1119,7 +1096,7 @@ section,
 }
 
 .hero-sidebar .sidebar-contact-item:hover {
-   background-color: var(--accent-highlight);
+  background-color: var(--accent-highlight);
   color: var(--contrast-color);
   transform: translateY(-2px);
   box-shadow: 0 5px 20px color-mix(in srgb, var(--accent-highlight), transparent 70%),
@@ -1199,13 +1176,6 @@ section,
   }
 }
 
-/* --------------------------------------------------------------
-   Profile photo "smoke" + themed hover pop images
-   Reuses the contact-smoke idea: puffs are colored from
-   --accent-highlight, so they (and the hover tint below) recolor
-   automatically whenever [data-theme="frost"] is toggled — no JS
-   needed beyond the existing theme-toggle logic in main.js.
---------------------------------------------------------------- */
 .profile-smoke {
   position: absolute;
   pointer-events: none;
@@ -1278,29 +1248,14 @@ section,
   }
 }
 
-/* Hover pop image — swaps in a second photo (assets/img/profile/*-pop.webp)
-   with a color-tint layer built from --accent-highlight, so the reveal
-   reads correctly in both the Aurora and Frost themes.
-   Each section below defines its own fully self-contained rule (position,
-   size, z-index all in one place) instead of relying on a shared class —
-   that sharing previously let an unrelated, more specific selector (the
-   base photo's own rule) win the cascade and knock the pop image out of
-   position. */
-@media (prefers-reduced-motion: reduce) {
-  .avatar-pop-image, .avatar-pop-tint,
-  .about-pop-image, .about-pop-tint,
-  .resume-pop-image, .resume-pop-tint {
-    transition: none;
-  }
-}
-
 /* Copy-to-clipboard toast (Email / Phone) — anchored right under the buttons */
 .contact-block {
   position: relative;
 }
 
 .copy-toast-container {
-  position: absolute;   /* was static/in-flow */
+  position: absolute;
+  /* was static/in-flow */
   top: 100%;
   left: 0;
   right: 0;
@@ -1407,8 +1362,7 @@ section,
   }
 
 
-  .profile-smoke-avatar,
-  .avatar-pop-tint {
+  .profile-smoke-avatar {
     width: 160px;
     height: 160px;
     --smoke-spread: 60px;
@@ -1832,6 +1786,7 @@ section,
   position: relative;
   z-index: 0;
   margin-bottom: 2.5rem;
+  overflow: hidden;
 }
 
 .about .profile-header .profile-image {
@@ -1863,48 +1818,6 @@ section,
   --smoke-rise: 140px;
 }
 
-.about .profile-header .profile-image .about-pop-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 15%;
-  z-index: 3;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
-.about .profile-header .profile-image .about-pop-tint {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  z-index: 4;
-  background: var(--accent-highlight);
-  mix-blend-mode: color;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
-.about .profile-header .about-pop-image,
-.about .profile-header .about-pop-tint {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
-/* Hover state: Fade them in */
-.about .profile-header:hover .about-pop-image,
-.about .profile-header:hover .about-pop-tint {
-  opacity: 1;
-}
-
 .about .profile-header .profile-badge {
   position: absolute;
   bottom: 20px;
@@ -1917,6 +1830,7 @@ section,
   align-items: center;
   justify-content: center;
   border: 3px solid var(--surface-color);
+  z-index: 10;
 }
 
 .about .profile-header .profile-badge i {
@@ -2641,22 +2555,6 @@ section,
   border-radius: 10px;
 }
 
-.resume .resume-side .profile-img .resume-pop-image {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border: 5px solid color-mix(in srgb, var(--accent-highlight), transparent 85%);
-  border-radius: 10px;
-  z-index: 3;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
 .profile-smoke-resume {
   top: 0;
   left: 50%;
@@ -2679,26 +2577,6 @@ section,
   --smoke-rise: 46px;
 }
 
-.resume .resume-side .profile-img .resume-pop-tint {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-  z-index: 4;
-  background: var(--accent-highlight);
-  mix-blend-mode: color;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
-.resume .resume-side .profile-img:hover .resume-pop-image,
-.resume .resume-side .profile-img:hover .resume-pop-tint {
-  opacity: 1;
-}
 
 .resume .resume-side h3 {
   font-size: 1.75rem;
@@ -3804,6 +3682,7 @@ section,
 .quote {
   color: var(--typed-color);
 }
+
 /* Map to heading color */
 .property {
   color: var(--accent-highlight);

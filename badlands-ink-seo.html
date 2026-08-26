@@ -35,24 +35,39 @@
 
   <div class="background-elements">
     <div class="bg-blob blob-1"></div>
-  <div class="bg-blob blob-2"></div>
-  <div class="bg-blob blob-3"></div>
-</div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+  </div>
 
   <header id="header" class="header dark-background d-flex flex-column justify-content-center">
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="header-container d-flex flex-row align-items-center">
+      <span class="profile-smoke profile-smoke-navpill"
+        aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+
+      <!-- Theme Toggle -->
+      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+        title="Switch color theme"><i class="bi bi-snow"></i></a>
+
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html#hero"><i class="bi bi-house navicon"></i><span class="nav-label">Home</span></a></li>
-          <li><a href="badlands-ink-seo.html#portfolio-details"><i class="bi-play-circle navicon"></i><span class="nav-label"> Video</span></a></li>
-          <li><a href="badlands-ink-seo.html#details"><i class="bi-info-circle navicon"></i><span class="nav-label"> Details</span></a></li>
-          <li><a href="badlands-ink-seo.html#project-screenshots" class="active"><i class="bi-grid-3x3-gap navicon"></i><span class="nav-label"> Gallery</span></a></li>
+          <li><a href="https://jpldeleon.github.io/" class="active"><i class="bi bi-house navicon"></i><span
+                class="nav-label">Home</span></a>
+          </li>
+          <li><a href="#portfolio-details"><i class="bi bi-person navicon"></i><span class="nav-label"> Video</span></a>
+          </li>
+          <li><a href="#details"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
+                Details</span></a></li>
+          <li><a href="#project-screenshots"><i class="bi bi-images navicon"></i><span class="nav-label">
+                Gallery</span></a>
+          </li>
         </ul>
       </nav>
 
-      
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+          class="bi bi-arrow-up-short"></i></a>
 
     </div>
 
@@ -787,9 +802,6 @@
               }
             }
           </style>
-
-
-
   </main>
 
   <footer id="footer" class="footer position-relative">
@@ -802,14 +814,6 @@
     </div>
 
   </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
-    title="Switch color theme"><i class="bi bi-snow2"></i></a>
-
   <!-- Preloader -->
   <div id="preloader"></div>
 

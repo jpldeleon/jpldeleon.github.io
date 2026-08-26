@@ -53,16 +53,32 @@
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="header-container d-flex flex-row align-items-center">
+      <span class="profile-smoke profile-smoke-navpill"
+        aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+
+      <!-- Theme Toggle -->
+      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+        title="Switch color theme"><i class="bi bi-snow"></i></a>
+
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html#hero"><i class="bi bi-house navicon"></i><span class="nav-label">Home</span></a></li>
-          <li><a href="#portfolio-details"><i class="bi-play-circle navicon"></i><span class="nav-label">
-                Video</span></a></li>
-          <li><a href="#details"><i class="bi-info-circle navicon"></i><span class="nav-label"> Details</span></a></li>
-          <li><a href="#project-screenshots" class="active"><i class="bi-grid-3x3-gap navicon"></i><span
-                class="nav-label"> Gallery</span></a></li>
+          <li><a href="https://jpldeleon.github.io/" class="active"><i class="bi bi-house navicon"></i><span
+                class="nav-label">Home</span></a>
+          </li>
+          <li><a href="#portfolio-details"><i class="bi bi-person navicon"></i><span class="nav-label"> Video</span></a>
+          </li>
+          <li><a href="#details"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
+                Details</span></a></li>
+          <li><a href="#project-screenshots"><i class="bi bi-images navicon"></i><span class="nav-label">
+                Gallery</span></a>
+          </li>
         </ul>
       </nav>
+
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+          class="bi bi-arrow-up-short"></i></a>
+
     </div>
 
   </header>
@@ -142,7 +158,8 @@
               <p>
                 The goal of this capstone project was to create an original, custom-designed personal website from
                 scratch without using step-by-step solution code or video walkthroughs. It focuses on organizing
-                semantic page layouts, establishing clean site navigation, applying responsive CSS rules, and ensuring
+                semantic page layouts, establishing clean site navigation, applying responsive CSS rules, and
+                ensuring
                 full accessibility.
               </p>
 
@@ -161,7 +178,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
                       <i class="bi bi-brightness-high"></i>
                       <h4>Dynamic Light / Dark Theme Toggle</h4>
-                      <p>Client-side theme switching with CSS variables, keyframe rotation feedback, and LocalStorage
+                      <p>Client-side theme switching with CSS variables, keyframe rotation feedback, and
+                        LocalStorage
                         state persistence.</p>
                     </div>
                   </div>
@@ -170,7 +188,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
                       <i class="bi bi-window"></i>
                       <h4>Interactive Lightbox Dialogs</h4>
-                      <p>Integration with GLightbox for interactive media pop-ups, complete with touch-gesture support
+                      <p>Integration with GLightbox for interactive media pop-ups, complete with touch-gesture
+                        support
                         and custom button alignment scripting.</p>
                     </div>
                   </div>
@@ -179,7 +198,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
                       <i class="bi bi-phone"></i>
                       <h4>Fully Responsive Layout</h4>
-                      <p>Built using Bootstrap 5 flexible grids and custom media queries to provide a continuous view
+                      <p>Built using Bootstrap 5 flexible grids and custom media queries to provide a continuous
+                        view
                         across desktop, tablet, and mobile displays.</p>
                     </div>
                   </div>
@@ -188,7 +208,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
                       <i class="bi bi-code-slash"></i>
                       <h4>Semantic Codebase &amp; Fallbacks</h4>
-                      <p>HTML5 semantic structure paired with dynamic DOM error handling to render SVG placeholders for
+                      <p>HTML5 semantic structure paired with dynamic DOM error handling to render SVG placeholders
+                        for
                         unlocated assets.</p>
                     </div>
                   </div>
@@ -196,18 +217,22 @@
               </div>
 
               <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
-              <p>This project demonstrates clean web design execution, semantic document structuring, and responsive CSS
+              <p>This project demonstrates clean web design execution, semantic document structuring, and responsive
+                CSS
                 layout techniques. Building modular stylesheet rules and responsive media queries provides a solid
                 foundation for structured, scalable web design.</p>
 
               <h3 class="mt-4">Video Overview</h3>
               <p>The video demonstration covers the full project breakdown across key structural elements:</p>
               <ul>
-                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file structure, and
+                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file structure,
+                  and
                   repository configuration.</li>
-                <li><strong>Page Sections &amp; Content:</strong> Walking through the hero banner, personal background,
+                <li><strong>Page Sections &amp; Content:</strong> Walking through the hero banner, personal
+                  background,
                   past projects, and contact area.</li>
-                <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile, tablet,
+                <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
+                  tablet,
                   and desktop viewports using CSS media queries.</li>
                 <li><strong>Code Base Structure:</strong> Reviewing valid HTML5 semantic tags and clean CSS styling
                   rules in VS Code.</li>
@@ -488,15 +513,6 @@
     </div>
 
   </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Theme Toggle -->
-  <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
-    title="Switch color theme"><i class="bi bi-snow2"></i></a>
-
   <!-- Preloader -->
   <div id="preloader"></div>
 
