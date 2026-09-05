@@ -3672,7 +3672,7 @@ section,
   border-radius: 6px;
   display: inline-block;
   font-size: 1.1rem;
-  color: var(--typed-color);
+  color: var(--quote-color);
 }
 
 .punctuation {
@@ -3680,7 +3680,7 @@ section,
 }
 
 .quote {
-  color: var(--typed-color);
+  color: var(--quote-color);
 }
 
 /* Map to heading color */
