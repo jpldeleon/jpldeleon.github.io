@@ -14,11 +14,11 @@
 
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>JamporuDEX - Node.js, Express, PostgreSQL &amp; EJS Capstone Project</title>
+  <title>Route 196 - Node.js, Express &amp; EJS Capstone Project</title>
   <meta name="description"
-    content="An anime & manga tracker built with Node.js, Express, EJS, and PostgreSQL as my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp. Features full CRUD, a Jikan (MyAnimeList) API search with an AniList fallback, sorting/filtering, and a dark theme toggle.">
+    content="A cozy site inspector built with Node.js, Express, EJS, and Axios as my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp. Enter any URL to check its robots.txt, sitemap.xml, redirect chain, and Wayback Machine archive history.">
   <meta name="keywords"
-    content="node.js, express, postgresql, ejs, javascript, css3, full stack, capstone project, jikan api, anilist api">
+    content="node.js, express, axios, ejs, javascript, css3, full stack, capstone project, wayback machine api, robots.txt, sitemap.xml">
 
 
   <!-- Favicons -->
@@ -92,16 +92,16 @@
       <div class="container d-lg-flex justify-content-between align-items-center">
         <div class="page-header">
           <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            Node.js, Express, PostgreSQL &amp; EJS Capstone Project
+            Node.js, Express &amp; EJS Capstone Project
           </span>
           <h1 class="h2 fw-bold mb-3">
-            JamporuDEX
+            Route 196
           </h1>
         </div>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">JamporuDEX</li>
+            <li class="current">Route 196</li>
           </ol>
         </nav>
       </div>
@@ -132,15 +132,15 @@
               <h3>Project Information</h3>
               <ul>
                 <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong> Node.js, Express, PostgreSQL &amp; EJS Capstone Project</li>
-                <li><strong>Focus:</strong> Server-Side Rendering, CRUD Operations, API Integration &amp; Dynamic
-                  Theming</li>
-                <li><strong>Tech Stack:</strong> Node.js, Express.js, PostgreSQL, EJS, JavaScript, CSS3</li>
+                <li><strong>Type:</strong> Node.js, Express &amp; EJS Capstone Project</li>
+                <li><strong>Focus:</strong> API Integration, Server-Side Rendering &amp; Async Client-Server
+                  Communication</li>
+                <li><strong>Tech Stack:</strong> Node.js, Express.js, Axios, EJS, JavaScript, CSS3</li>
                 <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
                   <div style="display: flex; gap: 12px; margin-top: 15px;">
-                    <a href="https://jamporudex.onrender.com/" target="_blank" rel="noopener noreferrer"
+                    <a href="https://route196.onrender.com/" target="_blank" rel="noopener noreferrer"
                       class="btn-live">View Site</a>
-                    <a href="https://github.com/jpldeleon/jamporudex" target="_blank" rel="noopener noreferrer"
+                    <a href="https://github.com/jpldeleon/route196" target="_blank" rel="noopener noreferrer"
                       class="btn-github">GitHub Repo</a>
                   </div>
                 </div>
@@ -153,85 +153,95 @@
 
               <h4>Project Overview</h4>
               <p>
-                JamporuDEX is my Capstone Project for Angela Yu's Full-Stack Web Development Bootcamp. Inspired by Derek
-                Sivers' book notes site (a key reference in the capstone brief), I built a personal index for tracking
-                anime and manga. Users can search for titles, auto-fetch cover art from MyAnimeList, and save entries to
-                a custom dashboard with status updates, episode progress, ratings, and short reviews. The app features
-                dynamic sorting and filtering, with full persistence powered by a PostgreSQL database so data survives
-                server restarts.
+                Route 196 is my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp.
+                It's a "cozy" site inspector — you type in any URL, and it checks that site's
+                <code>robots.txt</code>, its <code>sitemap.xml</code>, traces its redirect chain hop by hop,
+                and looks up its archive history on the Wayback Machine. Everything lives on one page behind a
+                little floating pill menu that switches between the four tools, so you can drop in a URL and
+                immediately see what's going on with it without opening five different tabs.
               </p>
               <p>
-                As an avid anime fan, I wanted to build something tailored to my own interests rather than another
-                standard to-do app. Creating a tool I would personally use kept me engaged throughout the entire
-                development process.
+                This capstone's requirement was to pick a public API and build something around it with
+                Express and Axios. I've always been a little curious about the "behind the scenes" stuff
+                websites have, robots.txt, sitemaps, whether a link redirects somewhere weird, whether an old
+                page is still archived anywhere, so instead of picking something unrelated I built the tool I
+                would have actually wanted while poking around other sites.
               </p>
               <p>
-                To assist with development, I utilized Claude (Anthropic's AI assistant) to debug errors, review code,
-                and refine complex features like the API fallback logic. Working with AI provided quick guidance similar
-                to consulting documentation or developer forums. While leaning on these tools for technical support, I
-                personally designed the database schema, route architecture, and core application logic, ensuring a
-                complete understanding of the entire codebase.
+                I want to be upfront that I used Claude (Anthropic's AI assistant) throughout this project —
+                mainly for debugging, reviewing my regex and parsing logic, and talking through edge cases I
+                hadn't thought of, like redirect loops or sitemap index files. I'm still pretty new to backend
+                development, so having something to talk through problems with was a big help, similar to how
+                I'd use documentation or Stack Overflow, just faster and more conversational. The route
+                structure, the four inspector features, and the overall design decisions are mine, and I made
+                sure I understood every part of the code before I called it done.
               </p>
 
               <h4>Problem &amp; Objective</h4>
               <p>
-                The objective of this capstone project was to design and build a full-stack CRUD application from
-                scratch, utilizing PostgreSQL for persistent data storage and integrating an external public API without
-                starter templates. This required designing a relational database schema, implementing RESTful Express
-                routes, and structuring end-to-end data flow between PostgreSQL, the Express server, and EJS template
-                views. As an entry-level developer, the primary focus was developing a deep understanding of core
-                backend principles, request-response lifecycles, and root-cause debugging.
+                The goal of this capstone was to integrate a public API into an Express app using Axios, with
+                a working GET endpoint and proper error handling, no starter code to build from. I decided to
+                use the Internet Archive's Wayback Machine API for the Axios requirement, and layered on a
+                few more URL-inspection tools using plain <code>fetch</code> so the app would feel like a
+                complete toolkit rather than just one API call wrapped in a page. As someone still early in my
+                dev journey, a big part of this project was learning to actually read documentation for an API
+                I'd never touched before, and figuring out how to handle all the ways a request to a random
+                URL can fail (timeouts, bad URLs, sites with no robots.txt, redirect loops) instead of just
+                assuming the happy path.
               </p>
 
               <h4>Technical Implementation</h4>
               <p>
-                The application is powered by an Express.js backend connected to PostgreSQL via the <code>pg</code>
-                library, utilizing a structured <code>media_entries</code> table to store metadata including MAL IDs,
-                titles, status, progress metrics, ratings, reviews, synopses, and media URLs. External data retrieval
-                uses Axios to interact with the Jikan API (MyAnimeList wrapper) for automated metadata and cover art
-                fetching. To handle API rate limits and potential service degradation, the backend includes exponential
-                backoff retry logic and an automated fallback to the AniList GraphQL API to ensure high availability.
-                The application utilizes EJS for server-side view rendering, alongside vanilla JavaScript on the client
-                side to manage dynamic UI components, search modals, CRUD lightboxes, sorting/filtering operations, and
-                theme toggling without external frontend frameworks.
+                The backend is an Express server with four GET endpoints. <code>/api/robots</code> and
+                <code>/api/sitemap</code> use the native <code>fetch</code> API (wrapped in a helper with an
+                <code>AbortController</code> so a slow site can't hang the request forever) to pull and parse a
+                site's <code>robots.txt</code> and <code>sitemap.xml</code>, including sitemap index files.
+                <code>/api/wayback</code> is where Axios comes in, it calls the Wayback Machine's Availability
+                API for the closest archived snapshot, then a second call to the CDX API for a short history of
+                recent captures. <code>/api/redirect-check</code> was the trickiest one to build: it follows a
+                URL through up to 10 hops, checking for HTTP 3xx redirects, <code>&lt;meta
+                http-equiv="refresh"&gt;</code> tags, and JavaScript <code>window.location</code> redirects
+                using regex, and stops early if it detects a loop. On the frontend, EJS renders the single
+                page, and vanilla JavaScript handles the floating pill navigation between panels, the four
+                fetch calls to those endpoints, showing loading/result/error states on each output card, toast
+                notifications, and a cozy light/dark ("Latte" / "Mocha") theme toggle saved to LocalStorage.
               </p>
               <div class="features mt-4">
                 <h3>Implemented Features</h3>
                 <div class="row gy-3">
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                      <i class="bi bi-pencil-square"></i>
-                      <h4>Full CRUD with PostgreSQL</h4>
-                      <p>Add, view, edit, and delete entries using Express routes and parameterized SQL
-                        queries against a real PostgreSQL database, so your index persists between sessions.</p>
+                      <i class="bi bi-robot"></i>
+                      <h4>Robots.txt Inspector</h4>
+                      <p>Fetches and displays any site's <code>robots.txt</code>, showing whether it was
+                        found and what it contains, with a clear "not found" state when it's missing.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
-                      <i class="bi bi-search"></i>
-                      <h4>Jikan API Search with AniList Fallback</h4>
-                      <p>Search MyAnimeList (via the Jikan API) right from the Add Entry modal to pull in
-                        cover art and synopsis. If Jikan is down, the server retries automatically and falls
-                        back to AniList so search still works.</p>
+                      <i class="bi bi-diagram-3"></i>
+                      <h4>Sitemap.xml Inspector</h4>
+                      <p>Pulls a site's <code>sitemap.xml</code>, parses out every URL (or sitemap-index
+                        entry) with regex, and lists them as clickable links.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
-                      <i class="bi bi-funnel"></i>
-                      <h4>Sort &amp; Status Filter</h4>
-                      <p>Sort your index by rating, recency, or title, and filter by status (Reading,
-                        Watching, Completed, On-Hold, Dropped, Plan to Read) using query params on the server.</p>
+                      <i class="bi bi-signpost-split"></i>
+                      <h4>Redirect Path Tracer</h4>
+                      <p>Follows a URL through up to 10 hops, detecting HTTP redirects, meta-refresh tags,
+                        and JavaScript redirects, and flags redirect loops instead of hanging forever.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
-                      <i class="bi bi-moon-stars"></i>
-                      <h4>Dark Theme Toggle</h4>
-                      <p>Switch between two dark themes (Tokyo Night Storm and Dracula) with CSS variables and
-                        LocalStorage so your preference sticks around as you navigate the app.</p>
+                      <i class="bi bi-clock-history"></i>
+                      <h4>Wayback Machine Lookup</h4>
+                      <p>Uses Axios to call the Internet Archive's Availability and CDX APIs, showing the
+                        closest archived snapshot plus a short history of recent captures.</p>
                     </div>
                   </div>
                 </div>
@@ -239,41 +249,42 @@
 
               <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
               <p>
-                This was my first time connecting a real database to a backend instead of working with
-                in-memory or static data, and it forced me to actually think through my schema before writing
-                any routes instead of figuring it out as I went. Wiring up the Jikan API was its own lesson,
-                I didn't expect a free public API to time out as often as it did, so building in retries and
-                an AniList fallback was something I hadn't planned for at the start, but ended up being one of
-                the parts I'm most proud of. I ran into plenty of bugs along the way, and Claude was a big
-                help talking through why something was failing instead of just handing me a fix, which meant I
-                usually walked away actually understanding the problem. I'm still early in my dev journey, but
-                this is the first project where I felt like I could explain every piece of what I shipped, not
-                just that it worked.
+                This was my first time integrating a public API with Axios and actually handling all the
+                messy ways a real request can fail, not just the happy path where everything works. I didn't
+                expect the redirect tracer to be the hardest part of the whole project, but figuring out how
+                to detect meta-refresh tags and JavaScript redirects with regex, and catching loops before they
+                hung the server, took a lot of trial and error. I also had to slow down and actually read the
+                Wayback Machine's API docs instead of guessing at the response shape, which was a good reminder
+                that not every API works the way I expect on the first try. Claude was a big help walking
+                through why a regex wasn't matching or why a fetch was timing out, which usually left me
+                actually understanding the fix instead of just pasting one in. I'm still early in my dev
+                journey, but this is the first project where I felt comfortable explaining exactly how every
+                endpoint works, not just that it does.
               </p>
 
               <h3 class="mt-4">Video Overview</h3>
               <p>The video demonstration covers the full project breakdown across key structural elements:</p>
               <ul>
                 <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file
-                  structure, and environment configuration.</li>
-                <li><strong>Core Features Walkthrough:</strong> Searching Jikan for a title, adding it to the
-                  index, editing progress/status/rating, deleting entries, sorting, and filtering.</li>
+                  structure, and how to get the server running locally.</li>
+                <li><strong>Core Features Walkthrough:</strong> Running a URL through the robots.txt, sitemap,
+                  redirect tracer, and Wayback Machine panels, and pointing out the error/empty states.</li>
                 <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
                   tablet, and desktop viewports using CSS media queries.</li>
-                <li><strong>Code Base Structure:</strong> Reviewing the Express routes, PostgreSQL queries, and
-                  EJS templates in VS Code.</li>
+                <li><strong>Code Base Structure:</strong> Reviewing the Express routes in <code>server.js</code>
+                  and the fetch/panel logic in <code>app.js</code> in VS Code.</li>
               </ul>
 
               <h3 class="mt-4">Technologies &amp; Tools Used</h3>
               <ul>
                 <li><strong>Backend:</strong> Node.js, Express.js</li>
-                <li><strong>Database:</strong> PostgreSQL (hosted on Neon), via the <code>pg</code> package</li>
-                <li><strong>API Integration:</strong> Axios, Jikan API (MyAnimeList), AniList API (fallback)</li>
+                <li><strong>API Integration:</strong> Axios (Wayback Machine Availability &amp; CDX APIs),
+                  native Fetch (robots.txt, sitemap.xml, redirect tracing)</li>
                 <li><strong>Templating:</strong> EJS</li>
                 <li><strong>Frontend:</strong> JavaScript, CSS3</li>
                 <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub, Render</li>
                 <li><strong>AI Assistance:</strong> Claude, used for debugging, code review, and talking
-                  through project structure during development</li>
+                  through edge cases during development</li>
               </ul>
             </div>
           </div>
@@ -293,12 +304,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.png" class="img-fluid" alt="Home"
+                      <img src="/assets/img/portfolio/route196/route196-1-home.webp" class="img-fluid" alt="Home Panel"
                         loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-1-home_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -308,12 +319,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.png" class="img-fluid"
+                      <img src="/assets/img/portfolio/route196/route196-2-readme.webp" class="img-fluid"
                         alt="README Documentation" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-2-readme_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -323,27 +334,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.png" class="img-fluid"
-                        alt="Environment Variables" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide filter-technical">
-                    <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.png" class="img-fluid"
+                      <img src="/assets/img/portfolio/route196/route196-3-packagejson.webp" class="img-fluid"
                         alt="Package JSON Dependencies" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-3-packagejson_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -353,12 +349,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.png" class="img-fluid"
-                        alt="Grid Layout" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-4-pillnav.webp" class="img-fluid"
+                        alt="Floating Pill Navigation" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-4-pillnav_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -368,12 +364,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.png" class="img-fluid"
-                        alt="Filter Functionality" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-5-robots.webp" class="img-fluid"
+                        alt="Robots.txt Inspector Panel" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-5-robots_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -383,12 +379,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.png" class="img-fluid"
-                        alt="Sort Functionality" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-6-sitemap.webp" class="img-fluid"
+                        alt="Sitemap.xml Inspector Panel" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-6-sitemap_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -398,12 +394,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.png" class="img-fluid"
-                        alt="Search Modal View 1" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-7-redirect.webp" class="img-fluid"
+                        alt="Redirect Path Tracer Panel" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-7-redirect_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -413,12 +409,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.png" class="img-fluid"
-                        alt="Search Modal View 2" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-8-wayback.webp" class="img-fluid"
+                        alt="Wayback Machine Lookup Panel" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-8-wayback_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -428,12 +424,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.png" class="img-fluid"
-                        alt="Add Entry Form" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-9-mobile.webp" class="img-fluid"
+                        alt="Mobile View 1" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-9-mobile_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -443,12 +439,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.png" class="img-fluid"
-                        alt="Edit Entry Modal 1" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-10-mobile.webp" class="img-fluid"
+                        alt="Mobile View 2" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-10-mobile_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -458,12 +454,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.png" class="img-fluid"
-                        alt="Edit Entry Modal 2" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-11-themetoggle.webp" class="img-fluid"
+                        alt="Latte / Mocha Theme Toggle" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-11-themetoggle_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -473,12 +469,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.png" class="img-fluid"
-                        alt="AniList Fallback API Integration" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-12-toast.webp" class="img-fluid"
+                        alt="Toast Notification" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-12-toast_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -488,27 +484,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.png" class="img-fluid"
-                        alt="Database Schema Setup" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-13-serverjs.webp" class="img-fluid"
+                        alt="server.js — Robots &amp; Sitemap Routes" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp"
-                              class="glightbox" data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide filter-technical">
-                    <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-delete.png" class="img-fluid"
-                        alt="Delete Route Logic" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-13-serverjs_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -518,12 +499,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-get.png" class="img-fluid"
-                        alt="GET Route Controller" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-14-waybackroute.webp" class="img-fluid"
+                        alt="server.js — Wayback Machine Axios Calls" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-14-waybackroute_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -533,12 +514,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.png" class="img-fluid"
-                        alt="Jikan API Handler" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-15-redirectlogic.webp" class="img-fluid"
+                        alt="server.js — Redirect Hop Detection Logic" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-15-redirectlogic_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -548,57 +529,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-modal.png" class="img-fluid"
-                        alt="Lightbox Modal" loading="lazy">
+                      <img src="/assets/img/portfolio/route196/route196-16-appjs.webp" class="img-fluid"
+                        alt="app.js — Panel Switching &amp; Fetch Logic" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide filter-technical">
-                    <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.png" class="img-fluid"
-                        alt="PostgreSQL Pool Configuration" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide filter-technical">
-                    <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-post.png" class="img-fluid"
-                        alt="POST Route Handler" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide filter-technical">
-                    <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.png" class="img-fluid"
-                        alt="Theme Toggle State" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" class="glightbox"
+                            <a href="/assets/img/portfolio/route196/route196-16-appjs_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -609,6 +545,7 @@
                 </div>
 
                 <!-- Controls -->
+
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-button-next"></div>
