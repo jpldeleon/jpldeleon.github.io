@@ -154,47 +154,50 @@
               <h4>Project Overview</h4>
               <p>
                 JamporuDEX is my Capstone Project for Angela Yu's Full-Stack Web Development Bootcamp. Inspired by Derek
-                Sivers' book notes site (a key reference in the capstone brief), I built a personal index for tracking
+                Sivers' book notes site (a key reference in the capstone prompt), I built a personal web app to track
                 anime and manga. Users can search for titles, auto-fetch cover art from MyAnimeList, and save entries to
-                a custom dashboard with status updates, episode progress, ratings, and short reviews. The app features
-                dynamic sorting and filtering, with full persistence powered by a PostgreSQL database so data survives
-                server restarts.
+                a custom dashboard with status updates, episode or chapter progress, star ratings, and short reviews.
+                The app features dynamic sorting and filtering, backed by full persistence through a PostgreSQL database
+                so data stays intact across server restarts.
               </p>
               <p>
-                As an avid anime fan, I wanted to build something tailored to my own interests rather than another
-                standard to-do app. Creating a tool I would personally use kept me engaged throughout the entire
-                development process.
+                As an anime fan, I wanted to build a practical tool tailored to my actual hobbies rather than another
+                standard to-do list tutorial. Working on a project I genuinely enjoyed using kept me motivated and
+                engaged through every step of development.
               </p>
               <p>
-                To assist with development, I utilized Claude (Anthropic's AI assistant) to debug errors, review code,
-                and refine complex features like the API fallback logic. Working with AI provided quick guidance similar
-                to consulting documentation or developer forums. While leaning on these tools for technical support, I
-                personally designed the database schema, route architecture, and core application logic, ensuring a
-                complete understanding of the entire codebase.
+                To help with the development process, I used Claude (Anthropic's AI assistant) to debug tricky errors,
+                review my code, and talk through complex features like external API fallback logic. Working alongside AI
+                provided fast guidance similar to checking developer forums or official documentation. While leveraging
+                these tools for technical support, I designed the database schema, wrote the Express route handlers, and
+                structured the core backend logic myself to make sure I truly understood how every piece operated.
               </p>
 
               <h4>Problem &amp; Objective</h4>
               <p>
-                The objective of this capstone project was to design and build a full-stack CRUD application from
-                scratch, utilizing PostgreSQL for persistent data storage and integrating an external public API without
-                starter templates. This required designing a relational database schema, implementing RESTful Express
-                routes, and structuring end-to-end data flow between PostgreSQL, the Express server, and EJS template
-                views. As an entry-level developer, the primary focus was developing a deep understanding of core
-                backend principles, request-response lifecycles, and root-cause debugging.
+                The main objective of this capstone was to design and build a full-stack CRUD application from scratch,
+                using PostgreSQL for persistent storage and integrating an external public API without starter
+                templates. This required designing a relational database schema, setting up RESTful Express routes, and
+                managing data flow between PostgreSQL, the Node backend, and EJS template views. As an entry-level
+                developer, my main focus was building a strong grasp of core backend fundamentals, understanding
+                request-response lifecycles, and improving my step-by-step debugging skills.
               </p>
 
               <h4>Technical Implementation</h4>
               <p>
-                The application is powered by an Express.js backend connected to PostgreSQL via the <code>pg</code>
-                library, utilizing a structured <code>media_entries</code> table to store metadata including MAL IDs,
-                titles, status, progress metrics, ratings, reviews, synopses, and media URLs. External data retrieval
-                uses Axios to interact with the Jikan API (MyAnimeList wrapper) for automated metadata and cover art
-                fetching. To handle API rate limits and potential service degradation, the backend includes exponential
-                backoff retry logic and an automated fallback to the AniList GraphQL API to ensure high availability.
-                The application utilizes EJS for server-side view rendering, alongside vanilla JavaScript on the client
-                side to manage dynamic UI components, search modals, CRUD lightboxes, sorting/filtering operations, and
-                theme toggling without external frontend frameworks.
+                The backend is built with Express.js and connects to PostgreSQL using the pg library. A media_entries
+                table manages persistent data storage for items like MAL IDs, titles, status, progress metrics, ratings,
+                reviews, synopses, and image URLs. External data fetching relies on Axios to query the Jikan API (a
+                public MyAnimeList wrapper) for metadata and cover images. To handle rate limits and temporary service
+                outages, the backend includes exponential backoff retry logic and an automated fallback to the AniList
+                GraphQL API to keep search reliable.
               </p>
+              <p>
+                The application uses EJS for server-side template rendering, paired with plain JavaScript on the
+                frontend to power search modal popups, entry editing, server-side dynamic sorting and filtering, and
+                theme switching without extra frontend frameworks.
+              </p>
+
               <div class="features mt-4">
                 <h3>Implemented Features</h3>
                 <div class="row gy-3">
@@ -202,8 +205,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
                       <i class="bi bi-pencil-square"></i>
                       <h4>Full CRUD with PostgreSQL</h4>
-                      <p>Add, view, edit, and delete entries using Express routes and parameterized SQL
-                        queries against a real PostgreSQL database, so your index persists between sessions.</p>
+                      <p>Add, view, edit, and delete entries using Express routes and parameterized SQL queries
+                        connected to a real PostgreSQL database so your index persists across sessions.</p>
                     </div>
                   </div>
 
@@ -211,9 +214,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
                       <i class="bi bi-search"></i>
                       <h4>Jikan API Search with AniList Fallback</h4>
-                      <p>Search MyAnimeList (via the Jikan API) right from the Add Entry modal to pull in
-                        cover art and synopsis. If Jikan is down, the server retries automatically and falls
-                        back to AniList so search still works.</p>
+                      <p>Search MyAnimeList via the Jikan API directly inside the modal to pull cover art and synopses.
+                        If Jikan times out, the server retries and falls back to AniList automatically.</p>
                     </div>
                   </div>
 
@@ -221,8 +223,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
                       <i class="bi bi-funnel"></i>
                       <h4>Sort &amp; Status Filter</h4>
-                      <p>Sort your index by rating, recency, or title, and filter by status (Reading,
-                        Watching, Completed, On-Hold, Dropped, Plan to Read) using query params on the server.</p>
+                      <p>Sort entries by rating, date added, or title, and filter lists by reading or watching status
+                        using query parameters processed on the server.</p>
                     </div>
                   </div>
 
@@ -230,8 +232,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
                       <i class="bi bi-moon-stars"></i>
                       <h4>Dark Theme Toggle</h4>
-                      <p>Switch between two dark themes (Tokyo Night Storm and Dracula) with CSS variables and
-                        LocalStorage so your preference sticks around as you navigate the app.</p>
+                      <p>Switch between dark theme styles (Tokyo Night Storm and Dracula) using CSS variables and
+                        localStorage to save user preferences across page navigation.</p>
                     </div>
                   </div>
                 </div>
@@ -239,41 +241,42 @@
 
               <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
               <p>
-                This was my first time connecting a real database to a backend instead of working with
-                in-memory or static data, and it forced me to actually think through my schema before writing
-                any routes instead of figuring it out as I went. Wiring up the Jikan API was its own lesson,
-                I didn't expect a free public API to time out as often as it did, so building in retries and
-                an AniList fallback was something I hadn't planned for at the start, but ended up being one of
-                the parts I'm most proud of. I ran into plenty of bugs along the way, and Claude was a big
-                help talking through why something was failing instead of just handing me a fix, which meant I
-                usually walked away actually understanding the problem. I'm still early in my dev journey, but
-                this is the first project where I felt like I could explain every piece of what I shipped, not
-                just that it worked.
+                This was my first time connecting a live relational database to a backend server instead of using
+                temporary in-memory data. It forced me to think through my database schema before writing backend
+                routes. Integrating the Jikan API was another great learning experience; I didn't expect a free public
+                API to time out so often, so building retry loops and an AniList fallback was an unexpected challenge
+                that became one of the parts I'm most proud of.
+              </p>
+              <p>
+                I ran into plenty of bugs along the way, and using Claude to talk through why errors were happening
+                helped me learn the root causes rather than just pasting quick fixes. As an entry-level developer, this
+                project gave me real confidence in my ability to explain and defend every line of code I shipped.
               </p>
 
               <h3 class="mt-4">Video Overview</h3>
-              <p>The video demonstration covers the full project breakdown across key structural elements:</p>
+              <p>The demonstration video walks through the core architecture and features of the app:</p>
               <ul>
-                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file
-                  structure, and environment configuration.</li>
-                <li><strong>Core Features Walkthrough:</strong> Searching Jikan for a title, adding it to the
-                  index, editing progress/status/rating, deleting entries, sorting, and filtering.</li>
-                <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
-                  tablet, and desktop viewports using CSS media queries.</li>
-                <li><strong>Code Base Structure:</strong> Reviewing the Express routes, PostgreSQL queries, and
-                  EJS templates in VS Code.</li>
+                <li><strong>GitHub Repository &amp; Setup:</strong> Overview of project files, directory structure, and
+                  environment variable configuration.</li>
+                <li><strong>Core Features Walkthrough:</strong> Searching for titles via API, adding them to the index,
+                  updating status and ratings, deleting records, and testing sort/filter tools.</li>
+                <li><strong>Responsive Mobile Inspection:</strong> Verifying layout responsiveness across mobile,
+                  tablet, and desktop viewports using browser developer tools.</li>
+                <li><strong>Codebase Structure:</strong> Reviewing Express route handlers, SQL queries, and EJS
+                  templates inside VS Code.</li>
               </ul>
 
               <h3 class="mt-4">Technologies &amp; Tools Used</h3>
               <ul>
                 <li><strong>Backend:</strong> Node.js, Express.js</li>
-                <li><strong>Database:</strong> PostgreSQL (hosted on Neon), via the <code>pg</code> package</li>
-                <li><strong>API Integration:</strong> Axios, Jikan API (MyAnimeList), AniList API (fallback)</li>
+                <li><strong>Database:</strong> PostgreSQL (hosted on Neon), accessed using the pg library</li>
+                <li><strong>API Integration:</strong> Axios, Jikan API (MyAnimeList wrapper), AniList API (fallback)
+                </li>
                 <li><strong>Templating:</strong> EJS</li>
-                <li><strong>Frontend:</strong> JavaScript, CSS3</li>
+                <li><strong>Frontend:</strong> Vanilla JavaScript, CSS3</li>
                 <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub, Render</li>
-                <li><strong>AI Assistance:</strong> Claude, used for debugging, code review, and talking
-                  through project structure during development</li>
+                <li><strong>AI Assistance:</strong> Claude (used for debugging, code review, and discussing backend
+                  logic)</li>
               </ul>
             </div>
           </div>
