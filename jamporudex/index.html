@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Apply saved theme before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('site-theme');
+      if (saved === 'frost') {
+        document.documentElement.setAttribute('data-theme', 'frost');
+      }
+    })();
+  </script>
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>JamporuDEX - Node.js, Express, PostgreSQL &amp; EJS Capstone Project</title>
+  <meta name="description"
+    content="An anime & manga tracker built with Node.js, Express, EJS, and PostgreSQL as my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp. Features full CRUD, a Jikan (MyAnimeList) API search with an AniList fallback, sorting/filtering, and a dark theme toggle.">
+  <meta name="keywords"
+    content="node.js, express, postgresql, ejs, javascript, css3, full stack, capstone project, jikan api, anilist api">
+
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.webp" rel="icon">
+  <link href="/assets/img/apple-touch-icon.webp" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="portfolio-details-page">
+
+  <div class="background-elements">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+  </div>
+
+  <header id="header" class="header dark-background d-flex flex-column justify-content-center">
+    <i class="header-toggle d-xl-none bi bi-list"></i>
+
+    <div class="header-container d-flex flex-row align-items-center">
+      <span class="profile-smoke profile-smoke-navpill"
+        aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+
+      <!-- Theme Toggle -->
+      <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
+        title="Switch color theme"><i class="bi bi-snow"></i></a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="https://jpldeleon.github.io/" class="active"><i class="bi bi-house navicon"></i><span
+                class="nav-label">Home</span></a>
+          </li>
+          <li><a href="#portfolio-details"><i class="bi bi-person navicon"></i><span class="nav-label"> Video</span></a>
+          </li>
+          <li><a href="#details"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
+                Details</span></a></li>
+          <li><a href="#project-screenshots"><i class="bi bi-images navicon"></i><span class="nav-label">
+                Gallery</span></a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+          class="bi bi-arrow-up-short"></i></a>
+
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="page-header">
+          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
+            Node.js, Express, PostgreSQL &amp; EJS Capstone Project
+          </span>
+          <h1 class="h2 fw-bold mb-3">
+            JamporuDEX
+          </h1>
+        </div>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">JamporuDEX</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-video">
+              <div
+                style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
+                  src="https://www.youtube.com/embed/cpVNAfo870s?si=JmMW2d1XPK-lOiIH" title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
+              <h3>Project Information</h3>
+              <ul>
+                <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
+                <li><strong>Type:</strong> Node.js, Express, PostgreSQL &amp; EJS Capstone Project</li>
+                <li><strong>Focus:</strong> Server-Side Rendering, CRUD Operations, API Integration &amp; Dynamic
+                  Theming</li>
+                <li><strong>Tech Stack:</strong> Node.js, Express.js, PostgreSQL, EJS, JavaScript, CSS3</li>
+                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <div style="display: flex; gap: 12px; margin-top: 15px;">
+                    <a href="https://jamporudex.onrender.com/" target="_blank" rel="noopener noreferrer"
+                      class="btn-live">View Site</a>
+                    <a href="https://github.com/jpldeleon/jamporudex" target="_blank" rel="noopener noreferrer"
+                      class="btn-github">GitHub Repo</a>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
+
+              <h4>Project Overview</h4>
+              <p>
+                JamporuDEX is my Capstone Project for Angela Yu's Complete Full-Stack Web Development
+                Bootcamp, a personal index of the anime and manga I've watched and read, inspired by Derek
+                Sivers' book notes site (the capstone brief actually points to his site as the model to
+                follow). Instead of books, I track anime and manga: you can search for a title, pull in its
+                cover art straight from MyAnimeList, then save it to your own index with a status, your
+                progress, a rating out of 10, and a short review. Everything is sortable by rating, recency,
+                or title, and filterable by status, and it's all backed by a real PostgreSQL database instead
+                of data that resets every time the server restarts.
+              </p>
+              <p>
+                I'm a big anime and manga reader, so instead of building another generic to-do list I wanted
+                something themed around what I actually track in my head already. It's the project I'd
+                genuinely want to use myself, which made it a lot easier to stay motivated through the parts
+                that were hard.
+              </p>
+              <p>
+                I want to be upfront that I used Claude (Anthropic's AI assistant) quite a bit while building
+                this, for debugging errors I got stuck on, reviewing my code for issues I couldn't spot
+                myself, and talking through how to structure trickier pieces like the API fallback logic. I'm
+                still early in my dev journey, so I leaned on it the way I'd lean on Stack Overflow or the
+                docs, just more conversational and a lot faster. That said, the route structure, the database
+                schema, and the decisions about how everything fits together are mine, and I made sure I could
+                explain every part of this project before calling it done.
+              </p>
+
+              <h4>Problem &amp; Objective</h4>
+              <p>
+                The goal of this capstone was to build a full-stack CRUD app from scratch that persists data
+                in PostgreSQL and talks to a public API, without starter files to lean on. That meant planning
+                my own database schema, figuring out my own Express routes, and deciding how data should flow
+                from the database, through the server, into the EJS templates, and back out again when a user
+                submits a form. As someone still pretty new to backend development, a lot of this project was
+                just sitting with errors until I actually understood why they were happening, instead of
+                copy-pasting a fix and moving on.
+              </p>
+
+              <h4>Technical Implementation</h4>
+              <p>
+                The backend is an Express.js server connected to a PostgreSQL database through the
+                <code>pg</code> package, with a <code>media_entries</code> table storing each entry's title,
+                MyAnimeList ID, cover URL, status, progress, rating, review, and synopsis. For the API side, I
+                used Axios to call the Jikan API (which wraps MyAnimeList) so users can search for a title and
+                pull in real cover art and synopsis data instead of typing it in by hand. Jikan is a free,
+                community-run API that occasionally times out, so I added a small retry step with backoff
+                before it gives up, and if it's still down after that, the server automatically falls back to
+                the AniList API so search doesn't just break for the user. EJS handles all the server-side
+                rendering, and the frontend uses vanilla JavaScript for the search modal, the edit/delete
+                lightbox, sorting and filtering, and the light/dark theme toggle, no frontend framework, just
+                plain JS.
+              </p>
+
+              <div class="features mt-4">
+                <h3>Implemented Features</h3>
+                <div class="row gy-3">
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
+                      <i class="bi bi-pencil-square"></i>
+                      <h4>Full CRUD with PostgreSQL</h4>
+                      <p>Add, view, edit, and delete entries using Express routes and parameterized SQL
+                        queries against a real PostgreSQL database, so your index persists between sessions.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
+                      <i class="bi bi-search"></i>
+                      <h4>Jikan API Search with AniList Fallback</h4>
+                      <p>Search MyAnimeList (via the Jikan API) right from the Add Entry modal to pull in
+                        cover art and synopsis. If Jikan is down, the server retries automatically and falls
+                        back to AniList so search still works.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
+                      <i class="bi bi-funnel"></i>
+                      <h4>Sort &amp; Status Filter</h4>
+                      <p>Sort your index by rating, recency, or title, and filter by status (Reading,
+                        Watching, Completed, On-Hold, Dropped, Plan to Read) using query params on the server.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
+                      <i class="bi bi-moon-stars"></i>
+                      <h4>Dark Theme Toggle</h4>
+                      <p>Switch between two dark themes (Tokyo Night Storm and Dracula) with CSS variables and
+                        LocalStorage so your preference sticks around as you navigate the app.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
+              <p>
+                This was my first time connecting a real database to a backend instead of working with
+                in-memory or static data, and it forced me to actually think through my schema before writing
+                any routes instead of figuring it out as I went. Wiring up the Jikan API was its own lesson,
+                I didn't expect a free public API to time out as often as it did, so building in retries and
+                an AniList fallback was something I hadn't planned for at the start, but ended up being one of
+                the parts I'm most proud of. I ran into plenty of bugs along the way, and Claude was a big
+                help talking through why something was failing instead of just handing me a fix, which meant I
+                usually walked away actually understanding the problem. I'm still early in my dev journey, but
+                this is the first project where I felt like I could explain every piece of what I shipped, not
+                just that it worked.
+              </p>
+
+              <h3 class="mt-4">Video Overview</h3>
+              <p>The video demonstration covers the full project breakdown across key structural elements:</p>
+              <ul>
+                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file
+                  structure, and environment configuration.</li>
+                <li><strong>Core Features Walkthrough:</strong> Searching Jikan for a title, adding it to the
+                  index, editing progress/status/rating, deleting entries, sorting, and filtering.</li>
+                <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
+                  tablet, and desktop viewports using CSS media queries.</li>
+                <li><strong>Code Base Structure:</strong> Reviewing the Express routes, PostgreSQL queries, and
+                  EJS templates in VS Code.</li>
+              </ul>
+
+              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
+              <ul>
+                <li><strong>Backend:</strong> Node.js, Express.js</li>
+                <li><strong>Database:</strong> PostgreSQL, via the <code>pg</code> package</li>
+                <li><strong>API Integration:</strong> Axios, Jikan API (MyAnimeList), AniList API (fallback)</li>
+                <li><strong>Templating:</strong> EJS</li>
+                <li><strong>Frontend:</strong> JavaScript, CSS3</li>
+                <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub</li>
+                <li><strong>AI Assistance:</strong> Claude, used for debugging, code review, and talking
+                  through project structure during development</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section Title -->
+          <section id="project-screenshots" class="portfolio section">
+
+            <div class="container section-title" data-aos="fade-up">
+              <h2>Gallery</h2>
+              <p>A closer look at the screenshots behind this project.</p>
+            </div>
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+              <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
+                <div class="swiper-wrapper align-items-center">
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.png" class="img-fluid" alt="Home"
+                        loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.png" class="img-fluid"
+                        alt="README Documentation" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.png" class="img-fluid"
+                        alt="Environment Variables" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.png" class="img-fluid"
+                        alt="Package JSON Dependencies" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.png" class="img-fluid"
+                        alt="Grid Layout" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.png" class="img-fluid"
+                        alt="Filter Functionality" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.png" class="img-fluid"
+                        alt="Sort Functionality" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.png" class="img-fluid"
+                        alt="Search Modal View 1" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.png" class="img-fluid"
+                        alt="Search Modal View 2" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.png" class="img-fluid"
+                        alt="Add Entry Form" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.png" class="img-fluid"
+                        alt="Edit Entry Modal 1" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.png" class="img-fluid"
+                        alt="Edit Entry Modal 2" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.png" class="img-fluid"
+                        alt="AniList Fallback API Integration" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.png" class="img-fluid"
+                        alt="Database Schema Setup" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp"
+                              class="glightbox" data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-delete.png" class="img-fluid"
+                        alt="Delete Route Logic" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-get.png" class="img-fluid"
+                        alt="GET Route Controller" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.png" class="img-fluid"
+                        alt="Jikan API Handler" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-modal.png" class="img-fluid"
+                        alt="Lightbox Modal" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.png" class="img-fluid"
+                        alt="PostgreSQL Pool Configuration" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-post.png" class="img-fluid"
+                        alt="POST Route Handler" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.png" class="img-fluid"
+                        alt="Theme Toggle State" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Controls -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <style>
+            .screenshots-swiper {
+              padding: 10px 10px 50px;
+            }
+
+            .screenshots-swiper .swiper-slide {
+              height: auto;
+            }
+
+            .screenshots-swiper .portfolio-wrap {
+              height: 100%;
+            }
+
+            .screenshots-swiper .swiper-button-prev,
+            .screenshots-swiper .swiper-button-next {
+              top: auto;
+              bottom: 0;
+              margin-top: 0;
+              width: 40px;
+              height: 40px;
+              background: var(--accent-highlight, #178C7A);
+              border-radius: 50%;
+              color: #fff;
+            }
+
+            .screenshots-swiper .swiper-button-prev:after,
+            .screenshots-swiper .swiper-button-next:after {
+              font-size: 16px;
+              font-weight: 700;
+            }
+
+            .screenshots-swiper .swiper-pagination-bullet {
+              background: rgba(255, 255, 255, 0.5);
+              opacity: 1;
+            }
+
+            .screenshots-swiper .swiper-pagination-bullet-active {
+              background: var(--accent-highlight, #178C7A);
+            }
+
+            @media (max-width: 575px) {
+
+              .screenshots-swiper {
+                padding: 10px 10px 80px;
+              }
+
+              .screenshots-swiper .swiper-pagination {
+                bottom: 38px;
+              }
+
+              .screenshots-swiper .swiper-button-prev,
+              .screenshots-swiper .swiper-button-next {
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                right: auto;
+                width: 32px;
+                height: 32px;
+              }
+
+              .screenshots-swiper .swiper-button-prev:after,
+              .screenshots-swiper .swiper-button-next:after {
+                font-size: 13px;
+              }
+
+              .screenshots-swiper .swiper-button-prev {
+                transform: translateX(calc(-100% - 8px));
+              }
+
+              .screenshots-swiper .swiper-button-next {
+                transform: translateX(8px);
+              }
+            }
+          </style>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container">
+      <div class="copyright text-center ">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">John Paul De Leon</strong> <span>All Rights
+            Reserved</span></p>
+      </div>
+    </div>
+
+  </footer>
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof GLightbox !== 'undefined') {
+        GLightbox({ selector: '.glightbox' });
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let screenshotsSwiper;
+      if (typeof Swiper !== 'undefined') {
+        screenshotsSwiper = new Swiper('.screenshots-swiper', {
+          loop: false,
+          spaceBetween: 20,
+          slidesPerView: 1,
+          speed: 500,
+          autoHeight: false,
+          pagination: {
+            el: '.screenshots-swiper .swiper-pagination',
+            clickable: true
+          },
+          navigation: {
+            nextEl: '.screenshots-swiper .swiper-button-next',
+            prevEl: '.screenshots-swiper .swiper-button-prev'
+          },
+          breakpoints: {
+            576: { slidesPerView: 2, spaceBetween: 20 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1200: { slidesPerView: 4, spaceBetween: 24 }
+          }
+        });
+      }
+
+      const filterButtons = document.querySelectorAll('.portfolio-filters li');
+      const slides = document.querySelectorAll('.screenshots-swiper .swiper-slide');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+          this.classList.add('filter-active');
+
+          const filterValue = this.getAttribute('data-filter');
+
+          slides.forEach(slide => {
+            if (filterValue === '*' || slide.matches(filterValue)) {
+              slide.style.display = '';
+            } else {
+              slide.style.display = 'none';
+            }
+          });
+
+          if (screenshotsSwiper) {
+            screenshotsSwiper.update();
+            screenshotsSwiper.slideTo(0);
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>
