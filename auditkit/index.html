@@ -152,30 +152,39 @@
 
               <h4>Project Overview</h4>
               <p>
-                AuditKit is a lightweight web tool built as a capstone project for Angela Yu’s Complete Full-Stack
-                Web
-                Development Bootcamp. It helps automate quick technical SEO checks by fetching on-page metadata,
-                parsing
-                page structure, and displaying basic performance metrics in a single view.</p>
+                AuditKit is a lightweight web application built as my capstone project for Angela Yu’s Complete
+                Full-Stack Web Development Bootcamp. It automates quick technical SEO checks by fetching on-page
+                metadata, parsing DOM structure, and presenting core performance metrics in a single, accessible
+                dashboard.
+              </p>
 
-              <h4>Problem & Objective</h4>
+              <h4>Problem &amp; Objective</h4>
               <p>
-                Checking basic SEO elements across different tools can take unnecessary time. The goal of this
-                project
-                was to build a simple, single-page dashboard that fetches and displays essential technical data
-                automatically.</p>
+                Manually auditing basic technical SEO factors across multiple individual tools can be time-consuming. My
+                goal for this project was to build a streamlined, single-page application that accepts a target URL,
+                executes the necessary requests behind the scenes, and automatically generates an easy-to-read audit
+                summary.
+              </p>
 
               <h4>Technical Implementation</h4>
               <p>
-                The application runs on a simple Node.js and Express.js server that processes user URL inputs and
-                manages server-side logic. When a user submits a URL, Axios sends HTTP requests to the Google
-                PageSpeed
-                Insights API to retrieve mobile and desktop performance benchmarks. At the same time, Cheerio parses
-                the
-                raw HTML document to extract essential on-page SEO signals, including title tags, meta descriptions,
-                heading structures, and Open Graph data. The parsed data and API responses are then passed into EJS
-                templates to dynamically render a clean, readable audit report for the user.</p>
+                The application runs on a Node.js and Express.js server responsible for processing user inputs and
+                handling server-side logic. When a user submits a URL, Axios handles asynchronous HTTP requests to the
+                Google PageSpeed Insights API to retrieve mobile and desktop performance benchmarks. Concurrently,
+                Cheerio parses the target site's raw HTML document to extract essential on-page SEO signals, including
+                title tags, meta descriptions, heading hierarchies (H1–H6), and Open Graph meta tags. The backend
+                formats this aggregated data and passes it into EJS templates to dynamically render the final audit
+                report.
+              </p>
 
+              <p>
+                As an entry-level developer navigating complex server-side operations, I integrated Claude (Anthropic's
+                AI assistant) into my development workflow as a virtual pair programmer. I utilized Claude primarily to
+                debug asynchronous request flows, refine Cheerio selector logic, review error-handling structures for
+                invalid URLs, and talk through backend edge cases. This interactive troubleshooting approach helped me
+                deepen my practical understanding of Node.js, API data extraction, and server-side rendering while
+                ensuring I understood the underlying logic of every route and function.
+              </p>
 
               <div class="features mt-4">
                 <h3>Implemented Features</h3>
@@ -184,8 +193,7 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
                       <i class="bi bi-code-square"></i>
                       <h4>On-Page SEO Extraction</h4>
-                      <p>Automated server-side extraction of title tags, meta descriptions, open graph tags, and
-                        heading
+                      <p>Automated server-side parsing of title tags, meta descriptions, Open Graph data, and heading
                         structures using Cheerio.</p>
                     </div>
                   </div>
@@ -194,8 +202,8 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
                       <i class="bi bi-speedometer"></i>
                       <h4>Core Web Vitals Auditing</h4>
-                      <p>Direct integration with Google PageSpeed Insights API to fetch live desktop and mobile
-                        performance metrics via Axios.</p>
+                      <p>Direct integration with the Google PageSpeed Insights API via Axios to fetch live desktop and
+                        mobile performance metrics.</p>
                     </div>
                   </div>
 
@@ -203,52 +211,55 @@
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
                       <i class="bi bi-cpu"></i>
                       <h4>Server-Side Processing</h4>
-                      <p>Asynchronous request handling, error management, and HTML parsing built using Node.js and
-                        Express.js.</p>
+                      <p>Asynchronous HTTP request handling, robust error management, and HTML data parsing built using
+                        Node.js and Express.js.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
                       <i class="bi bi-layout-text-window-reverse"></i>
-                      <h4>Clean UI & Reporting</h4>
-                      <p>Dynamic presentation of parsed audit data rendered cleanly with EJS templates and
-                        responsive
-                        CSS.</p>
+                      <h4>Clean UI &amp; Reporting</h4>
+                      <p>Dynamic presentation of audit results rendered cleanly using EJS templates and responsive CSS
+                        layout techniques.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <h4 class="mt-4">Key Outcome & Takeaways</h4>
-              <p>This project demonstrates how to build a functional, server-side web application that solves a real
-                SEO
-                workflow problem. By combining public API integration, HTML parsing, and clean templating, AuditKit
-                provides a fast way to evaluate core technical SEO factors in one place.</p>
+              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
+              <p>
+                This project provided valuable, hands-on experience in building a functional full-stack application that
+                addresses a real-world web workflow problem. Combining third-party API integration, DOM scraping, and
+                server-side templating strengthened my understanding of asynchronous JavaScript, HTTP response handling,
+                and full-stack application structure.
+              </p>
 
               <h3 class="mt-4">Video Overview</h3>
-              <p>The video demonstration covers the full end-to-end technical SEO and e-commerce build across key
-                areas:
-              </p>
+              <p>The demonstration video provides a step-by-step walk-through of the application's architecture and
+                features:</p>
               <ul>
-                <li><strong>Node.js & Express Setup:</strong> Server initialization, route setup, and request
-                  handling.
-                </li>
-                <li><strong>Metadata Extraction:</strong> Scraping page structure and meta tags using Cheerio.</li>
-                <li><strong>API Integration:</strong> Querying Google PageSpeed Insights for real-time performance
-                  scores via Axios.</li>
-                <li><strong>Data Rendering:</strong> Passing parsed JSON responses into EJS templates for visual
-                  reporting.</li>
-                <li><strong>Error Handling:</strong> Managing invalid URLs and failed API responses.</li>
+                <li><strong>Node.js &amp; Express Setup:</strong> An overview of server initialization, middleware
+                  setup, and GET/POST route handling.</li>
+                <li><strong>Metadata Extraction:</strong> Inspecting how Cheerio targets and extracts DOM elements and
+                  meta attributes from raw HTML responses.</li>
+                <li><strong>API Integration:</strong> Querying the Google PageSpeed Insights API using Axios and
+                  processing multi-level JSON responses.</li>
+                <li><strong>Data Rendering:</strong> Demonstrating how backend audit data flows into EJS views to
+                  construct the dynamic frontend UI.</li>
+                <li><strong>Error Handling:</strong> Verifying graceful error feedback when handling malformed URLs or
+                  failed external API calls.</li>
               </ul>
 
-              <h3 class="mt-4">Technologies & Tools Used</h3>
+              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
               <ul>
-                <li><strong>Runtime &amp; Backend Framework:</strong> Node.js, Express.js</li>
-                <li><strong>API Integration &amp; HTTP Client:</strong> Axios, Google PageSpeed Insights API</li>
-                <li><strong>HTML Parsing &amp; Web Scraping:</strong> Cheerio</li>
-                <li><strong>Templating Engine &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
+                <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
+                <li><strong>API Integration:</strong> Axios, Google PageSpeed Insights API</li>
+                <li><strong>DOM Parsing &amp; Web Scraping:</strong> Cheerio</li>
+                <li><strong>Server-Side Templating &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
                 <li><strong>Deployment &amp; Version Control:</strong> Git, GitHub, Render</li>
+                <li><strong>AI Pair Programming:</strong> Claude (used for debugging, regex/selector refactoring, and
+                  asynchronous logic review)</li>
               </ul>
             </div>
           </div>
