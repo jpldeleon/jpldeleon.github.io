@@ -14,10 +14,10 @@
 
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>John Off the Wall - HTML &amp; CSS Capstone Project</title>
+  <title>PixelLog - Node.js, Express.js, EJS Capstone Project</title>
   <meta name="description"
-    content="Personal website built with HTML5, CSS3, JavaScript, and Bootstrap 5 featuring dynamic light/dark mode and GLightbox integrations.">
-  <meta name="keywords" content="html5, css3, bootstrap, javascript, web development, capstone project">
+    content="A blog web app built with Node.js, Express, and EJS as part of Angela Yu's Complete Full-Stack Web Development Bootcamp. Features post creation, editing, deleting, filtering, sorting, and a light/dark theme toggle.">
+  <meta name="keywords" content="node.js, express, ejs, javascript, css3, full stack, capstone project">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.webp" rel="icon">
@@ -90,16 +90,16 @@
       <div class="container d-lg-flex justify-content-between align-items-center">
         <div class="page-header">
           <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            HTML &amp; CSS Capstone Project
+            Node.js, Express.js &amp; EJS Capstone Project
           </span>
           <h1 class="h2 fw-bold mb-3">
-            John Off the Wall
+            PixelLog
           </h1>
         </div>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">John Off the Wall</li>
+            <li class="current">PixelLog</li>
           </ol>
         </nav>
       </div>
@@ -117,7 +117,7 @@
               <div
                 style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
                 <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
-                  src="https://www.youtube.com/embed/X0RmZbUezdQ?si=Vn7QtViu6VCjVzxQ" title="YouTube video player"
+                  src="https://www.youtube.com/embed/5uy51WCZQSs?si=XTQBf5eekQnIx9Fb" title="YouTube video player"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -130,14 +130,14 @@
               <h3>Project Information</h3>
               <ul>
                 <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong> HTML &amp; CSS Capstone Project 2</li>
-                <li><strong>Focus:</strong> Responsive Web Design, Dynamic Theming &amp; UI Components</li>
-                <li><strong>Tech Stack:</strong> HTML5, CSS3, JavaScript, Bootstrap 5, GLightbox</li>
+                <li><strong>Type:</strong> Node.js, Express.js &amp; EJS Capstone Project</li>
+                <li><strong>Focus:</strong> Server-Side Rendering, CRUD Operations &amp; Dynamic Theming</li>
+                <li><strong>Tech Stack:</strong> Node.js, Express.js, EJS, JavaScript, CSS3</li>
                 <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
                   <div style="display: flex; gap: 12px; margin-top: 15px;">
-                    <a href="https://johnoffthewall.github.io/" target="_blank" rel="noopener noreferrer"
+                    <a href="https://pixellog-dev.onrender.com/" target="_blank" rel="noopener noreferrer"
                       class="btn-live">View Site</a>
-                    <a href="https://github.com/johnoffthewall/johnoffthewall.github.io" target="_blank"
+                    <a href="https://github.com/jpldeleon/pixellog" target="_blank"
                       rel="noopener noreferrer" class="btn-github">GitHub Repo</a>
                   </div>
                 </div>
@@ -149,26 +149,45 @@
             <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
 
               <h4>Project Overview</h4>
-              <p></p>John Off the Wall is a responsive personal website built as Capstone Project 2 for Angela Yu's
-              Complete Full-Stack Web Development Bootcamp. Designed using semantic HTML5 structure and clean CSS3
-              styling, the site showcases personal background details, technical projects, creative hobbies, and a
-              dedicated contact section across all screen sizes. practices.</p>
+              <p>
+                PixelLog is a blog web app I built as my Capstone Project for Angela Yu's Complete Full-Stack
+                Web Development Bootcamp. It's a nostalgia-themed blog where you can create, view, edit, and
+                delete posts, filter them by category, and sort them by date or title. It's built with
+                Node.js, Express, and EJS on the backend, with no database — posts live in memory and reset
+                when the server restarts, which was one of the project requirements.
+              </p>
+              <p>
+                Honestly, my love of retro design, pixel aesthetics, and nostalgia is what pushed me to build
+                this in the first place. Instead of another generic to-do list or portfolio clone, I wanted a
+                project that actually felt like mine, something themed around old consoles, childhood games,
+                and the kind of memories I'd want to write about myself.
+              </p>
+              <p>
+                I'll be upfront about this: I used Claude (Anthropic's AI assistant) while building this,
+                mainly to help me debug issues I got stuck on, review my code for bugs I couldn't see myself,
+                and talk through how to structure a few features. The core logic, routes, and design decisions
+                are mine, but I wanted to be transparent that AI was part of my workflow, the same way I'd use
+                Stack Overflow or documentation, just faster and more conversational.
+              </p>
 
               <h4>Problem &amp; Objective</h4>
               <p>
-                The goal of this capstone project was to create an original, custom-designed personal website from
-                scratch without using step-by-step solution code or video walkthroughs. It focuses on organizing
-                semantic page layouts, establishing clean site navigation, applying responsive CSS rules, and
-                ensuring
-                full accessibility.
+                The goal of this capstone was to build a working full-stack CRUD application from scratch,
+                without starter files or a solution to copy from. That meant figuring out my own route
+                structure, deciding how data should flow between the server and the EJS templates, and
+                actually sitting with bugs until I understood why they were happening instead of just
+                pattern-matching a fix. As someone still early in my dev journey, this project was as much
+                about building confidence in reading my own code as it was about shipping a feature.
               </p>
 
               <h4>Technical Implementation</h4>
               <p>
-                The application is structured around semantic HTML5 tags (`header`, `nav`, `section`, `footer`) to
-                prioritize document accessibility and clear navigation. CSS properties and responsive layout
-                principles, including flexbox and media queries, ensure the website adapts seamlessly across mobile,
-                tablet, and desktop viewports.
+                The backend is an Express.js server that handles routing and form submissions, with EJS as the
+                templating engine for rendering dynamic HTML. Posts are stored in a simple in-memory array on
+                the server rather than a database, per the project spec, which meant thinking carefully about
+                how IDs get assigned so new posts don't collide with existing ones. The frontend uses vanilla
+                JavaScript for interactive pieces like the light/dark theme toggle, category filtering, and
+                sorting, all built without any external UI framework.
               </p>
 
               <div class="features mt-4">
@@ -176,73 +195,74 @@
                 <div class="row gy-3">
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                      <i class="bi bi-brightness-high"></i>
-                      <h4>Dynamic Light / Dark Theme Toggle</h4>
-                      <p>Client-side theme switching with CSS variables, keyframe rotation feedback, and
-                        LocalStorage
-                        state persistence.</p>
+                      <i class="bi bi-pencil-square"></i>
+                      <h4>Full CRUD Functionality</h4>
+                      <p>Create, view, edit, and delete blog posts using Express routes and EJS forms, all
+                        backed by an in-memory data store.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
-                      <i class="bi bi-window"></i>
-                      <h4>Interactive Lightbox Dialogs</h4>
-                      <p>Integration with GLightbox for interactive media pop-ups, complete with touch-gesture
-                        support
-                        and custom button alignment scripting.</p>
+                      <i class="bi bi-funnel"></i>
+                      <h4>Category Filter &amp; Sort</h4>
+                      <p>Client-side filtering by category and sorting by date or title, so posts can be
+                        browsed however you like without a page reload.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
-                      <i class="bi bi-phone"></i>
-                      <h4>Fully Responsive Layout</h4>
-                      <p>Built using Bootstrap 5 flexible grids and custom media queries to provide a continuous
-                        view
-                        across desktop, tablet, and mobile displays.</p>
+                      <i class="bi bi-brightness-high"></i>
+                      <h4>Light / Dark Theme Toggle</h4>
+                      <p>Client-side theme switching with CSS variables and LocalStorage so your preference
+                        sticks around as you navigate the app.</p>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
-                      <i class="bi bi-code-slash"></i>
-                      <h4>Semantic Codebase &amp; Fallbacks</h4>
-                      <p>HTML5 semantic structure paired with dynamic DOM error handling to render SVG placeholders
-                        for
-                        unlocated assets.</p>
+                      <i class="bi bi-phone"></i>
+                      <h4>Fully Responsive Layout</h4>
+                      <p>Custom CSS media queries keep the feed, forms, and toolbar usable across desktop,
+                        tablet, and mobile screens.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
-              <p>This project demonstrates clean web design execution, semantic document structuring, and responsive
-                CSS
-                layout techniques. Building modular stylesheet rules and responsive media queries provides a solid
-                foundation for structured, scalable web design.</p>
+              <p>
+                This was my first time building something with a real backend instead of just static pages,
+                and it forced me to actually understand how data moves between routes, templates, and the
+                browser instead of just copying patterns. I ran into a few bugs I'm a little embarrassed by
+                now, like a post ID collision that made editing a new post accidentally edit an old one, but
+                working through those (with some help debugging alongside Claude) taught me more than getting
+                it right the first time would have. I'm still early in my dev journey, but this project is the
+                first one where I felt like I actually understood every piece of what I shipped.
+              </p>
 
               <h3 class="mt-4">Video Overview</h3>
               <p>The video demonstration covers the full project breakdown across key structural elements:</p>
               <ul>
-                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file structure,
-                  and
-                  repository configuration.</li>
-                <li><strong>Page Sections &amp; Content:</strong> Walking through the hero banner, personal
-                  background,
-                  past projects, and contact area.</li>
+                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file
+                  structure, and repository configuration.</li>
+                <li><strong>Core Features Walkthrough:</strong> Creating, editing, deleting, filtering, and
+                  sorting posts.</li>
                 <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
-                  tablet,
-                  and desktop viewports using CSS media queries.</li>
-                <li><strong>Code Base Structure:</strong> Reviewing valid HTML5 semantic tags and clean CSS styling
-                  rules in VS Code.</li>
+                  tablet, and desktop viewports using CSS media queries.</li>
+                <li><strong>Code Base Structure:</strong> Reviewing the Express routes and EJS templates in
+                  VS Code.</li>
               </ul>
 
               <h3 class="mt-4">Technologies &amp; Tools Used</h3>
               <ul>
-                <li><strong>Core Web Technologies:</strong> HTML5, CSS3</li>
-                <li><strong>Layout &amp; Styling:</strong> Responsive CSS Grid / Flexbox, Custom Stylesheets</li>
-                <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub, GitHub Pages</li>
+                <li><strong>Backend:</strong> Node.js, Express.js</li>
+                <li><strong>Templating:</strong> EJS</li>
+                <li><strong>Frontend:</strong> JavaScript, CSS3</li>
+                <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub</li>
+                <li><strong>AI Assistance:</strong> Claude, used for debugging and code review during
+                  development</li>
               </ul>
             </div>
           </div>
@@ -262,12 +282,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/1-hero.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-1-homepage.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/1-hero-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -277,12 +297,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/2-about.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-2-create.webp" class="img-fluid"
+                        alt="Create Post" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/2-about-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-2-create_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -292,12 +312,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/3-grid.webp" class="img-fluid" alt="Home Page"
+                      <img src="assets/img/portfolio/pixellog/pixellog-3-edit.webp" class="img-fluid" alt="Edit Post"
                         loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/3-grid-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-3-edit_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -307,12 +327,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/4-contact.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-4-delete.webp" class="img-fluid"
+                        alt="Delete Post" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/4-contact-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-4-delete_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -322,26 +342,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/5-lightbox.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-5-filter.webp" class="img-fluid"
+                        alt="Filter View" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/5-lightbox-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide filter-technical">
-                    <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/6-lightbox.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/6-lightbox-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-5-filter_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -351,12 +357,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/7-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-6-themetoggle.webp" class="img-fluid"
+                        alt="Theme Toggle" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/7-mobile-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-6-themetoggle_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -366,12 +372,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/8-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-7-lightbox.webp" class="img-fluid"
+                        alt="Sort Feature" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/8-mobile-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-7-lightbox_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -381,12 +387,12 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/9-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-8-edit-light.webp" class="img-fluid"
+                        alt="Edit Light Mode" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/9-mobile-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-8-edit-light_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>
@@ -396,12 +402,117 @@
 
                   <div class="swiper-slide filter-technical">
                     <div class="portfolio-wrap">
-                      <img src="assets/img/portfolio/johnoffthewall/10-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
+                      <img src="assets/img/portfolio/pixellog/pixellog-9-mobile.webp" class="img-fluid"
+                        alt="Mobile View 1" loading="lazy">
                       <div class="portfolio-info">
                         <div class="content">
                           <div class="portfolio-links">
-                            <a href="assets/img/portfolio/johnoffthewall/10-mobile-f.webp" class="glightbox"
+                            <a href="assets/img/portfolio/pixellog/pixellog-9-mobile_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-10-mobile.webp" class="img-fluid"
+                        alt="Mobile View 2" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-10-mobile_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-11-mobile.webp" class="img-fluid"
+                        alt="Mobile View 3" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-11-mobile_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-12-mobile.webp" class="img-fluid"
+                        alt="Mobile View 4" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-12-mobile_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-13-indexejs.webp" class="img-fluid"
+                        alt="Index EJS Code" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-13-indexejs_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-14-indexjs.webp" class="img-fluid"
+                        alt="Index JS Code Part 1" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-14-indexjs_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-15-indexjs2.webp" class="img-fluid"
+                        alt="Index JS Code Part 2" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-15-indexjs2_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="assets/img/portfolio/pixellog/pixellog-16-edit.webp" class="img-fluid"
+                        alt="Edit Template Code" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="assets/img/portfolio/pixellog/pixellog-16-edit_f.webp" class="glightbox"
                               data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
                           </div>
                         </div>

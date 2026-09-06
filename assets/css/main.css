@@ -2947,6 +2947,7 @@ section,
   border-radius: 50%;
   font-size: 18px;
   transition: 0.3s;
+  line-height: 1;
 }
 
 .portfolio .portfolio-wrap .portfolio-info .portfolio-links a:hover {
