@@ -14,31 +14,15 @@
 
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>John Paul De Leon | Technical SEO Specialist</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Universal Open Graph Tags -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="JP De Leon">
-  <meta property="og:description"
-    content="Technical SEO Specialist with a background in WordPress and web development.">
-  <meta property="og:url" content="https://jpldeleon.github.io/">
-  <meta property="og:image" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
-  <meta property="og:image:secure_url" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-
-  <!-- Twitter / X Card Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="JP De Leon">
-  <meta name="twitter:description"
-    content="Technical SEO Specialist with a background in WordPress and web development.">
-  <meta name="twitter:image" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
+  <title>AuditKit - API Capstone Project
+  </title>
+  <meta name="description"
+    content="Technical SEO portfolio project showcasing WordPress optimization and structured data implementation">
+  <meta name="keywords" content="technical seo, wordpress, schema markup, portfolio">
 
   <!-- Favicons -->
-  <link rel="icon" type="image/png" href="assets/img/jp_favicon.png">
+  <link href="/assets/img/favicon.webp" rel="icon">
+  <link href="/assets/img/apple-touch-icon.webp" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -48,27 +32,18 @@
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <!-- <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"> -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: SnapFolio
-  * Template URL: https://bootstrapmade.com/snapfolio-bootstrap-portfolio-template/
-  * Updated: Jul 21 2025 with Bootstrap v5.3.7
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 
-<body class="index-page">
+<body class="portfolio-details-page">
 
-  <!-- Page Background Elements -->
   <div class="background-elements">
     <div class="bg-blob blob-1"></div>
     <div class="bg-blob blob-2"></div>
@@ -88,10 +63,15 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#about"><i class="bi bi-person navicon"></i><span class="nav-label"> About</span></a></li>
-          <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
-                Resume</span></a></li>
-          <li><a href="#portfolio"><i class="bi bi-images navicon"></i><span class="nav-label"> Portfolio</span></a>
+          <li><a href="https://jpldeleon.github.io/" class="active"><i class="bi bi-house navicon"></i><span
+                class="nav-label">Home</span></a>
+          </li>
+          <li><a href="#portfolio-details"><i class="bi bi-person navicon"></i><span class="nav-label"> Video</span></a>
+          </li>
+          <li><a href="#details"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
+                Details</span></a></li>
+          <li><a href="#project-screenshots"><i class="bi bi-images navicon"></i><span class="nav-label">
+                Gallery</span></a>
           </li>
         </ul>
       </nav>
@@ -104,791 +84,509 @@
 
   </header>
 
-  <!-- Hero Sidebar -->
-  <aside id="hero" class="hero-sidebar">
-    <div class="hero-sidebar-inner">
-      <div class="sidebar-avatar">
-        <span class="profile-smoke profile-smoke-avatar"
-          aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
-        <img src="assets/img/profile/jp_profile_1.webp" alt="John Paul De Leon" class="profile-image"
-          fetchpriority="high">
-      </div>
-
-      <div class="sidebar-header-block">
-        <h1>John Paul <span class="accent-text">De Leon</span></h1>
-        <div class="code-container">
-          <span class="punctuation">{</span><span class="quote">"</span><span class="typed"
-            data-typed-items="technicalSeoSpecialist, seoSpecialist, wordpressDeveloper, webDeveloper"></span><span
-            class="quote">"</span><span class="punctuation">}</span>
-        </div>
-      </div>
-      <div class="sidebar-contact contact-block">
-        <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
-          data-copy-value="jpleonard.deleon@gmail.com">
-          <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
-          <i class="bi bi-envelope"></i>
-          <span>Email</span>
-        </button>
-        <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone"
-          data-copy-value="+639760109942">
-          <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
-          <i class="bi bi-telephone"></i>
-          <span>Phone</span>
-        </button>
-
-        <!-- Copy Toast (Email / Phone) -->
-        <div class="copy-toast-container">
-          <div id="copyToast" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
-            <div class="toast-body d-flex align-items-center gap-2">
-              <i class="bi bi-check-circle-fill"></i>
-              <span id="copyToastBody">Copied to clipboard.</span>
-              <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/jpldl/" target="_blank" title="LinkedIn">
-          <i class="bi bi-linkedin"></i>
-        </a>
-        <a href="https://github.com/jpldeleon" target="_blank" title="GitHub">
-          <i class="bi bi-github"></i>
-        </a>
-        <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork"
-          class="text-badge badge-upwork">Up</a>
-        <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance"
-          class="text-badge badge-golance">Go</a>
-      </div>
-    </div>
-  </aside><!-- /Hero Sidebar -->
-
   <main class="main">
 
-
-    <!-- About Section -->
-    <section id="about" class="about section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row">
-          <div class="col-lg-5" data-aos="zoom-in" data-aos-delay="200">
-            <div class="profile-card">
-              <div class="profile-header">
-                <span class="profile-smoke profile-smoke-about"
-                  aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
-                <div class="profile-image">
-                  <img src="assets/img/profile/jp-profile-2.webp" alt="John Paul De Leon" class="img-fluid">
-                </div>
-                <div class="profile-badge">
-                  <i class="bi bi-braces-asterisk"></i>
-                </div>
-              </div>
-
-              <div class="profile-details">
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="bi bi-lightning-charge-fill"></i>
-                    <h4>Specialization</h4>
-                  </div>
-                  <p class="detail-value">Technical SEO, SEO, WordPress Development</p>
-                </div>
-
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="bi bi-graph-up"></i>
-                    <h4>Experience</h4>
-                  </div>
-                  <p class="detail-value">Mid-level (5+ years in SEO)</p>
-                </div>
-
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="bi bi-book"></i>
-                    <h4>Education</h4>
-                  </div>
-                  <p class="detail-value">SEO, Technical SEO, Full Stack Web Development, ICT</p>
-                </div>
-
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="bi bi-translate"></i>
-                    <h4>Languages</h4>
-                  </div>
-                  <p class="detail-value">English, Filipino</p>
-                </div>
-
-                <div class="profile-cta">
-                  <div class="profile-cta-buttons">
-                    <a href="#" class="btn btn-primary">
-                      <i class="bi bi-download"></i>
-                      Download Resume
-                    </a>
-                    <a href="https://github.com/jpldeleon" target="_blank" class="btn btn-github">
-                      <i class="bi bi-github"></i>
-                      View on GitHub
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
-            <div class="about-content">
-              <div class="section-header">
-                <span class="badge-text">Get to Know Me</span>
-                <h2>Building things with SEO in mind</h2>
-              </div>
-
-              <div class="description">
-                <p>I did link prospecting for five years. The work was straightforward, but I was curious about the
-                  numbers. I'd see metrics on worksheets and think, there's more to this. What's the bigger picture?
-                  What's behind these numbers?</p>
-                <p>So I dug into Technical SEO and got sucked into it. I already had a background in HTML, CSS, and
-                  JavaScript from college, so I took a full-stack bootcamp as a refresher to actually see how everything
-                  works at the code level. Not because I wanted to be a developer, but because I needed to understand
-                  the full context.</p>
-                <p>Now I can identify problems and implement solutions. I think carefully before moving. I troubleshoot
-                  instead of guessing. I look for ways to improve how things work. I'm easily teachable and adapt to how
-                  you work and new technologies and updates, but I'll ask questions first to make sure I understand.</p>
-                <p>How I work: I prefer written or chat communication over calls, but I can adjust when needed. I work
-                  independently after understanding what matters and how you position things. My process is iterative,
-                  whether I'm solving something urgent or thinking through how to streamline a process. I research
-                  thoroughly because good decisions come from understanding your options. I prioritize high-impact work
-                  over busywork.</p>
-                <p>I'm solid at a few things and keep learning the rest. I don't have real client work yet, but I've
-                  built solid local projects that demonstrate what I can do. I bring that same curiosity I had five
-                  years ago, but now I actually know where to look for answers.</p>
-              </div>
-
-
-
-            </div>
-          </div>
+    <!-- Page Title -->
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="page-header">
+          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
+            Public API Capstone Project
+          </span>
+          <h1 class="h2 fw-bold mb-3">
+            AuditKit: Simple Technical SEO Tool
+          </h1>
         </div>
-
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">AuditKit</li>
+          </ol>
+        </nav>
       </div>
+    </div>
 
-    </section><!-- /About Section -->
-
-    <!-- Stats Section -->
-    <section id="stats" class="stats section light-background">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row justify-content-center">
-          <div class="col-lg-10">
-            <div class="stats-wrapper">
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="150">
-                <div class="icon-wrapper">
-                  <i class="bi bi-link-45deg"></i>
-                </div>
-                <span data-purecounter-start="0" data-purecounter-end="5" data-purecounter-duration="1"
-                  class="purecounter"></span>
-                <p>Years in Link Prospecting & Research</p>
-              </div><!-- End Stats Item -->
-
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="200">
-                <div class="icon-wrapper">
-                  <i class="bi bi-briefcase"></i>
-                </div>
-                <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1"
-                  class="purecounter"></span>
-                <p>Years Professional</p>
-              </div><!-- End Stats Item -->
-
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="250">
-                <div class="icon-wrapper">
-                  <i class="bi bi-shield-check"></i>
-                </div>
-                <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1"
-                  class="purecounter"></span>
-                <p>Certifications</p>
-              </div><!-- End Stats Item -->
-
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="250">
-                <div class="icon-wrapper">
-                  <i class="bi-rocket-takeoff"></i>
-                </div>
-                <span data-purecounter-start="0" data-purecounter-end="31" data-purecounter-duration="1"
-                  class="purecounter"></span>
-                <p>Projects handled</p>
-              </div><!-- End Stats Item -->
-
-              <!-- End Stats Item -->
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /Stats Section -->
-
-    <!-- Skills Section -->
-    <section id="skills" class="skills section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Skills</h2>
-        <p>Technical SEO background meeting web development skills. Hands-on experience in strategy, WordPress, and
-          full-stack projects.</p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="skills-grid">
-          <div class="skills-specialization" data-aos="fade-up" data-aos-delay="150">
-            <h4>Core Specializations</h4>
-            <div class="skills-list">
-              <div class="skill-item">
-                <h5>Technical SEO</h5>
-                <div class="skill-tooltip">Learned through certification course and hands-on projects</div>
-              </div>
-              <div class="skill-item">
-                <h5>WordPress Development</h5>
-                <div class="skill-tooltip">Built and practiced multiple projects on LocalWP</div>
-              </div>
-              <div class="skill-item">
-                <h5>E-Commerce / WooCommerce</h5>
-                <div class="skill-tooltip">Badlands Ink project with product catalog, payments, and optimization</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="skills-specialization" data-aos="fade-up" data-aos-delay="200">
-            <h4>Expertise Areas</h4>
-            <div class="skills-list">
-              <div class="skill-item">
-                <h5>On-Page SEO</h5>
-                <div class="skill-tooltip">Practical experience optimizing WordPress projects</div>
-              </div>
-              <div class="skill-item">
-                <h5>Off-Page SEO</h5>
-                <div class="skill-tooltip">5+ years link research, prospecting, qualification, and vetting</div>
-              </div>
-              <div class="skill-item">
-                <h5>Performance & Core Web Vitals</h5>
-                <div class="skill-tooltip">Site speed optimization and performance analysis</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="skills-specialization" data-aos="fade-up" data-aos-delay="250">
-            <h4>Technical Stack</h4>
-            <div class="skills-list">
-              <div class="skill-item">
-                <h5>Frontend Development</h5>
-                <div class="skill-tooltip">HTML, CSS, JavaScript, Bootstrap, responsive design</div>
-              </div>
-              <div class="skill-item">
-                <h5>Backend & Scripting</h5>
-                <div class="skill-tooltip">Node.js, Express.js, automation scripts</div>
-              </div>
-              <div class="skill-item">
-                <h5>Tools & Platforms</h5>
-                <div class="skill-tooltip">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /Skills Section -->
-
-    <!-- Resume Section -->
-    <section id="resume" class="resume section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Resume</h2>
-        <p>A quick look at where I've worked, studied, and what I've picked up along the way.</p>
-      </div><!-- End Section Title -->
+    <!-- Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row gy-4">
-          <!-- Left column with summary and contact -->
+
+          <div class="col-lg-8">
+            <div class="portfolio-video">
+              <div
+                style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
+                  src="https://www.youtube.com/embed/jMfSTSqf5ao?si=sXn29jaOvqiYV_Ex" title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+
           <div class="col-lg-4">
-            <div class="resume-side" data-aos="fade-right" data-aos-delay="100">
-              <div class="profile-img mb-4">
-                <span class="profile-smoke profile-smoke-resume"
-                  aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
-                <img src="assets/img/profile/jp-profile-3.webp" alt="John Paul De Leon" class="img-fluid rounded">
-              </div>
+            <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
+              <h3>Project Information</h3>
+              <ul>
+                <li><strong>Course:</strong>The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
+                <li><strong>Type:</strong>Public API Capstone Project</li>
+                <li><strong>Focus:</strong>Technical SEO Auditing, HTML Scraping & Core Web Vitals</li>
+                <li><strong>Tech Stack:</strong>Node.js, Express, Axios, Cheerio, Google PageSpeed API</li>
+                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <!-- Live Demo Button -->
+                  <div style="display: flex; gap: 12px; margin-top: 15px;">
+                    <a href="https://auditkit.onrender.com/" target="_blank" rel="noopener noreferrer"
+                      class="btn-live">Live Demo</a>
+                    <a href="https://github.com/jpldeleon/auditKit" target="_blank" rel="noopener noreferrer"
+                      class="btn-github">GitHub Repo</a>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </div>
 
-              <h3>Professional Summary</h3>
-              <p>SEO Specialist with 5 years of experience focused on link prospecting, backlink research, and outreach
-                across Intelligent.com LLC and Awisee. Recently expanded into technical SEO through hands-on web
-                development
-                training and certification, bringing a growing ability to understand and improve websites from the code
-                level, not just around it. Detail-focused and research-driven, with a genuine commitment to SEO as a
-                long-term career.</p>
+          <div class="col-lg-12">
+            <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
 
-              <h3 class="mt-4">Contact Information</h3>
-              <div class="contact-block">
-                <ul class="contact-info list-unstyled">
-                  <li><i class="bi bi-geo-alt"></i> Metro Manila, Philippines</li>
-                  <li>
-                    <button type="button" class="contact-info-copy js-copy-trigger" data-copy-type="email"
-                      data-copy-value="jpleonard.deleon@gmail.com">
-                      <i class="bi bi-envelope"></i> ••••••deleon@gmail.com
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" class="contact-info-copy js-copy-trigger" data-copy-type="phone"
-                      data-copy-value="+639760109942">
-                      <i class="bi bi-phone"></i> +63 ••• ••• 9942
-                    </button>
-                  </li>
-                  <li><a href="https://www.linkedin.com/in/jpldl/"><i class="bi bi-linkedin"></i>
-                      linkedin.com/in/jpldl/</a></li>
-                </ul>
+              <h4>Project Overview</h4>
+              <p>
+                AuditKit is a lightweight web application built as my capstone project for Angela Yu’s Complete
+                Full-Stack Web Development Bootcamp. It automates quick technical SEO checks by fetching on-page
+                metadata, parsing DOM structure, and presenting core performance metrics in a single, accessible
+                dashboard.
+              </p>
 
-                <!-- Copy Toast (Email / Phone) -->
-                <div class="copy-toast-container">
-                  <div id="copyToastResume" class="copy-toast toast" role="status" aria-live="polite"
-                    aria-atomic="true">
-                    <div class="toast-body d-flex align-items-center gap-2">
-                      <i class="bi bi-check-circle-fill"></i>
-                      <span id="copyToastResumeBody">Copied to clipboard.</span>
-                      <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+              <h4>Problem &amp; Objective</h4>
+              <p>
+                Manually auditing basic technical SEO factors across multiple individual tools can be time-consuming. My
+                goal for this project was to build a streamlined, single-page application that accepts a target URL,
+                executes the necessary requests behind the scenes, and automatically generates an easy-to-read audit
+                summary.
+              </p>
+
+              <h4>Technical Implementation</h4>
+              <p>
+                The application runs on a Node.js and Express.js server responsible for processing user inputs and
+                handling server-side logic. When a user submits a URL, Axios handles asynchronous HTTP requests to the
+                Google PageSpeed Insights API to retrieve mobile and desktop performance benchmarks. Concurrently,
+                Cheerio parses the target site's raw HTML document to extract essential on-page SEO signals, including
+                title tags, meta descriptions, heading hierarchies (H1–H6), and Open Graph meta tags. The backend
+                formats this aggregated data and passes it into EJS templates to dynamically render the final audit
+                report.
+              </p>
+
+              <p>
+                As an entry-level developer navigating complex server-side operations, I integrated Claude (Anthropic's
+                AI assistant) into my development workflow as a virtual pair programmer. I utilized Claude primarily to
+                debug asynchronous request flows, refine Cheerio selector logic, review error-handling structures for
+                invalid URLs, and talk through backend edge cases. This interactive troubleshooting approach helped me
+                deepen my practical understanding of Node.js, API data extraction, and server-side rendering while
+                ensuring I understood the underlying logic of every route and function.
+              </p>
+
+              <div class="features mt-4">
+                <h3>Implemented Features</h3>
+                <div class="row gy-3">
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
+                      <i class="bi bi-code-square"></i>
+                      <h4>On-Page SEO Extraction</h4>
+                      <p>Automated server-side parsing of title tags, meta descriptions, Open Graph data, and heading
+                        structures using Cheerio.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
+                      <i class="bi bi-speedometer"></i>
+                      <h4>Core Web Vitals Auditing</h4>
+                      <p>Direct integration with the Google PageSpeed Insights API via Axios to fetch live desktop and
+                        mobile performance metrics.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
+                      <i class="bi bi-cpu"></i>
+                      <h4>Server-Side Processing</h4>
+                      <p>Asynchronous HTTP request handling, robust error management, and HTML data parsing built using
+                        Node.js and Express.js.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
+                      <i class="bi bi-layout-text-window-reverse"></i>
+                      <h4>Clean UI &amp; Reporting</h4>
+                      <p>Dynamic presentation of audit results rendered cleanly using EJS templates and responsive CSS
+                        layout techniques.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="skills-animation mt-4">
-                <h3>Technical Skills</h3>
-                <div class="skill-category">
-                  <h4><i class="bi bi-search"></i> SEO Expertise</h4>
-                  <ul class="skill-list">
-                    <li>Technical SEO</li>
-                    <li>On-Page SEO</li>
-                    <li>Off-Page SEO</li>
-                    <li>Site Architecture</li>
-                    <li>Core Web Vitals</li>
-                    <li>Performance Optimization</li>
-                    <li>Structured Data / Schema Markup</li>
-                    <li>Email Verification / List Qualification</li>
-                  </ul>
-                </div>
+              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
+              <p>
+                This project provided valuable, hands-on experience in building a functional full-stack application that
+                addresses a real-world web workflow problem. Combining third-party API integration, DOM scraping, and
+                server-side templating strengthened my understanding of asynchronous JavaScript, HTTP response handling,
+                and full-stack application structure.
+              </p>
 
-                <div class="skill-category">
-                  <h4><i class="bi bi-braces"></i> Web Development</h4>
-                  <ul class="skill-list">
-                    <li>HTML</li>
-                    <li>CSS</li>
-                    <li>Bootstrap</li>
-                    <li>JavaScript</li>
-                    <li>Node.js</li>
-                    <li>Express.js</li>
-                    <li>Responsive Design</li>
-                    <li>Git/GitHub</li>
-                    <li>Semantic HTML</li>
-                    <li>API Integration / REST APIs</li>
-                  </ul>
-                </div>
+              <h3 class="mt-4">Video Overview</h3>
+              <p>The demonstration video provides a step-by-step walk-through of the application's architecture and
+                features:</p>
+              <ul>
+                <li><strong>Node.js &amp; Express Setup:</strong> An overview of server initialization, middleware
+                  setup, and GET/POST route handling.</li>
+                <li><strong>Metadata Extraction:</strong> Inspecting how Cheerio targets and extracts DOM elements and
+                  meta attributes from raw HTML responses.</li>
+                <li><strong>API Integration:</strong> Querying the Google PageSpeed Insights API using Axios and
+                  processing multi-level JSON responses.</li>
+                <li><strong>Data Rendering:</strong> Demonstrating how backend audit data flows into EJS views to
+                  construct the dynamic frontend UI.</li>
+                <li><strong>Error Handling:</strong> Verifying graceful error feedback when handling malformed URLs or
+                  failed external API calls.</li>
+              </ul>
 
-                <div class="skill-category">
-                  <h4><i class="bi bi-wordpress"></i> WordPress Development</h4>
-                  <ul class="skill-list">
-                    <li>Elementor</li>
-                    <li>WooCommerce</li>
-                    <li>Rank Math</li>
-                    <li>Yoast SEO</li>
-                    <li>WPForms</li>
-                    <li>WP Optimize</li>
-                    <li>Theme Customization</li>
-                    <li>LocalWP</li>
-                  </ul>
-                </div>
-
-                <div class="skill-category">
-                  <h4><i class="bi bi-graph-up"></i> Tools & Analytics</h4>
-                  <ul class="skill-list">
-                    <li>Google Analytics</li>
-                    <li>Screaming Frog</li>
-                    <li>SEMrush</li>
-                    <li>Ahrefs</li>
-                    <li>Google Search Console</li>
-                    <li>Looker Studio</li>
-                    <li>RustySEO</li>
-                    <li>PageSpeed Insights</li>
-                    <li>Lighthouse</li>
-                  </ul>
-                </div>
-
-
-              </div>
+              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
+              <ul>
+                <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
+                <li><strong>API Integration:</strong> Axios, Google PageSpeed Insights API</li>
+                <li><strong>DOM Parsing &amp; Web Scraping:</strong> Cheerio</li>
+                <li><strong>Server-Side Templating &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
+                <li><strong>Deployment &amp; Version Control:</strong> Git, GitHub, Render</li>
+                <li><strong>AI Pair Programming:</strong> Claude (used for debugging, regex/selector refactoring, and
+                  asynchronous logic review)</li>
+              </ul>
             </div>
           </div>
 
 
 
-          <!-- Right column with experience and education -->
-          <div class="col-lg-8 ps-4 ps-lg-5">
-            <!-- Certifications Section -->
-            <div class="resume-section" data-aos="fade-up" data-aos-delay="200">
-              <h3><i class="bi bi-award me-2"></i>Certifications</h3>
-
-              <div class="resume-item">
-                <h4>The Complete Full-Stack Web Development Bootcamp</h4>
-                <p class="company"><i class="bi bi-patch-check-fill"></i> Udemy</p>
-                <h5>2026</h5>
-              </div>
-
-              <div class="resume-item">
-                <h4>Technical SEO and SEO Sprint</h4>
-                <p class="company"><i class="bi bi-patch-check-fill"></i> SEO Workout by Gab Valimento</p>
-                <h5>2025</h5>
-              </div>
-            </div>
-
-            <!-- Experience Section -->
-            <div class="resume-section" data-aos="fade-up">
-              <h3><i class="bi bi-briefcase me-2"></i>Professional Experience</h3>
-
-              <div class="resume-item">
-                <h4>Self-Directed Learning & Upskilling</h4>
-                <h5>May 2025 - Present</h5>
-                <ul>
-                  <li>Completed the Complete Full-Stack Web Development Bootcamp</li>
-                  <li>Completed Technical SEO and SEO Sprint certification</li>
-                  <li>Practiced technical SEO through hands-on projects</li>
-                  <li>Practiced WordPress development and site building</li>
-                  <li>Built web app and other capstone projects</li>
-                </ul>
-              </div>
-
-              <div class="resume-item">
-                <h4>SEO Outreach Specialist</h4>
-                <h5>Jan - May 2025</h5>
-                <p class="company"><i class="bi bi-building"></i> <a href="https://www.linkedin.com/company/awisee/"
-                    target="_blank">Awisee</a></p>
-                <p class="location"><i class="bi bi-geo-alt"></i> Remote, Stockholm, Sweden</p>
-                <ul>
-                  <li>Built and verified prospect lists that directly enabled the team's link-building campaigns to run
-                    smoothly, reducing time spent on manual list-building</li>
-                  <li>Cleaned and organized lead data, sharpening outreach targeting so campaigns reached more relevant,
-                    higher-quality contacts</li>
-                  <li>Identified opportunities to streamline the prospect list workflow and proposed process
-                    improvements to the team</li>
-                </ul>
-              </div>
+          <!-- Screenshot Gallery Carousel Section -->
 
 
-              <div class="resume-item">
-                <h4>Research Analyst <span class="fw-normal">(SEO Link Prospecting)</span></h4>
+          <!-- Portfolio Section (Swiper slider, 4 visible, mobile-friendly) -->
+          <section id="project-screenshots" class="portfolio section">
 
-                <h5>Nov 2020 - Sept 2024</h5>
-                <p class="company"><i class="bi bi-building"></i> <a
-                    href="https://www.linkedin.com/company/intelligent/" target="_blank">Intelligent.com LLC</a></p>
-                <p class="location"><i class="bi bi-geo-alt"></i> Remote, Seattle, WA</p>
-                <ul>
-                  <li>Created research specs to guide the US and outreach teams' link prospecting for relevant campaigns
-                  </li>
-                  <li>Consistently built monthly prospect lists that met and sustained monthly and yearly outreach
-                    quotas</li>
-                  <li>Sourced high-quality backlink opportunities that supported the outreach team's campaign
-                    performance</li>
-                  <li>Maintained and troubleshot link and email databases, ensuring accuracy and campaign readiness</li>
-                  <li>Built a personal script to streamline research workflow, improving consistency and output quality
-                  </li>
-                  <li>Collaborated with team leaders to clarify research specs and align prospecting with campaign goals
-                  </li>
-                  <li>Trusted to pilot link prospecting strategy for new client accounts</li>
-                </ul>
-              </div>
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+              <h2>Gallery</h2>
+              <p>A closer look at the screenshots behind this project.</p>
+            </div><!-- End Section Title -->
 
-              <div class="resume-item">
-                <h4>Contact Finder <span class="fw-normal">(SEO Contact Research & Verification)</span></h4>
-                <h5>May 2020 - November 2020</h5>
-                <p class="company"><i class="bi bi-building"></i> <a
-                    href="https://www.linkedin.com/company/intelligent/" target="_blank">Intelligent.com LLC</a></p>
-                <p class="location"><i class="bi bi-geo-alt"></i> Remote, Seattle, WA</p>
-                <ul>
-                  <li>Researched and verified high-quality leads for SEO link-building outreach</li>
-                  <li>Consistently met daily and monthly quotas under tight deadlines</li>
-                  <li>Applied consistent qualification criteria that reduced wasted outreach effort on low-authority or
-                    irrelevant sites</li>
-                  <li>Shared research and verification techniques with colleagues, helping streamline the team's
-                    workflow</li>
-                  <li>Promoted to Research Analyst after building a strong track record in this role</li>
-                </ul>
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-              </div>
-
-              <div class="resume-item">
-                <h4>Freelance Research Consultant <span class="fw-normal">(Independent / Referral-based)</span></h4>
-                <h5>January 2019 - May 2020</h5>
-                <ul>
-                  <li>Delivered lead generation projects for outsourced clients through professional referrals</li>
-                  <li>Performed web scraping and data entry to build and organize prospect/contact lists</li>
-                  <li>Maintained accuracy and consistency across client-provided data sets</li>
-                </ul>
-              </div>
-
-              <div class="resume-item">
-                <h4>Research Analyst <span class="fw-normal">(Web Researcher)</span></h4>
-                <h5>Sep 2013 - November 2018</h5>
-                <p class="company"><i class="bi bi-building"></i> <a href="https://www.linkedin.com/company/straive_/"
-                    target="_blank">Straive (formerly SPi Global)</a></p>
-                <p class="location"><i class="bi bi-geo-alt"></i> On-site, Philippines</p>
-                <ul>
-                  <li>Built an automation solution that helped the team win a Lean Six Sigma Award and elevated the
-                    status of the account/project</li>
-                  <li>Consistently met quota and deadlines throughout tenure</li>
-                  <li>Trusted to pilot several new projects/accounts, successfully onboarding and acquiring them for the
-                    team</li>
-                  <li>Shared research and verification techniques with colleagues, helping streamline the team's
-                    workflow</li>
-                  <li>Stepped in to lead and manage other teams during critical, deadline-driven periods</li>
-                  <li>Expanded beyond primary duties by taking on overtime work for other accounts</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Education Section -->
-            <div class="resume-section" data-aos="fade-up" data-aos-delay="100">
-              <h3><i class="bi bi-mortarboard me-2"></i>Education</h3>
-
-              <div class="resume-item">
-                <h4>B.S. Marine Engineering</h4>
-                <h5>2009 - 2013</h5>
-                <p class="company"><i class="bi bi-building"></i> Philippine Merchant Marine School</p>
-              </div>
-
-              <div class="resume-item">
-                <h4>A.S. Information & Communication Technology</h4>
-                <h5>2006 - 2008</h5>
-                <p class="company"><i class="bi bi-building"></i> IETI</p>
-              </div>
-            </div>
+              <!-- Horizontal Filters Header -->
 
 
-          </div>
-        </div>
+              <!-- Swiper Slider Container (4 per view on desktop, arrows & pagination kept) -->
+              <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
+                <div class="swiper-wrapper align-items-center">
 
-      </div>
-
-    </section><!-- /Resume Section -->
-
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Portfolio</h2>
-        <p>Learning through building. These projects show my journey from bootcamp to hands-on SEO and WordPress work.
-        </p>
-        <p>No client work yet, but solid foundations.</p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
-          <div class="row">
-            <div class="col-lg-3 filter-sidebar">
-              <div class="filters-wrapper" data-aos="fade-right" data-aos-delay="150">
-                <ul class="portfolio-filters isotope-filters">
-                  <li data-filter="*" class="filter-active">All</li>
-                  <li data-filter=".filter-certifications">Certifications</li>
-                  <li data-filter=".filter-seo">SEO</li>
-                  <li data-filter=".filter-wordpress">WordPress Development</li>
-                  <li data-filter=".filter-webdevelopment">Web Development</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="col-lg-9">
-              <div class="row gy-4 portfolio-container isotope-container" data-aos="fade-up" data-aos-delay="200">
-
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-certifications">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/certifications/cert-fullstack-bootcamp.webp" class="img-fluid"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">Udemy</span>
-                        <h4>Complete Full-Stack Web Development Bootcamp</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/certifications/cert-fullstack-bootcamp_F.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-1-homepage.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-1-homepage_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-2-error.webp" class="img-fluid"
+                        alt="Error Handling" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-2-error_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-3-package.webp" class="img-fluid"
+                        alt="Package Configuration" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-3-package_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-4-server.webp" class="img-fluid"
+                        alt="Server Overview 1" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-4-server_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-5-server.webp" class="img-fluid"
+                        alt="Server Overview 2" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-5-server_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-6-server.webp" class="img-fluid"
+                        alt="Server Overview 3" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-6-server_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-7-script.webp" class="img-fluid"
+                        alt="Script Setup" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-7-script_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-8-sample-audit.webp" class="img-fluid"
+                        alt="Sample Audit 1" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-8-sample-audit_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-9-sample-audit.webp" class="img-fluid"
+                        alt="Sample Audit 2" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-9-sample-audit_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-10-sample-audit.webp" class="img-fluid"
+                        alt="Sample Audit 3" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-10-sample-audit_f.webp" class="glightbox"
+                              data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png.webp" class="img-fluid"
+                        alt="Sample Audit 4" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png_f.webp"
+                              class="glightbox" data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png.webp" class="img-fluid"
+                        alt="Sample Audit 5" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png_f.webp"
+                              class="glightbox" data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png.webp" class="img-fluid"
+                        alt="Sample Audit 6" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png_f.webp"
+                              class="glightbox" data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="swiper-slide filter-technical">
+                    <div class="portfolio-wrap">
+                      <img src="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png.webp" class="img-fluid"
+                        alt="Sample Audit 7" loading="lazy">
+                      <div class="portfolio-info">
+                        <div class="content">
+                          <div class="portfolio-links">
+                            <a href="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png_f.webp"
+                              class="glightbox" data-gallery="project-screenshots"><i class="bi bi-zoom-in"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-certifications">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/certifications/cert_techseosprint.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">SEO Workout</span>
-                        <h4>Technical SEO and SEO Sprint</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/certifications/cert_techseosprint_F.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
 
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/auditkit/auditkit-1-homepage.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">API Capstone Project</span>
-                        <h4>AuditKit</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/auditkit/auditkit-1-homepage_f.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
-                          <a href="https://auditkit.onrender.com/" target="_blank" title="View Live Project"><i
-                              class="bi bi-link"></i></a>
-                          <a href="auditkit/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
+                <!-- Controls -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
 
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-seo filter-wordpress">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/nothingtechblob/ntb_opt/nothingtechblob_p.webp"
-                      class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">Technical & On-Page SEO + WordPress Development</span>
-                        <h4>NothingTechBlob</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/nothingtechblob/ntb_full/nothingtechblob_p.webp"
-                            class="glightbox"><i class="bi bi-zoom-in"></i></a>
-                          <a href="nothingtechblob/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
+              </div>
 
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-seo filter-wordpress">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/badlands/badlands-ss/badlands-ink_thumb.webp"
-                      class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">Technical, Local & E-Commerce SEO + WordPress Development</span>
-                        <h4>Badlands Ink</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/badlands/badlands-ss-zoom/badlands-ink.webp"
-                            class="glightbox"><i class="bi bi-zoom-in"></i></a>
-                          <a href="badlands-ink/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
-
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/johnoffthewall/1-hero.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">HTML &amp; CSS Capstone Project</span>
-                        <h4>John Off the Wall</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/johnoffthewall/1-hero-f.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
-                              <a href="https://johnoffthewall.github.io/" target="_blank" title="View Live Project"><i
-                              class="bi bi-link"></i></a>
-                          <a href="johnoffthewall/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
-
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/pixellog/pixellog-1-homepage.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">Node.js, Express.js &amp EJS Capstone Project</span>
-                        <h4>PixelLog</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
-                              <a href="https://pixellog-dev.onrender.com/" target="_blank" title="View Live Project"><i
-                              class="bi bi-link"></i></a>
-                          <a href="pixellog/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
-
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/jamporudex/jamporudex-1-home.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">Node.js, Express, PostgreSQL &amp; EJS Capstone Project</span>
-                        <h4>JamporuDEX</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
-                              <a href="https://jamporudex.onrender.com/" target="_blank" title="View Live Project"><i
-                              class="bi bi-link"></i></a>
-                          <a href="jamporudex/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
-
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
-                  <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/route196/route196-1-home-mocha.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
-                    <div class="portfolio-info">
-                      <div class="content">
-                        <span class="category">Node.js, Express.js &amp EJS Capstone Project</span>
-                        <h4>Route 196</h4>
-                        <div class="portfolio-links">
-                          <a href="assets/img/portfolio/route196/route196-1-home-mocha_f.webp" class="glightbox"><i
-                              class="bi bi-zoom-in"></i></a>
-                              <a href="https://route196.onrender.com/" target="_blank" title="View Live Project"><i
-                              class="bi bi-link"></i></a>
-                          <a href="route196/" title="More Details"><i class="bi bi-caret-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End Portfolio Item -->
-
-              </div><!-- End Portfolio Container -->
             </div>
-          </div>
 
-        </div>
+          </section><!-- /Portfolio Section -->
 
-      </div>
+          <!-- Screenshot slider styling: keeps portfolio-wrap look, adds room for nav arrows/dots -->
+          <style>
+            .screenshots-swiper {
+              padding: 10px 10px 50px;
+            }
 
-    </section><!-- /Portfolio Section -->
+            .screenshots-swiper .swiper-slide {
+              height: auto;
+            }
 
+            .screenshots-swiper .portfolio-wrap {
+              height: 100%;
+            }
 
+            .screenshots-swiper .swiper-button-prev,
+            .screenshots-swiper .swiper-button-next {
+              top: auto;
+              bottom: 0;
+              margin-top: 0;
+              width: 40px;
+              height: 40px;
+              background: var(--accent-highlight, #178C7A);
+              border-radius: 50%;
+              color: #fff;
+            }
 
+            .screenshots-swiper .swiper-button-prev:after,
+            .screenshots-swiper .swiper-button-next:after {
+              font-size: 16px;
+              font-weight: 700;
+            }
+
+            .screenshots-swiper .swiper-pagination-bullet {
+              background: rgba(255, 255, 255, 0.5);
+              opacity: 1;
+            }
+
+            .screenshots-swiper .swiper-pagination-bullet-active {
+              background: var(--accent-highlight, #178C7A);
+            }
+
+            @media (max-width: 575px) {
+
+              .screenshots-swiper {
+                padding: 10px 10px 80px;
+              }
+
+              /* Dots stay centered, higher up */
+              .screenshots-swiper .swiper-pagination {
+                bottom: 38px;
+              }
+
+              /* Arrows drop into their own centered row below the dots */
+              .screenshots-swiper .swiper-button-prev,
+              .screenshots-swiper .swiper-button-next {
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                right: auto;
+                width: 32px;
+                height: 32px;
+              }
+
+              .screenshots-swiper .swiper-button-prev:after,
+              .screenshots-swiper .swiper-button-next:after {
+                font-size: 13px;
+              }
+
+              .screenshots-swiper .swiper-button-prev {
+                transform: translateX(calc(-100% - 8px));
+              }
+
+              .screenshots-swiper .swiper-button-next {
+                transform: translateX(8px);
+              }
+            }
+          </style>
 
 
 
@@ -897,38 +595,95 @@
   <footer id="footer" class="footer position-relative">
 
     <div class="container">
-      <div class="copyright">
-        <p>©<strong class="px-1 sitename">2026 John Paul De Leon</strong> <span>All Rights Reserved</span>
-        </p>
-      </div>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      <div class="copyright text-center ">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">John Paul De Leon</strong> <span>All Rights
+            Reserved</span></p>
       </div>
     </div>
 
   </footer>
 
+
   <!-- Preloader -->
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <!-- <script src="assets/vendor/swiper/swiper-bundle.min.js"></script> -->
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
   <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
+
+  <!-- Explicit GLightbox init for this page (guarantees the screenshot lightbox works even if another script on this page fails) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof GLightbox !== 'undefined') {
+        GLightbox({ selector: '.glightbox' });
+      }
+    });
+  </script>
+
+  <!-- Screenshots slider (Swiper): 4 visible on desktop, scales down for tablet/mobile -->
+  <!-- Replace your current inline <script> at the bottom of the HTML with this: -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 1. Initialize Swiper and keep instance in a variable
+      let screenshotsSwiper;
+      if (typeof Swiper !== 'undefined') {
+        screenshotsSwiper = new Swiper('.screenshots-swiper', {
+          loop: false, // Set to false to prevent clone-slide indexing bugs during filtering
+          spaceBetween: 20,
+          slidesPerView: 1,
+          speed: 500,
+          autoHeight: false,
+          pagination: {
+            el: '.screenshots-swiper .swiper-pagination',
+            clickable: true
+          },
+          navigation: {
+            nextEl: '.screenshots-swiper .swiper-button-next',
+            prevEl: '.screenshots-swiper .swiper-button-prev'
+          },
+          breakpoints: {
+            576: { slidesPerView: 2, spaceBetween: 20 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1200: { slidesPerView: 4, spaceBetween: 24 }
+          }
+        });
+      }
+
+      // 2. Add Filter Logic
+      const filterButtons = document.querySelectorAll('.portfolio-filters li');
+      const slides = document.querySelectorAll('.screenshots-swiper .swiper-slide');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          // Toggle active button style
+          filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+          this.classList.add('filter-active');
+
+          const filterValue = this.getAttribute('data-filter');
+
+          // Show/Hide matching slides
+          slides.forEach(slide => {
+            if (filterValue === '*' || slide.matches(filterValue)) {
+              slide.style.display = '';
+            } else {
+              slide.style.display = 'none';
+            }
+          });
+
+          // Update Swiper layout & return to slide 0
+          if (screenshotsSwiper) {
+            screenshotsSwiper.update();
+            screenshotsSwiper.slideTo(0);
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 
