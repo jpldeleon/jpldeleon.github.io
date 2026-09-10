@@ -22,7 +22,7 @@
   --background-color: #1E222A;
   /* Nord Polar Night 2 - Dark background for entire website */
   --default-color: #ECEFF4;
-  /* Nord Frost 1 - Light text throughout website */
+  /* Gruvbox 1 - Light text throughout website */
   --heading-color: #EBCB8B;
   /* Nord Aurora Yellow - Warm headings */
   --accent-color: #D08770;
@@ -34,7 +34,7 @@
   --surface-color: #282D37;
   /* Nord Polar Night 3 - Slightly lighter background for cards and boxes */
   --contrast-color: #ECEFF4;
-  /* Nord Frost 1 - High contrast text on accent backgrounds */
+  /* Gruvbox 1 - High contrast text on accent backgrounds */
   --quote-color: #a3be8c;
 }
 
@@ -42,7 +42,7 @@
 /* Nav Menu Colors - Nord Aurora Theme */
 :root {
   --nav-color: #D8DEE9;
-  /* Nord Frost 2 - Default nav links */
+  /* Gruvbox 2 - Default nav links */
   --nav-hover-color: #BF616A;
   /* Nord Aurora Red - Active/hover state */
   --nav-mobile-background-color: #2E3440;
@@ -50,7 +50,7 @@
   --nav-dropdown-background-color: #3B4252;
   /* Nord Polar Night 3 - Dropdown background */
   --nav-dropdown-color: #ECEFF4;
-  /* Nord Frost 1 - Dropdown text */
+  /* Gruvbox 1 - Dropdown text */
   --nav-dropdown-hover-color: #D08770;
   /* Nord Aurora Orange - Dropdown hover */
   --typed-color: #8fbcbb;
@@ -70,28 +70,74 @@
   --background-color: #2E3440;
   /* Nord Polar Night 2 - Main dark background */
   --default-color: #ECEFF4;
-  /* Nord Frost 1 - Light text */
+  /* Gruvbox 1 - Light text */
   --surface-color: #3B4252;
   /* Nord Polar Night 3 - Slightly lighter */
   --contrast-color: #ECEFF4;
-  /* Nord Frost 1 - High contrast */
+  /* Gruvbox 1 - High contrast */
 }
 
-/* Nord Frost Theme (Cool Variant) - toggled via [data-theme="frost"] on <html> */
-[data-theme="frost"] {
-  --background-color: #2E3440;
-  --heading-color: #88C0D0;
-  /* Nord Frost - light blue headings */
-  --accent-color: #81A1C1;
-  /* Nord Frost - blue accent for links */
-  --accent-highlight: #5E81AC;
-  /* Nord Frost - deep blue highlight for buttons/CTAs */
-  --accent-highlight-rgb: 94, 129, 172;
-  --nav-color: #D8DEE9;
-  --nav-hover-color: #5E81AC;
-  /* Nord Frost - deep blue nav hover */
-  --surface-color: #3B4252;
-  --quote-color: #8fbcbb;
+/* Gruvbox Theme (Dark) - toggled via [data-theme="gruvbox"] on <html>
+   Palette per https://gruvbox.org/ (dark, neutral swatches):
+   Functions #98971a (green) · Information #d79921 (yellow)
+   Identifiers #458588 (blue) · Warnings #cc241d (red)
+   Emphasis #d65d0e (orange) · Constants #689d6a (aqua) */
+[data-theme="gruvbox"] {
+  --background-color: #282828;
+  /* Gruvbox bg0 - dark background */
+  --default-color: #ebdbb2;
+  /* Gruvbox fg1 - warm cream body text */
+  --heading-color: #d79921;
+  /* Gruvbox Information (yellow) headings */
+  --accent-color: #689d6a;
+  /* Gruvbox Constants (aqua) accent for links */
+  --accent-highlight: #d65d0e;
+  /* Gruvbox Emphasis (orange) highlight for buttons/CTAs */
+  --accent-highlight-rgb: 214, 93, 14;
+  --nav-color: #d5c4a1;
+  /* Gruvbox fg2 - default nav links */
+  --nav-hover-color: #d65d0e;
+  /* Gruvbox Emphasis (orange) nav hover */
+  --nav-mobile-background-color: #282828;
+  /* Gruvbox bg0 */
+  --nav-dropdown-background-color: #3c3836;
+  /* Gruvbox bg1 */
+  --nav-dropdown-color: #ebdbb2;
+  /* Gruvbox fg1 */
+  --nav-dropdown-hover-color: #689d6a;
+  /* Gruvbox Constants (aqua) */
+  --surface-color: #3c3836;
+  /* Gruvbox bg1 - cards and boxes */
+  --contrast-color: #fbf1c7;
+  /* Gruvbox fg0 - high contrast text on accent backgrounds */
+  --quote-color: #98971a;
+  /* Gruvbox Functions (green) */
+  --typed-color: #458588;
+  /* Gruvbox Identifiers (blue) */
+}
+
+/* .light-background sections (e.g. the Stats bar) get gruvbox's own
+   "lighter" background steps instead of the Nord navy default. */
+[data-theme="gruvbox"] .light-background {
+  --background-color: #3c3836;
+  /* Gruvbox bg1 */
+  --surface-color: #504945;
+  /* Gruvbox bg2 - nested cards */
+}
+
+/* Portrait photo tint - each theme washes the profile photos (hero,
+   about, resume) in a filter that matches its own palette. On hover,
+   the filter is removed so the true photo color shows through.
+   Screenshots in the Portfolio section are left untouched so their
+   colors stay legible. */
+:root {
+  --photo-tint: saturate(0.92) contrast(1.02) hue-rotate(-3deg);
+  /* Subtle cool cast to match the Nord Aurora default theme */
+}
+
+[data-theme="gruvbox"] {
+  --photo-tint: sepia(0.35) saturate(1.3) hue-rotate(-10deg) brightness(0.96) contrast(1.05);
+  /* Warm amber duotone cast to match the Gruvbox theme */
 }
 
 /* Smooth scroll */
@@ -684,7 +730,7 @@ footer {
 }
 
 /*--------------------------------------------------------------
-# Theme Toggle Button (Aurora / Frost)
+# Theme Toggle Button (Aurora / gruvbox)
 --------------------------------------------------------------*/
 .theme-toggle {
   visibility: hidden;
@@ -717,7 +763,7 @@ footer {
   transform: translateY(0);
 }
 
-[data-theme="frost"] .theme-toggle i {
+[data-theme="gruvbox"] .theme-toggle i {
   transform: rotate(180deg);
 }
 
@@ -736,9 +782,9 @@ footer {
 }
 
 /*--------------------------------------------------------------
-# GLightbox Theming (Aurora / Frost)
+# GLightbox Theming (Aurora / gruvbox)
 # Uses --accent-highlight-rgb so it automatically re-colors
-# whenever [data-theme="frost"] is toggled on <html>.
+# whenever [data-theme="gruvbox"] is toggled on <html>.
 --------------------------------------------------------------*/
 .goverlay {
   background: radial-gradient(circle at center,
@@ -948,6 +994,12 @@ section,
   z-index: 2;
   border: 4px solid var(--accent-highlight-rgb);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+  filter: var(--photo-tint);
+  transition: filter 0.4s ease;
+}
+
+.sidebar-avatar .profile-image:hover {
+  filter: none;
 }
 
 
@@ -1108,8 +1160,8 @@ section,
   font-size: 16px;
 }
 
-/* "Hot" rising smoke cue — colors follow whichever theme (Aurora/Frost) is active
-   because they're built from --accent-highlight, which the [data-theme="frost"]
+/* "Hot" rising smoke cue — colors follow whichever theme (Aurora/gruvbox) is active
+   because they're built from --accent-highlight, which the [data-theme="gruvbox"]
    override already redefines. */
 .contact-smoke {
   position: absolute;
@@ -1806,6 +1858,12 @@ section,
   height: 100%;
   object-fit: cover;
   object-position: center 15%;
+  filter: var(--photo-tint);
+  transition: filter 0.4s ease;
+}
+
+.about .profile-header .profile-image img:hover {
+  filter: none;
 }
 
 .profile-smoke-about {
@@ -2553,6 +2611,12 @@ section,
   object-fit: cover;
   border: 5px solid color-mix(in srgb, var(--accent-highlight), transparent 85%);
   border-radius: 10px;
+  filter: var(--photo-tint);
+  transition: filter 0.4s ease;
+}
+
+.resume .resume-side .profile-img img:hover {
+  filter: none;
 }
 
 .profile-smoke-resume {

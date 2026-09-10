@@ -229,7 +229,7 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
   /**
-   * Theme toggle (Aurora / Frost)
+   * Theme toggle (Aurora / gruvbox)
    */
   const themeToggleBtn = document.querySelector('#theme-toggle');
 
@@ -237,23 +237,23 @@
     const themeIcon = themeToggleBtn.querySelector('i');
 
     function setThemeIcon(theme) {
-      themeIcon.className = theme === 'frost' ? 'bi bi-brightness-low' : 'bi bi-snow';
-      themeToggleBtn.title = theme === 'frost' ? 'Switch to Aurora theme' : 'Switch to Frost theme';
+      themeIcon.className = theme === 'gruvbox' ? 'bi bi-brightness-low-fill' : 'bi bi-brightness-low';
+      themeToggleBtn.title = theme === 'gruvbox' ? 'Switch to Aurora theme' : 'Switch to Gruvbox theme';
     }
 
-    setThemeIcon(document.documentElement.getAttribute('data-theme') === 'frost' ? 'frost' : 'aurora');
+    setThemeIcon(document.documentElement.getAttribute('data-theme') === 'gruvbox' ? 'gruvbox' : 'aurora');
 
     themeToggleBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const isFrost = document.documentElement.getAttribute('data-theme') === 'frost';
-      if (isFrost) {
+      const isgruvbox = document.documentElement.getAttribute('data-theme') === 'gruvbox';
+      if (isgruvbox) {
         document.documentElement.removeAttribute('data-theme');
         localStorage.setItem('site-theme', 'aurora');
         setThemeIcon('aurora');
       } else {
-        document.documentElement.setAttribute('data-theme', 'frost');
-        localStorage.setItem('site-theme', 'frost');
-        setThemeIcon('frost');
+        document.documentElement.setAttribute('data-theme', 'gruvbox');
+        localStorage.setItem('site-theme', 'gruvbox');
+        setThemeIcon('gruvbox');
       }
     });
   }
