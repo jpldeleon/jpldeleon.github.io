@@ -32,7 +32,7 @@
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
@@ -44,9 +44,49 @@
 <body class="portfolio-details-page">
 
   <div class="background-elements">
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-    <div class="bg-blob blob-3"></div>
+    <!-- Top gradient wash + twinkling stars -->
+    <div class="bg-top-gradient" aria-hidden="true"></div>
+    <div class="bg-stars" aria-hidden="true">
+      <span class="star" style="top:20.1%; left:15.8%; animation-delay:3.91s; animation-duration:3.25s;"></span>
+      <span class="star" style="top:22.5%; left:6.7%; animation-delay:3.04s; animation-duration:3.13s;"></span>
+      <span class="star star-lg" style="top:5.9%; left:9.9%; animation-delay:2.55s; animation-duration:5.89s;"></span>
+      <span class="star" style="top:14.5%; left:62.5%; animation-delay:5.69s; animation-duration:5.02s;"></span>
+      <span class="star star-lg" style="top:56.7%; left:5.6%; animation-delay:5.15s; animation-duration:4.01s;"></span>
+      <span class="star" style="top:8.6%; left:31.2%; animation-delay:4.9s; animation-duration:3.63s;"></span>
+      <span class="star star-lg" style="top:37.8%; left:37.5%; animation-delay:3.29s; animation-duration:3.22s;"></span>
+      <span class="star" style="top:13.5%; left:67.7%; animation-delay:2.57s; animation-duration:4.1s;"></span>
+      <span class="star star-lg" style="top:27.4%; left:30.4%; animation-delay:4.77s; animation-duration:5.45s;"></span>
+      <span class="star" style="top:34.2%; left:52.5%; animation-delay:5.25s; animation-duration:5.55s;"></span>
+      <span class="star star-lg" style="top:56.9%; left:12.6%; animation-delay:2.51s; animation-duration:5.65s;"></span>
+      <span class="star" style="top:29.4%; left:4.8%; animation-delay:4.01s; animation-duration:5.68s;"></span>
+      <span class="star" style="top:51.0%; left:31.7%; animation-delay:4.17s; animation-duration:5.08s;"></span>
+      <span class="star" style="top:27.5%; left:83.3%; animation-delay:5.67s; animation-duration:4.66s;"></span>
+      <span class="star" style="top:5.4%; left:69.7%; animation-delay:3.88s; animation-duration:6.48s;"></span>
+      <span class="star" style="top:17.9%; left:38.8%; animation-delay:4.01s; animation-duration:3.08s;"></span>
+      <span class="star star-lg" style="top:11.4%; left:12.5%; animation-delay:0.35s; animation-duration:5.69s;"></span>
+      <span class="star" style="top:15.9%; left:39.3%; animation-delay:5.23s; animation-duration:3.28s;"></span>
+      <span class="star" style="top:32.8%; left:87.6%; animation-delay:4.92s; animation-duration:6.02s;"></span>
+      <span class="star star-lg" style="top:25.3%; left:36.2%; animation-delay:5.31s; animation-duration:6.35s;"></span>
+      <span class="star" style="top:11.9%; left:23.7%; animation-delay:1.4s; animation-duration:4.7s;"></span>
+      <span class="star" style="top:16.7%; left:1.4%; animation-delay:2.51s; animation-duration:4.29s;"></span>
+      <span class="star" style="top:55.4%; left:68.7%; animation-delay:3.09s; animation-duration:5.16s;"></span>
+      <span class="star" style="top:5.0%; left:89.2%; animation-delay:4.68s; animation-duration:6.06s;"></span>
+      <span class="star star-lg" style="top:24.0%; left:40.1%; animation-delay:0.62s; animation-duration:5.22s;"></span>
+      <span class="star star-lg" style="top:5.8%; left:21.5%; animation-delay:0.97s; animation-duration:4.19s;"></span>
+    </div>
+
+    <!-- Bottom gradient wash + drifting waves -->
+    <div class="bg-bottom-gradient" aria-hidden="true"></div>
+    <div class="bg-waves" aria-hidden="true">
+      <svg class="wave-layer wave-1" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path
+          d="M0,60 C150,110 350,10 600,55 C850,100 1050,20 1200,55 L1200,120 L0,120 Z" />
+      </svg>
+      <svg class="wave-layer wave-2" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path
+          d="M0,75 C200,30 400,105 650,65 C900,25 1000,90 1200,70 L1200,120 L0,120 Z" />
+      </svg>
+    </div>
   </div>
 
   <header id="header" class="header dark-background d-flex flex-column justify-content-center">
@@ -58,18 +98,18 @@
 
       <!-- Theme Toggle -->
       <a href="#" id="theme-toggle" class="theme-toggle active d-flex align-items-center justify-content-center"
-        title="Switch color theme"><i class="bi bi-brightness-low"></i></a>
+        title="Switch color theme"><i class="fa-solid fa-sun"></i></a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="https://jpldeleon.github.io/" class="active"><i class="bi bi-house navicon"></i><span
+          <li><a href="https://jpldeleon.github.io/" class="active"><i class="fa-solid fa-house-chimney navicon"></i><span
                 class="nav-label">Home</span></a>
           </li>
-          <li><a href="#portfolio-details"><i class="bi bi-person navicon"></i><span class="nav-label"> Video</span></a>
+          <li><a href="#portfolio-details"><i class="fa-brands fa-youtube navicon"></i><span class="nav-label"> Video</span></a>
           </li>
-          <li><a href="#details"><i class="bi bi-file-earmark-text navicon"></i><span class="nav-label">
+          <li><a href="#details"><i class="fa-solid fa-info navicon"></i><span class="nav-label">
                 Details</span></a></li>
-          <li><a href="#project-screenshots"><i class="bi bi-images navicon"></i><span class="nav-label">
+          <li><a href="#project-screenshots"><i class="fa-regular fa-images navicon"></i><span class="nav-label">
                 Gallery</span></a>
           </li>
         </ul>
@@ -77,7 +117,7 @@
 
       <!-- Scroll Top -->
       <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-          class="bi bi-arrow-up-short"></i></a>
+          class="fa-solid fa-angles-up"></i></a>
 
     </div>
 
