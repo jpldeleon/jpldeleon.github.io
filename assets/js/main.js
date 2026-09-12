@@ -11,19 +11,22 @@
     headerToggleBtn.classList.toggle('fa-bars');
     headerToggleBtn.classList.toggle('fa-xmark');
   }
-  headerToggleBtn.addEventListener('click', headerToggle);
 
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.header-show')) {
-        headerToggle();
-      }
+  if (headerToggleBtn) {
+    headerToggleBtn.addEventListener('click', headerToggle);
+
+    /**
+     * Hide mobile nav on same-page/hash links
+     */
+    document.querySelectorAll('#navmenu a').forEach(navmenu => {
+      navmenu.addEventListener('click', () => {
+        if (document.querySelector('.header-show')) {
+          headerToggle();
+        }
+      });
+
     });
-
-  });
+  }
 
   /**
    * Toggle mobile nav dropdowns
