@@ -1172,64 +1172,7 @@ section,
   padding-bottom: 2px;
 }
 
-.hero-sidebar .social-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.hero-sidebar .social-links a {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--surface-color);
-  color: color-mix(in srgb, var(--default-color), transparent 40%);
-  border-radius: 50%;
-  font-size: 18px;
-  transition: all 0.3s ease;
-}
-
-.hero-sidebar .social-links a:hover {
-  color: var(--contrast-color);
-  background-color: var(--accent-highlight);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-highlight), transparent 70%);
-}
-
-.hero-sidebar .social-links a.text-badge {
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: -0.5px;
-}
-
-.hero-sidebar .social-links a.badge-upwork {
-  font-size: 13px;
-}
-
-.hero-sidebar .social-links a.badge-golance {
-  font-size: 11px;
-}
-
-.hero-sidebar .sidebar-projects {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.hero-sidebar .sidebar-projects-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: color-mix(in srgb, var(--default-color), transparent 55%);
-}
-
+.hero-sidebar .social-links,
 .hero-sidebar .project-links {
   display: flex;
   flex-wrap: wrap;
@@ -1237,6 +1180,7 @@ section,
   gap: 12px;
 }
 
+.hero-sidebar .social-links a,
 .hero-sidebar .project-links a {
   display: block;
   width: 42px;
@@ -1247,6 +1191,7 @@ section,
   transition: all 0.3s ease;
 }
 
+.hero-sidebar .social-links a::before,
 .hero-sidebar .project-links a::before {
   content: "";
   position: absolute;
@@ -1261,6 +1206,67 @@ section,
   transition: background-color 0.3s ease;
 }
 
+.hero-sidebar .social-links a:hover,
+.hero-sidebar .project-links a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.hero-sidebar .social-links a:hover::before,
+.hero-sidebar .project-links a:hover::before {
+  background-color: var(--accent-highlight);
+}
+
+/* Social icon paths — edit these to point at each icon. Paths are relative
+   to THIS file's location (assets/css/main.css), so to reach a file at
+   assets/icons/foo.png, use ../icons/foo.png. No hue-rotate here on purpose —
+   these stay one consistent color since they're your identity links. */
+.hero-sidebar .social-links a:nth-child(1)::before {
+  -webkit-mask-image: url('../icons/linkedin.webp');
+  mask-image: url('../icons/linkedin.webp');
+}
+
+.hero-sidebar .social-links a:nth-child(2)::before {
+  -webkit-mask-image: url('../icons/github.webp');
+  mask-image: url('../icons/github.webp');
+}
+
+.hero-sidebar .social-links a:nth-child(3)::before {
+  -webkit-mask-image: url('../icons/upwork.webp');
+  mask-image: url('../icons/upwork.webp');
+}
+
+.hero-sidebar .social-links a:nth-child(4)::before {
+  -webkit-mask-image: url('../icons/golance.webp');
+  mask-image: url('../icons/golance.webp');
+}
+
+.hero-sidebar .sidebar-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.hero-sidebar .sidebar-projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.hero-sidebar .sidebar-social-label,
+.hero-sidebar .sidebar-projects-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: color-mix(in srgb, var(--default-color), transparent 55%);
+}
+
 /* Project icon paths — edit these to point at each project's icon.
    Paths here are relative to THIS file's location (assets/css/main.css),
    so to reach a file at assets/icons/foo.png, use ../icons/foo.png. */
@@ -1270,23 +1276,23 @@ section,
 }
 
 .hero-sidebar .project-links a:nth-child(2)::before {
-  -webkit-mask-image: url('../icons/dex_icon.png');
-  mask-image: url('../icons/dex_icon.png');
+  -webkit-mask-image: url('../icons/project-2-icon.png');
+  mask-image: url('../icons/project-2-icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(3)::before {
-  -webkit-mask-image: url('../icons/joffthewall_icon.png');
-  mask-image: url('../icons/joffthewall_icon.png');
+  -webkit-mask-image: url('../icons/project-3-icon.png');
+  mask-image: url('../icons/project-3-icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(4)::before {
-  -webkit-mask-image: url('../icons/pixellog_icon.png');
-  mask-image: url('../icons/pixellog_icon.png');
+  -webkit-mask-image: url('../icons/project-4-icon.png');
+  mask-image: url('../icons/project-4-icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(5)::before {
-  -webkit-mask-image: url('../icons/route196_icon.png');
-  mask-image: url('../icons/route196_icon.png');
+  -webkit-mask-image: url('../icons/project-5-icon.png');
+  mask-image: url('../icons/project-5-icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(6)::before {
@@ -1294,16 +1300,7 @@ section,
   mask-image: url('../icons/project-6-icon.png');
 }
 
-.hero-sidebar .project-links a:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
-}
-
-.hero-sidebar .project-links a:hover::before {
-  background-color: var(--accent-highlight);
-}
-
-/* Each icon gets a distinct hue shifted off the theme's own accent
+/* Each project icon gets a distinct hue shifted off the theme's own accent
    color, so colors stay varied but always re-derive from whichever
    theme (Aurora / Gruvbox / Everforest / Monokai) is active. */
 .hero-sidebar .project-links a:nth-child(1) {
