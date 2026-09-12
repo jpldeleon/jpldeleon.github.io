@@ -231,10 +231,10 @@
 
     const themeOrder = ['aurora', 'gruvbox', 'everforest', 'monokai'];
     const themeIcons = {
-      aurora: 'fa-light fa-sun',
-      gruvbox: 'fa-light fa-tree',
-      everforest: 'fa-light fa-moon',
-      monokai: 'fa-light fa-meteor'
+      aurora: 'fa-regular fa-sun',
+      gruvbox: 'fa-regular fa-tree',
+      everforest: 'fa-regular fa-moon',
+      monokai: 'fa-regular fa-meteor'
     };
     const themeLabels = {
       aurora: 'Aurora',
