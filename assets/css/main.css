@@ -2174,7 +2174,7 @@ they read as ambient texture, not a focal point.
 
 .about .profile-header .profile-badge {
   position: absolute;
-  bottom: 5px;
+  bottom: 20px;
   right: calc(50% - 65px);
   width: 32px;
   height: 32px;
