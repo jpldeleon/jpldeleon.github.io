@@ -1252,8 +1252,6 @@ section,
   position: absolute;
   inset: 11px;
   background-color: var(--accent-color);
-  -webkit-mask-image: var(--icon-url);
-  mask-image: var(--icon-url);
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -1261,6 +1259,39 @@ section,
   -webkit-mask-position: center;
   mask-position: center;
   transition: background-color 0.3s ease;
+}
+
+/* Project icon paths — edit these to point at each project's icon.
+   Paths here are relative to THIS file's location (assets/css/main.css),
+   so to reach a file at assets/icons/foo.png, use ../icons/foo.png. */
+.hero-sidebar .project-links a:nth-child(1)::before {
+  -webkit-mask-image: url('../icons/auditkit_icon.png');
+  mask-image: url('../icons/auditkit_icon.png');
+}
+
+.hero-sidebar .project-links a:nth-child(2)::before {
+  -webkit-mask-image: url('../icons/project-2-icon.png');
+  mask-image: url('../icons/project-2-icon.png');
+}
+
+.hero-sidebar .project-links a:nth-child(3)::before {
+  -webkit-mask-image: url('../icons/project-3-icon.png');
+  mask-image: url('../icons/project-3-icon.png');
+}
+
+.hero-sidebar .project-links a:nth-child(4)::before {
+  -webkit-mask-image: url('../icons/project-4-icon.png');
+  mask-image: url('../icons/project-4-icon.png');
+}
+
+.hero-sidebar .project-links a:nth-child(5)::before {
+  -webkit-mask-image: url('../icons/project-5-icon.png');
+  mask-image: url('../icons/project-5-icon.png');
+}
+
+.hero-sidebar .project-links a:nth-child(6)::before {
+  -webkit-mask-image: url('../icons/project-6-icon.png');
+  mask-image: url('../icons/project-6-icon.png');
 }
 
 .hero-sidebar .project-links a:hover {
