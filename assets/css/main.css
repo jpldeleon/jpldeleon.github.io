@@ -1597,76 +1597,6 @@ section,
   overflow: hidden;
 }
 
-/* Shared Blob Styles */
-
-.blob {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255, 0, 128, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
-  border-radius: 50%;
-  filter: blur(40px);
-  /* Optional glow effect */
-  z-index: 0;
-  /* Keep behind content */
-}
-
-.background-elements .bg-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.22;
-  background: radial-gradient(circle,
-      color-mix(in srgb, var(--accent-highlight), transparent 40%),
-      transparent 70%);
-  animation: blob-float 10s ease-in-out infinite alternate;
-}
-
-/* Aurora Blob Colors - Northern Lights Theme */
-.background-elements .bg-blob.blob-1 {
-  width: 450px;
-  height: 450px;
-  top: -10%;
-  left: -5%;
-  animation-delay: 0s;
-  background: radial-gradient(circle,
-      color-mix(in srgb, var(--accent-highlight), transparent 40%),
-      transparent 70%);
-}
-
-.background-elements .bg-blob.blob-2 {
-  width: 500px;
-  height: 500px;
-  top: 40%;
-  right: -10%;
-  animation-delay: 3s;
-  background: radial-gradient(circle,
-      color-mix(in srgb, var(--accent-color), transparent 40%),
-      transparent 70%);
-}
-
-.background-elements .bg-blob.blob-3 {
-  width: 350px;
-  height: 350px;
-  bottom: -5%;
-  left: 25%;
-  animation-delay: 6s;
-  background: radial-gradient(circle,
-      color-mix(in srgb, var(--heading-color), transparent 40%),
-      transparent 70%);
-}
-
-/* Subtle Floating Movement */
-@keyframes blob-float {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  100% {
-    transform: translate(30px, -40px) scale(1.08);
-  }
-}
-
 /*--------------------------------------------------------------
 # Ambient Background Layer - Stars (top/header) + Waves (bottom/footer)
 Both live inside .background-elements, which is already position:fixed
@@ -2140,7 +2070,7 @@ they read as ambient texture, not a focal point.
 
 .about .profile-header .profile-badge {
   position: absolute;
-  bottom: 20px;
+  bottom: 5px;
   right: calc(50% - 65px);
   width: 32px;
   height: 32px;
