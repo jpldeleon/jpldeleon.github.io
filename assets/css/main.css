@@ -1270,23 +1270,23 @@ section,
 }
 
 .hero-sidebar .project-links a:nth-child(2)::before {
-  -webkit-mask-image: url('../icons/project-2-icon.png');
-  mask-image: url('../icons/project-2-icon.png');
+  -webkit-mask-image: url('../icons/dex_icon.png');
+  mask-image: url('../icons/dex_icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(3)::before {
-  -webkit-mask-image: url('../icons/project-3-icon.png');
-  mask-image: url('../icons/project-3-icon.png');
+  -webkit-mask-image: url('../icons/joffthewall_icon.png');
+  mask-image: url('../icons/joffthewall_icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(4)::before {
-  -webkit-mask-image: url('../icons/project-4-icon.png');
-  mask-image: url('../icons/project-4-icon.png');
+  -webkit-mask-image: url('../icons/pixellog_icon.png');
+  mask-image: url('../icons/pixellog_icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(5)::before {
-  -webkit-mask-image: url('../icons/project-5-icon.png');
-  mask-image: url('../icons/project-5-icon.png');
+  -webkit-mask-image: url('../icons/route196_icon.png');
+  mask-image: url('../icons/route196_icon.png');
 }
 
 .hero-sidebar .project-links a:nth-child(6)::before {
