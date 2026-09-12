@@ -125,19 +125,89 @@
   /* Gruvbox bg2 - nested cards */
 }
 
-/* Portrait photo tint - each theme washes the profile photos (hero,
-   about, resume) in a filter that matches its own palette. On hover,
-   the filter is removed so the true photo color shows through.
-   Screenshots in the Portfolio section are left untouched so their
-   colors stay legible. */
-:root {
-  --photo-tint: saturate(0.92) contrast(1.02) hue-rotate(-3deg);
-  /* Subtle cool cast to match the Nord Aurora default theme */
+/* Everforest Theme (Dark, medium contrast) - toggled via [data-theme="everforest"] on <html>
+   Palette per https://everforest.vercel.app/palette (dark, medium):
+   bg0 #2D353B · fg #D3C6AA · red #E67E80 · orange #E69875
+   yellow #DBBC7F · green #A7C080 · aqua #83C092 · blue #7FBBB3 */
+[data-theme="everforest"] {
+  --background-color: #2D353B;
+  /* Everforest bg0 - default dark background */
+  --default-color: #D3C6AA;
+  /* Everforest fg - warm off-white body text */
+  --heading-color: #DBBC7F;
+  /* Everforest yellow - headings */
+  --accent-color: #83C092;
+  /* Everforest aqua - accent for links */
+  --accent-highlight: #A7C080;
+  /* Everforest green - highlight for buttons/CTAs */
+  --accent-highlight-rgb: 167, 192, 128;
+  --nav-color: #D3C6AA;
+  /* Everforest fg - default nav links */
+  --nav-hover-color: #A7C080;
+  /* Everforest green nav hover */
+  --nav-mobile-background-color: #2D353B;
+  /* Everforest bg0 */
+  --nav-dropdown-background-color: #3D484D;
+  /* Everforest bg2 */
+  --nav-dropdown-color: #D3C6AA;
+  /* Everforest fg */
+  --nav-dropdown-hover-color: #83C092;
+  /* Everforest aqua */
+  --surface-color: #343F44;
+  /* Everforest bg1 - cards and boxes */
+  --contrast-color: #2D353B;
+  /* Everforest bg0 - dark text on the light green accent background */
+  --quote-color: #E69875;
+  /* Everforest orange */
+  --typed-color: #7FBBB3;
+  /* Everforest blue */
 }
 
-[data-theme="gruvbox"] {
-  --photo-tint: sepia(0.35) saturate(1.3) hue-rotate(-10deg) brightness(0.96) contrast(1.05);
-  /* Warm amber duotone cast to match the Gruvbox theme */
+[data-theme="everforest"] .light-background {
+  --background-color: #343F44;
+  /* Everforest bg1 */
+  --surface-color: #3D484D;
+  /* Everforest bg2 - nested cards */
+}
+
+/* Monokai Theme - toggled via [data-theme="monokai"] on <html>
+   Classic Monokai editor palette:
+   bg #272822 · fg #f8f8f2 · pink #f92672 · green #a6e22e
+   yellow #e6db74 · blue #66d9ef · purple #ae81ff */
+[data-theme="monokai"] {
+  --background-color: #272822;
+  /* Monokai background */
+  --default-color: #f8f8f2;
+  /* Monokai foreground - body text */
+  --heading-color: #e6db74;
+  /* Monokai yellow - headings */
+  --accent-color: #66d9ef;
+  /* Monokai blue - accent for links */
+  --accent-highlight: #f92672;
+  /* Monokai pink - highlight for buttons/CTAs */
+  --accent-highlight-rgb: 249, 38, 114;
+  --nav-color: #f8f8f2;
+  /* Monokai foreground - default nav links */
+  --nav-hover-color: #f92672;
+  /* Monokai pink nav hover */
+  --nav-mobile-background-color: #272822;
+  --nav-dropdown-background-color: #3e3d32;
+  --nav-dropdown-color: #f8f8f2;
+  --nav-dropdown-hover-color: #a6e22e;
+  /* Monokai green */
+  --surface-color: #3e3d32;
+  /* Monokai bg lighter - cards and boxes */
+  --contrast-color: #f8f8f2;
+  /* High contrast text on pink accent backgrounds */
+  --quote-color: #a6e22e;
+  /* Monokai green */
+  --typed-color: #ae81ff;
+  /* Monokai purple */
+}
+
+[data-theme="monokai"] .light-background {
+  --background-color: #3e3d32;
+  --surface-color: #49483e;
 }
 
 /* Smooth scroll */
@@ -764,7 +834,15 @@ footer {
 }
 
 [data-theme="gruvbox"] .theme-toggle i {
+  transform: rotate(90deg);
+}
+
+[data-theme="everforest"] .theme-toggle i {
   transform: rotate(180deg);
+}
+
+[data-theme="monokai"] .theme-toggle i {
+  transform: rotate(270deg);
 }
 
 @media (max-width: 768px) {
@@ -986,20 +1064,41 @@ section,
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: block;
   width: 250px;
   height: 250px;
-  object-fit: cover;
-  object-position: 50% 1%;
   border-radius: 50%;
+  overflow: hidden;
   z-index: 2;
   border: 4px solid var(--accent-highlight-rgb);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%);
-  filter: var(--photo-tint);
-  transition: filter 0.4s ease;
 }
 
-.sidebar-avatar .profile-image:hover {
-  filter: none;
+.sidebar-avatar .profile-image img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 1%;
+}
+
+.sidebar-avatar .profile-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--accent-color), transparent 25%),
+      color-mix(in srgb, var(--accent-highlight), transparent 15%));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.sidebar-avatar .profile-image:hover::after {
+  opacity: 0.8;
 }
 
 
@@ -1112,6 +1211,92 @@ section,
 
 .hero-sidebar .social-links a.badge-golance {
   font-size: 11px;
+}
+
+.hero-sidebar .sidebar-projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.hero-sidebar .sidebar-projects-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: color-mix(in srgb, var(--default-color), transparent 55%);
+}
+
+.hero-sidebar .project-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.hero-sidebar .project-links a {
+  display: block;
+  width: 42px;
+  height: 42px;
+  position: relative;
+  background-color: var(--surface-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.hero-sidebar .project-links a::before {
+  content: "";
+  position: absolute;
+  inset: 11px;
+  background-color: var(--accent-color);
+  -webkit-mask-image: var(--icon-url);
+  mask-image: var(--icon-url);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: background-color 0.3s ease;
+}
+
+.hero-sidebar .project-links a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.hero-sidebar .project-links a:hover::before {
+  background-color: var(--accent-highlight);
+}
+
+/* Each icon gets a distinct hue shifted off the theme's own accent
+   color, so colors stay varied but always re-derive from whichever
+   theme (Aurora / Gruvbox / Everforest / Monokai) is active. */
+.hero-sidebar .project-links a:nth-child(1) {
+  filter: hue-rotate(0deg);
+}
+
+.hero-sidebar .project-links a:nth-child(2) {
+  filter: hue-rotate(60deg);
+}
+
+.hero-sidebar .project-links a:nth-child(3) {
+  filter: hue-rotate(120deg);
+}
+
+.hero-sidebar .project-links a:nth-child(4) {
+  filter: hue-rotate(180deg);
+}
+
+.hero-sidebar .project-links a:nth-child(5) {
+  filter: hue-rotate(240deg);
+}
+
+.hero-sidebar .project-links a:nth-child(6) {
+  filter: hue-rotate(300deg);
 }
 
 .hero-sidebar .sidebar-contact {
@@ -1853,17 +2038,36 @@ section,
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+.about .profile-header .profile-image a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .about .profile-header .profile-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 15%;
-  filter: var(--photo-tint);
-  transition: filter 0.4s ease;
 }
 
-.about .profile-header .profile-image img:hover {
-  filter: none;
+.about .profile-header .profile-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--accent-color), transparent 25%),
+      color-mix(in srgb, var(--accent-highlight), transparent 15%));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.about .profile-header .profile-image:hover::after {
+  opacity: 0.8;
 }
 
 .profile-smoke-about {
@@ -2603,20 +2807,40 @@ section,
   text-align: center;
 }
 
-.resume .resume-side .profile-img img {
+.resume .resume-side .profile-img a {
   position: relative;
   z-index: 2;
+  display: inline-block;
   width: 200px;
   height: 200px;
-  object-fit: cover;
   border: 5px solid color-mix(in srgb, var(--accent-highlight), transparent 85%);
   border-radius: 10px;
-  filter: var(--photo-tint);
-  transition: filter 0.4s ease;
+  overflow: hidden;
 }
 
-.resume .resume-side .profile-img img:hover {
-  filter: none;
+.resume .resume-side .profile-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.resume .resume-side .profile-img a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--accent-color), transparent 25%),
+      color-mix(in srgb, var(--accent-highlight), transparent 15%));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.resume .resume-side .profile-img a:hover::after {
+  opacity: 0.8;
 }
 
 .profile-smoke-resume {

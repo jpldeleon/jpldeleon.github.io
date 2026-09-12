@@ -229,32 +229,53 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
   /**
-   * Theme toggle (Aurora / gruvbox)
+   * Theme toggle (Aurora / Gruvbox / Neo-Brutalist / Monokai)
    */
   const themeToggleBtn = document.querySelector('#theme-toggle');
 
   if (themeToggleBtn) {
     const themeIcon = themeToggleBtn.querySelector('i');
 
-    function setThemeIcon(theme) {
-      themeIcon.className = theme === 'gruvbox' ? 'bi bi-brightness-low-fill' : 'bi bi-brightness-low';
-      themeToggleBtn.title = theme === 'gruvbox' ? 'Switch to Aurora theme' : 'Switch to Gruvbox theme';
+    // 'aurora' is the default theme and has no [data-theme] attribute on <html>.
+    const themeOrder = ['aurora', 'gruvbox', 'everforest', 'monokai'];
+    const themeIcons = {
+      aurora: 'bi-brightness-low',
+      gruvbox: 'bi-brightness-low-fill',
+      everforest: 'bi-tree-fill',
+      monokai: 'bi-moon-stars-fill'
+    };
+    const themeLabels = {
+      aurora: 'Aurora',
+      gruvbox: 'Gruvbox',
+      everforest: 'Everforest',
+      monokai: 'Monokai'
+    };
+
+    function getCurrentTheme() {
+      return document.documentElement.getAttribute('data-theme') || 'aurora';
     }
 
-    setThemeIcon(document.documentElement.getAttribute('data-theme') === 'gruvbox' ? 'gruvbox' : 'aurora');
+    function applyTheme(theme) {
+      if (theme === 'aurora') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      localStorage.setItem('site-theme', theme);
+
+      themeIcon.className = 'bi ' + themeIcons[theme];
+      const currentIndex = themeOrder.indexOf(theme);
+      const nextTheme = themeOrder[(currentIndex + 1) % themeOrder.length];
+      themeToggleBtn.title = 'Switch to ' + themeLabels[nextTheme] + ' theme';
+    }
+
+    applyTheme(getCurrentTheme());
 
     themeToggleBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const isgruvbox = document.documentElement.getAttribute('data-theme') === 'gruvbox';
-      if (isgruvbox) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('site-theme', 'aurora');
-        setThemeIcon('aurora');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'gruvbox');
-        localStorage.setItem('site-theme', 'gruvbox');
-        setThemeIcon('gruvbox');
-      }
+      const currentIndex = themeOrder.indexOf(getCurrentTheme());
+      const nextTheme = themeOrder[(currentIndex + 1) % themeOrder.length];
+      applyTheme(nextTheme);
     });
   }
 
@@ -308,4 +329,3 @@
   });
 
 })();
-

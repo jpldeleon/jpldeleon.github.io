@@ -6,8 +6,8 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (saved === 'gruvbox') {
-        document.documentElement.setAttribute('data-theme', 'gruvbox');
+      if (saved === 'gruvbox' || saved === 'everforest' || saved === 'monokai') {
+        document.documentElement.setAttribute('data-theme', saved);
       }
     })();
   </script>
@@ -110,8 +110,10 @@
       <div class="sidebar-avatar">
         <span class="profile-smoke profile-smoke-avatar"
           aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
-        <img src="assets/img/profile/jp_profile_1.webp" alt="John Paul De Leon" class="profile-image"
-          fetchpriority="high">
+        <a href="#" class="profile-image" aria-label="View profile photo">
+          <img src="assets/img/profile/jp_profile_1.webp" alt="John Paul De Leon" class="photo-original"
+            fetchpriority="high">
+        </a>
       </div>
 
       <div class="sidebar-header-block">
@@ -160,6 +162,25 @@
         <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance"
           class="text-badge badge-golance">Go</a>
       </div>
+
+      <div class="sidebar-projects">
+        <span class="sidebar-projects-label">My Work</span>
+        <div class="project-links">
+          <!-- Replace href with each project's link, and the --icon-url with the path to that project's icon -->
+          <a href="#" target="_blank" title="Project 1" aria-label="Project 1"
+            style="--icon-url: url('assets/icons/auditkit_icon.png');"></a>
+          <a href="#" target="_blank" title="Project 2" aria-label="Project 2"
+            style="--icon-url: url('assets/img/projects/project-2.svg');"></a>
+          <a href="#" target="_blank" title="Project 3" aria-label="Project 3"
+            style="--icon-url: url('assets/img/projects/project-3.svg');"></a>
+          <a href="#" target="_blank" title="Project 4" aria-label="Project 4"
+            style="--icon-url: url('assets/img/projects/project-4.svg');"></a>
+          <a href="#" target="_blank" title="Project 5" aria-label="Project 5"
+            style="--icon-url: url('assets/img/projects/project-5.svg');"></a>
+          <a href="#" target="_blank" title="Project 6" aria-label="Project 6"
+            style="--icon-url: url('assets/img/projects/project-6.svg');"></a>
+        </div>
+      </div>
     </div>
   </aside><!-- /Hero Sidebar -->
 
@@ -178,7 +199,10 @@
                 <span class="profile-smoke profile-smoke-about"
                   aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
                 <div class="profile-image">
-                  <img src="assets/img/profile/jp-profile-2.webp" alt="John Paul De Leon" class="img-fluid">
+                  <a href="#" aria-label="View profile photo">
+                    <img src="assets/img/profile/jp-profile-2.webp" alt="John Paul De Leon"
+                      class="img-fluid photo-original">
+                  </a>
                 </div>
                 <div class="profile-badge">
                   <i class="bi bi-asterisk"></i>
@@ -416,7 +440,10 @@
               <div class="profile-img mb-4">
                 <span class="profile-smoke profile-smoke-resume"
                   aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
-                <img src="assets/img/profile/jp-profile-3.webp" alt="John Paul De Leon" class="img-fluid rounded">
+                <a href="#" aria-label="View profile photo">
+                  <img src="assets/img/profile/jp-profile-3.webp" alt="John Paul De Leon"
+                    class="img-fluid rounded photo-original">
+                </a>
               </div>
 
               <h3>Professional Summary</h3>
