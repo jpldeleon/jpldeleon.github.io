@@ -1187,20 +1187,13 @@ section,
 .hero-sidebar .social-links a:hover,
 .hero-sidebar .project-links a:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
-}
-
-.hero-sidebar .project-links a:hover::before {
-  background-color: var(--accent-highlight);
-}
-
-.hero-sidebar .social-links a:hover::before {
-  background-color: var(--contrast-color);
-}
-
-.hero-sidebar .social-links a:hover {
   background-color: var(--accent-highlight);
   box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+}
+
+.hero-sidebar .social-links a:hover::before,
+.hero-sidebar .project-links a:hover::before {
+  background-color: var(--contrast-color);
 }
 
 .hero-sidebar .social-links a:nth-child(1)::before {
@@ -1272,33 +1265,6 @@ section,
 .hero-sidebar .project-links a:nth-child(5)::before {
   -webkit-mask-image: url('../icons/route196_icon.webp');
   mask-image: url('../icons/route196_icon.webp');
-}
-
-/* Each project icon gets a distinct hue shifted off the theme's own accent
-   color, so colors stay varied but always re-derive from whichever
-   theme (Aurora / Gruvbox / Everforest / Monokai) is active. */
-.hero-sidebar .project-links a:nth-child(1) {
-  filter: hue-rotate(0deg);
-}
-
-.hero-sidebar .project-links a:nth-child(2) {
-  filter: hue-rotate(60deg);
-}
-
-.hero-sidebar .project-links a:nth-child(3) {
-  filter: hue-rotate(120deg);
-}
-
-.hero-sidebar .project-links a:nth-child(4) {
-  filter: hue-rotate(180deg);
-}
-
-.hero-sidebar .project-links a:nth-child(5) {
-  filter: hue-rotate(240deg);
-}
-
-.hero-sidebar .project-links a:nth-child(6) {
-  filter: hue-rotate(300deg);
 }
 
 .hero-sidebar .sidebar-contact {
