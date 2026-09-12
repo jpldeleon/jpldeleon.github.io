@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <!-- Apply saved theme before first paint to avoid a flash of the wrong theme -->
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
@@ -33,7 +32,9 @@
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
@@ -80,12 +81,10 @@
     <div class="bg-bottom-gradient" aria-hidden="true"></div>
     <div class="bg-waves" aria-hidden="true">
       <svg class="wave-layer wave-1" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path
-          d="M0,60 C150,110 350,10 600,55 C850,100 1050,20 1200,55 L1200,120 L0,120 Z" />
+        <path d="M0,60 C150,110 350,10 600,55 C850,100 1050,20 1200,55 L1200,120 L0,120 Z" />
       </svg>
       <svg class="wave-layer wave-2" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path
-          d="M0,75 C200,30 400,105 650,65 C900,25 1000,90 1200,70 L1200,120 L0,120 Z" />
+        <path d="M0,75 C200,30 400,105 650,65 C900,25 1000,90 1200,70 L1200,120 L0,120 Z" />
       </svg>
     </div>
   </div>
@@ -103,10 +102,11 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="https://jpldeleon.github.io/" class="active"><i class="fa-solid fa-house-chimney navicon"></i><span
-                class="nav-label">Home</span></a>
+          <li><a href="https://jpldeleon.github.io/" class="active"><i
+                class="fa-solid fa-house-chimney navicon"></i><span class="nav-label">Home</span></a>
           </li>
-          <li><a href="#portfolio-details"><i class="fa-brands fa-youtube navicon"></i><span class="nav-label"> Video</span></a>
+          <li><a href="#portfolio-details"><i class="fa-brands fa-youtube navicon"></i><span class="nav-label">
+                Video</span></a>
           </li>
           <li><a href="#details"><i class="fa-solid fa-info navicon"></i><span class="nav-label">
                 Details</span></a></li>
@@ -309,7 +309,6 @@
           <!-- Screenshot Gallery Carousel Section -->
 
 
-          <!-- Portfolio Section (Swiper slider, 4 visible, mobile-friendly) -->
           <section id="project-screenshots" class="portfolio section">
 
             <!-- Section Title -->
@@ -323,7 +322,6 @@
               <!-- Horizontal Filters Header -->
 
 
-              <!-- Swiper Slider Container (4 per view on desktop, arrows & pagination kept) -->
               <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper-wrapper align-items-center">
 
@@ -550,7 +548,6 @@
 
           </section><!-- /Portfolio Section -->
 
-          <!-- Screenshot slider styling: keeps portfolio-wrap look, adds room for nav arrows/dots -->
           <style>
             .screenshots-swiper {
               padding: 10px 10px 50px;
@@ -659,7 +656,6 @@
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
 
-  <!-- Explicit GLightbox init for this page (guarantees the screenshot lightbox works even if another script on this page fails) -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       if (typeof GLightbox !== 'undefined') {
@@ -668,15 +664,12 @@
     });
   </script>
 
-  <!-- Screenshots slider (Swiper): 4 visible on desktop, scales down for tablet/mobile -->
-  <!-- Replace your current inline <script> at the bottom of the HTML with this: -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // 1. Initialize Swiper and keep instance in a variable
       let screenshotsSwiper;
       if (typeof Swiper !== 'undefined') {
         screenshotsSwiper = new Swiper('.screenshots-swiper', {
-          loop: false, // Set to false to prevent clone-slide indexing bugs during filtering
+          loop: false,
           spaceBetween: 20,
           slidesPerView: 1,
           speed: 500,
@@ -703,13 +696,11 @@
 
       filterButtons.forEach(button => {
         button.addEventListener('click', function () {
-          // Toggle active button style
           filterButtons.forEach(btn => btn.classList.remove('filter-active'));
           this.classList.add('filter-active');
 
           const filterValue = this.getAttribute('data-filter');
 
-          // Show/Hide matching slides
           slides.forEach(slide => {
             if (filterValue === '*' || slide.matches(filterValue)) {
               slide.style.display = '';
@@ -718,7 +709,6 @@
             }
           });
 
-          // Update Swiper layout & return to slide 0
           if (screenshotsSwiper) {
             screenshotsSwiper.update();
             screenshotsSwiper.slideTo(0);

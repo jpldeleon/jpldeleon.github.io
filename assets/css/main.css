@@ -1,15 +1,3 @@
-/**
-* Template Name: SnapFolio
-* Template URL: https://bootstrapmade.com/snapfolio-bootstrap-portfolio-template/
-* Updated: Jul 21 2025 with Bootstrap v5.3.7
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
-/*--------------------------------------------------------------
-# Font & Color Variables
-# Help: https://bootstrapmade.com/color-system/
---------------------------------------------------------------*/
 /* Fonts */
 :root {
   --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -20,21 +8,13 @@
 /* Global Colors - Nord Aurora Theme (Warm Variant) */
 :root {
   --background-color: #1E222A;
-  /* Nord Polar Night 2 - Dark background for entire website */
   --default-color: #ECEFF4;
-  /* Gruvbox 1 - Light text throughout website */
   --heading-color: #EBCB8B;
-  /* Nord Aurora Yellow - Warm headings */
   --accent-color: #D08770;
-  /* Nord Aurora Orange - Warm accent for links */
   --accent-highlight: #BF616A;
-  /* Nord Aurora Red - Bold highlight for buttons and CTAs */
   --accent-highlight-rgb: 191, 97, 106;
-  /* RGB channels of --accent-highlight, for use in rgba() */
   --surface-color: #282D37;
-  /* Nord Polar Night 3 - Slightly lighter background for cards and boxes */
   --contrast-color: #ECEFF4;
-  /* Gruvbox 1 - High contrast text on accent backgrounds */
   --quote-color: #a3be8c;
 }
 
@@ -42,167 +22,93 @@
 /* Nav Menu Colors - Nord Aurora Theme */
 :root {
   --nav-color: #D8DEE9;
-  /* Gruvbox 2 - Default nav links */
   --nav-hover-color: #BF616A;
-  /* Nord Aurora Red - Active/hover state */
   --nav-mobile-background-color: #2E3440;
-  /* Nord Polar Night 2 - Mobile nav background */
   --nav-dropdown-background-color: #3B4252;
-  /* Nord Polar Night 3 - Dropdown background */
   --nav-dropdown-color: #ECEFF4;
-  /* Gruvbox 1 - Dropdown text */
   --nav-dropdown-hover-color: #D08770;
-  /* Nord Aurora Orange - Dropdown hover */
   --typed-color: #8fbcbb;
-  
+
 }
 
-/* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 
 .light-background {
   --background-color: #282D37;
-  /* Nord Polar Night 3 - Slightly lighter than default */
   --surface-color: #282D37;
-  /* Nord Polar Night 4 - Even lighter for contrast */
 }
 
 .dark-background {
   --background-color: #2E3440;
-  /* Nord Polar Night 2 - Main dark background */
   --default-color: #ECEFF4;
-  /* Gruvbox 1 - Light text */
   --surface-color: #3B4252;
-  /* Nord Polar Night 3 - Slightly lighter */
   --contrast-color: #ECEFF4;
-  /* Gruvbox 1 - High contrast */
 }
 
-/* Gruvbox Theme (Dark) - toggled via [data-theme="gruvbox"] on <html>
-   Palette per https://gruvbox.org/ (dark, neutral swatches):
-   Functions #98971a (green) · Information #d79921 (yellow)
-   Identifiers #458588 (blue) · Warnings #cc241d (red)
-   Emphasis #d65d0e (orange) · Constants #689d6a (aqua) */
 [data-theme="gruvbox"] {
   --background-color: #282828;
-  /* Gruvbox bg0 - dark background */
   --default-color: #ebdbb2;
-  /* Gruvbox fg1 - warm cream body text */
   --heading-color: #d79921;
-  /* Gruvbox Information (yellow) headings */
   --accent-color: #689d6a;
-  /* Gruvbox Constants (aqua) accent for links */
   --accent-highlight: #d65d0e;
-  /* Gruvbox Emphasis (orange) highlight for buttons/CTAs */
   --accent-highlight-rgb: 214, 93, 14;
   --nav-color: #d5c4a1;
-  /* Gruvbox fg2 - default nav links */
   --nav-hover-color: #d65d0e;
-  /* Gruvbox Emphasis (orange) nav hover */
   --nav-mobile-background-color: #282828;
-  /* Gruvbox bg0 */
   --nav-dropdown-background-color: #3c3836;
-  /* Gruvbox bg1 */
   --nav-dropdown-color: #ebdbb2;
-  /* Gruvbox fg1 */
   --nav-dropdown-hover-color: #689d6a;
-  /* Gruvbox Constants (aqua) */
   --surface-color: #3c3836;
-  /* Gruvbox bg1 - cards and boxes */
   --contrast-color: #fbf1c7;
-  /* Gruvbox fg0 - high contrast text on accent backgrounds */
   --quote-color: #98971a;
-  /* Gruvbox Functions (green) */
   --typed-color: #458588;
-  /* Gruvbox Identifiers (blue) */
 }
 
-/* .light-background sections (e.g. the Stats bar) get gruvbox's own
-   "lighter" background steps instead of the Nord navy default. */
 [data-theme="gruvbox"] .light-background {
   --background-color: #3c3836;
-  /* Gruvbox bg1 */
   --surface-color: #504945;
-  /* Gruvbox bg2 - nested cards */
 }
 
-/* Everforest Theme (Dark, medium contrast) - toggled via [data-theme="everforest"] on <html>
-   Palette per https://everforest.vercel.app/palette (dark, medium):
-   bg0 #2D353B · fg #D3C6AA · red #E67E80 · orange #E69875
-   yellow #DBBC7F · green #A7C080 · aqua #83C092 · blue #7FBBB3 */
 [data-theme="everforest"] {
   --background-color: #2D353B;
-  /* Everforest bg0 - default dark background */
   --default-color: #D3C6AA;
-  /* Everforest fg - warm off-white body text */
   --heading-color: #DBBC7F;
-  /* Everforest yellow - headings */
   --accent-color: #83C092;
-  /* Everforest aqua - accent for links */
   --accent-highlight: #A7C080;
-  /* Everforest green - highlight for buttons/CTAs */
   --accent-highlight-rgb: 167, 192, 128;
   --nav-color: #D3C6AA;
-  /* Everforest fg - default nav links */
   --nav-hover-color: #A7C080;
-  /* Everforest green nav hover */
   --nav-mobile-background-color: #2D353B;
-  /* Everforest bg0 */
   --nav-dropdown-background-color: #3D484D;
-  /* Everforest bg2 */
   --nav-dropdown-color: #D3C6AA;
-  /* Everforest fg */
   --nav-dropdown-hover-color: #83C092;
-  /* Everforest aqua */
   --surface-color: #343F44;
-  /* Everforest bg1 - cards and boxes */
   --contrast-color: #2D353B;
-  /* Everforest bg0 - dark text on the light green accent background */
   --quote-color: #E69875;
-  /* Everforest orange */
   --typed-color: #7FBBB3;
-  /* Everforest blue */
 }
 
 [data-theme="everforest"] .light-background {
   --background-color: #343F44;
-  /* Everforest bg1 */
   --surface-color: #3D484D;
-  /* Everforest bg2 - nested cards */
 }
 
-/* Monokai Theme - toggled via [data-theme="monokai"] on <html>
-   Classic Monokai editor palette:
-   bg #272822 · fg #f8f8f2 · pink #f92672 · green #a6e22e
-   yellow #e6db74 · blue #66d9ef · purple #ae81ff */
 [data-theme="monokai"] {
   --background-color: #272822;
-  /* Monokai background */
   --default-color: #f8f8f2;
-  /* Monokai foreground - body text */
   --heading-color: #e6db74;
-  /* Monokai yellow - headings */
   --accent-color: #66d9ef;
-  /* Monokai blue - accent for links */
   --accent-highlight: #f92672;
-  /* Monokai pink - highlight for buttons/CTAs */
   --accent-highlight-rgb: 249, 38, 114;
   --nav-color: #f8f8f2;
-  /* Monokai foreground - default nav links */
   --nav-hover-color: #f92672;
-  /* Monokai pink nav hover */
   --nav-mobile-background-color: #272822;
   --nav-dropdown-background-color: #3e3d32;
   --nav-dropdown-color: #f8f8f2;
   --nav-dropdown-hover-color: #a6e22e;
-  /* Monokai green */
   --surface-color: #3e3d32;
-  /* Monokai bg lighter - cards and boxes */
   --contrast-color: #f8f8f2;
-  /* High contrast text on pink accent backgrounds */
   --quote-color: #a6e22e;
-  /* Monokai green */
   --typed-color: #ae81ff;
-  /* Monokai purple */
 }
 
 [data-theme="monokai"] .light-background {
@@ -246,63 +152,7 @@ h6 {
   font-family: var(--heading-font);
 }
 
-/* PHP Email Form Messages
-------------------------------*/
-.php-email-form .error-message {
-  display: none;
-  background: #df1529;
-  color: #ffffff;
-  text-align: left;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
 
-.php-email-form .sent-message {
-  display: none;
-  color: #ffffff;
-  background: #059652;
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.php-email-form .loading {
-  display: none;
-  background: var(--surface-color);
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-}
-
-.php-email-form .loading:before {
-  content: "";
-  display: inline-block;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin: 0 10px -6px 0;
-  border: 3px solid var(--accent-highlight);
-  border-top-color: var(--surface-color);
-  animation: php-email-form-loading 1s linear infinite;
-}
-
-@keyframes php-email-form-loading {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/*--------------------------------------------------------------
-# Floating Bottom Pill Navigation - Aurora Theme
---------------------------------------------------------------*/
-
-/* Hide original sidebar layout */
 .header {
   position: fixed;
   bottom: auto;
@@ -384,12 +234,9 @@ h6 {
   white-space: nowrap;
   transition: all 0.3s ease;
   width: auto;
-  /* Lets text expand naturally */
   border-radius: 9999px;
-  /* Smooth pill shape for text buttons */
 }
 
-/* Hide icons on desktop if you only want text, or keep them spaced */
 .header .navmenu a .navicon {
   display: none;
 }
@@ -424,19 +271,16 @@ h6 {
   .header .navmenu a,
   .header .navmenu a:focus {
     width: 40px;
-    /* Fixed width for icon circles */
     height: 40px;
     padding: 0;
     justify-content: center;
     border-radius: 50%;
-    /* Hides text nodes on mobile while preserving accessibility */
     font-size: 0;
   }
 
   .header .navmenu a .navicon {
     display: inline-block !important;
     font-size: 18px;
-    /* Restores icon size */
     margin-right: 0 !important;
   }
 }
@@ -473,7 +317,6 @@ h6 {
   transform: scale(1.1);
 }
 
-/* Text badges for Upwork/GoLance */
 .header .social-links a.text-badge {
   font-size: 12px;
   font-weight: 600;
@@ -482,12 +325,10 @@ h6 {
   height: 36px;
 }
 
-/* Hide header toggle button */
 .header .header-toggle {
   display: none !important;
 }
 
-/* Adjust main content to account for floating pill */
 @media (min-width: 1200px) {
 
   .header~main,
@@ -738,31 +579,50 @@ footer {
   position: fixed;
   inset: 0;
   z-index: 999999;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--background-color);
   transition: all 0.6s ease-out;
 }
 
-#preloader:before {
-  content: "";
-  position: fixed;
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  border: 6px solid var(--accent-highlight);
-  border-color: var(--accent-highlight) transparent var(--accent-highlight) transparent;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: animate-preloader 1.5s linear infinite;
+.preloader-balls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes animate-preloader {
-  0% {
-    transform: rotate(0deg);
-  }
+.preloader-balls .preloader-ball {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin: 0 8px;
+  animation: preloader-bounce 1.4s ease infinite;
+}
 
-  100% {
-    transform: rotate(360deg);
+.preloader-balls .preloader-ball:nth-child(1) {
+  background-color: var(--accent-highlight);
+  animation-delay: 0s;
+}
+
+.preloader-balls .preloader-ball:nth-child(2) {
+  background-color: var(--accent-color);
+  animation-delay: 0.18s;
+}
+
+.preloader-balls .preloader-ball:nth-child(3) {
+  background-color: var(--heading-color);
+  animation-delay: 0.36s;
+}
+
+.preloader-balls .preloader-ball:nth-child(4) {
+  background-color: var(--quote-color);
+  animation-delay: 0.54s;
+}
+
+@keyframes preloader-bounce {
+  50% {
+    transform: translateY(18px);
   }
 }
 
@@ -848,9 +708,7 @@ footer {
 }
 
 /*--------------------------------------------------------------
-# GLightbox Theming (Aurora / gruvbox)
-# Uses --accent-highlight-rgb so it automatically re-colors
-# whenever [data-theme="gruvbox"] is toggled on <html>.
+# GLightbox Theming 
 --------------------------------------------------------------*/
 .goverlay {
   background: radial-gradient(circle at center,
@@ -1109,17 +967,14 @@ section,
   display: inline-block;
 }
 
-/* Header wrapper keeps the name and typed box tight */
 .sidebar-header-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  /* Tighter spacing between name and typed box */
   width: 100%;
 }
 
-/* Ensure h1 and code container margins don't conflict */
 .sidebar-header-block h1,
 .sidebar-header-block .code-container {
   margin: 0 !important;
@@ -1313,9 +1168,6 @@ section,
   font-size: 16px;
 }
 
-/* "Hot" rising smoke cue — colors follow whichever theme (Aurora/gruvbox) is active
-   because they're built from --accent-highlight, which the [data-theme="gruvbox"]
-   override already redefines. */
 .contact-smoke {
   position: absolute;
   top: -4px;
@@ -1453,14 +1305,12 @@ section,
   }
 }
 
-/* Copy-to-clipboard toast (Email / Phone) — anchored right under the buttons */
 .contact-block {
   position: relative;
 }
 
 .copy-toast-container {
   position: absolute;
-  /* was static/in-flow */
   top: 100%;
   left: 0;
   right: 0;
@@ -1523,7 +1373,6 @@ section,
   }
 }
 
-/* Push page content over to make room for the fixed sidebar */
 @media (min-width: 992px) {
 
   .hero-sidebar~main,
@@ -1532,7 +1381,6 @@ section,
   }
 }
 
-/* Below 992px the sidebar drops into normal flow at the top of the page */
 @media (max-width: 991px) {
   .hero-sidebar {
     position: relative;
@@ -1597,16 +1445,6 @@ section,
   overflow: hidden;
 }
 
-/*--------------------------------------------------------------
-# Ambient Background Layer - Stars (top/header) + Waves (bottom/footer)
-Both live inside .background-elements, which is already position:fixed
-and covers the full viewport, so they stay put while the page scrolls.
-Colors are drawn from the active theme's CSS variables, so switching
-themes re-colors them automatically. Kept low-opacity on purpose so
-they read as ambient texture, not a focal point.
---------------------------------------------------------------*/
-
-/* Top gradient - soft wash behind the header area */
 .background-elements .bg-top-gradient {
   position: absolute;
   top: 0;
@@ -1619,7 +1457,6 @@ they read as ambient texture, not a focal point.
       transparent 100%);
 }
 
-/* Bottom gradient - soft wash behind the footer area */
 .background-elements .bg-bottom-gradient {
   position: absolute;
   bottom: 0;
@@ -1632,7 +1469,6 @@ they read as ambient texture, not a focal point.
       transparent 100%);
 }
 
-/* Twinkling stars, concentrated toward the top of the page */
 .background-elements .bg-stars {
   position: absolute;
   top: 0;
@@ -1675,7 +1511,6 @@ they read as ambient texture, not a focal point.
   }
 }
 
-/* Waves, anchored to the very bottom edge, underneath the floating nav pill */
 .background-elements .bg-waves {
   position: absolute;
   bottom: 0;
@@ -2070,7 +1905,7 @@ they read as ambient texture, not a focal point.
 
 .about .profile-header .profile-badge {
   position: absolute;
-  bottom: 5px;
+  bottom: 20px;
   right: calc(50% - 65px);
   width: 32px;
   height: 32px;
@@ -2830,8 +2665,7 @@ they read as ambient texture, not a focal point.
   --smoke-rise: 160px;
 }
 
-/* Smoke drifting up from the floating nav pill, reusing the same
-   .profile-smoke puff/animation used for the profile photos. */
+/* Smoke */
 .profile-smoke-navpill {
   bottom: 0;
   left: 50%;
@@ -3013,7 +2847,6 @@ they read as ambient texture, not a focal point.
   font-size: 16px;
   color: var(--default-color);
   margin-bottom: 6px;
-  /* More spacing */
   padding-left: 0;
   line-height: 1.4;
 }
@@ -3023,11 +2856,9 @@ they read as ambient texture, not a focal point.
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  /* Already there, keeps vertical center */
   justify-content: flex-start;
   /* Add this */
   gap: 10px;
-  /* Adjust spacing if needed */
 }
 
 /*--------------------------------------------------------------
@@ -3131,12 +2962,10 @@ they read as ambient texture, not a focal point.
 
 .portfolio-wrap img {
   image-rendering: -webkit-optimize-contrast;
-  /* Crisp text rendering in Chrome/Safari */
   image-rendering: crisp-edges;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Prevents squishing/stretching */
 }
 
 .portfolio .portfolio-wrap .portfolio-info {
@@ -3238,12 +3067,6 @@ they read as ambient texture, not a focal point.
   transform: translateY(0);
 }
 
-/*--------------------------------------------------------------
-# Services Section
---------------------------------------------------------------*/
-/*--------------------------------------------------------------
-# Testimonials Section
---------------------------------------------------------------*/
 /*--------------------------------------------------------------
 # Contact Section
 --------------------------------------------------------------*/
@@ -3793,7 +3616,6 @@ they read as ambient texture, not a focal point.
 .gallery-swiper .swiper-button-prev {
   color: var(--accent-highlight);
   background-color: rgba(var(--accent-highlight-rgb), 0.1);
-  /* Nord Aurora Red with transparency */
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -3806,7 +3628,6 @@ they read as ambient texture, not a focal point.
 .gallery-swiper .swiper-button-prev:hover {
   background-color: var(--accent-highlight);
   color: #ECEFF4;
-  /* Light text on red background */
 }
 
 .gallery-swiper .swiper-button-next:after,
@@ -3850,7 +3671,6 @@ they read as ambient texture, not a focal point.
   cursor: pointer;
 }
 
-/* Live Demo Button (Solid to Outlined) - Nord Aurora Red */
 .btn-live {
   background-color: var(--accent-highlight);
   color: #ECEFF4;
@@ -3862,7 +3682,6 @@ they read as ambient texture, not a focal point.
   color: var(--accent-highlight);
 }
 
-/* GitHub Button (Outlined to Solid) - Nord Aurora Red */
 .btn-github {
   background-color: transparent;
   color: var(--accent-highlight);
@@ -3876,15 +3695,12 @@ they read as ambient texture, not a focal point.
 
 .features .feature-item {
   background: rgba(var(--accent-highlight-rgb), 0.08);
-  /* Transparent Nord Aurora Red background */
   border: 1px solid rgba(var(--accent-highlight-rgb), 0.25);
-  /* Subtle Aurora Red border */
   border-radius: 10px;
   padding: 25px;
   transition: all 0.3s ease;
 }
 
-/* Optional hover effect for card interaction */
 .features .feature-item:hover {
   background: rgba(var(--accent-highlight-rgb), 0.15);
   border-color: rgba(var(--accent-highlight-rgb), 0.5);
@@ -3892,39 +3708,31 @@ they read as ambient texture, not a focal point.
   box-shadow: 0 8px 20px rgba(var(--accent-highlight-rgb), 0.15);
 }
 
-/* Accent color for the icons */
 .features .feature-item i {
   color: var(--accent-highlight);
-  /* Nord Aurora Red */
   font-size: 1.8rem;
   margin-bottom: 12px;
   display: inline-block;
 }
 
-/* Circular Icon Container */
 .features .feature-item .icon-wrapper {
   width: 50px;
   height: 50px;
   background-color: rgba(var(--accent-highlight-rgb), 0.15);
-  /* Transparent Aurora Red fill */
   border-radius: 50%;
-  /* Perfect circle */
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;
 }
 
-/* Icon Color inside the Circle */
 .features .feature-item .icon-wrapper i {
   color: var(--accent-highlight);
-  /* Nord Aurora Red icon */
   font-size: 1.25rem;
   margin: 0;
 }
 
 
-/* Direct mapping to your existing CSS variables without changing your JS */
 .code-container {
   font-family: 'JetBrains Mono', monospace;
   background-color: #1e1e2e;
@@ -3943,17 +3751,14 @@ they read as ambient texture, not a focal point.
   color: var(--quote-color);
 }
 
-/* Map to heading color */
 .property {
   color: var(--accent-highlight);
 }
 
-/* Map to highlight color */
 .variable {
   color: var(--accent-color);
 }
 
-/* Map to primary accent */
 .string {
   color: var(--nav-hover-color);
 }

@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <!-- Apply saved theme before first paint to avoid a flash of the wrong theme -->
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
@@ -49,27 +48,25 @@
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <!-- <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"> -->
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: SnapFolio
-  * Template URL: https://bootstrapmade.com/snapfolio-bootstrap-portfolio-template/
-  * Updated: Jul 21 2025 with Bootstrap v5.3.7
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="index-page">
 
   <!-- Page Background Elements -->
   <div class="background-elements">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
     <!-- Top gradient wash + twinkling stars -->
     <div class="bg-top-gradient" aria-hidden="true"></div>
     <div class="bg-stars" aria-hidden="true">
@@ -105,12 +102,10 @@
     <div class="bg-bottom-gradient" aria-hidden="true"></div>
     <div class="bg-waves" aria-hidden="true">
       <svg class="wave-layer wave-1" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path
-          d="M0,60 C150,110 350,10 600,55 C850,100 1050,20 1200,55 L1200,120 L0,120 Z" />
+        <path d="M0,60 C150,110 350,10 600,55 C850,100 1050,20 1200,55 L1200,120 L0,120 Z" />
       </svg>
       <svg class="wave-layer wave-2" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path
-          d="M0,75 C200,30 400,105 650,65 C900,25 1000,90 1200,70 L1200,120 L0,120 Z" />
+        <path d="M0,75 C200,30 400,105 650,65 C900,25 1000,90 1200,70 L1200,120 L0,120 Z" />
       </svg>
     </div>
   </div>
@@ -131,14 +126,15 @@
           <li><a href="#about"><i class="fa-solid fa-user navicon"></i><span class="nav-label"> About</span></a></li>
           <li><a href="#resume"><i class="fa-solid fa-file-lines navicon"></i><span class="nav-label">
                 Resume</span></a></li>
-          <li><a href="#portfolio"><i class="fa-solid fa-images navicon"></i><span class="nav-label"> Portfolio</span></a>
+          <li><a href="#portfolio"><i class="fa-solid fa-images navicon"></i><span class="nav-label">
+                Portfolio</span></a>
           </li>
         </ul>
       </nav>
 
       <!-- Scroll Top -->
       <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-          class="fa-solid fa-angles-up"></i></a>
+          class="fa-solid fa-arrow-up"></i></a>
 
     </div>
 
@@ -193,12 +189,12 @@
       <div class="sidebar-social">
         <span class="sidebar-social-label">Connect</span>
         <div class="social-links">
-          <!-- Just replace the href below for each. Icon images are set in
-               main.css (search "Social icon paths"). -->
           <a href="https://www.linkedin.com/in/jpldl/" target="_blank" title="LinkedIn" aria-label="LinkedIn"></a>
           <a href="https://github.com/jpldeleon" target="_blank" title="GitHub" aria-label="GitHub"></a>
-          <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork" aria-label="Upwork"></a>
-          <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance" aria-label="GoLance"></a>
+          <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork"
+            aria-label="Upwork"></a>
+          <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance"
+            aria-label="GoLance"></a>
         </div>
       </div>
 
@@ -465,7 +461,6 @@
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row gy-4">
-          <!-- Left column with summary and contact -->
           <div class="col-lg-4">
             <div class="resume-side" data-aos="fade-right" data-aos-delay="100">
               <div class="profile-img mb-4">
@@ -505,7 +500,6 @@
                       linkedin.com/in/jpldl/</a></li>
                 </ul>
 
-                <!-- Copy Toast (Email / Phone) -->
                 <div class="copy-toast-container">
                   <div id="copyToastResume" class="copy-toast toast" role="status" aria-live="polite"
                     aria-atomic="true">
@@ -625,8 +619,8 @@
               <div class="resume-item">
                 <h4>SEO Outreach Specialist</h4>
                 <h5>Jan - May 2025</h5>
-                <p class="company"><i class="fa-solid fa-building"></i> <a href="https://www.linkedin.com/company/awisee/"
-                    target="_blank">Awisee</a></p>
+                <p class="company"><i class="fa-solid fa-building"></i> <a
+                    href="https://www.linkedin.com/company/awisee/" target="_blank">Awisee</a></p>
                 <p class="location"><i class="fa-solid fa-location-dot"></i> Remote, Stockholm, Sweden</p>
                 <ul>
                   <li>Built and verified prospect lists that directly enabled the team's link-building campaigns to run
@@ -693,8 +687,9 @@
               <div class="resume-item">
                 <h4>Research Analyst <span class="fw-normal">(Web Researcher)</span></h4>
                 <h5>Sep 2013 - November 2018</h5>
-                <p class="company"><i class="fa-solid fa-building"></i> <a href="https://www.linkedin.com/company/straive_/"
-                    target="_blank">Straive (formerly SPi Global)</a></p>
+                <p class="company"><i class="fa-solid fa-building"></i> <a
+                    href="https://www.linkedin.com/company/straive_/" target="_blank">Straive (formerly SPi Global)</a>
+                </p>
                 <p class="location"><i class="fa-solid fa-location-dot"></i> On-site, Philippines</p>
                 <ul>
                   <li>Built an automation solution that helped the team win a Lean Six Sigma Award and elevated the
@@ -801,8 +796,8 @@
 
                 <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
                   <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/auditkit/auditkit-1-homepage.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
+                    <img src="assets/img/portfolio/auditkit/auditkit-1-homepage.webp"
+                      class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
                     <div class="portfolio-info">
                       <div class="content">
                         <span class="category">API Capstone Project</span>
@@ -866,7 +861,7 @@
                         <div class="portfolio-links">
                           <a href="assets/img/portfolio/johnoffthewall/1-hero-f.webp" class="glightbox"><i
                               class="fa-solid fa-magnifying-glass-plus"></i></a>
-                              <a href="https://johnoffthewall.github.io/" target="_blank" title="View Live Project"><i
+                          <a href="https://johnoffthewall.github.io/" target="_blank" title="View Live Project"><i
                               class="fa-solid fa-link"></i></a>
                           <a href="johnoffthewall/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
                         </div>
@@ -877,8 +872,8 @@
 
                 <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
                   <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/pixellog/pixellog-1-homepage.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
+                    <img src="assets/img/portfolio/pixellog/pixellog-1-homepage.webp"
+                      class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
                     <div class="portfolio-info">
                       <div class="content">
                         <span class="category">Node.js, Express.js &amp EJS Capstone Project</span>
@@ -886,7 +881,7 @@
                         <div class="portfolio-links">
                           <a href="assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" class="glightbox"><i
                               class="fa-solid fa-magnifying-glass-plus"></i></a>
-                              <a href="https://pixellog-dev.onrender.com/" target="_blank" title="View Live Project"><i
+                          <a href="https://pixellog-dev.onrender.com/" target="_blank" title="View Live Project"><i
                               class="fa-solid fa-link"></i></a>
                           <a href="pixellog/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
                         </div>
@@ -897,8 +892,8 @@
 
                 <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
                   <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/jamporudex/jamporudex-1-home.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
+                    <img src="assets/img/portfolio/jamporudex/jamporudex-1-home.webp"
+                      class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
                     <div class="portfolio-info">
                       <div class="content">
                         <span class="category">Node.js, Express, PostgreSQL &amp; EJS Capstone Project</span>
@@ -906,7 +901,7 @@
                         <div class="portfolio-links">
                           <a href="assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" class="glightbox"><i
                               class="fa-solid fa-magnifying-glass-plus"></i></a>
-                              <a href="https://jamporudex.onrender.com/" target="_blank" title="View Live Project"><i
+                          <a href="https://jamporudex.onrender.com/" target="_blank" title="View Live Project"><i
                               class="fa-solid fa-link"></i></a>
                           <a href="jamporudex/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
                         </div>
@@ -917,8 +912,8 @@
 
                 <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment">
                   <div class="portfolio-wrap portfolio-fixed-height">
-                    <img src="assets/img/portfolio/route196/route196-1-home-mocha.webp" class="img-fluid portfolio-thumb-crop"
-                      alt="Portfolio Image" loading="lazy">
+                    <img src="assets/img/portfolio/route196/route196-1-home-mocha.webp"
+                      class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
                     <div class="portfolio-info">
                       <div class="content">
                         <span class="category">Node.js, Express.js &amp EJS Capstone Project</span>
@@ -926,7 +921,7 @@
                         <div class="portfolio-links">
                           <a href="assets/img/portfolio/route196/route196-1-home-mocha_f.webp" class="glightbox"><i
                               class="fa-solid fa-magnifying-glass-plus"></i></a>
-                              <a href="https://route196.onrender.com/" target="_blank" title="View Live Project"><i
+                          <a href="https://route196.onrender.com/" target="_blank" title="View Live Project"><i
                               class="fa-solid fa-link"></i></a>
                           <a href="route196/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
                         </div>
@@ -967,7 +962,14 @@
   </footer>
 
   <!-- Preloader -->
-  <div id="preloader"></div>
+  <div id="preloader">
+    <div class="preloader-balls" aria-hidden="true">
+      <span class="preloader-ball"></span>
+      <span class="preloader-ball"></span>
+      <span class="preloader-ball"></span>
+      <span class="preloader-ball"></span>
+    </div>
+  </div>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -979,7 +981,6 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <!-- <script src="assets/vendor/swiper/swiper-bundle.min.js"></script> -->
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
