@@ -16,8 +16,8 @@
 
   function headerToggle() {
     document.querySelector('#header').classList.toggle('header-show');
-    headerToggleBtn.classList.toggle('bi-list');
-    headerToggleBtn.classList.toggle('bi-x');
+    headerToggleBtn.classList.toggle('fa-bars');
+    headerToggleBtn.classList.toggle('fa-xmark');
   }
   headerToggleBtn.addEventListener('click', headerToggle);
 
@@ -228,21 +228,18 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
-  /**
-   * Theme toggle (Aurora / Gruvbox / Neo-Brutalist / Monokai)
-   */
+  
   const themeToggleBtn = document.querySelector('#theme-toggle');
 
   if (themeToggleBtn) {
     const themeIcon = themeToggleBtn.querySelector('i');
 
-    // 'aurora' is the default theme and has no [data-theme] attribute on <html>.
     const themeOrder = ['aurora', 'gruvbox', 'everforest', 'monokai'];
     const themeIcons = {
-      aurora: 'bi-brightness-low',
-      gruvbox: 'bi-brightness-low-fill',
-      everforest: 'bi-tree-fill',
-      monokai: 'bi-moon-stars-fill'
+      aurora: 'fa-solid fa-sun',
+      gruvbox: 'fa-solid fa-tree',
+      everforest: 'fa-solid fa-moon',
+      monokai: 'fa-solid fa-meteor'
     };
     const themeLabels = {
       aurora: 'Aurora',
@@ -263,7 +260,7 @@
       }
       localStorage.setItem('site-theme', theme);
 
-      themeIcon.className = 'bi ' + themeIcons[theme];
+      themeIcon.className = themeIcons[theme];
       const currentIndex = themeOrder.indexOf(theme);
       const nextTheme = themeOrder[(currentIndex + 1) % themeOrder.length];
       themeToggleBtn.title = 'Switch to ' + themeLabels[nextTheme] + ' theme';
@@ -279,13 +276,7 @@
     });
   }
 
-  /**
-   * Contact buttons (Email / Phone) -> copy to clipboard + toast
-   * Keeps the raw address/number out of visible link text.
-   */
-  // Each copy-toast-container is initialised independently, so a trigger
-  // inside the sidebar shows the sidebar's toast, and a trigger inside the
-  // resume contact info shows the resume's toast, instead of them sharing one.
+ 
   const toastInstances = new Map();
 
   function getToastEl(triggerBtn) {

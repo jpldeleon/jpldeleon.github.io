@@ -833,18 +833,6 @@ footer {
   transform: translateY(0);
 }
 
-[data-theme="gruvbox"] .theme-toggle i {
-  transform: rotate(90deg);
-}
-
-[data-theme="everforest"] .theme-toggle i {
-  transform: rotate(180deg);
-}
-
-[data-theme="monokai"] .theme-toggle i {
-  transform: rotate(270deg);
-}
-
 @media (max-width: 768px) {
 
   .theme-toggle,
@@ -1071,7 +1059,9 @@ section,
   overflow: hidden;
   z-index: 2;
   border: 4px solid var(--accent-highlight-rgb);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%),
+    0 0 25px 8px transparent;
+  transition: box-shadow 0.4s ease;
 }
 
 .sidebar-avatar .profile-image img {
@@ -1084,21 +1074,9 @@ section,
   object-position: 50% 1%;
 }
 
-.sidebar-avatar .profile-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background: linear-gradient(135deg,
-      color-mix(in srgb, var(--accent-color), transparent 25%),
-      color-mix(in srgb, var(--accent-highlight), transparent 15%));
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.sidebar-avatar .profile-image:hover::after {
-  opacity: 0.8;
+.sidebar-avatar .profile-image:hover {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%),
+    0 0 25px 10px color-mix(in srgb, var(--accent-color), transparent 55%);
 }
 
 
@@ -1212,15 +1190,19 @@ section,
   box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
 }
 
-.hero-sidebar .social-links a:hover::before,
 .hero-sidebar .project-links a:hover::before {
   background-color: var(--accent-highlight);
 }
 
-/* Social icon paths — edit these to point at each icon. Paths are relative
-   to THIS file's location (assets/css/main.css), so to reach a file at
-   assets/icons/foo.png, use ../icons/foo.png. No hue-rotate here on purpose —
-   these stay one consistent color since they're your identity links. */
+.hero-sidebar .social-links a:hover::before {
+  background-color: var(--contrast-color);
+}
+
+.hero-sidebar .social-links a:hover {
+  background-color: var(--accent-highlight);
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+}
+
 .hero-sidebar .social-links a:nth-child(1)::before {
   -webkit-mask-image: url('../icons/linkedin.webp');
   mask-image: url('../icons/linkedin.webp');
@@ -1292,6 +1274,9 @@ section,
   mask-image: url('../icons/route196_icon.webp');
 }
 
+/* Each project icon gets a distinct hue shifted off the theme's own accent
+   color, so colors stay varied but always re-derive from whichever
+   theme (Aurora / Gruvbox / Everforest / Monokai) is active. */
 .hero-sidebar .project-links a:nth-child(1) {
   filter: hue-rotate(0deg);
 }
@@ -1716,6 +1701,135 @@ section,
   }
 }
 
+/*--------------------------------------------------------------
+# Ambient Background Layer - Stars (top/header) + Waves (bottom/footer)
+Both live inside .background-elements, which is already position:fixed
+and covers the full viewport, so they stay put while the page scrolls.
+Colors are drawn from the active theme's CSS variables, so switching
+themes re-colors them automatically. Kept low-opacity on purpose so
+they read as ambient texture, not a focal point.
+--------------------------------------------------------------*/
+
+/* Top gradient - soft wash behind the header area */
+.background-elements .bg-top-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(to bottom,
+      color-mix(in srgb, var(--accent-highlight), transparent 88%) 0%,
+      color-mix(in srgb, var(--heading-color), transparent 94%) 55%,
+      transparent 100%);
+}
+
+/* Bottom gradient - soft wash behind the footer area */
+.background-elements .bg-bottom-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(to top,
+      color-mix(in srgb, var(--accent-color), transparent 88%) 0%,
+      color-mix(in srgb, var(--accent-highlight), transparent 94%) 55%,
+      transparent 100%);
+}
+
+/* Twinkling stars, concentrated toward the top of the page */
+.background-elements .bg-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+}
+
+.background-elements .bg-stars .star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--heading-color);
+  opacity: 0.2;
+  animation-name: star-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.background-elements .bg-stars .star.star-lg {
+  width: 3px;
+  height: 3px;
+}
+
+@keyframes star-twinkle {
+
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: scale(1.3);
+  }
+}
+
+/* Waves, anchored to the very bottom edge, underneath the floating nav pill */
+.background-elements .bg-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  overflow: hidden;
+  opacity: 0.25;
+}
+
+.background-elements .bg-waves .wave-layer {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.background-elements .bg-waves .wave-layer.wave-1 {
+  fill: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+  animation: wave-drift 22s linear infinite;
+}
+
+.background-elements .bg-waves .wave-layer.wave-2 {
+  fill: color-mix(in srgb, var(--accent-color), transparent 92%);
+  animation: wave-drift 32s linear infinite reverse;
+  opacity: 0.7;
+}
+
+@keyframes wave-drift {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background-elements .bg-stars .star {
+    animation: none;
+    opacity: 0.25;
+  }
+
+  .background-elements .bg-waves .wave-layer {
+    animation: none;
+  }
+}
+
 .hero .hero-content {
   position: relative;
   width: 100%;
@@ -1977,33 +2091,6 @@ section,
     width: 300px;
     height: 300px;
   }
-
-  .background-elements .bg-circle.circle-1 {
-    width: 300px;
-    height: 300px;
-    top: 10%;
-    right: 10%;
-    animation-delay: 0s;
-    z-index: 1;
-  }
-
-  .background-elements .bg-circle.circle-2 {
-    width: 200px;
-    height: 200px;
-    bottom: 20%;
-    left: 5%;
-    animation-delay: 2s;
-    z-index: 2;
-  }
-
-  .background-elements .bg-circle.circle-3 {
-    width: 100px;
-    height: 100px;
-    bottom: 40%;
-    right: 10%;
-    animation-delay: 4s;
-    z-index: 3;
-  }
 }
 
 /*--------------------------------------------------------------
@@ -2040,7 +2127,6 @@ section,
   position: relative;
   z-index: 0;
   margin-bottom: 2.5rem;
-  overflow: hidden;
 }
 
 .about .profile-header .profile-image {
@@ -2052,7 +2138,8 @@ section,
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid var(--accent-highlight);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 25px 8px transparent;
+  transition: box-shadow 0.4s ease;
 }
 
 .about .profile-header .profile-image a {
@@ -2070,21 +2157,9 @@ section,
   object-position: center 15%;
 }
 
-.about .profile-header .profile-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background: linear-gradient(135deg,
-      color-mix(in srgb, var(--accent-color), transparent 25%),
-      color-mix(in srgb, var(--accent-highlight), transparent 15%));
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.about .profile-header .profile-image:hover::after {
-  opacity: 0.8;
+.about .profile-header .profile-image:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15),
+    0 0 25px 10px color-mix(in srgb, var(--accent-color), transparent 55%);
 }
 
 .profile-smoke-about {
@@ -2099,7 +2174,7 @@ section,
 
 .about .profile-header .profile-badge {
   position: absolute;
-  bottom: 20px;
+  bottom: 5px;
   right: calc(50% - 65px);
   width: 32px;
   height: 32px;
@@ -2833,6 +2908,8 @@ section,
   border: 5px solid color-mix(in srgb, var(--accent-highlight), transparent 85%);
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 0 25px 8px transparent;
+  transition: box-shadow 0.4s ease;
 }
 
 .resume .resume-side .profile-img img {
@@ -2843,21 +2920,8 @@ section,
   object-fit: cover;
 }
 
-.resume .resume-side .profile-img a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background: linear-gradient(135deg,
-      color-mix(in srgb, var(--accent-color), transparent 25%),
-      color-mix(in srgb, var(--accent-highlight), transparent 15%));
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.resume .resume-side .profile-img a:hover::after {
-  opacity: 0.8;
+.resume .resume-side .profile-img a:hover {
+  box-shadow: 0 0 25px 10px color-mix(in srgb, var(--accent-color), transparent 55%);
 }
 
 .profile-smoke-resume {
@@ -3773,12 +3837,6 @@ section,
 # Starter Section Section
 --------------------------------------------------------------*/
 
-
-@font-face {
-  font-family: 'bootstrap-icons';
-  src: url('../fonts/bootstrap-icons.woff2') format('woff2');
-  font-display: swap;
-}
 
 /* Gallery Carousel Section */
 .gallery-carousel-section {
