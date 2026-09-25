@@ -361,9 +361,9 @@
       lines: [
         { type: 'heading', text: 'PROJECTS' },
         { type: 'gap' },
-        { type: 'entry', title: 'AuditKit', sub: 'API Capstone Project' },
         { type: 'entry', title: 'NothingTechBlob', sub: 'Technical & On-Page SEO + WordPress Development' },
         { type: 'entry', title: 'Badlands Ink', sub: 'Technical, Local & E-Commerce SEO + WordPress Development' },
+        { type: 'entry', title: 'AuditKit', sub: 'API Capstone Project' },
         { type: 'entry', title: 'John Off the Wall', sub: 'HTML & CSS Capstone Project' },
         { type: 'entry', title: 'PixelLog', sub: 'Node.js, Express.js & EJS Capstone Project' },
         { type: 'entry', title: 'JamporuDEX', sub: 'Node.js, Express, PostgreSQL & EJS Capstone Project' },
