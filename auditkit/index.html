@@ -45,6 +45,13 @@
 
 <body class="portfolio-details-page">
 
+    <!-- Flat desktop-style background -->
+  <div class="desktop-background" aria-hidden="true"></div>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="fa-solid fa-angles-up"></i></a>
+
       <!-- Theme Controls -->
       <div class="theme-dots" role="group" aria-label="Switch color theme">
         <button type="button" class="theme-dot dot-everforest active" data-theme-choice="everforest"
@@ -59,25 +66,34 @@
           title="Dracula Pro theme" aria-label="Dracula Pro theme"></button>
       </div>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="https://jpldeleon.github.io/" class="active"><i
-                class="fa-solid fa-house-chimney navicon"></i><span class="nav-label">Home</span></a>
-          </li>
-          <li><a href="#portfolio-details"><i class="fa-brands fa-youtube navicon"></i><span class="nav-label">
-                Video</span></a>
-          </li>
-          <li><a href="#details"><i class="fa-solid fa-info navicon"></i><span class="nav-label">
-                Details</span></a></li>
-          <li><a href="#project-screenshots"><i class="fa-solid fa-images navicon"></i><span class="nav-label">
-                Gallery</span></a>
-          </li>
-        </ul>
-      </nav>
+      <!-- Linux-style Floating Dock -->
+  <nav class="linux-dock" aria-label="Desktop dock">
+    <button type="button" id="dock-menu-btn" class="dock-item dock-menu" aria-haspopup="true" aria-expanded="false"
+      aria-controls="app-menu" title="Menu"><i class="fa-solid fa-grip"></i><span class="dock-tooltip">Menu</span></button>
+    <a href="https://jpldeleon.github.io/" class="dock-item dock-about" title="About"><i class="fa-solid fa-house-chimney"></i><span
+        class="dock-tooltip">Home</span></a>
+    <a href="#portfolio-details" class="dock-item dock-resume" title="Resume"><i class="fa-brands fa-youtube"></i><span
+        class="dock-tooltip">Video</span></a>
+    <a href="#portfolio" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-info"></i><span
+        class="dock-tooltip">Details</span></a>
+        <a href="#portfolio" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-info"></i><span
+        class="dock-tooltip">Gallery</span></a>
+  </nav>
 
-      <!-- Scroll Top -->
-      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-          class="fa-solid fa-angles-up"></i></a>
+  <!-- App Menu (launcher for CV summary terminals) -->
+  <div id="app-menu" class="app-menu" role="menu" aria-hidden="true">
+    <div class="app-menu-header">Summary</div>
+    <ul>
+      <li><button type="button" role="menuitem" data-terminal="certifications"><i
+            class="fa-solid fa-award"></i>Certifications</button></li>
+      <li><button type="button" role="menuitem" data-terminal="experience"><i
+            class="fa-solid fa-briefcase"></i>Professional Experience</button></li>
+      <li><button type="button" role="menuitem" data-terminal="projects"><i
+            class="fa-solid fa-diagram-project"></i>Projects</button></li>
+      <li><button type="button" role="menuitem" data-terminal="socials"><i
+            class="fa-solid fa-share-nodes"></i>Socials</button></li>
+    </ul>
+  </div>
 
     </div>
 
