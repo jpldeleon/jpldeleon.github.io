@@ -71,18 +71,32 @@
       </div>
 
       <nav class="linux-dock" aria-label="Desktop dock">
-        <button type="button" id="dock-menu-btn" class="dock-item dock-menu" aria-haspopup="true" aria-expanded="false"
-          aria-controls="app-menu" title="Menu"><i class="fa-solid fa-grip"></i><span
-            class="dock-tooltip">Menu</span></button>
-        <a href="https://jpldeleon.github.io/" class="dock-item dock-about" title="About"><i
-            class="fa-solid fa-house-chimney"></i><span class="dock-tooltip">Home</span></a>
-        <a href="#portfolio-details" class="dock-item dock-resume" title="Resume"><i
-            class="fa-brands fa-youtube"></i><span class="dock-tooltip">Video</span></a>
-        <a href="#portfolio" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-info"></i><span
-            class="dock-tooltip">Details</span></a>
-        <a href="#portfolio" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-images"></i><span
-            class="dock-tooltip">Gallery</span></a>
-      </nav>
+    <button type="button" id="dock-menu-btn" class="dock-item dock-menu" aria-haspopup="true" aria-expanded="false"
+      aria-controls="app-menu" title="Menu"><i class="fa-solid fa-grip"></i><span class="dock-tooltip">Menu</span></button>
+    <a href="https://jpldeleon.github.io/" class="dock-item dock-about" title="About"><i class="fa-solid fa-house-chimney"></i><span
+        class="dock-tooltip">Home</span></a>
+    <a href="#portfolio-details" class="dock-item dock-resume" title="Resume"><i class="fa-brands fa-youtube"></i><span
+        class="dock-tooltip">Video</span></a>
+    <a href="#details" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-info"></i><span
+        class="dock-tooltip">Details</span></a>
+        <a href="#project-screenshots" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-images"></i><span
+        class="dock-tooltip">Gallery</span></a>
+  </nav>
+
+   <!-- App Menu (launcher for CV summary terminals) -->
+  <div id="app-menu" class="app-menu" role="menu" aria-hidden="true">
+    <div class="app-menu-header">Summary</div>
+    <ul>
+      <li><button type="button" role="menuitem" data-terminal="certifications"><i
+            class="fa-solid fa-award"></i>Certifications</button></li>
+      <li><button type="button" role="menuitem" data-terminal="experience"><i
+            class="fa-solid fa-briefcase"></i>Professional Experience</button></li>
+      <li><button type="button" role="menuitem" data-terminal="projects"><i
+            class="fa-solid fa-diagram-project"></i>Projects</button></li>
+      <li><button type="button" role="menuitem" data-terminal="socials"><i
+            class="fa-solid fa-share-nodes"></i>Socials</button></li>
+    </ul>
+  </div>
 
     </div>
 
