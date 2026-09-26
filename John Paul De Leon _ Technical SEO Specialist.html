@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="draculapro"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <script>
+    (function () {
+      var saved = localStorage.getItem('site-theme');
+      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    })();
+  </script>
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>John Paul De Leon | Technical SEO Specialist</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Universal Open Graph Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="JP De Leon">
+  <meta property="og:description" content="Technical SEO Specialist with a background in WordPress and web development.">
+  <meta property="og:url" content="https://jpldeleon.github.io/">
+  <meta property="og:image" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
+  <meta property="og:image:secure_url" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter / X Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JP De Leon">
+  <meta name="twitter:description" content="Technical SEO Specialist with a background in WordPress and web development.">
+  <meta name="twitter:image" content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/jp_favicon.png">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/" rel="preconnect">
+  <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin="">
+  <link href="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/css2_KmLD.css" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/bootstrap.min_KmLD.css" rel="stylesheet">
+  <link href="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/all.min_KmLD.css" rel="stylesheet" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link href="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/aos_KmLD.css" rel="stylesheet">
+  <link href="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/glightbox.min_KmLD.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/main_KmLD.css" rel="stylesheet">
+
+</head>
+
+<body class="index-page" data-aos-easing="ease-in-out" data-aos-duration="600" data-aos-delay="0">
+
+  <!-- Flat desktop-style background -->
+  <div class="desktop-background" aria-hidden="true"></div>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="fa-solid fa-angles-up"></i></a>
+
+  <!-- Theme Controls -->
+  <div class="theme-dots" role="group" aria-label="Switch color theme">
+    <button type="button" class="theme-dot dot-everforest" data-theme-choice="everforest" title="Everforest theme" aria-label="Everforest theme"></button>
+    <button type="button" class="theme-dot dot-aurora" data-theme-choice="aurora" title="Aurora theme" aria-label="Aurora theme"></button>
+    <button type="button" class="theme-dot dot-gruvbox" data-theme-choice="gruvbox" title="Gruvbox theme" aria-label="Gruvbox theme"></button>
+    <button type="button" class="theme-dot dot-monokai" data-theme-choice="monokai" title="Monokai Pro theme" aria-label="Monokai Pro theme"></button>
+    <button type="button" class="theme-dot dot-draculapro active" data-theme-choice="draculapro" title="Dracula Pro theme" aria-label="Dracula Pro theme"></button>
+  </div>
+
+  <!-- Linux-style Floating Dock -->
+  <nav class="linux-dock" aria-label="Desktop dock">
+    <button type="button" id="dock-menu-btn" class="dock-item dock-menu" aria-haspopup="true" aria-expanded="false" aria-controls="app-menu" title="Menu"><i class="fa-solid fa-grip"></i><span class="dock-tooltip">Menu</span></button>
+    <a href="#about" class="dock-item dock-about active" title="About"><i class="fa-solid fa-user"></i><span class="dock-tooltip">About</span></a>
+    <a href="#resume" class="dock-item dock-resume" title="Resume"><i class="fa-regular fa-id-card"></i><span class="dock-tooltip">Resume</span></a>
+    <a href="#portfolio" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-diagram-project"></i><span class="dock-tooltip">Projects</span></a>
+  </nav>
+
+  <!-- App Menu (launcher for CV summary terminals) -->
+  <div id="app-menu" class="app-menu" role="menu" aria-hidden="true">
+    <div class="app-menu-header">Summary</div>
+    <ul>
+      <li><button type="button" role="menuitem" data-terminal="certifications"><i class="fa-solid fa-award"></i>Certifications</button></li>
+      <li><button type="button" role="menuitem" data-terminal="experience"><i class="fa-solid fa-briefcase"></i>Professional Experience</button></li>
+      <li><button type="button" role="menuitem" data-terminal="projects"><i class="fa-solid fa-diagram-project"></i>Projects</button></li>
+      <li><button type="button" role="menuitem" data-terminal="socials"><i class="fa-solid fa-share-nodes"></i>Socials</button></li>
+    </ul>
+  </div>
+
+  <!-- Hero Sidebar -->
+  <aside id="hero" class="hero-sidebar">
+    <div class="hero-sidebar-inner">
+      <div class="sidebar-avatar">
+        <span class="profile-smoke profile-smoke-avatar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+        <a href="#" class="profile-image" aria-label="View profile photo">
+          <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/jp_profile_1_KmLD.webp" alt="John Paul De Leon" class="photo-original" fetchpriority="high">
+        </a>
+      </div>
+
+      <div class="sidebar-header-block">
+        <h1>John Paul <span class="accent-text">De Leon</span></h1>
+        <div class="code-container">
+          <span class="punctuation">{</span><span class="quote">"</span><span class="typed" data-typed-items="technicalSeoSpecialist, seoSpecialist, wordpressDeveloper, webDeveloper">wordpressDeveloper</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true">|</span><span class="quote">"</span><span class="punctuation">}</span>
+        </div>
+      </div>
+      <div class="sidebar-contact contact-block">
+        <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="email" data-copy-value="jpleonard.deleon@gmail.com">
+          <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
+          <i class="fa-solid fa-envelope"></i>
+          <span>Email</span>
+        </button>
+        <button type="button" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone" data-copy-value="+639760109942">
+          <span class="contact-smoke" aria-hidden="true"><span></span><span></span><span></span></span>
+          <i class="fa-solid fa-phone"></i>
+          <span>Phone</span>
+        </button>
+
+        <!-- Copy Toast (Email / Phone) -->
+        <div class="copy-toast-container">
+          <div id="copyToast" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
+            <div class="toast-body d-flex align-items-center gap-2">
+              <i class="fa-solid fa-circle-check"></i>
+              <span id="copyToastBody">Copied to clipboard.</span>
+              <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-social">
+        <span class="sidebar-social-label">Connect</span>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/jpldl/" target="_blank" title="LinkedIn" aria-label="LinkedIn"></a>
+          <a href="https://github.com/jpldeleon" target="_blank" title="GitHub" aria-label="GitHub"></a>
+          <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" title="Upwork" aria-label="Upwork"></a>
+          <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" title="GoLance" aria-label="GoLance"></a>
+        </div>
+      </div>
+
+      <div class="sidebar-projects">
+        <span class="sidebar-projects-label">My Work</span>
+        <div class="project-links">
+          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/auditkit/" target="_blank" title="AuditKit" aria-label="AuditKit"></a>
+          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/jamporudex/" target="_blank" title="JamporuDEX" aria-label="JamporuDEX"></a>
+          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/johnoffthewall/" target="_blank" title="John Off the Wall" aria-label="John Off the Wall"></a>
+          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/pixellog/" target="_blank" title="PixelLog" aria-label="PixelLog"></a>
+          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/route196/" target="_blank" title="Route 196" aria-label="Route 196"></a>
+        </div>
+      </div>
+    </div>
+  </aside><!-- /Hero Sidebar -->
+
+  <main class="main">
+
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <div class="col-lg-5 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="200">
+            <div class="profile-card">
+              <div class="profile-header">
+                <span class="profile-smoke profile-smoke-about" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+                <div class="profile-image">
+                  <a href="#" aria-label="View profile photo">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/jp-profile-2_KmLD.webp" alt="John Paul De Leon" class="img-fluid photo-original">
+                  </a>
+                </div>
+                <div class="profile-badge">
+                  <i class="fa-solid fa-life-ring"></i>
+                </div>
+              </div>
+
+              <div class="profile-details">
+                <div class="detail-card">
+                  <div class="detail-card-header">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Specialization</h4>
+                  </div>
+                  <p class="detail-value">Technical SEO, SEO, WordPress Development</p>
+                </div>
+
+                <div class="detail-card">
+                  <div class="detail-card-header">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    <h4>Experience</h4>
+                  </div>
+                  <p class="detail-value">Mid-level (5+ years in SEO)</p>
+                </div>
+
+                <div class="detail-card">
+                  <div class="detail-card-header">
+                    <i class="fa-solid fa-book"></i>
+                    <h4>Education</h4>
+                  </div>
+                  <p class="detail-value">SEO, Technical SEO, Full Stack Web Development, ICT</p>
+                </div>
+
+                <div class="detail-card">
+                  <div class="detail-card-header">
+                    <i class="fa-solid fa-language"></i>
+                    <h4>Languages</h4>
+                  </div>
+                  <p class="detail-value">English, Filipino</p>
+                </div>
+
+                <div class="profile-cta">
+                  <div class="profile-cta-buttons">
+                    <a href="#" class="btn btn-primary">
+                      <i class="fa-solid fa-download"></i>
+                      Download Resume
+                    </a>
+                    <a href="https://github.com/jpldeleon" target="_blank" class="btn btn-github">
+                      <i class="fa-brands fa-github"></i>
+                      View on GitHub
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7 aos-init aos-animate" data-aos="fade-left" data-aos-delay="300">
+            <div class="about-content">
+              <div class="section-header">
+                <span class="badge-text">Get to Know Me</span>
+                <h2>Building things with SEO in mind</h2>
+              </div>
+
+              <div class="description">
+                <p>I did link prospecting for five years. The work was straightforward, but I was curious about the
+                  numbers. I'd see metrics on worksheets and think, there's more to this. What's the bigger picture?
+                  What's behind these numbers?</p>
+                <p>So I dug into Technical SEO and got sucked into it. I already had a background in HTML, CSS, and
+                  JavaScript from college, so I took a full-stack bootcamp as a refresher to actually see how everything
+                  works at the code level. Not because I wanted to be a developer, but because I needed to understand
+                  the full context.</p>
+                <p>Now I can identify problems and implement solutions. I think carefully before moving. I troubleshoot
+                  instead of guessing. I look for ways to improve how things work. I'm easily teachable and adapt to how
+                  you work and new technologies and updates, but I'll ask questions first to make sure I understand.</p>
+                <p>How I work: I prefer written or chat communication over calls, but I can adjust when needed. I work
+                  independently after understanding what matters and how you position things. My process is iterative,
+                  whether I'm solving something urgent or thinking through how to streamline a process. I research
+                  thoroughly because good decisions come from understanding your options. I prioritize high-impact work
+                  over busywork.</p>
+                <p>I'm solid at a few things and keep learning the rest. I don't have real client work yet, but I've
+                  built solid local projects that demonstrate what I can do. I bring that same curiosity I had five
+                  years ago, but now I actually know where to look for answers.</p>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats section light-background">
+
+      <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="stats-wrapper">
+              <div class="stats-item aos-init aos-animate" data-aos="zoom-in" data-aos-delay="150">
+                <div class="icon-wrapper">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+                <span data-purecounter-start="0" data-purecounter-end="5" data-purecounter-duration="0" class="purecounter">5</span>
+                <p>Years in Link Prospecting &amp; Research</p>
+              </div><!-- End Stats Item -->
+
+              <div class="stats-item aos-init aos-animate" data-aos="zoom-in" data-aos-delay="200">
+                <div class="icon-wrapper">
+                  <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="0" class="purecounter">12</span>
+                <p>Years Professional</p>
+              </div><!-- End Stats Item -->
+
+              <div class="stats-item aos-init aos-animate" data-aos="zoom-in" data-aos-delay="250">
+                <div class="icon-wrapper">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span data-purecounter-start="0" data-purecounter-end="7" data-purecounter-duration="0" class="purecounter">7</span>
+                <p>Experimental Projects</p>
+              </div><!-- End Stats Item -->
+
+              <div class="stats-item aos-init aos-animate" data-aos="zoom-in" data-aos-delay="250">
+                <div class="icon-wrapper">
+                  <i class="fa-solid fa-rocket"></i>
+                </div>
+                <span data-purecounter-start="0" data-purecounter-end="31" data-purecounter-duration="0" class="purecounter">31</span>
+                <p>Projects handled</p>
+              </div><!-- End Stats Item -->
+
+              <!-- End Stats Item -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Stats Section -->
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills section">
+
+      <!-- Section Title -->
+      <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2>Skills</h2>
+        <p>Technical SEO background meeting web development skills. Hands-on experience in strategy, WordPress, and
+          full-stack projects.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="skills-grid">
+          <div class="skills-specialization aos-init aos-animate" data-aos="fade-up" data-aos-delay="150">
+            <h4>Core Specializations</h4>
+            <div class="skills-list">
+              <div class="skill-item">
+                <h5>Technical SEO</h5>
+                <div class="skill-tooltip">Learned through certification course and hands-on projects</div>
+              </div>
+              <div class="skill-item">
+                <h5>WordPress Development</h5>
+                <div class="skill-tooltip">Built and practiced multiple projects on LocalWP</div>
+              </div>
+              <div class="skill-item">
+                <h5>E-Commerce / WooCommerce</h5>
+                <div class="skill-tooltip">Badlands Ink project with product catalog, payments, and optimization</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skills-specialization aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+            <h4>Expertise Areas</h4>
+            <div class="skills-list">
+              <div class="skill-item">
+                <h5>On-Page SEO</h5>
+                <div class="skill-tooltip">Practical experience optimizing WordPress projects</div>
+              </div>
+              <div class="skill-item">
+                <h5>Off-Page SEO</h5>
+                <div class="skill-tooltip">5+ years link research, prospecting, qualification, and vetting</div>
+              </div>
+              <div class="skill-item">
+                <h5>Performance &amp; Core Web Vitals</h5>
+                <div class="skill-tooltip">Site speed optimization and performance analysis</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skills-specialization aos-init aos-animate" data-aos="fade-up" data-aos-delay="250">
+            <h4>Technical Stack</h4>
+            <div class="skills-list">
+              <div class="skill-item">
+                <h5>Frontend Development</h5>
+                <div class="skill-tooltip">HTML, CSS, JavaScript, Bootstrap, responsive design</div>
+              </div>
+              <div class="skill-item">
+                <h5>Backend &amp; Scripting</h5>
+                <div class="skill-tooltip">Node.js, Express.js, automation scripts</div>
+              </div>
+              <div class="skill-item">
+                <h5>Tools &amp; Platforms</h5>
+                <div class="skill-tooltip">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Skills Section -->
+
+    <!-- Resume Section -->
+    <section id="resume" class="resume section">
+
+      <!-- Section Title -->
+      <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2>Resume</h2>
+        <p>A quick look at where I've worked, studied, and what I've picked up along the way.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <div class="resume-side aos-init aos-animate" data-aos="fade-right" data-aos-delay="100">
+              <div class="profile-img mb-4">
+                <span class="profile-smoke profile-smoke-resume" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+                <a href="#" aria-label="View profile photo">
+                  <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/jp-profile-3_KmLD.webp" alt="John Paul De Leon" class="img-fluid rounded photo-original">
+                </a>
+              </div>
+
+              <h3>Professional Summary</h3>
+              <p>SEO Specialist with 5 years of experience focused on link prospecting, backlink research, and outreach
+                across Intelligent.com LLC and Awisee. Recently expanded into technical SEO through hands-on web
+                development
+                training and certification, bringing a growing ability to understand and improve websites from the code
+                level, not just around it. Detail-focused and research-driven, with a genuine commitment to SEO as a
+                long-term career.</p>
+
+              <h3 class="mt-4">Contact Information</h3>
+              <div class="contact-block">
+                <ul class="contact-info list-unstyled">
+                  <li><i class="fa-solid fa-location-dot"></i> Metro Manila, Philippines</li>
+                  <li>
+                    <button type="button" class="contact-info-copy js-copy-trigger" data-copy-type="email" data-copy-value="jpleonard.deleon@gmail.com">
+                      <i class="fa-solid fa-envelope"></i> ••••••deleon@gmail.com
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="contact-info-copy js-copy-trigger" data-copy-type="phone" data-copy-value="+639760109942">
+                      <i class="fa-solid fa-mobile-screen"></i> +63 ••• ••• 9942
+                    </button>
+                  </li>
+                  <li><a href="https://www.linkedin.com/in/jpldl/"><i class="fa-brands fa-linkedin"></i>
+                      linkedin.com/in/jpldl/</a></li>
+                </ul>
+
+                <div class="copy-toast-container">
+                  <div id="copyToastResume" class="copy-toast toast" role="status" aria-live="polite" aria-atomic="true">
+                    <div class="toast-body d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-circle-check"></i>
+                      <span id="copyToastResumeBody">Copied to clipboard.</span>
+                      <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="skills-animation mt-4">
+                <h3>Technical Skills</h3>
+                <div class="skill-category">
+                  <h4><i class="fa-solid fa-magnifying-glass"></i> SEO Expertise</h4>
+                  <ul class="skill-list">
+                    <li>Technical SEO</li>
+                    <li>On-Page SEO</li>
+                    <li>Off-Page SEO</li>
+                    <li>Site Architecture</li>
+                    <li>Core Web Vitals</li>
+                    <li>Performance Optimization</li>
+                    <li>Structured Data / Schema Markup</li>
+                    <li>Email Verification / List Qualification</li>
+                  </ul>
+                </div>
+
+                <div class="skill-category">
+                  <h4><i class="fa-solid fa-code"></i> Web Development</h4>
+                  <ul class="skill-list">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>Bootstrap</li>
+                    <li>JavaScript</li>
+                    <li>Node.js</li>
+                    <li>Express.js</li>
+                    <li>Responsive Design</li>
+                    <li>Git/GitHub</li>
+                    <li>Semantic HTML</li>
+                    <li>API Integration / REST APIs</li>
+                  </ul>
+                </div>
+
+                <div class="skill-category">
+                  <h4><i class="fa-brands fa-wordpress"></i> WordPress Development</h4>
+                  <ul class="skill-list">
+                    <li>Elementor</li>
+                    <li>WooCommerce</li>
+                    <li>Rank Math</li>
+                    <li>Yoast SEO</li>
+                    <li>WPForms</li>
+                    <li>WP Optimize</li>
+                    <li>Theme Customization</li>
+                    <li>LocalWP</li>
+                  </ul>
+                </div>
+
+                <div class="skill-category">
+                  <h4><i class="fa-solid fa-arrow-trend-up"></i> Tools &amp; Analytics</h4>
+                  <ul class="skill-list">
+                    <li>Google Analytics</li>
+                    <li>Screaming Frog</li>
+                    <li>SEMrush</li>
+                    <li>Ahrefs</li>
+                    <li>Google Search Console</li>
+                    <li>Data Studio</li>
+                    <li>RustySEO</li>
+                    <li>PageSpeed Insights</li>
+                    <li>Lighthouse</li>
+                  </ul>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Right column with experience and education -->
+          <div class="col-lg-8 ps-4 ps-lg-5">
+            <!-- Certifications Section -->
+            <div class="resume-section aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+              <h3><i class="fa-solid fa-award me-2"></i>Certifications</h3>
+
+              <div class="resume-item">
+                <h4>The Complete Full-Stack Web Development Bootcamp</h4>
+                <p class="company"><i class="fa-solid fa-certificate"></i> Udemy</p>
+                <h5>2026</h5>
+              </div>
+
+              <div class="resume-item">
+                <h4>Technical SEO and SEO Sprint</h4>
+                <p class="company"><i class="fa-solid fa-certificate"></i> SEO Workout by Gab Valimento</p>
+                <h5>2025</h5>
+              </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div class="resume-section aos-init aos-animate" data-aos="fade-up">
+              <h3><i class="fa-solid fa-briefcase me-2"></i>Professional Experience</h3>
+
+              <div class="resume-item">
+                <h4>Self-Directed Learning &amp; Upskilling</h4>
+                <h5>May 2025 - Present</h5>
+                <ul>
+                  <li>Completed the Complete Full-Stack Web Development Bootcamp</li>
+                  <li>Completed Technical SEO and SEO Sprint certification</li>
+                  <li>Practiced technical SEO through hands-on projects</li>
+                  <li>Practiced WordPress development and site building</li>
+                  <li>Built web app and other capstone projects</li>
+                </ul>
+              </div>
+
+              <div class="resume-item">
+                <h4>SEO Outreach Specialist</h4>
+                <h5>Jan - May 2025</h5>
+                <p class="company"><i class="fa-solid fa-building"></i> <a href="https://www.linkedin.com/company/awisee/" target="_blank">Awisee</a></p>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> Remote, Stockholm, Sweden</p>
+                <ul>
+                  <li>Built and verified prospect lists that directly enabled the team's link-building campaigns to run
+                    smoothly, reducing time spent on manual list-building</li>
+                  <li>Cleaned and organized lead data, sharpening outreach targeting so campaigns reached more relevant,
+                    higher-quality contacts</li>
+                  <li>Identified opportunities to streamline the prospect list workflow and proposed process
+                    improvements to the team</li>
+                </ul>
+              </div>
+
+
+              <div class="resume-item">
+                <h4>Research Analyst <span class="fw-normal">(SEO Link Prospecting)</span></h4>
+
+                <h5>Nov 2020 - Sept 2024</h5>
+                <p class="company"><i class="fa-solid fa-building"></i> <a href="https://www.linkedin.com/company/intelligent/" target="_blank">Intelligent.com LLC</a></p>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> Remote, Seattle, WA</p>
+                <ul>
+                  <li>Created research specs to guide the US and outreach teams' link prospecting for relevant campaigns
+                  </li>
+                  <li>Consistently built monthly prospect lists that met and sustained monthly and yearly outreach
+                    quotas</li>
+                  <li>Sourced high-quality backlink opportunities that supported the outreach team's campaign
+                    performance</li>
+                  <li>Maintained and troubleshot link and email databases, ensuring accuracy and campaign readiness</li>
+                  <li>Built a personal script to streamline research workflow, improving consistency and output quality
+                  </li>
+                  <li>Collaborated with team leaders to clarify research specs and align prospecting with campaign goals
+                  </li>
+                  <li>Trusted to pilot link prospecting strategy for new client accounts</li>
+                </ul>
+              </div>
+
+              <div class="resume-item">
+                <h4>Contact Finder <span class="fw-normal">(SEO Contact Research &amp; Verification)</span></h4>
+                <h5>May 2020 - November 2020</h5>
+                <p class="company"><i class="fa-solid fa-building"></i> <a href="https://www.linkedin.com/company/intelligent/" target="_blank">Intelligent.com LLC</a></p>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> Remote, Seattle, WA</p>
+                <ul>
+                  <li>Researched and verified high-quality leads for SEO link-building outreach</li>
+                  <li>Consistently met daily and monthly quotas under tight deadlines</li>
+                  <li>Applied consistent qualification criteria that reduced wasted outreach effort on low-authority or
+                    irrelevant sites</li>
+                  <li>Shared research and verification techniques with colleagues, helping streamline the team's
+                    workflow</li>
+                  <li>Promoted to Research Analyst after building a strong track record in this role</li>
+                </ul>
+
+              </div>
+
+              <div class="resume-item">
+                <h4>Freelance Research Consultant <span class="fw-normal">(Independent / Referral-based)</span></h4>
+                <h5>January 2019 - May 2020</h5>
+                <ul>
+                  <li>Delivered lead generation projects for outsourced clients through professional referrals</li>
+                  <li>Performed web scraping and data entry to build and organize prospect/contact lists</li>
+                  <li>Maintained accuracy and consistency across client-provided data sets</li>
+                </ul>
+              </div>
+
+              <div class="resume-item">
+                <h4>Research Analyst <span class="fw-normal">(Web Researcher)</span></h4>
+                <h5>Sep 2013 - November 2018</h5>
+                <p class="company"><i class="fa-solid fa-building"></i> <a href="https://www.linkedin.com/company/straive_/" target="_blank">Straive (formerly SPi Global)</a>
+                </p>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> On-site, Philippines</p>
+                <ul>
+                  <li>Built an automation solution that helped the team win a Lean Six Sigma Award and elevated the
+                    status of the account/project</li>
+                  <li>Consistently met quota and deadlines throughout tenure</li>
+                  <li>Trusted to pilot several new projects/accounts, successfully onboarding and acquiring them for the
+                    team</li>
+                  <li>Shared research and verification techniques with colleagues, helping streamline the team's
+                    workflow</li>
+                  <li>Stepped in to lead and manage other teams during critical, deadline-driven periods</li>
+                  <li>Expanded beyond primary duties by taking on overtime work for other accounts</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="resume-section aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+              <h3><i class="fa-solid fa-graduation-cap me-2"></i>Education</h3>
+
+              <div class="resume-item">
+                <h4>B.S. Marine Engineering</h4>
+                <h5>2009 - 2013</h5>
+                <p class="company"><i class="fa-solid fa-building"></i> Philippine Merchant Marine School</p>
+              </div>
+
+              <div class="resume-item">
+                <h4>A.S. Information &amp; Communication Technology</h4>
+                <h5>2006 - 2008</h5>
+                <p class="company"><i class="fa-solid fa-building"></i> IETI</p>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Resume Section -->
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+        <h2>Portfolio</h2>
+        <p>Learning through building. These projects show my journey from bootcamp to hands-on SEO and WordPress work.
+        </p>
+        <p>No client work yet, but solid foundations.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+          <div class="row">
+            <div class="col-lg-3 filter-sidebar">
+              <div class="filters-wrapper aos-init aos-animate" data-aos="fade-right" data-aos-delay="150">
+                <ul class="portfolio-filters isotope-filters">
+                  <li data-filter="*" class="filter-active">All</li>
+                  <li data-filter=".filter-certifications">Certifications</li>
+                  <li data-filter=".filter-seo">SEO</li>
+                  <li data-filter=".filter-wordpress">WordPress Development</li>
+                  <li data-filter=".filter-webdevelopment">Web Development</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-9">
+              <div class="row gy-4 portfolio-container isotope-container aos-init aos-animate" data-aos="fade-up" data-aos-delay="200" style="position: relative; height: 1520px;">
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-certifications" style="position: absolute; left: 0px; top: 0px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/cert-fullstack-bootcamp_KmLD.webp" class="img-fluid" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">Udemy</span>
+                        <h4>Complete Full-Stack Web Development Bootcamp</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/certifications/cert-fullstack-bootcamp_F.webp" class="glightbox"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-certifications" style="position: absolute; left: 495px; top: 0px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/cert_techseosprint_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">SEO Workout</span>
+                        <h4>Technical SEO and SEO Sprint</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/certifications/cert_techseosprint_F.webp" class="glightbox"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment" style="position: absolute; left: 0px; top: 304px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/auditkit-1-homepage_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">API Capstone Project</span>
+                        <h4>AuditKit</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/auditkit/auditkit-1-homepage_f.webp" class="glightbox" data-glightbox="description: .desc-auditkit"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="https://auditkit.onrender.com/" target="_blank" title="View Live Project"><i class="fa-solid fa-link"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/auditkit/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-auditkit" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/auditkit/" class="win-btn">Portfolio Project</a>
+                      <a href="https://auditkit.onrender.com/" target="_blank" class="win-btn">Live Demo</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-seo filter-wordpress" style="position: absolute; left: 495px; top: 304px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/nothingtechblob_p_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">Technical &amp; On-Page SEO + WordPress Development</span>
+                        <h4>NothingTechBlob</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/nothingtechblob/ntb_full/nothingtechblob_p.webp" class="glightbox" data-glightbox="description: .desc-nothingtechblob"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/nothingtechblob/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-nothingtechblob" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/nothingtechblob/" class="win-btn">Portfolio Project</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-seo filter-wordpress" style="position: absolute; left: 0px; top: 608px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/badlands-ink_thumb_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">Technical, Local &amp; E-Commerce SEO + WordPress Development</span>
+                        <h4>Badlands Ink</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/badlands/badlands-ss-zoom/badlands-ink.webp" class="glightbox" data-glightbox="description: .desc-badlands"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/badlands-ink/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-badlands" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/badlands-ink/" class="win-btn">Portfolio Project</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment" style="position: absolute; left: 495px; top: 608px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/1-hero_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">HTML &amp; CSS Capstone Project</span>
+                        <h4>John Off the Wall</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/johnoffthewall/1-hero-f.webp" class="glightbox" data-glightbox="description: .desc-johnoffthewall"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="https://johnoffthewall.github.io/" target="_blank" title="View Live Project"><i class="fa-solid fa-link"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/johnoffthewall/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-johnoffthewall" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/johnoffthewall/" class="win-btn">Portfolio Project</a>
+                      <a href="https://johnoffthewall.github.io/" target="_blank" class="win-btn">Live Demo</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment" style="position: absolute; left: 0px; top: 912px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/pixellog-1-homepage_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">Node.js, Express.js &amp; EJS Capstone Project</span>
+                        <h4>PixelLog</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" class="glightbox" data-glightbox="description: .desc-pixellog"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="https://pixellog-dev.onrender.com/" target="_blank" title="View Live Project"><i class="fa-solid fa-link"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/pixellog/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-pixellog" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/pixellog/" class="win-btn">Portfolio Project</a>
+                      <a href="https://pixellog-dev.onrender.com/" target="_blank" class="win-btn">Live Demo</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment" style="position: absolute; left: 495px; top: 912px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/jamporudex-1-home_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">Node.js, Express, PostgreSQL &amp; EJS Capstone Project</span>
+                        <h4>JamporuDEX</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" class="glightbox" data-glightbox="description: .desc-jamporudex"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="https://jamporudex.onrender.com/" target="_blank" title="View Live Project"><i class="fa-solid fa-link"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/jamporudex/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-jamporudex" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/jamporudex/" class="win-btn">Portfolio Project</a>
+                      <a href="https://jamporudex.onrender.com/" target="_blank" class="win-btn">Live Demo</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-webdevelopment" style="position: absolute; left: 0px; top: 1216px;">
+                  <div class="portfolio-wrap portfolio-fixed-height">
+                    <img src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/route196-1-home-mocha_KmLD.webp" class="img-fluid portfolio-thumb-crop" alt="Portfolio Image" loading="lazy">
+                    <div class="portfolio-info">
+                      <div class="content">
+                        <span class="category">Node.js, Express.js &amp; EJS Capstone Project</span>
+                        <h4>Route 196</h4>
+                        <div class="portfolio-links">
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/assets/img/portfolio/route196/route196-1-home-mocha_f.webp" class="glightbox" data-glightbox="description: .desc-route196"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                          <a href="https://route196.onrender.com/" target="_blank" title="View Live Project"><i class="fa-solid fa-link"></i></a>
+                          <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/route196/" title="More Details"><i class="fa-solid fa-caret-right"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="glightbox-desc desc-route196" style="display:none;">
+                    <div class="lightbox-window-panel">
+                      <a href="file:///mnt/d_drive/CAREER/Portfolio/jpldeleon.github.io/route196/" class="win-btn">Portfolio Project</a>
+                      <a href="https://route196.onrender.com/" target="_blank" class="win-btn">Live Demo</a>
+                      <button type="button" class="win-btn win-btn-close" data-glightbox-close="">Close</button>
+                    </div>
+                  </div>
+                </div><!-- End Portfolio Item -->
+
+              </div><!-- End Portfolio Container -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Portfolio Section -->
+
+
+
+
+
+
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container">
+      <div class="copyright">
+        <p>©<strong class="px-1 sitename">2026 John Paul De Leon</strong> <span>All Rights Reserved</span>
+        </p>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- CV Terminal Lightboxes -->
+  <div class="terminal-overlay" id="terminal-certifications" role="dialog" aria-modal="true" aria-label="Certifications terminal">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dots"><span></span><span></span><span></span></span>
+        <span class="terminal-title">jp@portfolio: ~/cv</span>
+      </div>
+      <div class="terminal-body" data-command="cat certifications.txt"></div>
+      <div class="terminal-footer">
+        <button type="button" class="terminal-close-btn" data-close-terminal="">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="terminal-overlay" id="terminal-experience" role="dialog" aria-modal="true" aria-label="Professional experience terminal">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dots"><span></span><span></span><span></span></span>
+        <span class="terminal-title">jp@portfolio: ~/cv</span>
+      </div>
+      <div class="terminal-body" data-command="cat experience.txt"></div>
+      <div class="terminal-footer">
+        <button type="button" class="terminal-close-btn" data-close-terminal="">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="terminal-overlay" id="terminal-projects" role="dialog" aria-modal="true" aria-label="Projects terminal">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dots"><span></span><span></span><span></span></span>
+        <span class="terminal-title">jp@portfolio: ~/cv</span>
+      </div>
+      <div class="terminal-body" data-command="cat projects.txt"></div>
+      <div class="terminal-footer">
+        <button type="button" class="terminal-close-btn" data-close-terminal="">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="terminal-overlay" id="terminal-socials" role="dialog" aria-modal="true" aria-label="Socials terminal">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="terminal-dots"><span></span><span></span><span></span></span>
+        <span class="terminal-title">jp@portfolio: ~/cv</span>
+      </div>
+      <div class="terminal-body" data-command="cat socials.txt"></div>
+      <div class="terminal-footer">
+        <button type="button" class="terminal-close-btn" data-close-terminal="">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preloader -->
+  
+
+  <!-- Vendor JS Files -->
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/bootstrap.bundle.min_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/validate_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/aos_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/typed.umd_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/purecounter_vanilla_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/noframework.waypoints_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/isotope.pkgd.min_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/imagesloaded.pkgd.min_KmLD.js"></script>
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/glightbox.min_KmLD.js"></script>
+
+  <!-- Main JS File -->
+  <script src="John%20Paul%20De%20Leon%20_%20Technical%20SEO%20Specialist_files/main_KmLD.js"></script><style data-typed-js-cursor-css="true">
+        .typed-cursor{
+          opacity: 1;
+        }
+        .typed-cursor.typed-cursor--blink{
+          animation: typedjsBlink 0.7s infinite;
+          -webkit-animation: typedjsBlink 0.7s infinite;
+                  animation: typedjsBlink 0.7s infinite;
+        }
+        @keyframes typedjsBlink{
+          50% { opacity: 0.0; }
+        }
+        @-webkit-keyframes typedjsBlink{
+          0% { opacity: 1; }
+          50% { opacity: 0.0; }
+          100% { opacity: 1; }
+        }
+      </style>
+
+
+
+</body></html>

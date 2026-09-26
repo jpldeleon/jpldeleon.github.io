@@ -79,9 +79,9 @@
 [data-theme="gruvbox"] {
   --background-color: #282828;
   --default-color: #ebdbb2;
-  --heading-color: #d65d0e;
-  --accent-color: #98971a;
-  --accent-highlight: #d79921;
+  --heading-color: #d79921;
+  --accent-color: #689d6a;
+  --accent-highlight: #d65d0e;
   --accent-highlight-rgb: 214, 93, 14;
   --nav-color: #d5c4a1;
   --nav-hover-color: #d65d0e;
@@ -91,7 +91,7 @@
   --nav-dropdown-hover-color: #689d6a;
   --surface-color: #3c3836;
   --contrast-color: #fbf1c7;
-  --quote-color: #458588;
+  --quote-color: #98971a;
   --typed-color: #458588;
 }
 
@@ -105,7 +105,7 @@
   --background-color: #131516;
   --default-color: #F8F8F2;
   --heading-color: #80FFEA;
-  --accent-color: #f87359;
+  --accent-color: #7359f8;
   --accent-highlight: #7359f8;
   --accent-highlight-rgb: 255, 121, 198;
   --nav-color: #F8F8F2;
