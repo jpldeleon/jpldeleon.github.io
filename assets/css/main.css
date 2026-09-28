@@ -5855,3 +5855,66 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
     transform: none !important;
   }
 }
+
+
+/* =========================================================================
+   FIXES ROUND 2 (keep LAST)
+   A) Dock off-center on mobile: the page was wider than the screen, so the
+      fixed dock centered on the wider page. `overflow: clip` (used on
+      #about) is ignored by older mobile browsers, so AOS fade-left/right
+      elements (parked 100px to the right) widened the page. It only looked
+      fine with GLightbox open because that locks html/body overflow.
+   B) Lightbox buttons off-screen: video windows were taller than the phone
+      screen in landscape, pushing the title bar (and its buttons) offscreen.
+   ========================================================================= */
+
+/* A) Never allow sideways page scroll / zoom-out */
+html { overflow-x: hidden; }
+body { overflow-x: clip; max-width: 100%; }
+@supports (overflow: clip) {
+  html { overflow-x: clip; }
+}
+/* Fallback for browsers without `overflow: clip` on the clipped sections */
+@supports not (overflow: clip) {
+  section, .section { overflow-x: hidden; }
+}
+/* On small screens, AOS horizontal fades start below, not off to the side */
+@media (max-width: 991px) {
+  html body [data-aos="fade-left"]:not(.aos-animate),
+  html body [data-aos="fade-right"]:not(.aos-animate) {
+    transform: translate3d(0, 24px, 0) !important;
+  }
+}
+/* Dock: always centered on the visible screen, never wider than it */
+.linux-dock {
+  left: 50%;
+  right: auto;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+}
+
+/* B) Video lightbox: size by BOTH width and height so the title bar and its
+      buttons always stay on screen (16:9 video + 44px title bar). */
+html body .glightbox-container .gslide.current .gslide-video {
+  width: min(95vw, calc((100vh - 96px - 44px) * 16 / 9)) !important;
+  max-width: min(95vw, calc((100vh - 96px - 44px) * 16 / 9)) !important;
+}
+@supports (height: 100dvh) {
+  html body .glightbox-container .gslide.current .gslide-video {
+    width: min(95vw, calc((100dvh - 96px - 44px) * 16 / 9)) !important;
+    max-width: min(95vw, calc((100dvh - 96px - 44px) * 16 / 9)) !important;
+  }
+}
+@media (max-height: 520px) {
+  html body .glightbox-container .gslide.current .gslide-video {
+    width: min(95vw, calc((100vh - 24px - 44px) * 16 / 9)) !important;
+    max-width: min(95vw, calc((100vh - 24px - 44px) * 16 / 9)) !important;
+  }
+  html body .glightbox-container .gslide.current .gslide-image {
+    max-height: calc(100vh - 24px) !important;
+  }
+  html body .glightbox-container .gslide.current .gslide-image img {
+    max-height: calc(100vh - 24px - 44px) !important;
+  }
+}
