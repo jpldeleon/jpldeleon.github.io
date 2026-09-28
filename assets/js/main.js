@@ -89,7 +89,36 @@
    * Initiate glightbox
    */
   const glightbox = GLightbox({
-    selector: '.glightbox'
+    selector: '.glightbox',
+    openEffect: 'fade',
+    closeEffect: 'fade',
+    slideEffect: 'fade'
+  });
+
+  /* Mount the terminal chrome INSIDE each GLightbox image frame.
+     The title bar becomes a normal in-flow row above the image, so the
+     frame is one window: [title bar + commands] / [image]. It works on
+     every loaded slide (not just the first one in the DOM) and re-runs
+     when a slide finishes loading. */
+  function mountLightboxTerminalChrome() {
+    document.querySelectorAll('.glightbox-container .gslide').forEach((slide) => {
+      const imageFrame = slide.querySelector('.gslide-image, .gslide-video');
+      const description = slide.querySelector('.gslide-description.description-bottom');
+      if (!imageFrame || !description) return;
+
+      if (description.parentElement !== imageFrame) {
+        imageFrame.insertBefore(description, imageFrame.firstChild);
+      }
+      description.classList.add('lightbox-terminal-mounted');
+    });
+  }
+
+  ['open', 'slide_before_load', 'slide_after_load', 'slide_changed'].forEach((evt) => {
+    glightbox.on(evt, () => {
+      requestAnimationFrame(mountLightboxTerminalChrome);
+      window.setTimeout(mountLightboxTerminalChrome, 60);
+      window.setTimeout(mountLightboxTerminalChrome, 220);
+    });
   });
 
   /**
@@ -163,61 +192,100 @@
   });
 
   /**
-   * Dock Scrollspy
+   * Dock Scrollspy - keep one active section indicator in sync with the page.
    */
-  let dockLinks = document.querySelectorAll('.linux-dock a.dock-item[href]');
+  const dockLinks = document.querySelectorAll('.linux-dock a.dock-item[href]');
+  const dockSections = Array.from(dockLinks)
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
 
   function dockScrollspy() {
-    dockLinks.forEach(dockLink => {
-      let hash = dockLink.getAttribute('href');
-      if (!hash || hash.charAt(0) !== '#') return;
-      let section = document.querySelector(hash);
-      if (!section) return;
-      let position = window.scrollY + 200;
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        dockLinks.forEach(link => link.classList.remove('active'));
-        dockLink.classList.add('active');
-      } else {
-        dockLink.classList.remove('active');
-      }
+    if (!dockSections.length) return;
+    const marker = window.scrollY + Math.min(220, window.innerHeight * 0.28);
+    let activeSection = dockSections[0];
+    dockSections.forEach(section => {
+      if (section.offsetTop <= marker) activeSection = section;
+    });
+    dockLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + activeSection.id);
     });
   }
-  window.addEventListener('load', dockScrollspy);
-  document.addEventListener('scroll', dockScrollspy);
 
+  window.addEventListener('load', dockScrollspy);
+  document.addEventListener('scroll', dockScrollspy, { passive: true });
+  window.addEventListener('resize', dockScrollspy);
 
   /**
-   * Theme Dots - circular theme switcher
+   * Theme Dots + typed theme notification.
+   * Uses the existing theme names and the same small type/backspace pattern
+   * already used by the site's terminal typing effect.
    */
   const themeDots = document.querySelectorAll('.theme-dot');
+  const themeNotice = document.querySelector('#themeNotice');
+  let themeNoticeToken = 0;
 
   if (themeDots.length) {
+    const themeLabels = {
+      everforest: 'Everforest',
+      aurora: 'Aurora',
+      gruvbox: 'Gruvbox',
+      monokai: 'Monokai Pro',
+      draculapro: 'Dracula Pro'
+    };
+
     function getCurrentTheme() {
       return document.documentElement.getAttribute('data-theme') || 'everforest';
     }
 
-    function applyTheme(theme) {
+    function animateThemeNotice(theme) {
+      if (!themeNotice) return;
+      const token = ++themeNoticeToken;
+      const text = 'Theme: ' + (themeLabels[theme] || theme);
+      themeNotice.textContent = '';
+
+      let i = 0;
+      const type = () => {
+        if (token !== themeNoticeToken) return;
+        if (i < text.length) {
+          themeNotice.textContent = text.slice(0, ++i);
+          window.setTimeout(type, 45);
+        } else {
+          window.setTimeout(backspace, 1300);
+        }
+      };
+      const backspace = () => {
+        if (token !== themeNoticeToken) return;
+        if (i > 0) {
+          themeNotice.textContent = text.slice(0, --i);
+          window.setTimeout(backspace, 32);
+        } else {
+          themeNotice.textContent = '';
+        }
+      };
+      type();
+    }
+
+    function applyTheme(theme, announce = false) {
       if (theme === 'everforest') {
         document.documentElement.removeAttribute('data-theme');
       } else {
         document.documentElement.setAttribute('data-theme', theme);
       }
       localStorage.setItem('site-theme', theme);
-
       themeDots.forEach(dot => {
         dot.classList.toggle('active', dot.getAttribute('data-theme-choice') === theme);
       });
+      if (announce) animateThemeNotice(theme);
     }
 
     applyTheme(getCurrentTheme());
 
     themeDots.forEach(dot => {
       dot.addEventListener('click', () => {
-        applyTheme(dot.getAttribute('data-theme-choice'));
+        applyTheme(dot.getAttribute('data-theme-choice'), true);
       });
     });
   }
-
 
   const toastInstances = new Map();
 
@@ -329,6 +397,73 @@
     });
   }
 
+
+
+  /**
+   * Window motion (Linux desktop style)
+   *  - Minimize: window shrinks and flies into its dock icon (genie-like).
+   *  - Maximize / restore: window grows or shrinks to its new size.
+   *  - Close: plain fade.
+   * Uses the Web Animations API so it never fights the older CSS overrides.
+   */
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const MOTION_EASE = 'cubic-bezier(.4, 0, .2, 1)';
+  const MOTION_POP = 'cubic-bezier(.2, .8, .2, 1)';
+
+  function getDockTarget(kind) {
+    const dock = document.querySelector('.linux-dock');
+    if (!dock) return null;
+    if (kind === 'projects') return dock.querySelector('.dock-projects') || dock.querySelector('.dock-item');
+    return dock.querySelector('#dock-menu-btn') || dock.querySelector('.dock-item');
+  }
+
+  function bounceDockItem(el) {
+    if (!el) return;
+    el.classList.remove('dock-bounce');
+    void el.offsetWidth;
+    el.classList.add('dock-bounce');
+    window.setTimeout(() => el.classList.remove('dock-bounce'), 700);
+  }
+
+  /* Shrink `win` into `dockEl`. Resolves when the motion has finished. */
+  function shrinkIntoDock(win, dockEl, backdrop) {
+    return new Promise(resolve => {
+      if (!win || !dockEl || reduceMotion()) { resolve([]); return; }
+      const prevOrigin = win.style.transformOrigin;
+      win.style.transformOrigin = '50% 50%';
+      const w = win.getBoundingClientRect();
+      const d = dockEl.getBoundingClientRect();
+      const dx = (d.left + d.width / 2) - (w.left + w.width / 2);
+      const dy = (d.top + d.height / 2) - (w.top + w.height / 2);
+      const duration = 440;
+      const anims = [];
+      const winAnim = win.animate([
+        { transform: 'translate(0, 0) scale(1, 1)', opacity: 1, offset: 0 },
+        { transform: `translate(${dx * 0.18}px, ${dy * 0.14}px) scale(.86, .9)`, opacity: 1, offset: 0.3 },
+        { transform: `translate(${dx * 0.8}px, ${dy * 0.82}px) scale(.22, .16)`, opacity: .9, offset: 0.78 },
+        { transform: `translate(${dx}px, ${dy}px) scale(.04, .04)`, opacity: 0, offset: 1 }
+      ], { duration, easing: MOTION_EASE, fill: 'forwards' });
+      anims.push(winAnim);
+      if (backdrop) {
+        anims.push(backdrop.animate([{ opacity: 1 }, { opacity: 0 }],
+          { duration, easing: 'ease-in', fill: 'forwards' }));
+      }
+      winAnim.finished.then(() => {
+        win.style.transformOrigin = prevOrigin;
+        resolve(anims);
+      }).catch(() => resolve(anims));
+    });
+  }
+
+  /* Plain fade-out of `el` (used by every Close button). */
+  function fadeOut(el, duration = 220) {
+    return new Promise(resolve => {
+      if (!el || reduceMotion()) { resolve([]); return; }
+      const a = el.animate([{ opacity: 1 }, { opacity: 0 }],
+        { duration, easing: 'ease-out', fill: 'forwards' });
+      a.finished.then(() => resolve([a])).catch(() => resolve([a]));
+    });
+  }
 
   /**
    * CV Terminal Lightboxes
@@ -514,6 +649,66 @@
     bodyEl.appendChild(finalCursor);
   }
 
+  function closeTerminal(overlay) {
+    if (!overlay) return;
+    activeTypingToken++;
+    overlay.classList.remove('open', 'is-maximized', 'is-minimizing');
+    document.body.style.overflow = '';
+  }
+
+  function settleTerminal(overlay, anims) {
+    /* Commit the closed state with every transition disabled (class-driven, so
+       no inline-style / !important ordering problems), flush it, and only THEN
+       drop the WAAPI fill. The closed CSS state equals the animation's end state
+       (opacity 0), so nothing can pop back or fade a second time. */
+    overlay.classList.add('is-hard-closed');
+    closeTerminal(overlay);
+    void overlay.offsetHeight;
+    anims.forEach(a => a.cancel());
+    void overlay.offsetHeight;
+    overlay.classList.remove('is-hard-closed');
+    delete overlay.dataset.animating;
+  }
+
+  /* Close = fade (window + backdrop together). */
+  function fadeCloseTerminal(overlay) {
+    if (!overlay || !overlay.classList.contains('open') || overlay.dataset.animating) return;
+    overlay.dataset.animating = '1';
+    activeTypingToken++;
+    fadeOut(overlay, 220).then(anims => settleTerminal(overlay, anims));
+  }
+
+  /* Minimize = shrink into the dock menu icon. */
+  function minimizeTerminal(overlay) {
+    if (!overlay || !overlay.classList.contains('open') || overlay.dataset.animating) return;
+    overlay.dataset.animating = '1';
+    activeTypingToken++;
+    const dockEl = getDockTarget('menu');
+    const win = overlay.querySelector('.terminal-window');
+    shrinkIntoDock(win, dockEl, overlay).then(anims => {
+      settleTerminal(overlay, anims);
+      bounceDockItem(dockEl);
+    });
+  }
+
+  /* Maximize / restore = window grows or shrinks to the new size. */
+  function toggleMaximizeTerminal(overlay) {
+    if (!overlay) return;
+    const win = overlay.querySelector('.terminal-window');
+    if (!win || reduceMotion()) { overlay.classList.toggle('is-maximized'); return; }
+    win.getAnimations().forEach(a => a.cancel());
+    win.style.transition = 'none';
+    const first = win.getBoundingClientRect();
+    overlay.classList.toggle('is-maximized');
+    const last = win.getBoundingClientRect();
+    const a = win.animate([
+      { width: first.width + 'px', height: first.height + 'px', maxWidth: 'none', maxHeight: 'none' },
+      { width: last.width + 'px', height: last.height + 'px', maxWidth: 'none', maxHeight: 'none' }
+    ], { duration: 300, easing: MOTION_POP });
+    const done = () => { win.style.transition = ''; };
+    a.finished.then(done).catch(done);
+  }
+
   function openTerminal(key) {
     const overlay = document.getElementById('terminal-' + key);
     const data = terminalData[key];
@@ -523,14 +718,14 @@
     activeTypingToken++;
     const token = activeTypingToken;
     const bodyEl = overlay.querySelector('.terminal-body');
+    overlay.classList.remove('is-minimizing', 'is-maximized');
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     runTerminalTyping(bodyEl, data, token);
   }
 
   function closeAllTerminals() {
-    terminalOverlays.forEach(overlay => overlay.classList.remove('open'));
-    document.body.style.overflow = '';
+    terminalOverlays.forEach(overlay => closeTerminal(overlay));
   }
 
   document.querySelectorAll('[data-terminal]').forEach(btn => {
@@ -538,37 +733,135 @@
   });
 
   document.querySelectorAll('[data-close-terminal]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeTypingToken++;
-      closeAllTerminals();
-    });
+    btn.addEventListener('click', () => fadeCloseTerminal(btn.closest('.terminal-overlay')));
+  });
+
+  document.querySelectorAll('[data-minimize-terminal]').forEach(btn => {
+    btn.addEventListener('click', () => minimizeTerminal(btn.closest('.terminal-overlay')));
+  });
+
+  document.querySelectorAll('[data-maximize-terminal]').forEach(btn => {
+    btn.addEventListener('click', () => toggleMaximizeTerminal(btn.closest('.terminal-overlay')));
   });
 
   terminalOverlays.forEach(overlay => {
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        activeTypingToken++;
-        closeAllTerminals();
-      }
+      if (e.target === overlay) fadeCloseTerminal(overlay);
     });
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      activeTypingToken++;
-      closeAllTerminals();
+      const active = document.querySelector('.terminal-overlay.open');
+      if (active) fadeCloseTerminal(active);
     }
   });
 
+  /**
+   * Portfolio thumbnail application windows.
+   * Normal cards remain compact; Maximize opens an 80%-viewport terminal window.
+   */
+  let portfolioWindowOverlay = null;
 
   /**
-   * Project Lightbox: wire up the injected "Close" dialog button
+   * The thumbnail maximize/zoom command opens the existing GLightbox instance.
+   * This deliberately uses the same lightbox as the image click so there is only
+   * one overlay/window system for project images and certificates.
    */
   document.addEventListener('click', (e) => {
+    const maximize = e.target.closest('[data-portfolio-maximize]');
+    if (!maximize) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const item = maximize.closest('.portfolio-item');
+    // Projects use the transparent .portfolio-image-link; certificates
+    // keep their original .glightbox anchor in .portfolio-links.
+    const imageLink = item?.querySelector('.portfolio-image-link.glightbox')
+      || item?.querySelector('a.glightbox');
+    if (imageLink) imageLink.click();
+  });
+
+  /**
+   * GLightbox window motion.
+   *  - Opening from a thumbnail's Maximize/zoom: the window grows out of the card.
+   *  - Minimize: shrinks into the "Projects" dock icon.
+   *  - Close: fade.
+   */
+  let lightboxOrigin = null;
+  let lightboxClosing = false;
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('.portfolio-image-link.glightbox, a.glightbox, [data-portfolio-maximize]');
+    if (!t) return;
+    const wrap = t.closest('.portfolio-wrap') || t.closest('.portfolio-item');
+    lightboxOrigin = wrap ? wrap.getBoundingClientRect() : null;
+  }, true);
+
+  function growFromOrigin(slideNode) {
+    const origin = lightboxOrigin;
+    if (!origin || reduceMotion()) { lightboxOrigin = null; return; }
+    const current = document.querySelector('.glightbox-container .gslide.current');
+    if (!current || (slideNode && !current.contains(slideNode) && current !== slideNode)) return;
+    const media = current.querySelector('.gslide-media');
+    const frame = current.querySelector('.gslide-image, .gslide-video');
+    if (!media || !frame) return;
+    lightboxOrigin = null;
+
+    mountLightboxTerminalChrome();
+    media.style.transformOrigin = '50% 50%';
+    const r = frame.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const dx = (origin.left + origin.width / 2) - (r.left + r.width / 2);
+    const dy = (origin.top + origin.height / 2) - (r.top + r.height / 2);
+    const sx = Math.max(origin.width / r.width, 0.05);
+    const sy = Math.max(origin.height / r.height, 0.05);
+    media.animate([
+      { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0.2 },
+      { transform: 'translate(0, 0) scale(1, 1)', opacity: 1 }
+    ], { duration: 340, easing: MOTION_POP });
+  }
+
+  glightbox.on('slide_after_load', (data) => {
+    if (lightboxOrigin) growFromOrigin(data && data.slideNode);
+  });
+  glightbox.on('open', () => {
+    lightboxClosing = false;
+    window.setTimeout(() => { lightboxOrigin = null; }, 900);
+  });
+
+  /* Our own fade / shrink has already played, so GLightbox must not play its
+     built-in close effect on top of it (that was the second fade). Swap the
+     effect to 'none' for this one close() call, then restore it so Esc and
+     backdrop clicks still get GLightbox's normal fade. */
+  function closeLightboxNoEffect() {
+    const prev = glightbox.settings.closeEffect;
+    glightbox.settings.closeEffect = 'none';
+    try { glightbox.close(); } finally { glightbox.settings.closeEffect = prev; }
+  }
+
+  glightbox.on('close', () => { lightboxClosing = false; });
+
+  document.addEventListener('click', (e) => {
+    const minimizeBtn = e.target.closest('[data-glightbox-minimize]');
     const closeBtn = e.target.closest('[data-glightbox-close]');
-    if (closeBtn && typeof glightbox !== 'undefined') {
-      e.preventDefault();
-      glightbox.close();
+    if (!minimizeBtn && !closeBtn) return;
+    e.preventDefault();
+    if (lightboxClosing) return;
+    const container = document.querySelector('.glightbox-container');
+    if (!container) { glightbox.close(); return; }
+    lightboxClosing = true;
+
+    if (minimizeBtn) {
+      const media = container.querySelector('.gslide.current .gslide-media');
+      const dockEl = getDockTarget('projects');
+      shrinkIntoDock(media, dockEl, container).then(() => {
+        closeLightboxNoEffect();
+        bounceDockItem(dockEl);
+      });
+    } else {
+      fadeOut(container, 220).then(closeLightboxNoEffect);
     }
   });
 

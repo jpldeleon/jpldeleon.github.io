@@ -66,7 +66,7 @@
 
 [data-theme="aurora"] .light-background {
   --background-color: #282D37;
-  --surface-color: #282D37;
+  --surface-color: #1E222A;
 }
 
 [data-theme="aurora"] .dark-background {
@@ -97,7 +97,7 @@
 
 [data-theme="gruvbox"] .light-background {
   --background-color: #3c3836;
-  --surface-color: #504945;
+  --surface-color: #282828;
 }
 
 /* Dracula Pro Theme — https://draculatheme.com/pro */
@@ -114,7 +114,7 @@
   --nav-dropdown-background-color: #302F3D;
   --nav-dropdown-color: #F8F8F2;
   --nav-dropdown-hover-color: #50FA7B;
-  --surface-color: #2B2A38;
+  --surface-color: #363548;
   --contrast-color: #F8F8F2;
   --quote-color: #f8f859;
   --typed-color: #80FFEA;
@@ -129,9 +129,9 @@
 [data-theme="monokai"] {
   --background-color: #1d2528;
   --default-color: #f2fffc;
-  --heading-color: #ffed72;
+  --heading-color: #a2e57b;
   --accent-color: #7cd5f1;
-  --accent-highlight: #ff6d7e;
+  --accent-highlight: #ffed72;
   --accent-highlight-rgb: 255, 178, 112;
   --nav-color: #f2fffc;
   --nav-hover-color: #ffb270;
@@ -139,8 +139,8 @@
   --nav-dropdown-background-color: #3d4347;
   --nav-dropdown-color: #f2fffc;
   --nav-dropdown-hover-color: #a2e57b;
-  --surface-color: #1d2528;
-  --contrast-color: #f2fffc;
+  --surface-color: #273136;
+  --contrast-color: #273136;
   --quote-color: #a2e57b;
   --typed-color: #baa0f8;
 }
@@ -313,8 +313,8 @@ main,
 .theme-dots .theme-dot.dot-aurora { background: #BF616A; }
 .theme-dots .theme-dot.dot-gruvbox { background: #d65d0e; }
 .theme-dots .theme-dot.dot-everforest { background: #A7C080; }
-.theme-dots .theme-dot.dot-monokai { background: #FC9867; }
-.theme-dots .theme-dot.dot-draculapro { background: #FF9580; }
+.theme-dots .theme-dot.dot-monokai { background: #ffed72; }
+.theme-dots .theme-dot.dot-draculapro { background: #7359f8; }
 
 @media (max-width: 480px) {
   .linux-dock {
@@ -2852,25 +2852,6 @@ section,
   margin-bottom: 15px;
 }
 
-.portfolio .portfolio-wrap .portfolio-info .portfolio-links {
-  display: flex;
-  gap: 12px;
-}
-
-.portfolio .portfolio-wrap .portfolio-info .portfolio-links a {
-  color: var(--contrast-color);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: color-mix(in srgb, var(--accent-highlight), transparent 30%);
-  border-radius: 50%;
-  font-size: 18px;
-  transition: 0.3s;
-  line-height: 1;
-}
-
 .portfolio .portfolio-wrap .portfolio-info .portfolio-links a:hover {
   background-color: var(--accent-highlight);
   transform: translateY(-3px);
@@ -3817,5 +3798,2060 @@ Map to active/hover color .typed,
 
   .app-menu {
     min-width: 200px;
+  }
+}
+/* ==============================================================
+   Portfolio desktop/terminal interaction refinement
+   ==============================================================
+*/
+
+/* Theme notification: occupies no layout space and sits above dots. */
+.theme-controls {
+  position: fixed;
+  left: 50%;
+  bottom: 92px;
+  transform: translateX(-50%);
+  z-index: 997;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.theme-controls .theme-dots {
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  pointer-events: auto;
+}
+
+.theme-notice {
+  min-height: 1.25em;
+  margin-bottom: 7px;
+  color: var(--accent-highlight);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+
+/* Minimal Linux dock: icons have no visual wrappers. */
+.linux-dock {
+  gap: 18px;
+  padding: 7px 12px 10px;
+  background: color-mix(in srgb, var(--surface-color), transparent 18%);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 52%);
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.28), 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 88%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.linux-dock .dock-item {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  color: var(--default-color);
+  font-size: 20px;
+  transform: none !important;
+}
+
+.linux-dock .dock-item:hover,
+.linux-dock .dock-item:focus-visible,
+.linux-dock .dock-item.active {
+  background: transparent !important;
+  color: var(--accent-highlight);
+}
+
+.linux-dock .dock-item::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-highlight);
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+  transition: transform .22s ease, opacity .22s ease;
+}
+
+.linux-dock .dock-item.active::after {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
+.linux-dock .dock-menu.active::after { opacity: 0; }
+.linux-dock .dock-item .dock-tooltip {
+  bottom: calc(100% + 12px);
+}
+
+@media (max-width: 480px) {
+  .linux-dock { gap: 12px; padding-bottom: 8px; }
+  .linux-dock .dock-item { width: 34px; height: 34px; font-size: 17px; }
+  .theme-controls { bottom: 76px; }
+}
+
+/* Main CV terminals */
+.terminal-window {
+  width: min(100%, 560px);
+  max-height: 80vh;
+  position: relative;
+  transform-origin: 50% 100%;
+  transition: transform .38s cubic-bezier(.2,.75,.25,1), max-width .38s ease, max-height .38s ease;
+}
+
+.terminal-overlay.open .terminal-window { transform: translateY(0) scale(1); }
+.terminal-overlay.is-minimizing { opacity: 0; transition: opacity .34s ease; }
+.terminal-overlay.is-minimizing .terminal-window {
+  transform: translate(0, 42vh) scale(.08);
+  opacity: .15;
+}
+
+.terminal-overlay.is-maximized .terminal-window {
+  width: min(80vw, 1200px);
+  max-width: 80vw;
+  height: 80vh;
+  max-height: 80vh;
+}
+
+.terminal-titlebar {
+  min-height: 46px;
+  justify-content: space-between;
+  padding: 8px 12px 8px 16px;
+}
+
+.terminal-command-buttons {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.terminal-command-btn,
+.portfolio-command-btn,
+.lightbox-window-panel .win-btn {
+  width: 31px;
+  height: 31px;
+  min-width: 31px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 65%);
+  font-family: var(--nav-font);
+  font-size: 12px;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform .16s ease, filter .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+
+.terminal-command-btn:hover,
+.terminal-command-btn:focus-visible,
+.portfolio-command-btn:hover,
+.portfolio-command-btn:focus-visible,
+.lightbox-window-panel .win-btn:hover,
+.lightbox-window-panel .win-btn:focus-visible {
+  transform: translateY(-1px) scale(1.08);
+  filter: brightness(1.08);
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-highlight), transparent 72%);
+}
+
+.terminal-command-btn i,
+.portfolio-command-btn i,
+.lightbox-window-panel .win-btn i { pointer-events: none; }
+
+.terminal-command-btn.terminal-close,
+.lightbox-window-panel .win-btn-close {
+  background: color-mix(in srgb, #f28b82, var(--accent-highlight) 28%);
+  color: color-mix(in srgb, #321c1b, var(--background-color) 28%);
+}
+.terminal-command-btn.terminal-minimize,
+.lightbox-window-panel .win-btn-minimize {
+  background: color-mix(in srgb, #fdd663, var(--accent-highlight) 28%);
+  color: color-mix(in srgb, #332b13, var(--background-color) 28%);
+}
+.terminal-command-btn.terminal-maximize,
+.portfolio-command-btn.portfolio-maximize {
+  background: color-mix(in srgb, #81c995, var(--accent-highlight) 28%);
+  color: color-mix(in srgb, #17321e, var(--background-color) 28%);
+}
+.portfolio-command-btn {
+  background: color-mix(in srgb, var(--surface-color), var(--accent-highlight) 8%);
+  color: var(--default-color);
+}
+.portfolio-command-btn:not(.portfolio-maximize) { border-color: color-mix(in srgb, var(--accent-highlight), transparent 35%); }
+.portfolio-command-btn.is-disabled,
+.lightbox-window-panel .is-disabled { opacity: .45; cursor: not-allowed; filter: grayscale(.3); }
+.portfolio-command-btn.is-disabled:hover,
+.lightbox-window-panel .is-disabled:hover { transform: none; box-shadow: none; }
+
+/* Small project cards become terminal windows. */
+.portfolio .portfolio-wrap {
+  border-radius: 10px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 62%);
+  box-shadow: 0 10px 30px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+  isolation: isolate;
+}
+
+.portfolio .portfolio-wrap:hover { transform: translateY(-4px); }
+.portfolio .portfolio-wrap:hover img { transform: none; }
+
+.portfolio-terminal-bar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 7;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 9px 7px 13px;
+  background: color-mix(in srgb, var(--background-color), transparent 7%);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 68%);
+}
+
+.portfolio-terminal-title {
+  overflow: hidden;
+  color: var(--default-color);
+  opacity: .72;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.portfolio-terminal-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.portfolio-command-btn { width: 27px; height: 27px; min-width: 27px; font-size: 10px; }
+
+.portfolio-image-link {
+  position: absolute;
+  inset: 42px 0 0;
+  z-index: 4;
+  display: block;
+  cursor: zoom-in;
+}
+.portfolio-image-link .visually-hidden { display: none; }
+.portfolio .portfolio-wrap > img { position: relative; z-index: 1; }
+
+/* Keep the existing hover information useful without competing with the chrome. */
+.portfolio .portfolio-wrap .portfolio-info { z-index: 6; pointer-events: none; }
+.portfolio .portfolio-wrap .portfolio-info .content { pointer-events: none; }
+
+/* Maximized project thumbnail window created by JS. */
+.portfolio-window-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10,10,14,.62);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .34s ease, visibility .34s ease;
+}
+.portfolio-window-overlay.open { opacity: 1; visibility: visible; }
+.portfolio-window-overlay.is-closing { opacity: 0; }
+.portfolio-window-overlay.is-minimizing { opacity: 0; }
+
+.portfolio-window {
+  width: 80vw;
+  height: 80vh;
+  max-width: 1200px;
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
+  border-radius: 10px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.5);
+  transform: translateY(12px) scale(.96);
+  transition: transform .38s cubic-bezier(.2,.75,.25,1), opacity .34s ease;
+}
+.portfolio-window-overlay.open .portfolio-window { transform: translateY(0) scale(1); }
+.portfolio-window-overlay.is-minimizing .portfolio-window,
+.portfolio-window-overlay.is-closing .portfolio-window {
+  transform: translateY(42vh) scale(.08);
+  opacity: .15;
+}
+.portfolio-window-titlebar {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px 8px 16px;
+  background: color-mix(in srgb, var(--background-color), transparent 8%);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 65%);
+}
+.portfolio-window-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--default-color);
+  opacity: .8;
+}
+.portfolio-window-controls { display: flex; gap: 7px; }
+.portfolio-window-controls .portfolio-command-btn { width: 31px; height: 31px; min-width: 31px; }
+.portfolio-window-media {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  overflow: hidden;
+}
+.portfolio-window-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+/* GLightbox: contained terminal window rather than full-screen image. */
+.goverlay { background: rgba(10,10,14,.60) !important; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.glightbox-clean .gslide-description.description-bottom {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  min-height: 0;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 8px 12px !important;
+  pointer-events: none;
+  z-index: 20;
+}
+.lightbox-window-panel {
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  pointer-events: none;
+}
+.lightbox-window-panel .win-btn { pointer-events: auto; background: var(--surface-color); color: var(--default-color); }
+.lightbox-window-panel .win-btn-demo { background: #81c995; color: #17321e; }
+.lightbox-window-panel .win-btn-portfolio { background: var(--accent-highlight); color: var(--contrast-color); }
+.lightbox-window-panel .win-btn-close { background: #f28b82; color: #321c1b; }
+.lightbox-window-panel .win-btn-minimize { background: #fdd663; color: #332b13; }
+
+.glightbox-clean .gslide-image {
+  width: min(80vw, 1100px) !important;
+  max-width: 80vw !important;
+  height: min(80vh, 800px) !important;
+  max-height: 80vh !important;
+  padding: 0 !important;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
+  border-radius: 10px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.5);
+  overflow: hidden;
+}
+.glightbox-clean .gslide-image img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 0;
+  box-shadow: none;
+}
+.glightbox-clean .gslide { align-items: center; }
+.glightbox-clean .gprev,
+.glightbox-clean .gnext { display: none; }
+
+.glightbox-container.is-terminal-minimizing .gslide-image,
+.glightbox-container.is-terminal-closing .gslide-image {
+  transform: translateY(42vh) scale(.08);
+  opacity: .15;
+}
+.glightbox-container.is-terminal-minimizing .gslide-image,
+.glightbox-container.is-terminal-closing .gslide-image {
+  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease;
+}
+.glightbox-container.is-terminal-closing { opacity: 0; transition: opacity .3s ease; }
+
+@media (max-width: 768px) {
+  .terminal-overlay { padding: 12px; }
+  .terminal-overlay.is-maximized .terminal-window,
+  .portfolio-window { width: 92vw; max-width: 92vw; height: 82vh; max-height: 82vh; }
+  .portfolio-terminal-title { max-width: 110px; }
+  .portfolio-window-overlay { padding: 12px; }
+  .glightbox-clean .gslide-image { width: 92vw !important; max-width: 92vw !important; height: 78vh !important; max-height: 78vh !important; }
+}
+
+/* Certificate GLightbox visibility fix */
+.glightbox-clean .gslide[data-type="image"] .gslide-image,
+.glightbox-clean .gslide-image {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  visibility: visible;
+}
+.glightbox-clean .gslide-image img { display: block !important; visibility: visible !important; }
+
+
+/* Certificate cards use the same terminal chrome as project cards, with only Maximize. */
+.portfolio-item.filter-certifications .portfolio-terminal-bar {
+  display: flex;
+}
+.portfolio-item.filter-certifications .portfolio-terminal-controls {
+  margin-left: auto;
+}
+.portfolio-item.filter-certifications .portfolio-wrap > img {
+  position: relative;
+  z-index: 1;
+}
+.portfolio-item.filter-certifications .portfolio-image-link,
+.portfolio-item.filter-certifications .portfolio-wrap > .portfolio-info {
+  z-index: 6;
+}
+/* Certificate lightbox keeps the same contained terminal-style frame, but has no command panel. */
+.glightbox-clean .gslide-image {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
+}
+
+/* Command color correction: portfolio thumbnail actions should remain visually distinct. */
+.portfolio-terminal-controls .portfolio-command-btn:not(.portfolio-maximize) {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.22) !important;
+}
+.portfolio-terminal-controls .portfolio-command-btn[href*="onrender.com"],
+.portfolio-terminal-controls .portfolio-command-btn[aria-label="Open live demo"] {
+  background: #81c995 !important;
+  color: #17321e !important;
+  border-color: #81c995 !important;
+}
+.portfolio-terminal-controls .portfolio-command-btn[href]:not([aria-label="Open live demo"]) {
+  background: var(--accent-highlight) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-highlight) !important;
+}
+.portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize {
+  background: #81c995 !important;
+  color: #17321e !important;
+  border-color: #81c995 !important;
+}
+.portfolio-terminal-controls .portfolio-command-btn.is-disabled {
+  background: color-mix(in srgb, var(--surface-color), var(--default-color) 10%) !important;
+  color: color-mix(in srgb, var(--default-color), transparent 25%) !important;
+  border-color: color-mix(in srgb, var(--default-color), transparent 60%) !important;
+}
+
+/* GLightbox command bar must sit above the image and use high-contrast command colors. */
+.glightbox-clean .gslide-description.description-bottom {
+  z-index: 100 !important;
+  pointer-events: none !important;
+}
+.glightbox-clean .gslide-description.description-bottom .lightbox-window-panel {
+  position: relative;
+  z-index: 101;
+}
+.glightbox-clean .lightbox-window-panel .win-btn {
+  border: 1px solid rgba(255,255,255,.28) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.45);
+  text-shadow: 0 1px 1px rgba(0,0,0,.18);
+}
+.glightbox-clean .lightbox-window-panel .win-btn-close {
+  background: #e05252 !important;
+  color: #ffffff !important;
+  border-color: #ff8a8a !important;
+}
+.glightbox-clean .lightbox-window-panel .win-btn-minimize {
+  background: #e5b93f !important;
+  color: #211b08 !important;
+  border-color: #ffe28a !important;
+}
+.glightbox-clean .lightbox-window-panel .win-btn-demo {
+  background: #55a86d !important;
+  color: #102416 !important;
+  border-color: #9be0ad !important;
+}
+.glightbox-clean .lightbox-window-panel .win-btn-portfolio {
+  background: var(--accent-highlight) !important;
+  color: #ffffff !important;
+  border-color: color-mix(in srgb, var(--accent-highlight), white 35%) !important;
+}
+
+/* =========================================================
+   Terminal window refinement — project/certificate windows
+   ========================================================= */
+
+/* Close must fade only. Minimize keeps the shrink-to-dock motion. */
+.portfolio-window-overlay.is-closing {
+  opacity: 0;
+  visibility: visible;
+  transition: opacity .24s ease;
+}
+.portfolio-window-overlay.is-closing .portfolio-window {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition: none;
+}
+
+/* Let the project window size itself to the full image instead of
+   forcing a fixed 80vh canvas that creates top/bottom letterbox bars. */
+.portfolio-window {
+  width: fit-content;
+  height: fit-content;
+  max-width: 80vw;
+  max-height: 80vh;
+}
+.portfolio-window-titlebar {
+  flex: 0 0 46px;
+  min-height: 46px;
+  box-sizing: border-box;
+  padding: 7px 12px 7px 16px;
+}
+.portfolio-window-media {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 80vw;
+  max-height: calc(80vh - 46px);
+  padding: 14px;
+  box-sizing: border-box;
+}
+.portfolio-window-media img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(80vw - 28px);
+  max-height: calc(80vh - 74px);
+  object-fit: contain;
+}
+
+/* Normal thumbnail command colors: distinct actions, with explicit
+   foregrounds chosen for contrast rather than relying on the theme. */
+.portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize {
+  background: #5b8def !important;
+  color: #ffffff !important;
+  border-color: #8fb2ff !important;
+}
+.portfolio-terminal-controls .portfolio-command-btn[href*="onrender.com"],
+.portfolio-terminal-controls .portfolio-command-btn[aria-label="Open live demo"] {
+  background: #55a86d !important;
+  color: #102416 !important;
+  border-color: #9be0ad !important;
+}
+.portfolio-terminal-controls .portfolio-command-btn[href]:not([aria-label="Open live demo"]) {
+  background: #e5b93f !important;
+  color: #211b08 !important;
+  border-color: #ffe28a !important;
+}
+
+/* Maximized project window uses the same command palette as GLightbox. */
+.portfolio-window-controls .portfolio-minimize {
+  background: #e5b93f !important;
+  color: #211b08 !important;
+  border-color: #ffe28a !important;
+}
+.portfolio-window-controls .portfolio-demo {
+  background: #55a86d !important;
+  color: #102416 !important;
+  border-color: #9be0ad !important;
+}
+.portfolio-window-controls .portfolio-page {
+  background: #e5b93f !important;
+  color: #211b08 !important;
+  border-color: #ffe28a !important;
+}
+.portfolio-window-controls .portfolio-close {
+  background: #e05252 !important;
+  color: #ffffff !important;
+  border-color: #ff8a8a !important;
+}
+
+/* GLightbox: make the image itself the terminal body. The title bar is
+   part of the same window, so there is no detached top bar or bottom bar. */
+.glightbox-clean .gslide-image {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  max-width: 80vw !important;
+  max-height: 80vh !important;
+  padding: 0 !important;
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
+.glightbox-clean .gslide-image img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 80vw !important;
+  max-height: calc(80vh - 46px) !important;
+  object-fit: contain !important;
+  flex: 0 1 auto !important;
+}
+
+/* The description becomes the narrow Linux-style title bar. */
+.glightbox-clean .gslide-description.description-bottom {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  pointer-events: none !important;
+  z-index: 100 !important;
+}
+.lightbox-window-panel {
+  width: 100%;
+  height: 46px;
+  padding: 0 !important;
+  margin: 0;
+  display: block !important;
+  pointer-events: none;
+}
+.lightbox-window-titlebar {
+  width: 100%;
+  height: 46px;
+  min-height: 46px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 12px 7px 16px;
+  background: color-mix(in srgb, var(--background-color), transparent 8%);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 65%);
+  pointer-events: none;
+}
+.lightbox-window-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--default-color);
+  opacity: .9;
+}
+.lightbox-window-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+.lightbox-window-panel .win-btn { pointer-events: auto; }
+
+/* Push the image below the title bar without creating a bottom bar. */
+.glightbox-clean .gslide-image img {
+  margin-top: 46px !important;
+  max-height: calc(80vh - 46px) !important;
+}
+
+/* GLightbox close is a fade, never the minimize/shrink animation. */
+.glightbox-container.is-terminal-minimizing .gslide-image {
+  transform: translateY(42vh) scale(.08) !important;
+  opacity: .15 !important;
+  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease !important;
+}
+.glightbox-container.is-terminal-closing .gslide-image {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+.glightbox-container.is-terminal-closing {
+  opacity: 0 !important;
+  transition: opacity .24s ease !important;
+}
+
+@media (max-width: 768px) {
+  .portfolio-window {
+    max-width: 92vw;
+    max-height: 82vh;
+  }
+  .portfolio-window-media {
+    max-width: 92vw;
+    max-height: calc(82vh - 46px);
+  }
+  .portfolio-window-media img {
+    max-width: calc(92vw - 28px);
+    max-height: calc(82vh - 74px);
+  }
+  .glightbox-clean .gslide-image {
+    max-width: 92vw !important;
+    max-height: 82vh !important;
+  }
+  .glightbox-clean .gslide-image img {
+    max-width: 92vw !important;
+    max-height: calc(82vh - 46px) !important;
+  }
+  .lightbox-window-title {
+    font-size: 10px;
+  }
+}
+
+/* Final AA contrast pass for small command icons. */
+.portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize {
+  background: #3b6fd8 !important;
+  color: #ffffff !important;
+  border-color: #8fb2ff !important;
+}
+.portfolio-window-controls .portfolio-close,
+.glightbox-clean .lightbox-window-panel .win-btn-close {
+  background: #c83f3f !important;
+  color: #ffffff !important;
+  border-color: #ff8a8a !important;
+}
+
+/* =========================================================
+   FINAL LIGHTBOX ARCHITECTURE
+   Thumbnail Maximize/Zoom and image click intentionally use
+   the SAME GLightbox instance. No second project modal/window.
+   ========================================================= */
+
+/* The GLightbox image is the single terminal window body. */
+.glightbox-clean .gslide-image {
+  box-sizing: border-box !important;
+  width: min(80vw, 1200px) !important;
+  max-width: 80vw !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 24px 70px rgba(0,0,0,.52) !important;
+  overflow: hidden !important;
+}
+
+/* Keep the title bar visually attached to the image window. */
+.glightbox-clean .gslide-description.description-bottom {
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+  width: min(80vw, 1200px) !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  transform: translateX(-50%) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  pointer-events: none !important;
+  z-index: 100 !important;
+}
+
+.lightbox-window-panel,
+.lightbox-window-titlebar {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+}
+
+.lightbox-window-titlebar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 5px 9px 5px 13px !important;
+  background: color-mix(in srgb, var(--background-color), transparent 5%) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 60%) !important;
+  border-radius: 7px 7px 0 0 !important;
+}
+
+.lightbox-window-title {
+  min-width: 0 !important;
+  max-width: calc(100% - 145px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  color: var(--default-color) !important;
+  opacity: .9 !important;
+}
+
+.lightbox-window-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  flex: 0 0 auto !important;
+  pointer-events: auto !important;
+}
+
+.lightbox-window-panel .win-btn {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+  pointer-events: auto !important;
+}
+
+/* Image starts directly under the narrow title bar. No bottom bar. */
+.glightbox-clean .gslide-image img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 80vw !important;
+  max-height: calc(80vh - 42px) !important;
+  margin: 42px auto 0 !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+}
+
+/* Close = fade only. Minimize = shrink toward the dock. */
+.glightbox-container.is-terminal-minimizing .gslide-image {
+  transform: translateY(42vh) scale(.08) !important;
+  opacity: .15 !important;
+  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease !important;
+}
+.glightbox-container.is-terminal-closing .gslide-image {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+.glightbox-container.is-terminal-closing {
+  opacity: 0 !important;
+  transition: opacity .24s ease !important;
+}
+
+/* No accidental second modal/window from the old custom maximize system. */
+.portfolio-window-overlay {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .glightbox-clean .gslide-image {
+    width: min(94vw, 900px) !important;
+    max-width: 94vw !important;
+    max-height: 88vh !important;
+  }
+  .glightbox-clean .gslide-description.description-bottom {
+    width: min(94vw, 900px) !important;
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  .lightbox-window-panel,
+  .lightbox-window-titlebar {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  .lightbox-window-titlebar {
+    padding: 4px 7px 4px 10px !important;
+    gap: 6px !important;
+  }
+  .lightbox-window-title {
+    max-width: calc(100% - 125px) !important;
+    font-size: 9px !important;
+  }
+  .lightbox-window-controls { gap: 4px !important; }
+  .lightbox-window-panel .win-btn {
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+    font-size: 9px !important;
+  }
+  .glightbox-clean .gslide-image img {
+    max-width: 94vw !important;
+    max-height: calc(88vh - 38px) !important;
+    margin-top: 38px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .glightbox-clean .gslide-image {
+    width: 96vw !important;
+    max-width: 96vw !important;
+    max-height: 90vh !important;
+    border-radius: 6px !important;
+  }
+  .glightbox-clean .gslide-description.description-bottom {
+    width: 96vw !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+  .lightbox-window-panel,
+  .lightbox-window-titlebar {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+  .lightbox-window-titlebar {
+    padding: 3px 6px 3px 8px !important;
+  }
+  .lightbox-window-title {
+    max-width: calc(100% - 112px) !important;
+    font-size: 8px !important;
+  }
+  .lightbox-window-controls { gap: 3px !important; }
+  .lightbox-window-panel .win-btn {
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    font-size: 8px !important;
+  }
+  .glightbox-clean .gslide-image img {
+    max-width: 96vw !important;
+    max-height: calc(90vh - 36px) !important;
+    margin-top: 36px !important;
+  }
+}
+
+/* =========================================================
+   FINAL GLIGHTBOX FRAME ALIGNMENT
+   One actual lightbox window: image frame + attached title bar.
+   ========================================================= */
+.glightbox-container .gslide-description.description-bottom {
+  position: fixed !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  pointer-events: none !important;
+  z-index: 10050 !important;
+  transform: none !important;
+}
+
+.glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+.glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.glightbox-container .gslide-description.description-bottom .lightbox-window-panel {
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 5px 9px 5px 13px !important;
+  border-radius: 7px 7px 0 0 !important;
+  background: color-mix(in srgb, var(--background-color), transparent 5%) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 60%) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
+  pointer-events: none !important;
+}
+
+.glightbox-container .gslide-description.description-bottom .lightbox-window-controls,
+.glightbox-container .gslide-description.description-bottom .win-btn {
+  pointer-events: auto !important;
+}
+
+/* The image frame is the window body. The title bar is its only chrome. */
+.glightbox-container .gslide-image {
+  position: relative !important;
+  box-sizing: border-box !important;
+  padding: 42px 0 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 7px !important;
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
+  background: var(--surface-color) !important;
+}
+
+.glightbox-container .gslide-image img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 80vw !important;
+  max-height: calc(80vh - 42px) !important;
+  margin: 0 auto !important;
+  object-fit: contain !important;
+}
+
+/* Never show GLightbox's generic floating close button; the terminal
+   title bar owns the Close command. */
+.glightbox-container .gclose {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .glightbox-container .gslide-image {
+    max-width: 94vw !important;
+    max-height: 88vh !important;
+    padding-top: 38px !important;
+  }
+  .glightbox-container .gslide-image img {
+    max-width: 94vw !important;
+    max-height: calc(88vh - 38px) !important;
+  }
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+    padding: 4px 7px 4px 10px !important;
+  }
+  .glightbox-container .lightbox-window-title {
+    font-size: 9px !important;
+    max-width: calc(100% - 120px) !important;
+  }
+  .glightbox-container .lightbox-window-panel .win-btn {
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .glightbox-container .gslide-image {
+    max-width: 96vw !important;
+    max-height: 90vh !important;
+    padding-top: 36px !important;
+    border-radius: 6px !important;
+  }
+  .glightbox-container .gslide-image img {
+    max-width: 96vw !important;
+    max-height: calc(90vh - 36px) !important;
+  }
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+    padding: 3px 6px 3px 8px !important;
+  }
+  .glightbox-container .lightbox-window-title {
+    font-size: 8px !important;
+    max-width: calc(100% - 105px) !important;
+  }
+  .glightbox-container .lightbox-window-controls { gap: 3px !important; }
+  .glightbox-container .lightbox-window-panel .win-btn {
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    font-size: 8px !important;
+  }
+}
+
+/* =========================================================
+   FINAL: SINGLE GLIGHTBOX TERMINAL WINDOW
+   The title bar is physically inside .gslide-image. This is
+   intentionally the last rule block so older experimental
+   lightbox positioning cannot override it.
+   ========================================================= */
+.glightbox-container .gslide-image {
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: min(80vw, 1200px) !important;
+  max-width: 80vw !important;
+  height: min(80vh, 850px) !important;
+  max-height: 80vh !important;
+  margin: 0 !important;
+  padding: 42px 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 24px 70px rgba(0,0,0,.52) !important;
+}
+
+/* The description is now a child of the window body, not a second overlay. */
+.glightbox-container .gslide-image > .gslide-description.description-bottom,
+.glightbox-container .gslide-description.description-bottom.lightbox-terminal-mounted {
+  position: absolute !important;
+  inset: 0 0 auto 0 !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  pointer-events: none !important;
+  z-index: 100 !important;
+}
+
+.glightbox-container .gslide-description.description-bottom .lightbox-window-panel {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  pointer-events: none !important;
+}
+
+.glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 5px 9px 5px 13px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  background: color-mix(in srgb, var(--background-color), transparent 5%) !important;
+  border: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 55%) !important;
+  border-radius: 6px 6px 0 0 !important;
+  pointer-events: none !important;
+}
+
+.glightbox-container .lightbox-window-title {
+  min-width: 0 !important;
+  max-width: calc(100% - 145px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  color: var(--default-color) !important;
+  opacity: .9 !important;
+}
+
+.glightbox-container .lightbox-window-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex: 0 0 auto !important;
+  pointer-events: auto !important;
+}
+
+.glightbox-container .lightbox-window-panel .win-btn {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  pointer-events: auto !important;
+  border: 1px solid rgba(255,255,255,.25) !important;
+}
+
+.glightbox-container .lightbox-window-panel .win-btn-minimize {
+  background: #fdd663 !important;
+  color: #332b13 !important;
+}
+.glightbox-container .lightbox-window-panel .win-btn-demo {
+  background: #81c995 !important;
+  color: #17321e !important;
+}
+.glightbox-container .lightbox-window-panel .win-btn-portfolio {
+  background: var(--accent-highlight) !important;
+  color: var(--contrast-color) !important;
+}
+.glightbox-container .lightbox-window-panel .win-btn-close {
+  background: #c83f3f !important;
+  color: #fff !important;
+}
+.glightbox-container .lightbox-window-panel .win-btn:hover {
+  transform: scale(1.08) !important;
+}
+
+/* The actual project/certificate image occupies only the body below the title. */
+.glightbox-container .gslide-image > img,
+.glightbox-container .gslide-image img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: calc(80vh - 44px) !important;
+  margin: auto !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Never show GLightbox's generic floating close control. */
+.glightbox-container .gclose {
+  display: none !important;
+}
+
+/* Minimize and Close are deliberately different animations. */
+.glightbox-container.is-terminal-minimizing .gslide-image {
+  transform: translateY(42vh) scale(.08) !important;
+  opacity: .15 !important;
+  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease !important;
+}
+.glightbox-container.is-terminal-closing .gslide-image {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+.glightbox-container.is-terminal-closing {
+  opacity: 0 !important;
+  transition: opacity .24s ease !important;
+}
+
+@media (max-width: 900px) {
+  .glightbox-container .gslide-image {
+    width: 94vw !important;
+    max-width: 94vw !important;
+    height: 86vh !important;
+    max-height: 86vh !important;
+    padding-top: 38px !important;
+  }
+  .glightbox-container .gslide-description.description-bottom.lightbox-terminal-mounted,
+  .glightbox-container .gslide-image > .gslide-description.description-bottom {
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+  }
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  .glightbox-container .lightbox-window-title {
+    max-width: calc(100% - 118px) !important;
+    font-size: 9px !important;
+  }
+  .glightbox-container .lightbox-window-controls { gap: 4px !important; }
+  .glightbox-container .lightbox-window-panel .win-btn {
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+    font-size: 9px !important;
+  }
+  .glightbox-container .gslide-image img {
+    max-width: 100% !important;
+    max-height: calc(86vh - 40px) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .glightbox-container .gslide-image {
+    width: 96vw !important;
+    max-width: 96vw !important;
+    height: 88vh !important;
+    max-height: 88vh !important;
+    padding-top: 36px !important;
+    border-radius: 5px !important;
+  }
+  .glightbox-container .gslide-description.description-bottom.lightbox-terminal-mounted,
+  .glightbox-container .gslide-image > .gslide-description.description-bottom {
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+  }
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+  .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+  .glightbox-container .lightbox-window-title {
+    max-width: calc(100% - 104px) !important;
+    font-size: 8px !important;
+  }
+  .glightbox-container .lightbox-window-controls { gap: 3px !important; }
+  .glightbox-container .lightbox-window-panel .win-btn {
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    font-size: 8px !important;
+  }
+  .glightbox-container .gslide-image img {
+    max-height: calc(88vh - 38px) !important;
+  }
+}
+
+/* =========================================================
+   FINAL GLIGHTBOX GEOMETRY FIX
+   One centered terminal window: title bar + image body.
+   ========================================================= */
+.glightbox-container .gslide.current .gslide-media {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.glightbox-container .gslide.current .gslide-image {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  float: none !important;
+  margin: 0 auto !important;
+  width: fit-content !important;
+  max-width: 80vw !important;
+  height: fit-content !important;
+  max-height: 80vh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 45%) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 24px 70px rgba(0,0,0,.55) !important;
+}
+
+/* The description is no longer an independent GLightbox bar. */
+.glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted {
+  position: absolute !important;
+  inset: 0 0 auto 0 !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  z-index: 20 !important;
+  display: block !important;
+  pointer-events: none !important;
+}
+
+.glightbox-container .gslide.current .lightbox-window-panel {
+  width: 100% !important;
+  height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.glightbox-container .gslide.current .lightbox-window-titlebar {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 5px 10px 5px 13px !important;
+  background: color-mix(in srgb, var(--background-color), transparent 4%) !important;
+  border: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 55%) !important;
+  border-radius: 6px 6px 0 0 !important;
+  pointer-events: none !important;
+}
+
+.glightbox-container .gslide.current .lightbox-window-title {
+  min-width: 0 !important;
+  max-width: calc(100% - 150px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  color: var(--default-color) !important;
+}
+
+.glightbox-container .gslide.current .lightbox-window-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 5px !important;
+  flex: 0 0 auto !important;
+  pointer-events: auto !important;
+}
+
+.glightbox-container .gslide.current .lightbox-window-panel .win-btn {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  pointer-events: auto !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35) !important;
+}
+
+.glightbox-container .gslide.current .gslide-image > img,
+.glightbox-container .gslide.current .gslide-image > .gslide-description ~ img,
+.glightbox-container .gslide.current .gslide-image img {
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: calc(80vh - 42px) !important;
+  margin: 0 auto !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+}
+
+/* Keep GLightbox's own close control out; terminal Close is the only Close. */
+.glightbox-container .gclose { display: none !important; }
+
+@media (max-width: 900px) {
+  .glightbox-container .gslide.current .gslide-image {
+    max-width: 94vw !important;
+    max-height: 88vh !important;
+  }
+  .glightbox-container .gslide.current .gslide-image img {
+    max-width: 100% !important;
+    max-height: calc(88vh - 40px) !important;
+  }
+  .glightbox-container .gslide.current .lightbox-window-titlebar,
+  .glightbox-container .gslide.current .lightbox-window-panel {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+  .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+  .glightbox-container .gslide.current .lightbox-window-title {
+    max-width: calc(100% - 126px) !important;
+    font-size: 9px !important;
+  }
+  .glightbox-container .gslide.current .lightbox-window-controls { gap: 4px !important; }
+  .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .glightbox-container .gslide.current .gslide-image {
+    max-width: 96vw !important;
+    max-height: 90vh !important;
+  }
+  .glightbox-container .gslide.current .gslide-image img {
+    max-height: calc(90vh - 38px) !important;
+  }
+  .glightbox-container .gslide.current .lightbox-window-titlebar,
+  .glightbox-container .gslide.current .lightbox-window-panel,
+  .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  .glightbox-container .gslide.current .lightbox-window-title {
+    max-width: calc(100% - 105px) !important;
+    font-size: 8px !important;
+  }
+  .glightbox-container .gslide.current .lightbox-window-controls { gap: 3px !important; }
+  .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    font-size: 8px !important;
+  }
+}
+
+
+/* =========================================================================
+   CONSOLIDATED FIX — GLightbox window + command buttons (keep this LAST)
+   1) Linux window-control colors (red / yellow / green) per theme palette.
+   2) One in-flow title bar above the image (no overlap), themed frame.
+   3) Same tokens drive card buttons, lightbox buttons, maximized window
+      and CV terminal buttons, so the theme toggle recolors everything.
+   Remap any action by editing the --cmd-* aliases below.
+   ========================================================================= */
+
+/* --- Theme tokens ------------------------------------------------------- */
+:root { /* Everforest (default) */
+  --cmd-red: #E67E80;
+  --cmd-yellow: #DBBC7F;
+  --cmd-green: #A7C080;
+  --cmd-on: #232A2E;            /* icon color on top of the fills */
+}
+[data-theme="aurora"] {         /* Nord Aurora */
+  --cmd-red: #BF616A;
+  --cmd-yellow: #EBCB8B;
+  --cmd-green: #A3BE8C;
+  --cmd-on: #1E222A;
+}
+[data-theme="gruvbox"] {
+  --cmd-red: #fb4934;
+  --cmd-yellow: #fabd2f;
+  --cmd-green: #b8bb26;
+  --cmd-on: #1d2021;
+}
+[data-theme="draculapro"] {
+  --cmd-red: #ff6e6e;
+  --cmd-yellow: #f1fa8c;
+  --cmd-green: #50fa7b;
+  --cmd-on: #131516;
+}
+[data-theme="monokai"] {
+  --cmd-red: #ff6188;
+  --cmd-yellow: #ffed72;
+  --cmd-green: #a2e57b;
+  --cmd-on: #1d2528;
+}
+
+/* Action -> color aliases (change here to remap) */
+:root {
+  --cmd-close: var(--cmd-red);
+  --cmd-minimize: var(--cmd-yellow);
+  --cmd-maximize: var(--cmd-green);
+  --cmd-demo: var(--cmd-green);
+  --cmd-project: var(--cmd-yellow);
+}
+
+/* --- Shared button look ------------------------------------------------- */
+html body .terminal-command-btn,
+html body .portfolio-command-btn,
+html body .lightbox-window-panel .win-btn {
+  --_c: var(--cmd-green);
+  background: var(--_c) !important;
+  color: var(--cmd-on) !important;
+  border: 1px solid color-mix(in srgb, var(--_c), #000 25%) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.35) !important;
+  text-shadow: none !important;
+}
+html body .terminal-command-btn:hover,
+html body .terminal-command-btn:focus-visible,
+html body .portfolio-command-btn:hover,
+html body .portfolio-command-btn:focus-visible,
+html body .lightbox-window-panel .win-btn:hover,
+html body .lightbox-window-panel .win-btn:focus-visible {
+  background: color-mix(in srgb, var(--_c), #fff 14%) !important;
+  color: var(--cmd-on) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--_c), transparent 60%), 0 2px 8px rgba(0,0,0,.4) !important;
+  transform: translateY(-1px) scale(1.08) !important;
+}
+
+/* Per-action colors: CV terminals, project cards, maximized window, lightbox */
+html body .terminal-command-btn.terminal-close,
+html body .portfolio-window-controls .portfolio-close,
+html body .lightbox-window-panel .win-btn-close                { --_c: var(--cmd-close); }
+
+html body .terminal-command-btn.terminal-minimize,
+html body .portfolio-window-controls .portfolio-minimize,
+html body .lightbox-window-panel .win-btn-minimize             { --_c: var(--cmd-minimize); }
+
+html body .terminal-command-btn.terminal-maximize,
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize { --_c: var(--cmd-maximize); }
+
+html body .portfolio-terminal-controls .portfolio-command-btn[aria-label="Open live demo"],
+html body .portfolio-terminal-controls .portfolio-command-btn[href*="onrender.com"],
+html body .portfolio-window-controls .portfolio-demo,
+html body .lightbox-window-panel .win-btn-demo                 { --_c: var(--cmd-demo); }
+
+html body .portfolio-terminal-controls .portfolio-command-btn[href]:not([aria-label="Open live demo"]),
+html body .portfolio-window-controls .portfolio-page,
+html body .lightbox-window-panel .win-btn-portfolio            { --_c: var(--cmd-project); }
+
+/* Disabled (no live demo): neutral, theme-tinted, clearly inactive */
+html body .portfolio-command-btn.is-disabled,
+html body .lightbox-window-panel .win-btn.is-disabled {
+  background: color-mix(in srgb, var(--surface-color), var(--default-color) 12%) !important;
+  color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+  border-color: color-mix(in srgb, var(--default-color), transparent 65%) !important;
+  box-shadow: none !important;
+  opacity: .7;
+  transform: none !important;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* --- Lightbox overlay + frame ------------------------------------------- */
+.goverlay {
+  background: color-mix(in srgb, var(--background-color), #000 55%) !important;
+  opacity: .92;
+}
+.glightbox-container .gclose,
+.glightbox-container .gprev,
+.glightbox-container .gnext { display: none !important; }
+
+/* Center the single window */
+.glightbox-container .gslide.current .gslide-inner-content,
+.glightbox-container .gslide.current .ginner-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.glightbox-container .gslide.current .gslide-media {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* The window: title bar row + image row */
+html body .glightbox-container .gslide.current .gslide-image {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  float: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  min-width: min(360px, 92vw) !important;
+  max-width: min(1200px, 92vw) !important;
+  max-height: 90vh !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--cmd-green), transparent 55%) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 24px 70px rgba(0,0,0,.6) !important;
+}
+
+/* Title bar: in normal flow (this is what stops it covering the image) */
+html body .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted,
+html body .glightbox-container .gslide.current .gslide-image > .gslide-description {
+  position: static !important;
+  order: -1 !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  display: block !important;
+  pointer-events: auto !important;
+  z-index: 2 !important;
+}
+.glightbox-container .gslide.current .gdesc-inner,
+.glightbox-container .gslide.current .gslide-desc { padding: 0 !important; margin: 0 !important; }
+
+html body .glightbox-container .gslide.current .lightbox-window-panel {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+html body .glightbox-container .gslide.current .lightbox-window-titlebar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 12px 0 14px !important;
+  box-sizing: border-box !important;
+  background: color-mix(in srgb, var(--background-color), var(--surface-color) 35%) !important;
+  border: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--cmd-green), transparent 60%) !important;
+  border-radius: 0 !important;
+  pointer-events: auto !important;
+}
+html body .glightbox-container .gslide.current .lightbox-window-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  line-height: 1;
+  color: var(--default-color) !important;
+}
+html body .glightbox-container .gslide.current .lightbox-window-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex: 0 0 auto !important;
+  pointer-events: auto !important;
+}
+html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 10px !important;
+  pointer-events: auto !important;
+}
+
+/* Image sits BELOW the title bar */
+html body .glightbox-container .gslide.current .gslide-image > img,
+html body .glightbox-container .gslide.current .gslide-image img {
+  position: static !important;
+  display: block !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: calc(90vh - 42px) !important;
+  margin: 0 auto !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Close = fade, minimize = shrink (unchanged behavior, themed shadow) */
+.glightbox-container.is-terminal-closing { opacity: 0; transition: opacity .25s ease; }
+
+@media (max-width: 900px) {
+  html body .glightbox-container .gslide.current .gslide-image { max-width: 95vw !important; max-height: 88vh !important; }
+  html body .glightbox-container .gslide.current .gslide-image img { max-height: calc(88vh - 40px) !important; }
+  html body .glightbox-container .gslide.current .lightbox-window-titlebar { height: 40px !important; min-height: 40px !important; }
+  html body .glightbox-container .gslide.current .lightbox-window-title { font-size: 10px !important; }
+}
+@media (max-width: 520px) {
+  html body .glightbox-container .gslide.current .gslide-image { max-width: 97vw !important; min-width: 0 !important; }
+  html body .glightbox-container .gslide.current .gslide-image img { max-height: calc(88vh - 38px) !important; }
+  html body .glightbox-container .gslide.current .lightbox-window-titlebar { height: 38px !important; min-height: 38px !important; padding: 0 8px 0 10px !important; }
+  html body .glightbox-container .gslide.current .lightbox-window-title { font-size: 9px !important; }
+  html body .glightbox-container .gslide.current .lightbox-window-controls { gap: 4px !important; }
+  html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn { width: 24px !important; height: 24px !important; min-width: 24px !important; font-size: 9px !important; }
+}
+
+
+/* =========================================================================
+   FOLLOW-UP FIX — thumbnail command buttons + theme notice background
+   ========================================================================= */
+
+/* The older thumbnail rules (.portfolio-terminal-controls .portfolio-command-btn
+   [href]:not(...) etc.) carry !important and higher specificity than the
+   shared rule above, so they kept the hard-coded blue/green/yellow. Raise
+   specificity here so the theme tokens win on the thumbnails. */
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-command-btn {
+  --_c: var(--cmd-green);
+  background: var(--_c) !important;
+  color: var(--cmd-on) !important;
+  border: 1px solid color-mix(in srgb, var(--_c), #000 25%) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.35) !important;
+}
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-maximize {
+  --_c: var(--cmd-maximize);
+}
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[aria-label="Open live demo"],
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[href*="onrender.com"],
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[href*="github.io"] {
+  --_c: var(--cmd-demo);
+}
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[aria-label="Open portfolio project"] {
+  --_c: var(--cmd-project);
+}
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-command-btn:hover,
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-command-btn:focus-visible {
+  background: color-mix(in srgb, var(--_c), #fff 14%) !important;
+  color: var(--cmd-on) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--_c), transparent 60%), 0 2px 8px rgba(0,0,0,.4) !important;
+}
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.is-disabled {
+  background: color-mix(in srgb, var(--surface-color), var(--default-color) 12%) !important;
+  color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+  border-color: color-mix(in srgb, var(--default-color), transparent 65%) !important;
+  box-shadow: none !important;
+}
+
+/* Theme toggle text ("Theme: Gruvbox") gets a themed pill background.
+   The pill fades out while the text is empty, so no blank box is left. */
+.theme-controls .theme-notice {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-color), transparent 8%);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 55%);
+  color: var(--accent-highlight);
+  text-shadow: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.theme-controls .theme-notice:empty {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+
+/* =========================================================================
+   WINDOW MOTION — dock bounce after a window is minimized into it.
+   (Shrink / grow / fade themselves are driven by main.js.)
+   ========================================================================= */
+@keyframes dockBounce {
+  0%   { translate: 0 0; }
+  30%  { translate: 0 -14px; }
+  55%  { translate: 0 0; }
+  75%  { translate: 0 -5px; }
+  100% { translate: 0 0; }
+}
+.linux-dock .dock-item.dock-bounce { animation: dockBounce .6s ease; }
+
+/* Old class-based minimize/close motion is replaced by JS; make sure a stray
+   class can never leave the lightbox window squashed or faded. */
+.glightbox-container.is-terminal-minimizing .gslide-image,
+.glightbox-container.is-terminal-closing .gslide-image {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+.terminal-overlay.is-minimizing { transition: opacity .2s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .linux-dock .dock-item.dock-bounce { animation: none; }
+}
+
+
+/* Theme notice ("Theme: Gruvbox") now matches the hero sidebar's typed-text
+   box (.code-container): same dark code background, rounded-rect corners,
+   mono font, no border, no shadow, no blur. Hidden while empty. */
+html body .theme-controls .theme-notice {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 0 !important;
+  border-radius: 6px;
+  background: #1e1e2e;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  text-shadow: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--accent-highlight);
+  min-height: 0;
+  transition: none;
+}
+html body .theme-controls .theme-notice:empty {
+  background: transparent;
+  padding: 8px 0;
+}
+
+/* =========================================================================
+   VIDEO SLIDES — extend the window frame + title bar to .gslide-video
+   (GLightbox's native video mode), so YouTube slides get the same
+   terminal chrome as image slides. Mirrors the .gslide-image rules above.
+   ========================================================================= */
+html body .glightbox-container .gslide.current .gslide-video {
+  position: relative !important;
+  transform: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  width: min(960px, 92vw) !important;
+  max-width: min(960px, 92vw) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--cmd-green), transparent 55%) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 24px 70px rgba(0,0,0,.6) !important;
+}
+html body .glightbox-container .gslide.current .gslide-video > .gslide-description {
+  position: static !important;
+  order: -1 !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  transform: none !important;
+  display: block !important;
+  z-index: 2 !important;
+}
+html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
+  width: 100% !important;
+  margin: 0 !important;
+  max-width: none !important;
+}
+@media (max-width: 900px) {
+  html body .glightbox-container .gslide.current .gslide-video { width: 95vw !important; max-width: 95vw !important; }
+}
+
+/* =========================================================================
+   FIXES (keep LAST)
+   1) Terminal close: no flicker (fade, pop, fade).
+   2) Mobile: dock + window command buttons (lightbox, CV terminal, cards).
+   ========================================================================= */
+
+/* 1) main.js adds this for one frame while it swaps the JS fade for the final
+      closed state, so no CSS transition can replay the fade. */
+.terminal-overlay.is-hard-closed,
+.terminal-overlay.is-hard-closed .terminal-window {
+  transition: none !important;
+}
+.terminal-overlay.is-hard-closed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* 2a) Dock */
+.linux-dock {
+  max-width: calc(100vw - 16px);
+  -webkit-tap-highlight-color: transparent;
+}
+.linux-dock .dock-item { touch-action: manipulation; }
+
+@media (max-width: 768px) {
+  .linux-dock {
+    gap: 10px;
+    padding: 6px 10px 8px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .linux-dock .dock-item {
+    width: 44px;              /* 44px = comfortable touch target */
+    height: 44px;
+    font-size: 20px;
+  }
+  .theme-controls { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 340px) {
+  .linux-dock { gap: 6px; padding: 6px 8px 8px; }
+  .linux-dock .dock-item { width: 40px; height: 40px; }
+}
+/* Tooltips are hover-only; on touch they just stick after a tap. */
+@media (hover: none) {
+  .linux-dock .dock-item .dock-tooltip { display: none; }
+}
+
+/* 2b) Lightbox title bar + command buttons */
+@media (max-width: 900px), (pointer: coarse) {
+  html body .glightbox-container .gslide.current .gslide-image {
+    max-height: 88vh !important;
+    max-height: 88dvh !important;
+  }
+  html body .glightbox-container .gslide.current .gslide-image img {
+    max-height: calc(88vh - 44px) !important;
+    max-height: calc(88dvh - 44px) !important;
+  }
+  html body .glightbox-container .gslide.current .lightbox-window-titlebar,
+  html body .glightbox-container .gslide.current .lightbox-window-panel,
+  html body .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted,
+  html body .glightbox-container .gslide.current .gslide-image > .gslide-description {
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+  }
+  html body .glightbox-container .gslide.current .lightbox-window-titlebar {
+    padding: 0 8px 0 10px !important;
+    gap: 6px !important;
+  }
+  html body .glightbox-container .gslide.current .lightbox-window-title {
+    flex: 1 1 auto !important;
+    max-width: none !important;
+    font-size: 10px !important;
+  }
+  html body .glightbox-container .gslide.current .lightbox-window-controls {
+    gap: 6px !important;
+  }
+  html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    font-size: 12px !important;
+    touch-action: manipulation;
+  }
+}
+
+/* 2c) CV terminal + project card command buttons */
+@media (max-width: 768px), (pointer: coarse) {
+  .terminal-titlebar { min-height: 52px; }
+  .terminal-titlebar .terminal-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .terminal-command-buttons { gap: 8px; }
+  html body .terminal-command-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    touch-action: manipulation;
+  }
+  html body .portfolio-command-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    touch-action: manipulation;
+  }
+}
+
+/* Hover grow feels like a stuck state on touch screens. */
+@media (hover: none) {
+  html body .terminal-command-btn:hover,
+  html body .portfolio-command-btn:hover,
+  html body .lightbox-window-panel .win-btn:hover,
+  html body .glightbox-container .lightbox-window-panel .win-btn:hover,
+  .glightbox-container .gslide.current .lightbox-window-panel .win-btn:hover {
+    transform: none !important;
   }
 }
