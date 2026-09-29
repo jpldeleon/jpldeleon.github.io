@@ -854,26 +854,57 @@
 
   glightbox.on('close', () => { lightboxClosing = false; });
 
-  document.addEventListener('click', (e) => {
-    const minimizeBtn = e.target.closest('[data-glightbox-minimize]');
-    const closeBtn = e.target.closest('[data-glightbox-close]');
+  /* Find the lightbox Close / Minimize command for a click. Uses the real target
+     first, then falls back to the click position, so it still works if something
+     is layered over the button or GLightbox's own handlers swallow the click. */
+  function lightboxCommandFor(e, attr) {
+    const hit = e.target && e.target.closest ? e.target.closest('[' + attr + ']') : null;
+    if (hit) return hit;
+    if (!e.clientX && !e.clientY) return null;
+    const btns = document.querySelectorAll('.glightbox-container [' + attr + ']');
+    for (const b of btns) {
+      const r = b.getBoundingClientRect();
+      if (r.width && r.height && e.clientX >= r.left && e.clientX <= r.right &&
+          e.clientY >= r.top && e.clientY <= r.bottom) return b;
+    }
+    return null;
+  }
+
+  /* Capture phase on window: runs before GLightbox / any other handler can stop it. */
+  window.addEventListener('click', (e) => {
+    const container = document.querySelector('.glightbox-container');
+    if (!container) return;
+    const minimizeBtn = lightboxCommandFor(e, 'data-glightbox-minimize');
+    const closeBtn = minimizeBtn ? null : lightboxCommandFor(e, 'data-glightbox-close');
     if (!minimizeBtn && !closeBtn) return;
     e.preventDefault();
+    e.stopPropagation();
     if (lightboxClosing) return;
-    const container = document.querySelector('.glightbox-container');
-    if (!container) { glightbox.close(); return; }
     lightboxClosing = true;
+
+    /* Never leave the flag stuck, and always fall back to GLightbox's own close. */
+    const finish = () => {
+      try { closeLightboxNoEffect(); } catch (err) { /* fall through to fallback */ }
+      window.setTimeout(() => {
+        const still = document.querySelector('.glightbox-container');
+        if (still) {
+          const g = still.querySelector('.gclose');
+          try { if (g) g.click(); else glightbox.close(); } catch (err) { /* ignore */ }
+        }
+        lightboxClosing = false;
+      }, 450);
+    };
 
     if (minimizeBtn) {
       const media = container.querySelector('.gslide.current .gslide-media');
       const dockEl = getDockTarget('projects');
       shrinkIntoDock(media, dockEl, container).then(() => {
-        closeLightboxNoEffect();
+        finish();
         bounceDockItem(dockEl);
-      });
+      }).catch(finish);
     } else {
-      fadeOut(container, 220).then(closeLightboxNoEffect);
+      fadeOut(container, 220).then(finish).catch(finish);
     }
-  });
+  }, true);
 
 })();
