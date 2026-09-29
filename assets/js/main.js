@@ -110,6 +110,16 @@
         imageFrame.insertBefore(description, imageFrame.firstChild);
       }
       description.classList.add('lightbox-terminal-mounted');
+
+      /* GLightbox's drag/swipe handlers live on the slide media, and the terminal
+         chrome is now mounted inside it, so they swallow presses on the Close
+         button. Keep those presses away from GLightbox so the click goes through. */
+      const controls = description.querySelector('.lightbox-window-controls');
+      if (controls && !controls.dataset.shielded) {
+        controls.dataset.shielded = '1';
+        ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'touchstart', 'touchmove', 'touchend']
+          .forEach((type) => controls.addEventListener(type, (ev) => ev.stopPropagation(), { passive: true }));
+      }
     });
   }
 

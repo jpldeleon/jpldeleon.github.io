@@ -41,6 +41,29 @@
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+  <style id="glightbox-overrides">
+    /* No dimmed / blurred page behind the lightbox */
+    .glightbox-container .goverlay,
+    .glightbox-container {
+      background: transparent !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+    body.glightbox-open, body.glightbox-open > *:not(.glightbox-container) {
+      filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+    /* Keep the lightbox above every window and make its Close button clickable */
+    .glightbox-container { z-index: 2147483000 !important; }
+    .glightbox-container .gslide-description.lightbox-terminal-mounted {
+      position: relative; z-index: 10; pointer-events: auto !important;
+    }
+    .glightbox-container .lightbox-window-controls,
+    .glightbox-container .lightbox-window-controls .win-btn {
+      position: relative; z-index: 11; pointer-events: auto !important; cursor: pointer;
+    }
+  </style>
 </head>
 
 <body class="portfolio-details-page">
