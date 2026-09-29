@@ -861,39 +861,35 @@
   });
 
   function onLightboxCommand(e) {
-    if (e.type === 'pointerup' && e.button !== 0) return;
-    const container = document.querySelector('.glightbox-container');
-    if (!container) return;
-    const minimizeBtn = lightboxCommandFor(e, 'data-glightbox-minimize');
-    const closeBtn = minimizeBtn ? null : lightboxCommandFor(e, 'data-glightbox-close');
-    if (!minimizeBtn && !closeBtn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    if (lightboxClosing) return;
-    lightboxClosing = true;
+  if (e.type === 'pointerup' && e.button !== 0) return;
+  const container = document.querySelector('.glightbox-container');
+  if (!container) return;
+  const minimizeBtn = lightboxCommandFor(e, 'data-glightbox-minimize');
+  const closeBtn = minimizeBtn ? null : lightboxCommandFor(e, 'data-glightbox-close');
+  if (!minimizeBtn && !closeBtn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  if (lightboxClosing) return;
+  lightboxClosing = true;
 
-    const finish = () => {
-      try { closeLightboxNoEffect(); } catch (err) { /* ignore */ }
-      window.setTimeout(() => {
-        if (document.querySelector('.glightbox-container')) {
-          forceRemoveLightbox();
-        }
-        lightboxClosing = false;
-      }, 300);
-    };
+  const finish = () => {
+    try { closeLightboxNoEffect(); } catch (err) { /* ignore */ }
+    window.setTimeout(() => {
+      if (document.querySelector('.glightbox-container')) {
+        forceRemoveLightbox();
+      }
+      lightboxClosing = false;
+    }, 300);
+  };
 
-    if (minimizeBtn) {
-      const media = container.querySelector('.gslide.current .gslide-media');
-      const dockEl = getDockTarget('projects');
-      shrinkIntoDock(media, dockEl, container).then(() => {
-        finish();
-        bounceDockItem(dockEl);
-      }).catch(finish);
-    } else {
-      fadeOut(container, 220).then(finish).catch(finish);
-    }
+  if (closeBtn) {
+    fadeOut(container, 220).then(finish).catch(finish);
+  } else if (e.key === 'Escape') {
+    fadeOut(container, 220).then(finish).catch(finish);
   }
-  window.addEventListener('pointerup', onLightboxCommand, true);
-  window.addEventListener('click', onLightboxCommand, true);
+}
+window.addEventListener('pointerup', onLightboxCommand, true);
+window.addEventListener('click', onLightboxCommand, true);
+
 
 })();
