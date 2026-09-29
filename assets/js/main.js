@@ -87,18 +87,21 @@
 
   /**
    * Initiate glightbox
-   * If the vendor script fails to load, fall back to a no-op stub so the rest of
-   * main.js (dock, terminals, themes...) keeps running instead of throwing here.
+   * Fully disable drag, swipe, zoom, and mouse interactions with images inside lightbox.
    */
   const glightbox = (typeof GLightbox === 'function') ? GLightbox({
     selector: '.glightbox',
     draggable: false,          // Disable mouse dragging
     touchNavigation: false,    // Disable swipe/touch dragging
+    touchFollowAxis: false,
+    dragAutoSnap: false,
     dragToleranceX: 0,
     dragToleranceY: 0,
     openEffect: 'fade',
     closeEffect: 'fade',
-    slideEffect: 'fade'
+    slideEffect: 'fade',
+    zoomable: false,
+    draggable: false
   }) : { on() {}, close() {}, settings: {} };
   if (typeof GLightbox !== 'function') console.warn('GLightbox failed to load: lightbox disabled.');
 
@@ -114,10 +117,8 @@
       }
       description.classList.add('lightbox-terminal-mounted');
 
-      /* Our Close button must never carry GLightbox's own .gclose class: GLightbox's CSS gives
-         .gclose top:15px / right:10px (which shifts the button out of the title bar), and the
-         theme hides every .gclose with display:none. */
-      description.querySelectorAll('.gclose').forEach((el) => el.classList.remove('gclose'));
+      /* Remove default GLightbox close class to avoid duplicate/misplaced buttons */
+      description.querySelectorAll('.gclose:not([data-glightbox-close])').forEach((el) => el.remove());
     });
   }
 
@@ -225,8 +226,6 @@
 
   /**
    * Theme Dots + typed theme notification.
-   * Uses the existing theme names and the same small type/backspace pattern
-   * already used by the site's terminal typing effect.
    */
   const themeDots = document.querySelectorAll('.theme-dot');
   const themeNotice = document.querySelector('#themeNotice');
@@ -283,7 +282,6 @@
       themeDots.forEach(dot => {
         dot.classList.toggle('active', dot.getAttribute('data-theme-choice') === theme);
       });
-      /* Scrollbars follow the theme: take the active theme dot's colour. */
       const activeDot = Array.from(themeDots).find(d => d.getAttribute('data-theme-choice') === theme);
       const dotColor = activeDot ? getComputedStyle(activeDot).backgroundColor : '';
       if (dotColor && dotColor !== 'transparent' && dotColor !== 'rgba(0, 0, 0, 0)') {
@@ -344,7 +342,6 @@
       }
     });
   });
-
 
   /**
    * Linux App Menu (Menu dock icon -> popup launcher)
@@ -413,14 +410,8 @@
     });
   }
 
-
-
   /**
    * Window motion (Linux desktop style)
-   *  - Minimize: window shrinks and flies into its dock icon (genie-like).
-   *  - Maximize / restore: window grows or shrinks to its new size.
-   *  - Close: plain fade.
-   * Uses the Web Animations API so it never fights the older CSS overrides.
    */
   const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MOTION_EASE = 'cubic-bezier(.4, 0, .2, 1)';
@@ -441,7 +432,6 @@
     window.setTimeout(() => el.classList.remove('dock-bounce'), 700);
   }
 
-  /* Shrink `win` into `dockEl`. Resolves when the motion has finished. */
   function shrinkIntoDock(win, dockEl, backdrop) {
     return new Promise(resolve => {
       if (!win || !dockEl || reduceMotion()) { resolve([]); return; }
@@ -471,7 +461,6 @@
     });
   }
 
-  /* Plain fade-out of `el` (used by every Close button). */
   function fadeOut(el, duration = 220) {
     return new Promise(resolve => {
       if (!el || reduceMotion()) { resolve([]); return; }
@@ -673,10 +662,6 @@
   }
 
   function settleTerminal(overlay, anims) {
-    /* Commit the closed state with every transition disabled (class-driven, so
-       no inline-style / !important ordering problems), flush it, and only THEN
-       drop the WAAPI fill. The closed CSS state equals the animation's end state
-       (opacity 0), so nothing can pop back or fade a second time. */
     overlay.classList.add('is-hard-closed');
     closeTerminal(overlay);
     void overlay.offsetHeight;
@@ -686,7 +671,6 @@
     delete overlay.dataset.animating;
   }
 
-  /* Close = fade (window + backdrop together). */
   function fadeCloseTerminal(overlay) {
     if (!overlay || !overlay.classList.contains('open') || overlay.dataset.animating) return;
     overlay.dataset.animating = '1';
@@ -694,7 +678,6 @@
     fadeOut(overlay, 220).then(anims => settleTerminal(overlay, anims));
   }
 
-  /* Minimize = shrink into the dock menu icon. */
   function minimizeTerminal(overlay) {
     if (!overlay || !overlay.classList.contains('open') || overlay.dataset.animating) return;
     overlay.dataset.animating = '1';
@@ -707,7 +690,6 @@
     });
   }
 
-  /* Maximize / restore = window grows or shrinks to the new size. */
   function toggleMaximizeTerminal(overlay) {
     if (!overlay) return;
     const win = overlay.querySelector('.terminal-window');
@@ -775,14 +757,6 @@
 
   /**
    * Portfolio thumbnail application windows.
-   * Normal cards remain compact; Maximize opens an 80%-viewport terminal window.
-   */
-  let portfolioWindowOverlay = null;
-
-  /**
-   * The thumbnail maximize/zoom command opens the existing GLightbox instance.
-   * This deliberately uses the same lightbox as the image click so there is only
-   * one overlay/window system for project images and certificates.
    */
   document.addEventListener('click', (e) => {
     const maximize = e.target.closest('[data-portfolio-maximize]');
@@ -792,19 +766,14 @@
     e.stopPropagation();
 
     const item = maximize.closest('.portfolio-item');
-    // Projects use the transparent .portfolio-image-link; certificates
-    // keep their original .glightbox anchor in .portfolio-links.
     const imageLink = item?.querySelector('.portfolio-image-link.glightbox')
       || item?.querySelector('a.glightbox')
-      || item?.querySelector('.portfolio-image-link');   // project opened in a window (e.g. AuditKit)
+      || item?.querySelector('.portfolio-image-link');
     if (imageLink) imageLink.click();
   });
 
   /**
    * GLightbox window motion.
-   *  - Opening from a thumbnail's Maximize/zoom: the window grows out of the card.
-   *  - Minimize: shrinks into the "Projects" dock icon.
-   *  - Close: fade.
    */
   let lightboxOrigin = null;
   let lightboxClosing = false;
@@ -848,10 +817,6 @@
     window.setTimeout(() => { lightboxOrigin = null; }, 900);
   });
 
-  /* Our own fade / shrink has already played, so GLightbox must not play its
-     built-in close effect on top of it (that was the second fade). Swap the
-     effect to 'none' for this one close() call, then restore it so Esc and
-     backdrop clicks still get GLightbox's normal fade. */
   function closeLightboxNoEffect() {
     const prev = glightbox.settings.closeEffect;
     glightbox.settings.closeEffect = 'none';
@@ -871,9 +836,6 @@
     try { glightbox.closing = null; glightbox.lightboxOpen = false; glightbox.built = false; } catch (err) { /* ignore */ }
   }
 
-  /* Find the lightbox Close / Minimize command for a click. Uses the real target
-     first, then falls back to the click position, so it still works if something
-     is layered over the button or GLightbox's own handlers swallow the click. */
   function lightboxCommandFor(e, attr) {
     const hit = e.target && e.target.closest ? e.target.closest('[' + attr + ']') : null;
     if (hit) return hit;
@@ -887,22 +849,17 @@
     return null;
   }
 
-  /* Swipe / drag between screenshots is disabled. GLightbox's touch and drag
-     listeners are cut off before they see the gesture. Arrows, keyboard and
-     the title-bar buttons keep working. */
-  const SWIPE_KEEP = '.gclose, .gnext, .gprev, [data-glightbox-close], [data-glightbox-minimize], .lightbox-window-controls';
-  ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'mousedown', 'mousemove', 'mouseup'].forEach((type) => {
+  /* Block dragging, swipe gestures, and image interactions completely inside glightbox */
+  ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'mousedown', 'mousemove', 'mouseup', 'dragstart'].forEach((type) => {
     window.addEventListener(type, (e) => {
       const t = e.target;
       if (!t || !t.closest || !t.closest('.glightbox-container')) return;
-      if (t.closest(SWIPE_KEEP)) return;
+      if (t.closest('[data-glightbox-close], [data-glightbox-minimize], .lightbox-window-controls')) return;
       e.stopPropagation();
-    }, { capture: true, passive: true });
+      if (type === 'dragstart' || type === 'touchmove') e.preventDefault();
+    }, { capture: true, passive: false });
   });
 
-  /* Capture phase on window: runs before GLightbox / any other handler can stop it.
-     Listens for pointerup as well as click, so it still fires if a click is never
-     synthesised. The lightboxClosing flag stops the second event doing it twice. */
   function onLightboxCommand(e) {
     if (e.type === 'pointerup' && e.button !== 0) return;
     const container = document.querySelector('.glightbox-container');
@@ -915,22 +872,14 @@
     if (lightboxClosing) return;
     lightboxClosing = true;
 
-    /* Never leave the flag stuck, and always fall back to GLightbox's own close. */
     const finish = () => {
-      try { closeLightboxNoEffect(); } catch (err) { /* fall through to fallback */ }
+      try { closeLightboxNoEffect(); } catch (err) { /* ignore */ }
       window.setTimeout(() => {
         if (document.querySelector('.glightbox-container')) {
-          /* 1st fallback: GLightbox's own close button (never our custom one, which is
-             swallowed by this very handler). */
-          const own = document.querySelector('.glightbox-container .gclose:not([data-glightbox-close])');
-          try { if (own) own.click(); else glightbox.close(); } catch (err) { /* ignore */ }
+          forceRemoveLightbox();
         }
-        window.setTimeout(() => {
-          /* Last resort: never leave a dead, un-closable lightbox on screen. */
-          if (document.querySelector('.glightbox-container')) forceRemoveLightbox();
-          lightboxClosing = false;
-        }, 300);
-      }, 350);
+        lightboxClosing = false;
+      }, 300);
     };
 
     if (minimizeBtn) {
