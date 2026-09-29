@@ -54,16 +54,17 @@
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
-    /* Keep the lightbox above every window and make its Close button clickable */
+    /* Keep the lightbox above every window and ensure close controls receive clicks */
     .glightbox-container { z-index: 2147483000 !important; }
     .glightbox-container .gslide-description.lightbox-terminal-mounted {
       position: relative; z-index: 10; pointer-events: auto !important;
     }
     .glightbox-container .lightbox-window-controls,
-    .glightbox-container .lightbox-window-controls .win-btn {
+    .glightbox-container .lightbox-window-controls .win-btn,
+    .glightbox-container [data-glightbox-close] {
       position: relative; z-index: 11; pointer-events: auto !important; cursor: pointer;
     }
-    /* Scrollbars follow the active theme (--sb-thumb is set by the theme toggle in main.js) */
+    /* Scrollbars follow the active theme */
     * {
       scrollbar-width: thin;
       scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
@@ -485,14 +486,17 @@
 
             <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
             <div class="glightbox-desc desc-auditkit-shot" style="display:none;">
-              <div class="lightbox-window-panel">
-                <div class="lightbox-window-titlebar"><span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
-                  <div class="lightbox-window-controls"><button aria-label="Close screenshot"
-                      class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-                      type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button></div>
-                </div>
-              </div>
-            </div>
+  <div class="lightbox-window-panel">
+    <div class="lightbox-window-titlebar">
+      <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
+      <div class="lightbox-window-controls">
+        <button aria-label="Close screenshot"
+            class="win-btn win-btn-close gclose" data-glightbox-close="" title="Close screenshot"
+            type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
 
           </section><!-- /Portfolio Section -->
 

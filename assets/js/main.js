@@ -88,19 +88,21 @@
   /**
    * Initiate glightbox
    */
+  /**
+   * Initiate glightbox
+   */
   const glightbox = GLightbox({
     selector: '.glightbox',
-    draggable: false,          // no mouse-drag to the next screenshot
+    draggable: false,          // Disable mouse dragging
+    touchNavigation: false,    // Disable swipe/touch dragging
+    dragToleranceX: 0,
+    dragToleranceY: 0,
     openEffect: 'fade',
     closeEffect: 'fade',
     slideEffect: 'fade'
   });
 
-  /* Mount the terminal chrome INSIDE each GLightbox image frame.
-     The title bar becomes a normal in-flow row above the image, so the
-     frame is one window: [title bar + commands] / [image]. It works on
-     every loaded slide (not just the first one in the DOM) and re-runs
-     when a slide finishes loading. */
+  /* Mount the terminal chrome INSIDE each GLightbox image frame. */
   function mountLightboxTerminalChrome() {
     document.querySelectorAll('.glightbox-container .gslide').forEach((slide) => {
       const imageFrame = slide.querySelector('.gslide-image, .gslide-video');
@@ -112,14 +114,15 @@
       }
       description.classList.add('lightbox-terminal-mounted');
 
-      /* GLightbox's drag/swipe handlers live on the slide media, and the terminal
-         chrome is now mounted inside it, so they swallow presses on the Close
-         button. Keep those presses away from GLightbox so the click goes through. */
-      const controls = description.querySelector('.lightbox-window-controls');
-      if (controls && !controls.dataset.shielded) {
-        controls.dataset.shielded = '1';
-        ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'touchstart', 'touchmove', 'touchend']
-          .forEach((type) => controls.addEventListener(type, (ev) => ev.stopPropagation(), { passive: true }));
+      /* Handle Close button explicitly inside the terminal chrome */
+      const closeBtn = description.querySelector('[data-glightbox-close], .win-btn-close');
+      if (closeBtn && !closeBtn.dataset.boundClose) {
+        closeBtn.dataset.boundClose = '1';
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          glightbox.close();
+        });
       }
     });
   }
