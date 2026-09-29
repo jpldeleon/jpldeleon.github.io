@@ -90,6 +90,7 @@
    */
   const glightbox = GLightbox({
     selector: '.glightbox',
+    draggable: false,          // no mouse-drag to the next screenshot
     openEffect: 'fade',
     closeEffect: 'fade',
     slideEffect: 'fade'
@@ -285,6 +286,14 @@
       themeDots.forEach(dot => {
         dot.classList.toggle('active', dot.getAttribute('data-theme-choice') === theme);
       });
+      /* Scrollbars follow the theme: take the active theme dot's colour. */
+      const activeDot = Array.from(themeDots).find(d => d.getAttribute('data-theme-choice') === theme);
+      const dotColor = activeDot ? getComputedStyle(activeDot).backgroundColor : '';
+      if (dotColor && dotColor !== 'transparent' && dotColor !== 'rgba(0, 0, 0, 0)') {
+        document.documentElement.style.setProperty('--sb-thumb', dotColor);
+      } else {
+        document.documentElement.style.removeProperty('--sb-thumb');
+      }
       if (announce) animateThemeNotice(theme);
     }
 
@@ -870,8 +879,24 @@
     return null;
   }
 
-  /* Capture phase on window: runs before GLightbox / any other handler can stop it. */
-  window.addEventListener('click', (e) => {
+  /* Swipe / drag between screenshots is disabled. GLightbox's touch and drag
+     listeners are cut off before they see the gesture. Arrows, keyboard and
+     the title-bar buttons keep working. */
+  const SWIPE_KEEP = '.gclose, .gnext, .gprev, [data-glightbox-close], [data-glightbox-minimize], .lightbox-window-controls';
+  ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'mousedown', 'mousemove', 'mouseup'].forEach((type) => {
+    window.addEventListener(type, (e) => {
+      const t = e.target;
+      if (!t || !t.closest || !t.closest('.glightbox-container')) return;
+      if (t.closest(SWIPE_KEEP)) return;
+      e.stopPropagation();
+    }, { capture: true, passive: true });
+  });
+
+  /* Capture phase on window: runs before GLightbox / any other handler can stop it.
+     Listens for pointerup as well as click, so it still fires if a click is never
+     synthesised. The lightboxClosing flag stops the second event doing it twice. */
+  function onLightboxCommand(e) {
+    if (e.type === 'pointerup' && e.button !== 0) return;
     const container = document.querySelector('.glightbox-container');
     if (!container) return;
     const minimizeBtn = lightboxCommandFor(e, 'data-glightbox-minimize');
@@ -905,6 +930,8 @@
     } else {
       fadeOut(container, 220).then(finish).catch(finish);
     }
-  }, true);
+  }
+  window.addEventListener('pointerup', onLightboxCommand, true);
+  window.addEventListener('click', onLightboxCommand, true);
 
 })();
