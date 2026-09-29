@@ -204,8 +204,15 @@
    * Dock Scrollspy - keep one active section indicator in sync with the page.
    */
   const dockLinks = document.querySelectorAll('.linux-dock a.dock-item[href]');
+  /* Only in-page hash links (#about, #resume...) are sections. Full URLs such as
+     https://site/ are not valid selectors and used to throw here, which aborted the
+     rest of main.js (including the lightbox close handlers) on project pages. */
   const dockSections = Array.from(dockLinks)
-    .map(link => document.querySelector(link.getAttribute('href')))
+    .map(link => {
+      const href = link.getAttribute('href') || '';
+      if (href.length < 2 || href.charAt(0) !== '#') return null;
+      try { return document.querySelector(href); } catch (err) { return null; }
+    })
     .filter(Boolean);
 
   function dockScrollspy() {

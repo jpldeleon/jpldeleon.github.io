@@ -61,12 +61,19 @@
     /* Keep the lightbox above every window */
     .glightbox-container { z-index: 2147483000 !important; }
     
-    /* Disable image dragging and select within lightbox */
-    .glightbox-container .gslide-image img,
-    .glightbox-container .gslide-media {
+    /* Disable image dragging and select within lightbox.
+       The image itself ignores the pointer, but .gslide-media must keep receiving clicks:
+       if both are pointer-events:none, a click on the screenshot falls through to the
+       backdrop and GLightbox treats it as an outside click and closes the lightbox. */
+    .glightbox-container .gslide-image img {
       user-select: none !important;
       -webkit-user-drag: none !important;
       pointer-events: none !important;
+    }
+    .glightbox-container .gslide-media {
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+      pointer-events: auto !important;
     }
 
     .glightbox-container .gslide-description.lightbox-terminal-mounted {
