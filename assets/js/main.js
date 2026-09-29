@@ -779,7 +779,8 @@
     // Projects use the transparent .portfolio-image-link; certificates
     // keep their original .glightbox anchor in .portfolio-links.
     const imageLink = item?.querySelector('.portfolio-image-link.glightbox')
-      || item?.querySelector('a.glightbox');
+      || item?.querySelector('a.glightbox')
+      || item?.querySelector('.portfolio-image-link');   // project opened in a window (e.g. AuditKit)
     if (imageLink) imageLink.click();
   });
 

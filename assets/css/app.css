@@ -1,0 +1,434 @@
+/*--------------------------------------------------------------
+# Window Manager  (loads AFTER main.css; uses its theme variables)
+--------------------------------------------------------------*/
+
+/* Layer that holds every window. Sits above the sidebar/hero (z 10)
+   and below the dock (z 997) so the dock is always reachable. */
+#wm-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+}
+
+/* Off-screen but still laid out, so Isotope/Swiper can measure content
+   of a closed app (Resume / Portfolio live here while closed). */
+#wm-store {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 1000px;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------- Window ---------- */
+.wm-window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  pointer-events: auto;
+  background: var(--background-color);
+  color: var(--default-color);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 68%);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0;   /* the window is a <section>: cancel main.css's `section { padding: 60px 0 }` */
+  outline: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+  will-change: transform, opacity;
+}
+
+.wm-window.is-focused {
+  border-color: color-mix(in srgb, var(--accent-highlight), transparent 42%);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
+}
+
+.wm-window.is-maximized { border-radius: 0; }
+.wm-window.is-minimized { display: none; }
+
+/* ---------- Title bar ---------- */
+.wm-titlebar {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 38px;
+  padding: 4px 8px 4px 14px;
+  background: color-mix(in srgb, var(--surface-color), var(--background-color) 40%);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 70%);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.wm-window.is-focused .wm-titlebar {
+  background: color-mix(in srgb, var(--surface-color), var(--accent-highlight) 7%);
+}
+
+.wm-dragging .wm-titlebar { cursor: grabbing; }
+.wm-dragging { user-select: none; -webkit-user-select: none; }
+
+/* Title: left-aligned, truncates instead of pushing the buttons away */
+.wm-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: var(--default-color);
+  opacity: 0.9;
+}
+
+.wm-title i { margin-right: 8px; color: var(--accent-highlight); }
+
+/* Window controls: Linux-style circle dots, top-right.
+   Order: minimize (yellow) | maximize/restore (green) | close (red).
+   The glyph inside each dot appears when the pointer is over the group. */
+.wm-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-right: 4px;
+}
+
+.wm-btn {
+  --dot: #8a8f98;
+  --dot-ink: rgba(0, 0, 0, 0.62);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 24px;              /* generous hit area, the visible dot is smaller */
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--dot-ink);
+  cursor: pointer;
+}
+
+.wm-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dot);
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.wm-btn svg {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.wm-controls:hover .wm-btn svg,
+.wm-btn:focus-visible svg { opacity: 1; }
+
+.wm-btn:hover::before { filter: brightness(1.12); }
+.wm-btn:active::before { filter: brightness(0.9); transform: translate(-50%, -50%) scale(0.92); }
+.wm-btn:focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 1px; }
+
+.wm-min   { --dot: #fdd663; }
+.wm-max   { --dot: #81c995; }
+.wm-close { --dot: #f28b82; }
+
+/* Unfocused windows: dots go neutral until the pointer is on them */
+.wm-window:not(.is-focused) .wm-btn:not(:hover)::before { background: color-mix(in srgb, var(--default-color), transparent 72%); }
+.wm-window:not(.is-focused) .wm-titlebar { opacity: 0.85; }
+
+.wm-max .ico-restore { display: none; }
+.wm-window.is-maximized .wm-max .ico-expand { display: none; }
+.wm-window.is-maximized .wm-max .ico-restore { display: block; }
+
+/* ---------- Resize handles (desktop, normal state only) ---------- */
+.wm-resize { position: absolute; z-index: 5; touch-action: none; }
+.wm-resize[data-dir="n"]  { top: 0;    left: 10px;  right: 10px;  height: 4px; cursor: ns-resize; }
+.wm-resize[data-dir="s"]  { bottom: 0; left: 10px;  right: 10px;  height: 4px; cursor: ns-resize; }
+.wm-resize[data-dir="e"]  { right: 0;  top: 10px;   bottom: 10px; width: 4px;  cursor: ew-resize; }
+.wm-resize[data-dir="w"]  { left: 0;   top: 10px;   bottom: 10px; width: 4px;  cursor: ew-resize; }
+.wm-resize[data-dir="ne"] { top: 0;    right: 0;  width: 10px; height: 10px; cursor: nesw-resize; }
+.wm-resize[data-dir="sw"] { bottom: 0; left: 0;   width: 10px; height: 10px; cursor: nesw-resize; }
+.wm-resize[data-dir="nw"] { top: 0;    left: 0;   width: 10px; height: 10px; cursor: nwse-resize; }
+.wm-resize[data-dir="se"] { bottom: 0; right: 0;  width: 10px; height: 10px; cursor: nwse-resize; }
+.wm-window.is-maximized .wm-resize { display: none; }
+
+/* ---------- Body ---------- */
+.wm-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent-highlight), transparent 55%) transparent;
+  /* Content inside reacts to the WINDOW's width, not the browser's */
+  container: wm / inline-size;
+}
+
+.wm-body.is-frame { overflow: hidden; }
+
+/* Sections moved in from the page (Resume / Portfolio) */
+.wm-body > section {
+  position: relative;
+  margin: 0 !important;
+  padding-top: 28px;
+  padding-bottom: 36px;
+}
+
+.wm-body > section .container { max-width: 100%; }
+
+/* ---------- Adopted sections: respond to the window's width ----------
+   Resume / Portfolio were written for full-page Bootstrap breakpoints (viewport
+   width). Inside a window those never change, so the layout is re-driven by the
+   window body's width via container queries (`wm` container on .wm-body). */
+.wm-body > section {
+  padding-top: clamp(14px, 3cqw, 28px);
+  padding-bottom: clamp(20px, 4cqw, 36px);
+}
+
+.wm-body > section .container {
+  max-width: 100%;
+  padding-inline: clamp(14px, 3.4cqw, 32px);
+}
+
+.wm-body .section-title { padding-bottom: clamp(20px, 4cqw, 44px); }
+.wm-body .section-title h2 { font-size: clamp(24px, 4.2cqw, 32px); overflow-wrap: break-word; }
+.wm-body .section-title h2:before,
+.wm-body .section-title h2:after { width: clamp(20px, 5cqw, 50px); }
+.wm-body .section-title h2:before { margin-right: clamp(8px, 1.6cqw, 15px); }
+.wm-body .section-title h2:after  { margin-left:  clamp(8px, 1.6cqw, 15px); }
+
+/* Default = stacked, one column. Wider windows opt in to columns below. */
+.wm-body .row > [class*="col-lg-"] { flex: 0 0 auto; width: 100%; max-width: 100%; }
+
+/* Resume */
+.wm-body .resume .row > .col-lg-8 { padding-left: calc(var(--bs-gutter-x, 1.5rem) * .5) !important; }
+.wm-body .resume .resume-side { height: auto; padding: clamp(1rem, 2.6cqw, 2rem); }
+.wm-body .resume .resume-side .contact-info li { overflow-wrap: anywhere; }
+.wm-body .resume .resume-section h3 { font-size: clamp(1.25rem, 3cqw, 1.75rem); }
+.wm-body .resume .resume-section .resume-item h4 { font-size: clamp(1.05rem, 2.4cqw, 1.2rem); overflow-wrap: break-word; }
+.wm-body .resume .resume-item { min-width: 0; }
+
+@container wm (max-width: 879.98px) {
+  .wm-body .resume .resume-side .profile-img img { max-width: 220px; }
+}
+
+@container wm (min-width: 880px) {
+  .wm-body .resume .row > .col-lg-4 { width: 33.33333333%; }
+  .wm-body .resume .row > .col-lg-8 {
+    width: 66.66666667%;
+    padding-left: clamp(1.25rem, 3cqw, 2.5rem) !important;
+  }
+}
+
+/* Portfolio: filters + cards */
+.wm-body .portfolio .portfolio-terminal-title { min-width: 0; flex: 1 1 auto; max-width: none; }
+.wm-body .portfolio .isotope-container > .portfolio-item { flex: 0 0 auto; width: 100%; max-width: 100%; }
+
+/* Stacked: filters become a wrapping row above the cards */
+@container wm (max-width: 959.98px) {
+  :where(.wm-body) .portfolio .filter-sidebar { position: relative; top: auto; margin-bottom: 24px; }
+  :where(.wm-body) .portfolio .filters-wrapper { padding: 14px; }
+  :where(.wm-body) .portfolio .portfolio-filters {
+    flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px;
+  }
+  :where(.wm-body) .portfolio .portfolio-filters li {
+    padding: 8px 14px;
+    border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
+    border-left-width: 3px;
+  }
+}
+
+/* Side-by-side: sticky filter column + card grid */
+@container wm (min-width: 960px) {
+  .wm-body .portfolio .row > .col-lg-3 { width: 25%; }
+  .wm-body .portfolio .row > .col-lg-9 { width: 75%; }
+  :where(.wm-body) .portfolio .filter-sidebar { position: sticky; top: 20px; margin-bottom: 0; }
+  :where(.wm-body) .portfolio .filters-wrapper { padding: clamp(14px, 2.2cqw, 30px); }
+  :where(.wm-body) .portfolio .portfolio-filters {
+    flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; gap: 10px;
+  }
+  :where(.wm-body) .portfolio .portfolio-filters li {
+    padding: 12px 16px; line-height: 1.25;
+    border: 0; border-left: 3px solid transparent;
+  }
+}
+
+/* Card columns: 1 → 2 → 3 as the window grows */
+@container wm (min-width: 600px)  { .wm-body .portfolio .isotope-container > .portfolio-item { width: 50%; } }
+@container wm (min-width: 1320px) { .wm-body .portfolio .isotope-container > .portfolio-item { width: 33.33333333%; } }
+
+/* Project pages load in an iframe */
+.wm-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--background-color);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.wm-frame.is-ready { opacity: 1; }
+
+/* A click on a background window should focus it, not land inside the iframe */
+.wm-window:not(.is-focused) .wm-frame,
+.wm-dragging .wm-frame { pointer-events: none; }
+
+.wm-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13px;
+  color: var(--accent-color);
+}
+
+.wm-loading::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  margin-left: 4px;
+  background: var(--accent-highlight);
+  vertical-align: middle;
+  animation: wm-blink 1s steps(1) infinite;
+}
+
+@keyframes wm-blink { 50% { opacity: 0; } }
+
+/* Portfolio fallback list (only used if the page has no #portfolio section) */
+.wm-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+  padding: 24px;
+}
+
+.wm-project-card {
+  text-align: left;
+  padding: 18px;
+  border-radius: 10px;
+  background: var(--surface-color);
+  color: var(--default-color);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 70%);
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.2s ease;
+}
+
+.wm-project-card:hover { transform: translateY(-3px); border-color: var(--accent-highlight); }
+.wm-project-card i { font-size: 22px; color: var(--accent-highlight); }
+.wm-project-card h4 { margin: 12px 0 4px; font-size: 18px; }
+.wm-project-card p { margin: 0; font-size: 13px; opacity: 0.8; }
+
+/* ---------- Dock additions ---------- */
+.linux-dock { max-width: calc(100vw - 12px); }
+
+.wm-dock-divider {
+  align-self: stretch;
+  flex: 0 0 1px;
+  width: 1px;
+  margin: 6px 4px;
+  background: color-mix(in srgb, var(--default-color), transparent 78%);
+}
+
+.wm-dock-divider[hidden] { display: none; }
+
+.wm-dock-apps { display: flex; align-items: flex-end; gap: 6px; min-width: 0; }
+
+/* main.css draws this dot at opacity 0 / scale(0) and only shows it for .active,
+   so the "open" state has to switch it on explicitly. */
+.linux-dock .dock-item.wm-open::after {
+  bottom: -6px;
+  width: 5px;
+  height: 5px;
+  background: var(--accent-highlight);
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
+/* Minimized: hollow dot + slightly dimmed, so it reads as "still here" */
+.linux-dock .dock-item.wm-minimized::after { background: transparent; box-shadow: inset 0 0 0 1.5px var(--accent-highlight); }
+.linux-dock .dock-item.wm-minimized i { opacity: 0.6; }
+
+/* main.css forces `background: transparent !important` on dock items */
+.linux-dock .dock-item.wm-focused {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%) !important;
+  border-radius: 10px;
+  color: var(--accent-highlight);
+}
+
+/* main.css pins `transform: none !important` on dock items, which would beat a
+   transform keyframe. The individual `scale` property is unaffected. */
+.linux-dock .dock-item.wm-new { animation: wm-dock-pop 0.32s cubic-bezier(.2, .8, .2, 1); }
+
+@keyframes wm-dock-pop {
+  from { scale: 0.3; opacity: 0; }
+  to   { scale: 1; opacity: 1; }
+}
+
+.linux-dock .dock-item.dock-app i { color: var(--accent-highlight); }
+
+/* Keep some room under the last block of content for the dock */
+@media (prefers-reduced-motion: reduce) {
+  .linux-dock .dock-item.wm-new { animation: none; }
+  .wm-frame { transition: none; }
+}
+
+/*--------------------------------------------------------------
+# Mobile: windows become full-screen apps above the dock.
+# (Geometry is set from JS; this only tunes the chrome.)
+--------------------------------------------------------------*/
+@media (max-width: 768px) {
+  .wm-window { border-radius: 14px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); }
+  .wm-titlebar { padding: 6px 8px 6px 12px; cursor: default; }
+  .wm-btn { width: 34px; height: 34px; }
+  .wm-btn::before { width: 16px; height: 16px; }
+  .wm-btn svg { width: 9px; height: 9px; opacity: 1; }
+  .wm-max { display: none; }          /* already full-screen */
+  .wm-resize { display: none; }
+  .wm-title { font-size: 12.5px; }
+
+  .wm-dock-apps {
+    overflow-x: auto;
+    padding: 8px 2px 6px;
+    margin: -8px 0 -6px;
+    scrollbar-width: none;
+  }
+  .wm-dock-apps::-webkit-scrollbar { display: none; }
+  .wm-dock-apps .dock-item { flex: 0 0 auto; }
+  .linux-dock .dock-tooltip { display: none; }
+
+  /* Windows cover the page, so hide the theme dots + stop background scroll */
+  body.wm-has-window .theme-dots { display: none; }
+  body.wm-has-window { overflow: hidden; }
+
+  .wm-projects { padding: 16px; grid-template-columns: 1fr; }
+}
