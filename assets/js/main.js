@@ -91,17 +91,18 @@
   /**
    * Initiate glightbox
    */
-  const glightbox = GLightbox({
-    selector: '.glightbox',
-    draggable: false,          // Disable mouse dragging
-    touchNavigation: false,    // Disable swipe/touch dragging
-    dragToleranceX: 0,
-    dragToleranceY: 0,
-    openEffect: 'fade',
-    closeEffect: 'fade',
-    slideEffect: 'fade'
-  });
-
+const glightbox = GLightbox({
+  selector: '.glightbox',
+  touchNavigation: false,
+  loop: false,
+  zoomable: false,            /* Disables inner-image zoom/pan dragging */
+  draggable: false,           /* Disables mouse dragging between slides */
+  dragToleranceX: 0,
+  dragToleranceY: 0,
+  openEffect: 'fade',
+  closeEffect: 'fade',
+  slideEffect: 'fade'
+});
   /* Mount the terminal chrome INSIDE each GLightbox image frame. */
   function mountLightboxTerminalChrome() {
     document.querySelectorAll('.glightbox-container .gslide').forEach((slide) => {
@@ -849,11 +850,11 @@
   glightbox.on('slide_after_load', (data) => {
     if (lightboxOrigin) growFromOrigin(data && data.slideNode);
   });
-  glightbox.on('open', () => {
-    lightboxClosing = false;
-    window.setTimeout(() => { lightboxOrigin = null; }, 900);
+glightbox.on('open', () => {
+  document.querySelectorAll('.glightbox-container img').forEach((img) => {
+    img.addEventListener('dragstart', (e) => e.preventDefault());
   });
-
+});
   /* Our own fade / shrink has already played, so GLightbox must not play its
      built-in close effect on top of it (that was the second fade). Swap the
      effect to 'none' for this one close() call, then restore it so Esc and
