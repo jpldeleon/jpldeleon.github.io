@@ -87,22 +87,21 @@
 
   /**
    * Initiate glightbox
+   * If the vendor script fails to load, fall back to a no-op stub so the rest of
+   * main.js (dock, terminals, themes...) keeps running instead of throwing here.
    */
-  /**
-   * Initiate glightbox
-   */
-const glightbox = GLightbox({
-  selector: '.glightbox',
-  touchNavigation: false,
-  loop: false,
-  zoomable: false,            /* Disables inner-image zoom/pan dragging */
-  draggable: false,           /* Disables mouse dragging between slides */
-  dragToleranceX: 0,
-  dragToleranceY: 0,
-  openEffect: 'fade',
-  closeEffect: 'fade',
-  slideEffect: 'fade'
-});
+  const glightbox = (typeof GLightbox === 'function') ? GLightbox({
+    selector: '.glightbox',
+    draggable: false,          // Disable mouse dragging
+    touchNavigation: false,    // Disable swipe/touch dragging
+    dragToleranceX: 0,
+    dragToleranceY: 0,
+    openEffect: 'fade',
+    closeEffect: 'fade',
+    slideEffect: 'fade'
+  }) : { on() {}, close() {}, settings: {} };
+  if (typeof GLightbox !== 'function') console.warn('GLightbox failed to load: lightbox disabled.');
+
   /* Mount the terminal chrome INSIDE each GLightbox image frame. */
   function mountLightboxTerminalChrome() {
     document.querySelectorAll('.glightbox-container .gslide').forEach((slide) => {
@@ -115,16 +114,6 @@ const glightbox = GLightbox({
       }
       description.classList.add('lightbox-terminal-mounted');
 
-      /* Handle Close button explicitly inside the terminal chrome */
-      const closeBtn = description.querySelector('[data-glightbox-close], .win-btn-close');
-      if (closeBtn && !closeBtn.dataset.boundClose) {
-        closeBtn.dataset.boundClose = '1';
-        closeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          glightbox.close();
-        });
-      }
     });
   }
 
@@ -850,11 +839,11 @@ const glightbox = GLightbox({
   glightbox.on('slide_after_load', (data) => {
     if (lightboxOrigin) growFromOrigin(data && data.slideNode);
   });
-glightbox.on('open', () => {
-  document.querySelectorAll('.glightbox-container img').forEach((img) => {
-    img.addEventListener('dragstart', (e) => e.preventDefault());
+  glightbox.on('open', () => {
+    lightboxClosing = false;
+    window.setTimeout(() => { lightboxOrigin = null; }, 900);
   });
-});
+
   /* Our own fade / shrink has already played, so GLightbox must not play its
      built-in close effect on top of it (that was the second fade). Swap the
      effect to 'none' for this one close() call, then restore it so Esc and
@@ -916,7 +905,7 @@ glightbox.on('open', () => {
       try { closeLightboxNoEffect(); } catch (err) { /* fall through to fallback */ }
       window.setTimeout(() => {
         const still = document.querySelector('.glightbox-container');
-        if (still) {
+        if (still && still === container) {
           const g = still.querySelector('.gclose');
           try { if (g) g.click(); else glightbox.close(); } catch (err) { /* ignore */ }
         }

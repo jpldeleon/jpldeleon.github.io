@@ -13,7 +13,8 @@
 
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>AuditKit - API Capstone Project</title>
+  <title>AuditKit - API Capstone Project
+  </title>
   <meta name="description"
     content="Technical SEO portfolio project showcasing WordPress optimization and structured data implementation">
   <meta name="keywords" content="technical seo, wordpress, schema markup, portfolio">
@@ -81,6 +82,8 @@
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
+
+
   <!-- Theme Controls -->
   <div class="theme-dots" role="group" aria-label="Switch color theme">
     <button type="button" class="theme-dot dot-everforest active" data-theme-choice="everforest"
@@ -124,6 +127,10 @@
             class="fa-solid fa-share-nodes"></i>Socials</button></li>
     </ul>
   </div>
+
+  </div>
+
+  </header>
 
   <main class="main">
 
@@ -171,10 +178,10 @@
             <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
               <h3>Project Information</h3>
               <ul>
-                <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong> Public API Capstone Project</li>
-                <li><strong>Focus:</strong> Technical SEO Auditing, HTML Scraping & Core Web Vitals</li>
-                <li><strong>Tech Stack:</strong> Node.js, Express, Axios, Cheerio, Google PageSpeed API</li>
+                <li><strong>Course:</strong>The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
+                <li><strong>Type:</strong>Public API Capstone Project</li>
+                <li><strong>Focus:</strong>Technical SEO Auditing, HTML Scraping & Core Web Vitals</li>
+                <li><strong>Tech Stack:</strong>Node.js, Express, Axios, Cheerio, Google PageSpeed API</li>
                 <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
                   <!-- Live Demo Button -->
                   <div style="display: flex; gap: 12px; margin-top: 15px;">
@@ -305,15 +312,23 @@
             </div>
           </div>
 
+
+
           <!-- Screenshot Gallery Carousel Section -->
+
+
           <section id="project-screenshots" class="portfolio section">
 
+            <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
               <h2>Gallery</h2>
               <p>A closer look at the screenshots behind this project.</p>
-            </div>
+            </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+              <!-- Horizontal Filters Header -->
+
 
               <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper-wrapper align-items-center">
@@ -469,28 +484,38 @@
 
             </div>
 
-            <!-- Shared lightbox chrome for every screenshot -->
+            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
             <div class="glightbox-desc desc-auditkit-shot" style="display:none;">
-              <div class="lightbox-window-panel">
-                <div class="lightbox-window-titlebar">
-                  <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
-                  <div class="lightbox-window-controls">
-                    <button aria-label="Close screenshot"
-                        class="win-btn win-btn-close gclose" data-glightbox-close="" title="Close screenshot"
-                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div class="lightbox-window-panel">
+    <div class="lightbox-window-titlebar">
+      <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
+      <div class="lightbox-window-controls">
+        <button aria-label="Close screenshot"
+            class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+            type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
 
-          </section>
+          </section><!-- /Portfolio Section -->
 
           <style>
+            /* Whole screenshot card opens the lightbox (same overlay link as the home page) */
             .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
             .screenshots-swiper .portfolio-image-link { inset: 0; }
-            .screenshots-swiper { padding: 10px 10px 50px; }
-            .screenshots-swiper .swiper-slide { height: auto; }
-            .screenshots-swiper .portfolio-wrap { height: 100%; }
+
+            .screenshots-swiper {
+              padding: 10px 10px 50px;
+            }
+
+            .screenshots-swiper .swiper-slide {
+              height: auto;
+            }
+
+            .screenshots-swiper .portfolio-wrap {
+              height: 100%;
+            }
 
             .screenshots-swiper .swiper-button-prev,
             .screenshots-swiper .swiper-button-next {
@@ -520,8 +545,17 @@
             }
 
             @media (max-width: 575px) {
-              .screenshots-swiper { padding: 10px 10px 80px; }
-              .screenshots-swiper .swiper-pagination { bottom: 38px; }
+
+              .screenshots-swiper {
+                padding: 10px 10px 80px;
+              }
+
+              /* Dots stay centered, higher up */
+              .screenshots-swiper .swiper-pagination {
+                bottom: 38px;
+              }
+
+              /* Arrows drop into their own centered row below the dots */
               .screenshots-swiper .swiper-button-prev,
               .screenshots-swiper .swiper-button-next {
                 top: auto;
@@ -531,29 +565,40 @@
                 width: 32px;
                 height: 32px;
               }
+
               .screenshots-swiper .swiper-button-prev:after,
-              .screenshots-swiper .swiper-button-next:after { font-size: 13px; }
-              .screenshots-swiper .swiper-button-prev { transform: translateX(calc(-100% - 8px)); }
-              .screenshots-swiper .swiper-button-next { transform: translateX(8px); }
+              .screenshots-swiper .swiper-button-next:after {
+                font-size: 13px;
+              }
+
+              .screenshots-swiper .swiper-button-prev {
+                transform: translateX(calc(-100% - 8px));
+              }
+
+              .screenshots-swiper .swiper-button-next {
+                transform: translateX(8px);
+              }
             }
           </style>
 
-        </div>
-      </div>
-    </section>
+
 
   </main>
 
   <footer id="footer" class="footer position-relative">
+
     <div class="container">
       <div class="copyright">
-        <p>©<strong class="px-1 sitename">2026 John Paul De Leon</strong> <span>All Rights Reserved</span></p>
+        <p>©<strong class="px-1 sitename">2026 John Paul De Leon</strong> <span>All Rights Reserved</span>
+        </p>
       </div>
       <div class="credits">
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
+
   </footer>
+
 
   <!-- CV Terminal Lightboxes -->
   <div class="terminal-overlay" id="terminal-certifications" role="dialog" aria-modal="true"
@@ -610,6 +655,7 @@
     </div>
   </div>
 
+
   <!-- Preloader -->
   <div id="preloader"></div>
 
@@ -648,6 +694,7 @@
         });
       }
 
+      // 2. Add Filter Logic
       const filterButtons = document.querySelectorAll('.portfolio-filters li');
       const slides = document.querySelectorAll('.screenshots-swiper .swiper-slide');
 
