@@ -63,6 +63,8 @@
     .glightbox-container .lightbox-window-controls .win-btn,
     .glightbox-container [data-glightbox-close] {
       position: relative; z-index: 11; pointer-events: auto !important; cursor: pointer;
+      /* GLightbox's .gclose rule gives top:15px/right:10px, which shifts a relative button; cancel it */
+      top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
     }
     /* Scrollbars follow the active theme */
     * {

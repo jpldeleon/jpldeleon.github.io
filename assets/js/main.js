@@ -114,6 +114,10 @@
       }
       description.classList.add('lightbox-terminal-mounted');
 
+      /* Our Close button must never carry GLightbox's own .gclose class: GLightbox's CSS gives
+         .gclose top:15px / right:10px (which shifts the button out of the title bar), and the
+         theme hides every .gclose with display:none. */
+      description.querySelectorAll('.gclose').forEach((el) => el.classList.remove('gclose'));
     });
   }
 
@@ -856,6 +860,17 @@
 
   glightbox.on('close', () => { lightboxClosing = false; });
 
+  function forceRemoveLightbox() {
+    document.querySelectorAll('.glightbox-container').forEach((el) => el.remove());
+    ['glightbox-open', 'glightbox-mobile', 'gscrollbar-fixer'].forEach((c) => {
+      document.body.classList.remove(c);
+      document.documentElement.classList.remove(c);
+    });
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    try { glightbox.closing = null; glightbox.lightboxOpen = false; glightbox.built = false; } catch (err) { /* ignore */ }
+  }
+
   /* Find the lightbox Close / Minimize command for a click. Uses the real target
      first, then falls back to the click position, so it still works if something
      is layered over the button or GLightbox's own handlers swallow the click. */
@@ -904,13 +919,18 @@
     const finish = () => {
       try { closeLightboxNoEffect(); } catch (err) { /* fall through to fallback */ }
       window.setTimeout(() => {
-        const still = document.querySelector('.glightbox-container');
-        if (still && still === container) {
-          const g = still.querySelector('.gclose');
-          try { if (g) g.click(); else glightbox.close(); } catch (err) { /* ignore */ }
+        if (document.querySelector('.glightbox-container')) {
+          /* 1st fallback: GLightbox's own close button (never our custom one, which is
+             swallowed by this very handler). */
+          const own = document.querySelector('.glightbox-container .gclose:not([data-glightbox-close])');
+          try { if (own) own.click(); else glightbox.close(); } catch (err) { /* ignore */ }
         }
-        lightboxClosing = false;
-      }, 450);
+        window.setTimeout(() => {
+          /* Last resort: never leave a dead, un-closable lightbox on screen. */
+          if (document.querySelector('.glightbox-container')) forceRemoveLightbox();
+          lightboxClosing = false;
+        }, 300);
+      }, 350);
     };
 
     if (minimizeBtn) {
