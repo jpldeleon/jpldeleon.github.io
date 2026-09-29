@@ -13,8 +13,7 @@
 
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>AuditKit - API Capstone Project
-  </title>
+  <title>AuditKit - API Capstone Project</title>
   <meta name="description"
     content="Technical SEO portfolio project showcasing WordPress optimization and structured data implementation">
   <meta name="keywords" content="technical seo, wordpress, schema markup, portfolio">
@@ -42,6 +41,11 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
   <style id="glightbox-overrides">
+    /* Hide GLightbox's native default close button */
+    .glightbox-container .gclose:not([data-glightbox-close]) {
+      display: none !important;
+    }
+
     /* No dimmed / blurred page behind the lightbox */
     .glightbox-container .goverlay,
     .glightbox-container {
@@ -54,8 +58,17 @@
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
-    /* Keep the lightbox above every window and ensure close controls receive clicks */
+    /* Keep the lightbox above every window */
     .glightbox-container { z-index: 2147483000 !important; }
+    
+    /* Disable image dragging and select within lightbox */
+    .glightbox-container .gslide-image img,
+    .glightbox-container .gslide-media {
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+      pointer-events: none !important;
+    }
+
     .glightbox-container .gslide-description.lightbox-terminal-mounted {
       position: relative; z-index: 10; pointer-events: auto !important;
     }
@@ -63,9 +76,9 @@
     .glightbox-container .lightbox-window-controls .win-btn,
     .glightbox-container [data-glightbox-close] {
       position: relative; z-index: 11; pointer-events: auto !important; cursor: pointer;
-      /* GLightbox's .gclose rule gives top:15px/right:10px, which shifts a relative button; cancel it */
       top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
     }
+
     /* Scrollbars follow the active theme */
     * {
       scrollbar-width: thin;
@@ -83,8 +96,6 @@
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
-
-
 
   <!-- Theme Controls -->
   <div class="theme-dots" role="group" aria-label="Switch color theme">
@@ -129,10 +140,6 @@
             class="fa-solid fa-share-nodes"></i>Socials</button></li>
     </ul>
   </div>
-
-  </div>
-
-  </header>
 
   <main class="main">
 
@@ -314,11 +321,7 @@
             </div>
           </div>
 
-
-
           <!-- Screenshot Gallery Carousel Section -->
-
-
           <section id="project-screenshots" class="portfolio section">
 
             <!-- Section Title -->
@@ -328,9 +331,6 @@
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-              <!-- Horizontal Filters Header -->
-
 
               <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper-wrapper align-items-center">
@@ -488,22 +488,22 @@
 
             <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
             <div class="glightbox-desc desc-auditkit-shot" style="display:none;">
-  <div class="lightbox-window-panel">
-    <div class="lightbox-window-titlebar">
-      <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
-      <div class="lightbox-window-controls">
-        <button aria-label="Close screenshot"
-            class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-            type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
-  </div>
-</div>
+              <div class="lightbox-window-panel">
+                <div class="lightbox-window-titlebar">
+                  <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
+                  <div class="lightbox-window-controls">
+                    <button aria-label="Close screenshot"
+                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </section><!-- /Portfolio Section -->
 
           <style>
-            /* Whole screenshot card opens the lightbox (same overlay link as the home page) */
+            /* Whole screenshot card opens the lightbox */
             .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
             .screenshots-swiper .portfolio-image-link { inset: 0; }
 
@@ -583,8 +583,6 @@
             }
           </style>
 
-
-
   </main>
 
   <footer id="footer" class="footer position-relative">
@@ -600,7 +598,6 @@
     </div>
 
   </footer>
-
 
   <!-- CV Terminal Lightboxes -->
   <div class="terminal-overlay" id="terminal-certifications" role="dialog" aria-modal="true"
@@ -656,7 +653,6 @@
       </div>
     </div>
   </div>
-
 
   <!-- Preloader -->
   <div id="preloader"></div>
