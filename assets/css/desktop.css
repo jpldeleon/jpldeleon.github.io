@@ -519,13 +519,52 @@
 }
 
 /*--------------------------------------------------------------
-# Profile photos: border + hover rings
-# Three separate rings with real gaps between them (transparent, so it
-# works on any background). Colours come from the theme variables, so
-# they follow the theme toggle. Crisp lines, no blur, no glow.
+# Profile photos: border + hover bands
+# Four flush bands (no gaps), 5px each, in the theme's palette.
+# Round photos (sidebar, About) get concentric rings.
+# The rectangular Resume photo gets stripes stacked under it.
+# Built with box-shadow, so it follows each photo's border-radius.
+# Order, nearest the photo first: 1 green, 2 teal, 3 orange, 4 red.
 --------------------------------------------------------------*/
 
-/* Photo 1 (sidebar): bring the border back */
+/* Band colours per theme (Everforest is the default, no data-theme) */
+:root {
+  --band-size: 5px;
+  --band-1: #a7c080;
+  --band-2: #7fbbb3;
+  --band-3: #e69875;
+  --band-4: #e67e80;
+}
+
+[data-theme="aurora"] {
+  --band-1: #a3be8c;
+  --band-2: #88c0d0;
+  --band-3: #d08770;
+  --band-4: #bf616a;
+}
+
+[data-theme="gruvbox"] {
+  --band-1: #689d6a;
+  --band-2: #458588;
+  --band-3: #d79921;
+  --band-4: #cc241d;
+}
+
+[data-theme="monokai"] {
+  --band-1: #a9dc76;
+  --band-2: #78dce8;
+  --band-3: #fc9867;
+  --band-4: #ff6188;
+}
+
+[data-theme="draculapro"] {
+  --band-1: #8aff80;
+  --band-2: #80ffea;
+  --band-3: #ffca80;
+  --band-4: #ff9580;
+}
+
+/* Photo 1 (sidebar): keep the border */
 .sidebar-avatar .profile-image {
   border: 4px solid var(--accent-highlight);
   box-shadow: none;
@@ -536,11 +575,9 @@
   border-radius: 50%;
 }
 
-/* Photo 2 (About): the ring host must not clip, so the round clip moves to the link */
+/* Photo 2 (About): bands are box-shadows on the host, so it must not clip */
 .about .profile-header .profile-image {
   overflow: visible;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  transition: none;
 }
 
 .about .profile-header .profile-image a {
@@ -549,113 +586,63 @@
   overflow: hidden;
 }
 
-/* Photo 3 (Resume): same idea, clip moves to the image */
+/* Photo 3 (Resume): the image keeps its own rounding */
 .resume .resume-side .profile-img a {
   overflow: visible;
-  box-shadow: none;
-  transition: none;
 }
 
 .resume .resume-side .profile-img a img {
   border-radius: 5px;
 }
 
-/* Ring host */
+/* Resting state: four zero-size bands (needed so the hover animates smoothly).
+   About keeps its soft drop shadow as a fifth layer. */
 .sidebar-avatar,
 .about .profile-header .profile-image,
 .resume .resume-side .profile-img a {
-  --ring-1: var(--accent-highlight);
-  --ring-2: var(--accent-color);
-  --ring-3: var(--quote-color, var(--accent-highlight));
-  --ring-r1: 50%;
-  --ring-r2: 50%;
-  --ring-b: 0px;
-  outline: 2px solid transparent;
-  outline-offset: 8px;
-  transition: outline-color 0.3s ease, outline-offset 0.35s cubic-bezier(.2, .8, .2, 1);
+  --shadow-extra: 0 0 0 0 transparent;
+  box-shadow:
+    0 0 0 0 var(--band-1),
+    0 0 0 0 var(--band-2),
+    0 0 0 0 var(--band-3),
+    0 0 0 0 var(--band-4),
+    var(--shadow-extra);
+  transition: box-shadow 0.35s cubic-bezier(.2, .8, .2, 1);
 }
 
-/* absolute pseudo-elements are offset from the padding box, so add the host border */
 .about .profile-header .profile-image {
-  --ring-b: 4px;
+  --shadow-extra: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.resume .resume-side .profile-img a {
-  --ring-r1: 18px;
-  --ring-r2: 26px;
-  --ring-b: 5px;
-}
-
-.sidebar-avatar::before,
-.sidebar-avatar::after,
-.about .profile-header .profile-image::before,
-.about .profile-header .profile-image::after,
-.resume .resume-side .profile-img a::before,
-.resume .resume-side .profile-img a::after {
-  content: "";
-  position: absolute;
-  z-index: 3;
-  pointer-events: none;
-  border: 2px solid transparent;
-  transition: inset 0.35s cubic-bezier(.2, .8, .2, 1), border-color 0.3s ease;
-}
-
-.sidebar-avatar::before,
-.about .profile-header .profile-image::before,
-.resume .resume-side .profile-img a::before {
-  inset: calc(-2px - var(--ring-b));
-  border-radius: var(--ring-r1);
-}
-
-.sidebar-avatar::after,
-.about .profile-header .profile-image::after,
-.resume .resume-side .profile-img a::after {
-  inset: calc(-4px - var(--ring-b));
-  border-radius: var(--ring-r2);
-}
-
-/* Hover: ring 1 at 6-8px, ring 2 at 14-16px, ring 3 at 22-24px (8px gaps) */
+/* Hover / keyboard focus: concentric rings on the round photos */
 .sidebar-avatar:hover,
 .sidebar-avatar:focus-within,
 .about .profile-header .profile-image:hover,
-.about .profile-header .profile-image:focus-within,
+.about .profile-header .profile-image:focus-within {
+  box-shadow:
+    0 0 0 calc(var(--band-size) * 1) var(--band-1),
+    0 0 0 calc(var(--band-size) * 2) var(--band-2),
+    0 0 0 calc(var(--band-size) * 3) var(--band-3),
+    0 0 0 calc(var(--band-size) * 4) var(--band-4),
+    var(--shadow-extra);
+}
+
+/* Hover / keyboard focus: flat stripes stacked under the rectangular photo */
 .resume .resume-side .profile-img a:hover,
 .resume .resume-side .profile-img a:focus-visible {
-  outline-color: var(--ring-3);
-  outline-offset: 22px;
-}
-
-.sidebar-avatar:hover::before,
-.sidebar-avatar:focus-within::before,
-.about .profile-header .profile-image:hover::before,
-.about .profile-header .profile-image:focus-within::before,
-.resume .resume-side .profile-img a:hover::before,
-.resume .resume-side .profile-img a:focus-visible::before {
-  inset: calc(-8px - var(--ring-b));
-  border-color: var(--ring-1);
-}
-
-.sidebar-avatar:hover::after,
-.sidebar-avatar:focus-within::after,
-.about .profile-header .profile-image:hover::after,
-.about .profile-header .profile-image:focus-within::after,
-.resume .resume-side .profile-img a:hover::after,
-.resume .resume-side .profile-img a:focus-visible::after {
-  inset: calc(-16px - var(--ring-b));
-  border-color: var(--ring-2);
+  box-shadow:
+    0 calc(var(--band-size) * 1) 0 0 var(--band-1),
+    0 calc(var(--band-size) * 2) 0 0 var(--band-2),
+    0 calc(var(--band-size) * 3) 0 0 var(--band-3),
+    0 calc(var(--band-size) * 4) 0 0 var(--band-4),
+    var(--shadow-extra);
 }
 
 @media (prefers-reduced-motion: reduce) {
 
   .sidebar-avatar,
   .about .profile-header .profile-image,
-  .resume .resume-side .profile-img a,
-  .sidebar-avatar::before,
-  .sidebar-avatar::after,
-  .about .profile-header .profile-image::before,
-  .about .profile-header .profile-image::after,
-  .resume .resume-side .profile-img a::before,
-  .resume .resume-side .profile-img a::after {
+  .resume .resume-side .profile-img a {
     transition: none;
   }
 }
