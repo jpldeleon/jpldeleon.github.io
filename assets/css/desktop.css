@@ -365,7 +365,7 @@
   body.index-page main.main {
     height: 100vh;
     height: 100dvh;
-    padding: var(--panel-h) 0 96px;
+    padding: calc(var(--panel-h) + 24px) 0 96px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -461,7 +461,7 @@
 # Sidebar profile photo: bigger than the About and Resume photos
 --------------------------------------------------------------*/
 .hero-sidebar {
-  padding-top: 26px;
+  padding-top: 32px;
 }
 
 .sidebar-avatar {
@@ -474,7 +474,6 @@
 .sidebar-avatar .profile-image {
   width: 100%;
   height: 100%;
-  border-width: 3px;
 }
 
 /*--------------------------------------------------------------
@@ -520,45 +519,143 @@
 }
 
 /*--------------------------------------------------------------
-# Profile photo hover: three crisp rings in the theme colours
-# (no blur, so it is not a glow). Rings grow out from the photo.
+# Profile photos: border + hover rings
+# Three separate rings with real gaps between them (transparent, so it
+# works on any background). Colours come from the theme variables, so
+# they follow the theme toggle. Crisp lines, no blur, no glow.
 --------------------------------------------------------------*/
-.sidebar-avatar .profile-image,
+
+/* Photo 1 (sidebar): bring the border back */
+.sidebar-avatar .profile-image {
+  border: 4px solid var(--accent-highlight);
+  box-shadow: none;
+  transition: none;
+}
+
+.sidebar-avatar {
+  border-radius: 50%;
+}
+
+/* Photo 2 (About): the ring host must not clip, so the round clip moves to the link */
+.about .profile-header .profile-image {
+  overflow: visible;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: none;
+}
+
+.about .profile-header .profile-image a {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* Photo 3 (Resume): same idea, clip moves to the image */
+.resume .resume-side .profile-img a {
+  overflow: visible;
+  box-shadow: none;
+  transition: none;
+}
+
+.resume .resume-side .profile-img a img {
+  border-radius: 5px;
+}
+
+/* Ring host */
+.sidebar-avatar,
 .about .profile-header .profile-image,
 .resume .resume-side .profile-img a {
-  --ring-gap: var(--background-color);
   --ring-1: var(--accent-highlight);
   --ring-2: var(--accent-color);
   --ring-3: var(--quote-color, var(--accent-highlight));
-  box-shadow:
-    0 0 0 0 var(--ring-gap), 0 0 0 0 var(--ring-1),
-    0 0 0 0 var(--ring-gap), 0 0 0 0 var(--ring-2),
-    0 0 0 0 var(--ring-gap), 0 0 0 0 var(--ring-3);
-  transition: box-shadow 0.35s cubic-bezier(.2, .8, .2, 1);
+  --ring-r1: 50%;
+  --ring-r2: 50%;
+  --ring-b: 0px;
+  outline: 2px solid transparent;
+  outline-offset: 8px;
+  transition: outline-color 0.3s ease, outline-offset 0.35s cubic-bezier(.2, .8, .2, 1);
 }
 
-.about .profile-header .profile-image,
+/* absolute pseudo-elements are offset from the padding box, so add the host border */
+.about .profile-header .profile-image {
+  --ring-b: 4px;
+}
+
 .resume .resume-side .profile-img a {
-  --ring-gap: var(--surface-color);
+  --ring-r1: 18px;
+  --ring-r2: 26px;
+  --ring-b: 5px;
 }
 
-.sidebar-avatar .profile-image:hover,
-.sidebar-avatar .profile-image:focus-within,
+.sidebar-avatar::before,
+.sidebar-avatar::after,
+.about .profile-header .profile-image::before,
+.about .profile-header .profile-image::after,
+.resume .resume-side .profile-img a::before,
+.resume .resume-side .profile-img a::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  border: 2px solid transparent;
+  transition: inset 0.35s cubic-bezier(.2, .8, .2, 1), border-color 0.3s ease;
+}
+
+.sidebar-avatar::before,
+.about .profile-header .profile-image::before,
+.resume .resume-side .profile-img a::before {
+  inset: calc(-2px - var(--ring-b));
+  border-radius: var(--ring-r1);
+}
+
+.sidebar-avatar::after,
+.about .profile-header .profile-image::after,
+.resume .resume-side .profile-img a::after {
+  inset: calc(-4px - var(--ring-b));
+  border-radius: var(--ring-r2);
+}
+
+/* Hover: ring 1 at 6-8px, ring 2 at 14-16px, ring 3 at 22-24px (8px gaps) */
+.sidebar-avatar:hover,
+.sidebar-avatar:focus-within,
 .about .profile-header .profile-image:hover,
 .about .profile-header .profile-image:focus-within,
 .resume .resume-side .profile-img a:hover,
 .resume .resume-side .profile-img a:focus-visible {
-  box-shadow:
-    0 0 0 4px var(--ring-gap), 0 0 0 6px var(--ring-1),
-    0 0 0 10px var(--ring-gap), 0 0 0 12px var(--ring-2),
-    0 0 0 16px var(--ring-gap), 0 0 0 18px var(--ring-3);
+  outline-color: var(--ring-3);
+  outline-offset: 22px;
+}
+
+.sidebar-avatar:hover::before,
+.sidebar-avatar:focus-within::before,
+.about .profile-header .profile-image:hover::before,
+.about .profile-header .profile-image:focus-within::before,
+.resume .resume-side .profile-img a:hover::before,
+.resume .resume-side .profile-img a:focus-visible::before {
+  inset: calc(-8px - var(--ring-b));
+  border-color: var(--ring-1);
+}
+
+.sidebar-avatar:hover::after,
+.sidebar-avatar:focus-within::after,
+.about .profile-header .profile-image:hover::after,
+.about .profile-header .profile-image:focus-within::after,
+.resume .resume-side .profile-img a:hover::after,
+.resume .resume-side .profile-img a:focus-visible::after {
+  inset: calc(-16px - var(--ring-b));
+  border-color: var(--ring-2);
 }
 
 @media (prefers-reduced-motion: reduce) {
 
-  .sidebar-avatar .profile-image,
+  .sidebar-avatar,
   .about .profile-header .profile-image,
-  .resume .resume-side .profile-img a {
+  .resume .resume-side .profile-img a,
+  .sidebar-avatar::before,
+  .sidebar-avatar::after,
+  .about .profile-header .profile-image::before,
+  .about .profile-header .profile-image::after,
+  .resume .resume-side .profile-img a::before,
+  .resume .resume-side .profile-img a::after {
     transition: none;
   }
 }

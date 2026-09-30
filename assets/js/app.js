@@ -813,10 +813,12 @@
      screen is too short, so it always sits between the top panel and the dock. */
   function fitHome() {
     const about = document.getElementById('about');
-    if (!about || !about.closest('main')) return;
+    const main = about && about.closest('main');
+    if (!main) return;
     about.style.zoom = '';
     if (window.innerWidth < 992) return;
-    const avail = window.innerHeight - topSpace() - dockSpace() - 8;
+    const cs = getComputedStyle(main);
+    const avail = main.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
     const natural = about.getBoundingClientRect().height;
     if (natural > avail && avail > 0) about.style.zoom = String(Math.max(0.55, avail / natural));
   }
