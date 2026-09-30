@@ -53,6 +53,8 @@
   <link href="assets/css/main.css" rel="stylesheet" />
   <!-- Window manager CSS (must load after main.css) -->
   <link href="assets/css/app.css" rel="stylesheet" />
+  <!-- Desktop shell: top panel, sidebar widget, locked home page (must load last) -->
+  <link href="assets/css/desktop.css" rel="stylesheet" />
 </head>
 
 <body class="index-page">
@@ -61,22 +63,68 @@
   <!-- Scroll Top -->
   <a class="scroll-top d-flex align-items-center justify-content-center" href="#" id="scroll-top"><i
       class="fa-brands fa-arch-linux"></i></a>
-  <!-- Theme Controls -->
-  <div class="theme-controls">
-    <div aria-atomic="true" aria-live="polite" class="theme-notice" id="themeNotice"></div>
-    <div aria-label="Switch color theme" class="theme-dots" role="group">
-      <button aria-label="Everforest theme" class="theme-dot dot-everforest active" data-theme-choice="everforest"
-        title="Everforest theme" type="button"></button>
-      <button aria-label="Aurora theme" class="theme-dot dot-aurora" data-theme-choice="aurora" title="Aurora theme"
-        type="button"></button>
-      <button aria-label="Gruvbox theme" class="theme-dot dot-gruvbox" data-theme-choice="gruvbox" title="Gruvbox theme"
-        type="button"></button>
-      <button aria-label="Monokai Pro theme" class="theme-dot dot-monokai" data-theme-choice="monokai"
-        title="Monokai Pro theme" type="button"></button>
-      <button aria-label="Dracula Pro theme" class="theme-dot dot-draculapro" data-theme-choice="draculapro"
-        title="Dracula Pro theme" type="button"></button>
+  <!-- Top Panel -->
+  <header class="top-panel" id="top-panel">
+    <div class="panel-left">
+      <div class="panel-menu">
+        <button aria-controls="panel-work-menu" aria-expanded="false" aria-haspopup="true" class="panel-btn"
+          id="panel-work-btn" type="button"><i class="fa-solid fa-folder-open"></i><span class="panel-btn-label">My Work</span><i
+            class="fa-solid fa-chevron-down panel-caret"></i></button>
+        <ul class="panel-dropdown" hidden id="panel-work-menu" role="menu">
+          <li><button data-app="project:auditkit" role="menuitem" type="button"><i
+                class="fa-solid fa-magnifying-glass-chart"></i>AuditKit</button></li>
+          <li><button data-app="project:nothingtechblob" role="menuitem" type="button"><i
+                class="fa-solid fa-blog"></i>NothingTechBlob</button></li>
+          <li><button data-app="project:badlands-ink" role="menuitem" type="button"><i
+                class="fa-solid fa-pen-nib"></i>Badlands Ink</button></li>
+          <li><button data-app="project:johnoffthewall" role="menuitem" type="button"><i
+                class="fa-solid fa-code"></i>John Off the Wall</button></li>
+          <li><button data-app="project:pixellog" role="menuitem" type="button"><i
+                class="fa-solid fa-images"></i>PixelLog</button></li>
+          <li><button data-app="project:jamporudex" role="menuitem" type="button"><i
+                class="fa-solid fa-book-open"></i>JamporuDEX</button></li>
+          <li><button data-app="project:route196" role="menuitem" type="button"><i
+                class="fa-solid fa-route"></i>Route 196</button></li>
+        </ul>
+      </div>
     </div>
-  </div>
+    <div class="panel-center"><span id="panel-title">Desktop</span></div>
+    <div class="panel-right">
+      <nav aria-label="Connect" class="panel-connect">
+        <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
+          title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a aria-label="GitHub" href="https://github.com/jpldeleon" rel="noopener" target="_blank"
+          title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a aria-label="Upwork" href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener"
+          target="_blank" title="Upwork"><i class="fa-brands fa-upwork"></i></a>
+        <a aria-label="GoLance" href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener"
+          target="_blank" title="GoLance"><i class="fa-solid fa-laptop-code"></i></a>
+      </nav>
+      <span aria-hidden="true" class="panel-sep"></span>
+      <div class="panel-menu">
+        <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true" aria-label="Switch color theme"
+          class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme" type="button"><i
+            class="fa-solid fa-palette"></i></button>
+        <div class="panel-popover" hidden id="panel-theme-pop">
+          <div class="panel-popover-label">Theme</div>
+          <div aria-label="Switch color theme" class="theme-dots" role="group">
+            <button aria-label="Everforest theme" class="theme-dot dot-everforest active" data-theme-choice="everforest"
+              title="Everforest theme" type="button"></button>
+            <button aria-label="Aurora theme" class="theme-dot dot-aurora" data-theme-choice="aurora"
+              title="Aurora theme" type="button"></button>
+            <button aria-label="Gruvbox theme" class="theme-dot dot-gruvbox" data-theme-choice="gruvbox"
+              title="Gruvbox theme" type="button"></button>
+            <button aria-label="Monokai Pro theme" class="theme-dot dot-monokai" data-theme-choice="monokai"
+              title="Monokai Pro theme" type="button"></button>
+            <button aria-label="Dracula Pro theme" class="theme-dot dot-draculapro" data-theme-choice="draculapro"
+              title="Dracula Pro theme" type="button"></button>
+          </div>
+        </div>
+      </div>
+      <time class="panel-clock" id="panel-clock"></time>
+    </div>
+  </header>
+  <div aria-atomic="true" aria-live="polite" class="panel-notice" id="themeNotice"></div>
   <!-- Linux-style Floating Dock -->
   <nav aria-label="Desktop dock" class="linux-dock">
     <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" class="dock-item dock-menu"
@@ -101,6 +149,8 @@
             class="fa-solid fa-diagram-project"></i>Projects</button></li>
       <li><button data-terminal="socials" role="menuitem" type="button"><i
             class="fa-solid fa-share-nodes"></i>Socials</button></li>
+      <li><button data-app="skills" role="menuitem" type="button"><i
+            class="fa-solid fa-microchip"></i>Skills</button></li>
     </ul>
   </div>
   <!-- Hero Sidebar -->
@@ -123,17 +173,15 @@
         </div>
       </div>
       <div class="sidebar-contact contact-block">
-        <button class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
+        <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email" title="Copy email"
           data-copy-value="jpleonard.deleon@gmail.com" type="button">
           <span aria-hidden="true" class="contact-smoke"><span></span><span></span><span></span></span>
           <i class="fa-solid fa-envelope"></i>
-          <span>Email</span>
         </button>
-        <button class="sidebar-contact-item js-copy-trigger" data-copy-type="phone" data-copy-value="+639760109942"
+        <button aria-label="Copy phone number" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone" title="Copy phone number" data-copy-value="+639760109942"
           type="button">
           <span aria-hidden="true" class="contact-smoke"><span></span><span></span><span></span></span>
           <i class="fa-solid fa-phone"></i>
-          <span>Phone</span>
         </button>
         <!-- Copy Toast (Email / Phone) -->
         <div class="copy-toast-container">
@@ -146,25 +194,26 @@
           </div>
         </div>
       </div>
-      <div class="sidebar-social">
-        <span class="sidebar-social-label">Connect</span>
-        <div class="social-links">
-          <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" target="_blank" title="LinkedIn"></a>
-          <a aria-label="GitHub" href="https://github.com/jpldeleon" target="_blank" title="GitHub"></a>
-          <a aria-label="Upwork" href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank"
-            title="Upwork"></a>
-          <a aria-label="GoLance" href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank"
-            title="GoLance"></a>
+      <div aria-label="Career stats" class="sidebar-stats">
+        <div class="sidebar-stat">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="5" data-purecounter-start="0"></span>
+          <p>Years in Link Prospecting &amp; Research</p>
         </div>
-      </div>
-      <div class="sidebar-projects">
-        <span class="sidebar-projects-label">My Work</span>
-        <div class="project-links">
-          <a aria-label="AuditKit" href="auditkit/" target="_blank" title="AuditKit"></a>
-          <a aria-label="JamporuDEX" href="jamporudex/" target="_blank" title="JamporuDEX"></a>
-          <a aria-label="John Off the Wall" href="johnoffthewall/" target="_blank" title="John Off the Wall"></a>
-          <a aria-label="PixelLog" href="pixellog/" target="_blank" title="PixelLog"></a>
-          <a aria-label="Route 196" href="route196/" target="_blank" title="Route 196"></a>
+        <div class="sidebar-stat">
+          <i class="fa-solid fa-briefcase"></i>
+          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="12" data-purecounter-start="0"></span>
+          <p>Years Professional</p>
+        </div>
+        <div class="sidebar-stat">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="7" data-purecounter-start="0"></span>
+          <p>Experimental Projects</p>
+        </div>
+        <div class="sidebar-stat">
+          <i class="fa-solid fa-rocket"></i>
+          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="31" data-purecounter-start="0"></span>
+          <p>Projects handled</p>
         </div>
       </div>
     </div>
@@ -264,50 +313,7 @@
         </div>
       </div>
     </section><!-- /About Section -->
-    <!-- Stats Section -->
-    <section class="stats section light-background" id="stats">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row justify-content-center">
-          <div class="col-lg-10">
-            <div class="stats-wrapper">
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="150">
-                <div class="icon-wrapper">
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </div>
-                <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="5"
-                  data-purecounter-start="0"></span>
-                <p>Years in Link Prospecting &amp; Research</p>
-              </div><!-- End Stats Item -->
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="200">
-                <div class="icon-wrapper">
-                  <i class="fa-solid fa-briefcase"></i>
-                </div>
-                <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="12"
-                  data-purecounter-start="0"></span>
-                <p>Years Professional</p>
-              </div><!-- End Stats Item -->
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="250">
-                <div class="icon-wrapper">
-                  <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="7"
-                  data-purecounter-start="0"></span>
-                <p>Experimental Projects</p>
-              </div><!-- End Stats Item -->
-              <div class="stats-item" data-aos="zoom-in" data-aos-delay="250">
-                <div class="icon-wrapper">
-                  <i class="fa-solid fa-rocket"></i>
-                </div>
-                <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="31"
-                  data-purecounter-start="0"></span>
-                <p>Projects handled</p>
-              </div><!-- End Stats Item -->
-              <!-- End Stats Item -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </section><!-- /Stats Section -->
+    
     <!-- Skills Section -->
     <section class="skills section" id="skills">
       <!-- Section Title -->

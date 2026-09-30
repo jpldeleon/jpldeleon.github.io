@@ -1,0 +1,525 @@
+/*--------------------------------------------------------------
+# Desktop shell
+# Load AFTER main.css and app.css.
+# Top panel, compact sidebar, stats widget, toast position and
+# the locked (non-scrolling) home page.
+--------------------------------------------------------------*/
+:root {
+  --panel-h: 34px;
+}
+
+/*--------------------------------------------------------------
+# Top panel
+--------------------------------------------------------------*/
+.top-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--panel-h);
+  z-index: 5000;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 8px;
+  background: color-mix(in srgb, var(--surface-color), transparent 12%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 75%);
+  color: var(--default-color);
+  font-family: var(--nav-font);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.panel-left,
+.panel-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.panel-right {
+  justify-content: flex-end;
+}
+
+.panel-center {
+  max-width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 500;
+  color: var(--heading-color);
+}
+
+.panel-menu {
+  position: relative;
+}
+
+.panel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--default-color);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.panel-btn i {
+  color: var(--accent-color);
+  font-size: 13px;
+}
+
+.panel-btn:hover,
+.panel-btn:focus-visible,
+.panel-btn[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+}
+
+.panel-btn .panel-caret {
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+.panel-btn-icon {
+  width: 30px;
+  padding: 0;
+  justify-content: center;
+}
+
+.panel-dropdown,
+.panel-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  z-index: 5001;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: color-mix(in srgb, var(--surface-color), transparent 6%);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 65%);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.panel-dropdown[hidden],
+.panel-popover[hidden] {
+  display: none;
+}
+
+.panel-dropdown {
+  left: 0;
+  min-width: 220px;
+}
+
+.panel-popover {
+  right: 0;
+  padding: 10px 14px 12px;
+}
+
+.panel-popover-label {
+  margin-bottom: 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.panel-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--default-color);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.panel-dropdown button i {
+  width: 16px;
+  text-align: center;
+  color: var(--accent-color);
+}
+
+.panel-dropdown button:hover,
+.panel-dropdown button:focus-visible {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+  outline: none;
+}
+
+/* Theme dots live inside the popover now */
+.panel-popover .theme-dots {
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  gap: 12px;
+  padding: 0;
+  background: none;
+  border: 0;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.panel-popover .theme-dot {
+  width: 22px;
+  height: 22px;
+}
+
+/* Connect icons */
+.panel-connect {
+  display: flex;
+  gap: 2px;
+}
+
+.panel-connect a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  border-radius: 8px;
+  color: var(--default-color);
+  font-size: 14px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.panel-connect a:hover,
+.panel-connect a:focus-visible {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+}
+
+.panel-sep {
+  width: 1px;
+  height: 16px;
+  margin: 0 4px;
+  background: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+.panel-clock {
+  padding: 0 8px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* "Theme: Gruvbox" typed notice, tucked under the panel */
+.panel-notice {
+  position: fixed;
+  top: calc(var(--panel-h) + 8px);
+  right: 12px;
+  z-index: 5001;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #1e1e2e;
+  color: var(--accent-highlight);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+
+.panel-notice:empty {
+  display: none;
+}
+
+/*--------------------------------------------------------------
+# Sidebar: smaller avatar, icon-only contact buttons, stats widget
+--------------------------------------------------------------*/
+.hero-sidebar {
+  top: var(--panel-h);
+  height: calc(100vh - var(--panel-h));
+  height: calc(100dvh - var(--panel-h));
+  padding: 16px 28px;
+}
+
+.hero-sidebar-inner {
+  gap: 14px;
+}
+
+.sidebar-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 4px;
+}
+
+.sidebar-avatar .profile-image {
+  width: 128px;
+  height: 128px;
+  border-width: 3px;
+}
+
+.profile-smoke-avatar {
+  width: 110px;
+  height: 110px;
+  --smoke-spread: 44px;
+  --smoke-rise: 100px;
+}
+
+.hero-sidebar h1 {
+  font-size: 30px;
+}
+
+/* Email + phone: side by side, icon only */
+.hero-sidebar .sidebar-contact {
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.hero-sidebar .sidebar-contact-item {
+  width: 48px;
+  height: 48px;
+  max-width: none;
+  padding: 0;
+  border-radius: 12px;
+}
+
+.hero-sidebar .sidebar-contact-item i {
+  font-size: 18px;
+}
+
+.hero-sidebar .contact-smoke {
+  left: 50%;
+}
+
+/* Stats widget */
+.hero-sidebar .sidebar-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.hero-sidebar .sidebar-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 10px 8px;
+  text-align: center;
+  background-color: color-mix(in srgb, var(--surface-color), var(--background-color) 50%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 12px;
+}
+
+.hero-sidebar .sidebar-stat i {
+  color: var(--accent-color);
+  font-size: 14px;
+}
+
+.hero-sidebar .sidebar-stat .purecounter {
+  display: block;
+  color: var(--heading-color);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero-sidebar .sidebar-stat p {
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color), transparent 25%);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+@media (max-height: 720px) {
+  .sidebar-avatar {
+    width: 96px;
+    height: 96px;
+  }
+
+  .sidebar-avatar .profile-image {
+    width: 104px;
+    height: 104px;
+  }
+
+  .profile-smoke-avatar {
+    width: 90px;
+    height: 90px;
+  }
+
+  .hero-sidebar-inner {
+    gap: 10px;
+  }
+
+  .hero-sidebar h1 {
+    font-size: 26px;
+  }
+
+  .hero-sidebar .sidebar-stat {
+    padding: 7px 6px;
+  }
+
+  .hero-sidebar .sidebar-stat .purecounter {
+    font-size: 22px;
+  }
+
+  .hero-sidebar .sidebar-stat p {
+    font-size: 10px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Copy toast: top centre, just under the panel
+--------------------------------------------------------------*/
+.copy-toast-container {
+  position: fixed;
+  top: calc(var(--panel-h) + 12px);
+  left: 50%;
+  right: auto;
+  width: auto;
+  margin: 0;
+  transform: translateX(-50%);
+  z-index: 5002;
+  pointer-events: none;
+}
+
+.copy-toast-container .copy-toast {
+  pointer-events: auto;
+}
+
+/*--------------------------------------------------------------
+# Skills launcher colour in the dock
+--------------------------------------------------------------*/
+.linux-dock .dock-skills i {
+  color: var(--accent-color);
+}
+
+/*--------------------------------------------------------------
+# Locked home page (desktop): no page scroll, content is windows
+--------------------------------------------------------------*/
+@media (min-width: 992px) {
+
+  html,
+  body.index-page {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body.index-page #footer,
+  body.index-page .scroll-top {
+    display: none !important;
+  }
+
+  body.index-page main.main {
+    height: 100vh;
+    height: 100dvh;
+    padding: var(--panel-h) 0 96px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  body.index-page main.main>section {
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Short laptop screens: shrink About a little so it still fits without scrolling */
+@media (min-width: 992px) and (max-height: 820px) {
+  body.index-page main.main .about {
+    zoom: 0.88;
+  }
+}
+
+@media (min-width: 992px) and (max-height: 720px) {
+  body.index-page main.main .about {
+    zoom: 0.76;
+  }
+}
+
+/*--------------------------------------------------------------
+# Small screens: the page scrolls normally, panel gets compact
+--------------------------------------------------------------*/
+@media (max-width: 991px) {
+  body.index-page {
+    padding-top: var(--panel-h);
+  }
+
+  .hero-sidebar {
+    top: auto;
+    height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel-center {
+    display: none;
+  }
+
+  .panel-btn-label,
+  .panel-caret {
+    display: none;
+  }
+
+  .panel-left .panel-btn {
+    width: 30px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .top-panel {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .panel-clock {
+    display: none;
+  }
+}
+
+/*--------------------------------------------------------------
+# Compatibility with app.css (window manager)
+--------------------------------------------------------------*/
+
+/* app.css hides every .theme-dots on mobile while a window is open.
+   The dots now live in the top panel popover, so keep them usable there. */
+@media (max-width: 768px) {
+  body.wm-has-window .panel-popover .theme-dots {
+    display: flex;
+  }
+}
+
+/* Skills window: columns follow the window's width, not the browser's.
+   (main.css forces 2 columns between 768px and 1023px of VIEWPORT width.) */
+.wm-body .skills-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: clamp(14px, 2.4cqw, 26px);
+  margin-top: clamp(16px, 3cqw, 32px);
+}
+
+.wm-body .skills-specialization {
+  padding: clamp(16px, 2.6cqw, 26px);
+}
+
+.wm-body .skills-specialization:last-child {
+  grid-column: auto;
+  width: auto;
+  margin: 0;
+}
+
+/* Cards shouldn't jump inside a scrolling window */
+.wm-body .skills-specialization:hover {
+  transform: none;
+}

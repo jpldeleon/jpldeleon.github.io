@@ -18,6 +18,10 @@
       title: 'Resume', icon: 'fa-solid fa-timeline', dockClass: 'dock-resume',
       adopt: '#resume', size: [980, 700]
     },
+    skills: {
+      title: 'Skills', icon: 'fa-solid fa-microchip', dockClass: 'dock-skills',
+      adopt: '#skills', size: [960, 620]
+    },
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
       adopt: '#portfolio', size: [1040, 720]
@@ -44,45 +48,13 @@
       icon: 'fa-solid fa-route', url: 'route196/' }
   ];
 
-  /* Injected into every project iframe so the project pages need NO edits.
-     Hides theme dots / breadcrumbs / footer / menu / home link (the homepage
-     already owns those), and turns the page's own dock into a floating dock
-     on the left. */
+  /* Injected into every project iframe so the project pages need NO edits:
+     hides the page's own dock / theme dots / breadcrumbs / footer. */
   const EMBED_CSS = `
-    .theme-dots,.app-menu,.terminal-overlay,.scroll-top,
-    .breadcrumbs,.page-title,#footer,footer,#preloader,
-    .linux-dock #dock-menu-btn,.linux-dock .dock-about{display:none!important}
+    .linux-dock,.theme-dots,.app-menu,.terminal-overlay,.scroll-top,
+    .breadcrumbs,.page-title,#footer,footer,#preloader{display:none!important}
     main,#footer{padding-bottom:0!important}
-    html{scroll-behavior:auto}
-
-    /* floating dock, left side, vertically centred */
-    html.wm-embedded body{padding-left:84px}
-    html.wm-embedded body .linux-dock{
-      position:fixed!important;left:14px!important;right:auto!important;
-      top:50%!important;bottom:auto!important;
-      transform:translateY(-50%)!important;
-      width:auto!important;max-width:none!important;max-height:calc(100% - 24px);
-      flex-direction:column;align-items:center;gap:16px;padding:12px 8px;
-      border-radius:16px;overflow:visible}
-    html.wm-embedded body .linux-dock .dock-item{width:40px;height:40px}
-    /* active marker sits on the left edge instead of under the icon */
-    html.wm-embedded body .linux-dock .dock-item::after{
-      left:-6px;bottom:auto;top:50%;width:3px;height:16px;border-radius:3px;
-      transform:translateY(-50%) scaleY(0)}
-    html.wm-embedded body .linux-dock .dock-item.active::after{
-      transform:translateY(-50%) scaleY(1)}
-    /* tooltips pop out to the right */
-    html.wm-embedded body .linux-dock .dock-item .dock-tooltip{
-      bottom:auto;top:50%;left:calc(100% + 14px);
-      transform:translateY(-50%) translateX(-4px)}
-    html.wm-embedded body .linux-dock .dock-item:hover .dock-tooltip,
-    html.wm-embedded body .linux-dock .dock-item:focus-visible .dock-tooltip{
-      transform:translateY(-50%) translateX(0)}
-    @media (max-width:576px){
-      html.wm-embedded body{padding-left:62px}
-      html.wm-embedded body .linux-dock{left:6px!important;gap:12px;padding:10px 6px}
-      html.wm-embedded body .linux-dock .dock-item{width:36px;height:36px}
-    }`;
+    html{scroll-behavior:auto}`;
 
   /* =====================================================================
    * 2. HELPERS
@@ -154,7 +126,7 @@
     const menuBtn = dock.querySelector('#dock-menu-btn');
     Array.from(dock.children).forEach(c => { if (c !== menuBtn) c.remove(); });
 
-    ['resume', 'portfolio'].forEach(id => {
+    ['resume', 'skills', 'portfolio'].forEach(id => {
       const b = makeDockBtn(defs.get(id));
       dockBtns.set(id, b);
       dock.appendChild(b);
@@ -173,6 +145,8 @@
       btn.setAttribute('aria-pressed', String(!!w && w === focused));
     });
     dockDivider.hidden = dockApps.children.length === 0;
+    const pt = document.getElementById('panel-title');
+    if (pt) pt.textContent = (focused && focused.state !== 'min') ? focused.def.title : 'Desktop';
     const anyVisible = Array.from(wins.values()).some(w => w.state !== 'min');
     document.body.classList.toggle('wm-has-window', anyVisible);
   }
@@ -184,13 +158,19 @@
     return Math.max(72, window.innerHeight - r.top + 12);
   }
 
+  /* Height of the top panel: windows must never slide under it */
+  function topSpace() {
+    const p = document.getElementById('top-panel');
+    return p ? p.offsetHeight : 0;
+  }
+
   /* =====================================================================
    * 4. GEOMETRY
    * ===================================================================== */
   function targetRect(w) {
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace();
-    if (isMobile()) return { x: 6, y: 6, w: vw - 12, h: vh - ds - 6 };
-    if (w.state === 'max') return { x: 0, y: 0, w: vw, h: vh - ds };
+    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    if (isMobile()) return { x: 6, y: ts + 6, w: vw - 12, h: vh - ds - ts - 6 };
+    if (w.state === 'max') return { x: 0, y: ts, w: vw, h: vh - ds - ts };
     return w.rect;
   }
 
@@ -202,15 +182,15 @@
   }
 
   function initialRect(def) {
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
     const w = Math.min(def.size[0], vw - 40);
-    const h = Math.min(def.size[1], vh - ds - 20);
+    const h = Math.min(def.size[1], vh - ds - ts - 20);
     const sidebar = vw >= 992 ? 380 : 0;  // centre in the area beside the sidebar
     const off = (cascade++ % 6) * 28;
     return {
       w, h,
       x: clamp(sidebar + (vw - sidebar - w) / 2 + off - 56, 8, vw - w - 8),
-      y: clamp((vh - ds - h) / 2 + off - 56, 8, vh - ds - h)
+      y: clamp(ts + (vh - ds - ts - h) / 2 + off - 56, ts + 8, vh - ds - h)
     };
   }
 
@@ -218,21 +198,21 @@
      the buttons on its right must always stay reachable. */
   function keepInView(w) {
     if (isMobile() || w.state === 'max') return;
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
     w.rect.x = clamp(w.rect.x, 150 - w.rect.w, vw - 100);
-    w.rect.y = clamp(w.rect.y, 0, vh - ds);
+    w.rect.y = clamp(w.rect.y, ts, vh - ds);
   }
 
   /* When the browser is resized: shrink a window that no longer fits and pull
      it fully back on screen (above the dock) so content is never cut off. */
   function fitToViewport(w) {
     if (isMobile() || w.state === 'max') return;
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
     const r = w.rect;
     r.w = clamp(r.w, Math.min(MIN_W, vw), vw);
-    r.h = clamp(r.h, Math.min(MIN_H, vh - ds), vh - ds);
+    r.h = clamp(r.h, Math.min(MIN_H, vh - ds - ts), vh - ds - ts);
     r.x = clamp(r.x, 0, vw - r.w);
-    r.y = clamp(r.y, 0, vh - ds - r.h);
+    r.y = clamp(r.y, ts, vh - ds - r.h);
   }
 
   /* =====================================================================
@@ -662,7 +642,7 @@
           }
           if (dir.includes('n')) {
             const bottom = s.y + s.h;
-            r.y = clamp(s.y + dy, 0, bottom - minH);
+            r.y = clamp(s.y + dy, topSpace(), bottom - minH);
             r.h = bottom - r.y;
           }
           w.rect = r;
@@ -718,6 +698,9 @@
       if (!defs.has(id) && !wins.has(id)) return;
       e.preventDefault();
       if (appEl.closest('.linux-dock')) dockActivate(id); else openWindow(id);
+      /* launcher menu (dock Menu button) closes after picking an app */
+      const launcher = document.getElementById('app-menu'), mb = document.getElementById('dock-menu-btn');
+      if (launcher && mb && appEl.closest('#app-menu') && launcher.classList.contains('open')) mb.click();
       return;
     }
 
@@ -726,7 +709,7 @@
     const href = a.getAttribute('href');
 
     /* 2) Existing in-page links: <a href="#resume">, <a href="#portfolio"> */
-    if (href === '#resume' || href === '#portfolio') {
+    if (href === '#resume' || href === '#skills' || href === '#portfolio') {
       e.preventDefault();
       openWindow(href.slice(1));
       return;
@@ -761,11 +744,56 @@
   });
 
   /* =====================================================================
+   * 8b. TOP PANEL: dropdowns (My Work, theme) and the clock.
+   *     The focused-window title is updated in refreshDock().
+   * ===================================================================== */
+  function initPanel() {
+    const panel = document.getElementById('top-panel');
+    if (!panel) return;
+    const menus = Array.from(panel.querySelectorAll('.panel-menu'));
+    const partsOf = m => ({ btn: m.querySelector('.panel-btn'), pop: m.querySelector('.panel-dropdown, .panel-popover') });
+    const closeAll = except => menus.forEach(m => {
+      if (m === except) return;
+      const { btn, pop } = partsOf(m);
+      if (!btn || !pop) return;
+      pop.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+    });
+    menus.forEach(m => {
+      const { btn, pop } = partsOf(m);
+      if (!btn || !pop) return;
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const willOpen = pop.hidden;
+        closeAll(m);
+        pop.hidden = !willOpen;
+        btn.setAttribute('aria-expanded', String(willOpen));
+      });
+    });
+    document.addEventListener('click', e => { if (!e.target.closest('.panel-menu')) closeAll(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+    /* picking a project from My Work opens its window (data-app) and closes the menu */
+    panel.addEventListener('click', e => { if (e.target.closest('[data-app]')) closeAll(); });
+
+    const clock = document.getElementById('panel-clock');
+    if (clock) {
+      const tick = () => {
+        clock.textContent = new Date().toLocaleString([], {
+          weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+        });
+      };
+      tick();
+      setInterval(tick, 15000);
+    }
+  }
+
+  /* =====================================================================
    * 9. BOOT
    * ===================================================================== */
   function boot() {
     document.body.append(layer, store);
     buildDock();
+    initPanel();
 
     /* Park Resume/Portfolio off-page: the main page is just sidebar + hero + about.
        (They stay in the DOM, so content is still there for crawlers.) */
@@ -777,7 +805,7 @@
     refreshDock();
 
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
-    if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
+    if (h === '#resume' || h === '#skills' || h === '#portfolio') openWindow(h.slice(1));
   }
 
   window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };
