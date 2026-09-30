@@ -252,25 +252,6 @@
   gap: 14px;
 }
 
-.sidebar-avatar {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 4px;
-}
-
-.sidebar-avatar .profile-image {
-  width: 128px;
-  height: 128px;
-  border-width: 3px;
-}
-
-.profile-smoke-avatar {
-  width: 110px;
-  height: 110px;
-  --smoke-spread: 44px;
-  --smoke-rise: 100px;
-}
-
 .hero-sidebar h1 {
   font-size: 30px;
 }
@@ -293,10 +274,6 @@
 
 .hero-sidebar .sidebar-contact-item i {
   font-size: 18px;
-}
-
-.hero-sidebar .contact-smoke {
-  left: 50%;
 }
 
 /* Stats widget */
@@ -341,21 +318,6 @@
 }
 
 @media (max-height: 720px) {
-  .sidebar-avatar {
-    width: 96px;
-    height: 96px;
-  }
-
-  .sidebar-avatar .profile-image {
-    width: 104px;
-    height: 104px;
-  }
-
-  .profile-smoke-avatar {
-    width: 90px;
-    height: 90px;
-  }
-
   .hero-sidebar-inner {
     gap: 10px;
   }
@@ -375,25 +337,6 @@
   .hero-sidebar .sidebar-stat p {
     font-size: 10px;
   }
-}
-
-/*--------------------------------------------------------------
-# Copy toast: top centre, just under the panel
---------------------------------------------------------------*/
-.copy-toast-container {
-  position: fixed;
-  top: calc(var(--panel-h) + 12px);
-  left: 50%;
-  right: auto;
-  width: auto;
-  margin: 0;
-  transform: translateX(-50%);
-  z-index: 5002;
-  pointer-events: none;
-}
-
-.copy-toast-container .copy-toast {
-  pointer-events: auto;
 }
 
 /*--------------------------------------------------------------
@@ -425,26 +368,16 @@
     padding: var(--panel-h) 0 96px;
     overflow: hidden;
     display: flex;
-    align-items: center;
+    flex-direction: column;
   }
 
+  /* auto margins centre the section when there is room and never push it
+     up under the top panel when there is not (app.js also scales it to fit) */
   body.index-page main.main>section {
     width: 100%;
+    margin-block: auto;
     padding-top: 0;
     padding-bottom: 0;
-  }
-}
-
-/* Short laptop screens: shrink About a little so it still fits without scrolling */
-@media (min-width: 992px) and (max-height: 820px) {
-  body.index-page main.main .about {
-    zoom: 0.88;
-  }
-}
-
-@media (min-width: 992px) and (max-height: 720px) {
-  body.index-page main.main .about {
-    zoom: 0.76;
   }
 }
 
@@ -521,5 +454,209 @@
 
 /* Cards shouldn't jump inside a scrolling window */
 .wm-body .skills-specialization:hover {
+  transform: none;
+}
+
+/*--------------------------------------------------------------
+# Sidebar profile photo: bigger than the About and Resume photos
+--------------------------------------------------------------*/
+.hero-sidebar {
+  padding-top: 26px;
+}
+
+.sidebar-avatar {
+  --avatar: clamp(168px, 29vh, 226px);
+  width: var(--avatar);
+  height: var(--avatar);
+  margin: 0 auto 12px;
+}
+
+.sidebar-avatar .profile-image {
+  width: 100%;
+  height: 100%;
+  border-width: 3px;
+}
+
+/*--------------------------------------------------------------
+# Copy toast: directly under the Email / Phone buttons
+--------------------------------------------------------------*/
+.hero-sidebar .sidebar-contact {
+  position: relative;
+}
+
+.copy-toast-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin: 8px 0 0;
+  transform: none;
+  display: flex;
+  justify-content: center;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.copy-toast-container .copy-toast {
+  pointer-events: auto;
+}
+
+/*--------------------------------------------------------------
+# No smoke, no glow
+--------------------------------------------------------------*/
+.profile-smoke,
+.contact-smoke {
+  display: none !important;
+}
+
+.hero-sidebar .sidebar-contact-item:hover,
+.about .profile-cta .btn-primary:hover,
+.about .profile-cta .btn-github:hover,
+.about .cta-section .btn.btn-primary:hover,
+.hero .hero-actions .btn.btn-primary:hover,
+.hero .social-links a:hover {
+  box-shadow: none;
+}
+
+/*--------------------------------------------------------------
+# Profile photo hover: three crisp rings in the theme colours
+# (no blur, so it is not a glow). Rings grow out from the photo.
+--------------------------------------------------------------*/
+.sidebar-avatar .profile-image,
+.about .profile-header .profile-image,
+.resume .resume-side .profile-img a {
+  --ring-gap: var(--background-color);
+  --ring-1: var(--accent-highlight);
+  --ring-2: var(--accent-color);
+  --ring-3: var(--quote-color, var(--accent-highlight));
+  box-shadow:
+    0 0 0 0 var(--ring-gap), 0 0 0 0 var(--ring-1),
+    0 0 0 0 var(--ring-gap), 0 0 0 0 var(--ring-2),
+    0 0 0 0 var(--ring-gap), 0 0 0 0 var(--ring-3);
+  transition: box-shadow 0.35s cubic-bezier(.2, .8, .2, 1);
+}
+
+.about .profile-header .profile-image,
+.resume .resume-side .profile-img a {
+  --ring-gap: var(--surface-color);
+}
+
+.sidebar-avatar .profile-image:hover,
+.sidebar-avatar .profile-image:focus-within,
+.about .profile-header .profile-image:hover,
+.about .profile-header .profile-image:focus-within,
+.resume .resume-side .profile-img a:hover,
+.resume .resume-side .profile-img a:focus-visible {
+  box-shadow:
+    0 0 0 4px var(--ring-gap), 0 0 0 6px var(--ring-1),
+    0 0 0 10px var(--ring-gap), 0 0 0 12px var(--ring-2),
+    0 0 0 16px var(--ring-gap), 0 0 0 18px var(--ring-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .sidebar-avatar .profile-image,
+  .about .profile-header .profile-image,
+  .resume .resume-side .profile-img a {
+    transition: none;
+  }
+}
+
+/*--------------------------------------------------------------
+# Linux (GTK style) hover for buttons: flat tint, no lift,
+# no shadow. Pressed = a bit stronger. Keyboard focus = outline.
+--------------------------------------------------------------*/
+:root {
+  --lx-hover: color-mix(in srgb, var(--accent-highlight), transparent 84%);
+  --lx-active: color-mix(in srgb, var(--accent-highlight), transparent 72%);
+}
+
+.hero-sidebar .sidebar-contact-item,
+.about .profile-cta .btn,
+.about .cta-section .btn,
+.portfolio .portfolio-filters li,
+.wm-project-card {
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.hero-sidebar .sidebar-contact-item:hover,
+.about .profile-cta .btn:hover,
+.about .cta-section .btn:hover,
+.about .cta-section .btn.btn-primary:hover,
+.about .cta-section .btn.btn-outline:hover,
+.wm-project-card:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--lx-hover);
+  border-color: color-mix(in srgb, var(--accent-highlight), transparent 45%);
+  color: var(--accent-highlight);
+}
+
+.about .profile-cta .btn-primary:hover {
+  background: var(--lx-hover);
+  color: var(--accent-highlight);
+  border: 1.5px solid color-mix(in srgb, var(--accent-highlight), transparent 45%);
+}
+
+.hero-sidebar .sidebar-contact-item:hover i,
+.about .profile-cta .btn:hover i,
+.about .cta-section .btn:hover i {
+  color: var(--accent-highlight);
+}
+
+.hero-sidebar .sidebar-contact-item:active,
+.about .profile-cta .btn:active,
+.about .cta-section .btn:active,
+.wm-project-card:active {
+  background: var(--lx-active);
+}
+
+.hero-sidebar .sidebar-contact-item:focus-visible,
+.about .profile-cta .btn:focus-visible,
+.about .cta-section .btn:focus-visible,
+.portfolio .portfolio-filters li:focus-visible {
+  outline: 2px solid var(--accent-highlight);
+  outline-offset: 2px;
+}
+
+/* Portfolio filters: flat tint, keep the left accent bar */
+.portfolio .portfolio-filters li:hover {
+  background-color: var(--lx-hover);
+  color: var(--accent-highlight);
+}
+
+.portfolio .portfolio-filters li:active {
+  background-color: var(--lx-active);
+}
+
+/* Window-style command buttons (terminals, project cards, lightbox):
+   keep their colours, drop the lift / zoom / ring */
+html body .terminal-command-btn:hover,
+html body .terminal-command-btn:focus-visible,
+html body .portfolio-command-btn:hover,
+html body .portfolio-command-btn:focus-visible,
+html body .lightbox-window-panel .win-btn:hover,
+html body .lightbox-window-panel .win-btn:focus-visible {
+  transform: none !important;
+  box-shadow: none !important;
+  filter: brightness(1.15);
+}
+
+html body .terminal-command-btn:active,
+html body .portfolio-command-btn:active,
+html body .lightbox-window-panel .win-btn:active {
+  filter: brightness(0.92);
+}
+
+html body .terminal-command-btn:focus-visible,
+html body .portfolio-command-btn:focus-visible,
+html body .lightbox-window-panel .win-btn:focus-visible {
+  outline: 2px solid var(--accent-highlight) !important;
+  outline-offset: 2px;
+}
+
+/* Project cards: no lift on hover */
+.portfolio .portfolio-wrap:hover {
   transform: none;
 }

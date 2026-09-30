@@ -803,10 +803,26 @@
     });
 
     refreshDock();
+    fitHome();
 
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#skills' || h === '#portfolio') openWindow(h.slice(1));
   }
+
+  /* Home page is locked (no scroll): scale the About section down when the
+     screen is too short, so it always sits between the top panel and the dock. */
+  function fitHome() {
+    const about = document.getElementById('about');
+    if (!about || !about.closest('main')) return;
+    about.style.zoom = '';
+    if (window.innerWidth < 992) return;
+    const avail = window.innerHeight - topSpace() - dockSpace() - 8;
+    const natural = about.getBoundingClientRect().height;
+    if (natural > avail && avail > 0) about.style.zoom = String(Math.max(0.55, avail / natural));
+  }
+  window.addEventListener('resize', fitHome);
+  window.addEventListener('load', fitHome);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHome);
 
   window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };
 
