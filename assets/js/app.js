@@ -44,13 +44,45 @@
       icon: 'fa-solid fa-route', url: 'route196/' }
   ];
 
-  /* Injected into every project iframe so the project pages need NO edits:
-     hides the page's own dock / theme dots / breadcrumbs / footer. */
+  /* Injected into every project iframe so the project pages need NO edits.
+     Hides theme dots / breadcrumbs / footer / menu / home link (the homepage
+     already owns those), and turns the page's own dock into a floating dock
+     on the left. */
   const EMBED_CSS = `
-    .linux-dock,.theme-dots,.app-menu,.terminal-overlay,.scroll-top,
-    .breadcrumbs,.page-title,#footer,footer,#preloader{display:none!important}
+    .theme-dots,.app-menu,.terminal-overlay,.scroll-top,
+    .breadcrumbs,.page-title,#footer,footer,#preloader,
+    .linux-dock #dock-menu-btn,.linux-dock .dock-about{display:none!important}
     main,#footer{padding-bottom:0!important}
-    html{scroll-behavior:auto}`;
+    html{scroll-behavior:auto}
+
+    /* floating dock, left side, vertically centred */
+    html.wm-embedded body{padding-left:84px}
+    html.wm-embedded body .linux-dock{
+      position:fixed!important;left:14px!important;right:auto!important;
+      top:50%!important;bottom:auto!important;
+      transform:translateY(-50%)!important;
+      width:auto!important;max-width:none!important;max-height:calc(100% - 24px);
+      flex-direction:column;align-items:center;gap:16px;padding:12px 8px;
+      border-radius:16px;overflow:visible}
+    html.wm-embedded body .linux-dock .dock-item{width:40px;height:40px}
+    /* active marker sits on the left edge instead of under the icon */
+    html.wm-embedded body .linux-dock .dock-item::after{
+      left:-6px;bottom:auto;top:50%;width:3px;height:16px;border-radius:3px;
+      transform:translateY(-50%) scaleY(0)}
+    html.wm-embedded body .linux-dock .dock-item.active::after{
+      transform:translateY(-50%) scaleY(1)}
+    /* tooltips pop out to the right */
+    html.wm-embedded body .linux-dock .dock-item .dock-tooltip{
+      bottom:auto;top:50%;left:calc(100% + 14px);
+      transform:translateY(-50%) translateX(-4px)}
+    html.wm-embedded body .linux-dock .dock-item:hover .dock-tooltip,
+    html.wm-embedded body .linux-dock .dock-item:focus-visible .dock-tooltip{
+      transform:translateY(-50%) translateX(0)}
+    @media (max-width:576px){
+      html.wm-embedded body{padding-left:62px}
+      html.wm-embedded body .linux-dock{left:6px!important;gap:12px;padding:10px 6px}
+      html.wm-embedded body .linux-dock .dock-item{width:36px;height:36px}
+    }`;
 
   /* =====================================================================
    * 2. HELPERS
