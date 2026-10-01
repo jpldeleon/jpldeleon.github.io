@@ -916,12 +916,15 @@ html body .lightbox-window-panel .win-btn:focus-visible {
 --------------------------------------------------------------*/
 :root {
   --notif-w: 340px;
-  --sidebar-w: 358px;        /* room the open panel takes on the right: windows centre around it */
+  --hero-w: 358px;           /* room the hero panel takes on the LEFT (icons start after it) */
+  --conky-w: 320px;          /* width of the conky column on the right */
+  --sidebar-w: 340px;        /* room the conky column takes on the right: app.js centres windows around it */
   --lx-ease: cubic-bezier(.2, .8, .2, 1);
 }
 
+/* the bell hides the hero panel (left); the conky column stays */
 body.sidebar-collapsed {
-  --sidebar-w: 0px;
+  --hero-w: 0px;
 }
 
 /* the bell only exists where the panel can collapse */
@@ -953,7 +956,8 @@ body.sidebar-collapsed {
   .desktop-icons {
     position: fixed;
     top: calc(var(--panel-h) + 14px);
-    left: 14px;
+    left: calc(var(--hero-w) + 14px);   /* icons sit to the right of the hero panel */
+    transition: left 0.28s var(--lx-ease);
     z-index: 12;
     display: grid;
     grid-auto-flow: column;              /* fill a column top-to-bottom, then start the next */
@@ -1026,8 +1030,8 @@ body.sidebar-collapsed {
   /* ---------- Notification panel (the hero) ---------- */
   .hero-sidebar {
     top: calc(var(--panel-h) + 8px);
-    right: 10px;
-    left: auto;
+    left: 10px;
+    right: auto;
     width: var(--notif-w);
     height: auto;
     max-height: calc(100dvh - var(--panel-h) - 112px);
@@ -1039,7 +1043,7 @@ body.sidebar-collapsed {
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     box-shadow: 0 14px 40px rgba(0, 0, 0, 0.38);
-    transform-origin: top right;
+    transform-origin: top left;
     transition: transform 0.28s var(--lx-ease), opacity 0.2s ease, visibility 0s linear 0s;
   }
 
@@ -1083,7 +1087,7 @@ body.sidebar-collapsed {
   /* ---------- About = sticky note ---------- */
   body.index-page main.main > section.sticky-note {
     position: fixed;
-    left: calc(100vw - 350px);         /* under the notification panel (JS positions it exactly) */
+    left: 10px;                        /* under the hero panel (JS positions it exactly) */
     top: 520px;
     width: 340px;
     height: 240px;
@@ -1107,17 +1111,13 @@ body.sidebar-collapsed {
     cursor: grabbing;
   }
 
-  /* ---------- Skills = three fixed widgets ---------- */
-  .skill-widgets {
+  /* ---------- Conky column (skills + experience), right edge ---------- */
+  .conky {
     position: fixed;
-    left: var(--icons-w, 214px);       /* app.js measures the icon grid and sets this */
-    top: calc(var(--panel-h) + 14px);
-    width: min(840px, calc(100vw - var(--icons-w, 214px) - 358px - 12px));
+    right: 10px;
+    top: calc(var(--panel-h) + 8px);
+    width: var(--conky-w);
     z-index: 12;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    align-items: start;
   }
 }
 
@@ -1246,96 +1246,232 @@ body.sidebar-collapsed {
   100% { box-shadow: 0 0 0 0 transparent, 0 12px 30px rgba(0, 0, 0, 0.32); }
 }
 
-/* ---------- Skills widgets look (all sizes) ---------- */
-.skill-widget.skills-specialization {
-  padding: 14px 14px 12px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-color), transparent 10%);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 68%);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+/* =====================================================================
+   CONKY WIDGETS — skills as services + experience as a process list
+   Classic conky: no boxes, mono text, accent headings with a rule,
+   status dots. Colours come from the theme variables.
+   ===================================================================== */
+.conky {
+  --cx-ok: #81c995;
+  --cx-warn: #fdd663;
+  --cx-dim: color-mix(in srgb, var(--default-color), transparent 42%);
+  --cx-rule: color-mix(in srgb, var(--accent-highlight), transparent 55%);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-sizing: border-box;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--default-color);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-.skill-widget.skills-specialization:hover {
-  transform: none;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+.conky [data-status="active"]   { --c: var(--cx-ok); }
+.conky [data-status="learning"] { --c: var(--cx-warn); }
+
+.conky .cx-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font: 700 11px/1 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-highlight);
+}
+.conky .cx-head::before { content: none; }
+.conky .cx-head::after {
+  content: "";
+  order: 1;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--cx-rule), transparent);
 }
 
-.skill-widget h4 {
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  font-size: 14px;
+.conky .cx-link {
+  order: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: 500 10px/1 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--cx-dim);
+  text-shadow: inherit;
+  cursor: pointer;
 }
+.conky .cx-link:hover,
+.conky .cx-link:focus-visible { color: var(--accent-highlight); outline: none; text-decoration: underline; text-underline-offset: 3px; }
 
-.skill-widget .skills-list {
-  gap: 4px;
+.conky .cx-sub {
+  margin: 8px 0 3px;
+  font-size: 10.5px;
+  color: var(--cx-dim);
 }
+.conky .cx-sub:first-of-type { margin-top: 0; }
 
-.skill-widget .skill-item {
-  min-height: 0;
-  padding: 7px 9px;
+.conky .cx-list { margin: 0; padding: 0; list-style: none; }
+
+/* one skill = one "service" line */
+.conky .cx-svc {
+  position: relative;
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 9px;
+  padding: 3px 0;
+  cursor: default;
+  outline: none;
 }
-
-.skill-widget .skill-item:hover {
-  padding-left: 12px;
+.conky .cx-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--cx-dim));
+  box-shadow: 0 0 7px color-mix(in srgb, var(--c, transparent), transparent 40%);
 }
+.conky .cx-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conky .cx-state { font-size: 10.5px; color: var(--cx-dim); }
+.conky .cx-svc:hover .cx-name,
+.conky .cx-svc:focus-visible .cx-name { color: var(--accent-highlight); }
 
-.skill-widget .skill-item h5 {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.3;
-}
-
-.skill-widget .skill-tooltip {
-  margin-top: 6px;
-  font-size: 12px;
+/* the detail line: a popover to the left on desktop, an inline dim line on touch/small screens */
+.conky .cx-note {
+  grid-column: 2 / -1;
+  margin-top: 2px;
+  font-size: 11px;
   line-height: 1.45;
+  color: var(--cx-dim);
 }
 
-/* ---------- Small screens: everything stacks below the hero panel ---------- */
-@media (max-width: 991px) {
-  .sticky-note.section {
-    margin: 16px 16px 0;
-  }
+.conky .cx-legend {
+  display: flex;
+  gap: 14px;
+  margin: 8px 0 0;
+  font-size: 10px;
+  color: var(--cx-dim);
+}
+.conky .cx-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.conky .cx-legend .cx-dot { width: 6px; height: 6px; }
 
-  .sticky-note .sticky-handle {
-    cursor: default;
-  }
+/* experience = process list */
+.conky .cx-job {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 10px;
+  row-gap: 1px;
+  width: 100%;
+  margin: 0;
+  padding: 4px 0 5px;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  text-shadow: inherit;
+  cursor: pointer;
+}
+.conky .cx-role { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.conky .cx-dur { font-size: 11px; color: var(--accent-highlight); }
+.conky .cx-org { grid-column: 1 / -1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10.5px; color: var(--cx-dim); }
+.conky .cx-bar {
+  grid-column: 1 / -1;
+  display: block;
+  height: 3px;
+  margin-top: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--default-color), transparent 88%);
+  overflow: hidden;
+}
+.conky .cx-bar i {
+  display: block;
+  height: 100%;
+  width: var(--w, 40%);
+  border-radius: 2px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-highlight), transparent 35%), var(--accent-highlight));
+  transform-origin: left center;
+  animation: cxFill 0.9s var(--lx-ease) both;
+}
+.conky .cx-job:hover .cx-role,
+.conky .cx-job:focus-visible .cx-role { color: var(--accent-highlight); }
+.conky .cx-job:focus-visible { outline: 1px dashed var(--cx-rule); outline-offset: 2px; }
+.conky .cx-job[data-status="active"] .cx-dur::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--cx-ok);
+  animation: cxPulse 2s ease-in-out infinite;
+}
 
-  .sticky-note .sticky-grip,
-  .sticky-note .sticky-resize {
-    display: none;
-  }
+@keyframes cxFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes cxPulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) {
+  .conky .cx-bar i,
+  .conky .cx-job[data-status="active"] .cx-dur::before { animation: none; }
+}
 
-  .sticky-note .sticky-body {
-    max-height: 340px;
+/* Desktop: details pop out to the left of the column; tighter on short screens */
+@media (min-width: 992px) {
+  .conky .cx-note {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 16px);
+    z-index: 20;
+    width: 250px;
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 55%);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--surface-color), transparent 4%);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    color: var(--default-color);
+    text-shadow: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(6px, -50%);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
   }
-
-  .skill-widgets {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 14px;
-    margin: 16px 16px 0;
-  }
-
-  /* no hover on touch: show the notes */
-  .skill-widget .skill-tooltip {
-    display: block;
+  .conky .cx-svc:hover .cx-note,
+  .conky .cx-svc:focus-visible .cx-note {
     opacity: 1;
-    transform: none;
-    color: color-mix(in srgb, var(--default-color), transparent 30%);
-  }
-
-  .skill-widget .skill-item {
-    cursor: default;
+    visibility: visible;
+    transform: translate(0, -50%);
+    transition-delay: 0s;
   }
 }
+@media (min-width: 992px) and (max-height: 760px) {
+  .conky { gap: 12px; font-size: 12px; }
+  .conky .cx-svc { padding: 2px 0; }
+  .conky .cx-job { padding: 2px 0 3px; }
+}
+@media (min-width: 992px) and (max-height: 660px) {
+  .conky .cx-org { display: none; }
+  .conky .cx-legend { display: none; }
+}
+
+/* Small screens: the column stacks in the page under the About note (same slot the
+   skills widgets used), one block after another, details always visible. */
+@media (max-width: 991px) {
+  .conky {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px 28px;
+    margin: 20px 16px 0;
+    text-shadow: none;
+  }
+}
+
 
 .hero-sidebar,
 .sticky-note,
-.skill-widgets,
-.skill-widget,
+.conky,
 .desktop-icon {
   box-sizing: border-box;
 }
