@@ -66,6 +66,9 @@
   <!-- Top Panel -->
   <header class="top-panel" id="top-panel">
     <div class="panel-left">
+      <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
+        class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
+          aria-hidden="true" class="fa-solid fa-bell"></i></button>
       <div class="panel-menu">
         <button aria-controls="panel-work-menu" aria-expanded="false" aria-haspopup="true" class="panel-btn"
           id="panel-work-btn" type="button"><i class="fa-solid fa-folder-open"></i><span class="panel-btn-label">My Work</span><i
@@ -101,9 +104,6 @@
     </div>
     <div class="panel-center"><span id="panel-title">Desktop</span></div>
     <div class="panel-right">
-      <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
-        class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
-          aria-hidden="true" class="fa-solid fa-bell"></i></button>
       <div class="panel-menu">
         <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true" aria-label="Switch color theme"
           class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme" type="button"><i
@@ -131,19 +131,27 @@
     </div>
   </header>
   <div aria-atomic="true" aria-live="polite" class="panel-notice" id="themeNotice"></div>
-  <!-- Desktop icons (hidden on small screens) -->
-  <nav aria-label="Desktop icons" class="desktop-icons" id="desktop-icons">
-    <button class="desktop-icon di-pdf" data-app="resume" title="resume.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>resume.pdf</span></button>
-    <button class="desktop-icon di-pdf" data-app="cert:techseo" title="technical seo certificate.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>technical seo certificate.pdf</span></button>
-    <button class="desktop-icon di-pdf" data-app="cert:fullstack" title="full stack certificate.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>full stack certificate.pdf</span></button>
-    <button class="desktop-icon di-html" data-app="project:auditkit" title="auditkit.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>auditkit.html</span></button>
-    <button class="desktop-icon di-html" data-app="project:nothingtechblob" title="nothingtechblob.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>nothingtechblob.html</span></button>
-    <button class="desktop-icon di-html" data-app="project:badlands-ink" title="badlands-ink.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>badlands-ink.html</span></button>
-    <button class="desktop-icon di-html" data-app="project:johnoffthewall" title="johnoffthewall.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>johnoffthewall.html</span></button>
-    <button class="desktop-icon di-html" data-app="project:pixellog" title="pixellog.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>pixellog.html</span></button>
-    <button class="desktop-icon di-html" data-app="project:jamporudex" title="jamporudex.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>jamporudex.html</span></button>
-    <button class="desktop-icon di-html" data-app="project:route196" title="route196.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>route196.html</span></button>
-  </nav>
+  <!-- File Explorer content. Desktop only: app.js moves it into the "Files" window.
+       It is the ONLY place the file icons appear (never on the desktop itself). -->
+  <div aria-label="Files" class="file-explorer" id="files-explorer">
+    <div class="fe-toolbar">
+      <i aria-hidden="true" class="fa-solid fa-hard-drive"></i>
+      <div class="fe-path" title="/drive/Desktop">/drive/Desktop</div>
+    </div>
+    <nav aria-label="Files in /drive/Desktop" class="fe-grid">
+      <button class="desktop-icon di-pdf" data-app="resume" title="resume.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>resume.pdf</span></button>
+      <button class="desktop-icon di-pdf" data-app="cert:techseo" title="technical seo certificate.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>technical seo certificate.pdf</span></button>
+      <button class="desktop-icon di-pdf" data-app="cert:fullstack" title="full stack certificate.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>full stack certificate.pdf</span></button>
+      <button class="desktop-icon di-html" data-app="project:auditkit" title="auditkit.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>auditkit.html</span></button>
+      <button class="desktop-icon di-html" data-app="project:nothingtechblob" title="nothingtechblob.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>nothingtechblob.html</span></button>
+      <button class="desktop-icon di-html" data-app="project:badlands-ink" title="badlands-ink.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>badlands-ink.html</span></button>
+      <button class="desktop-icon di-html" data-app="project:johnoffthewall" title="johnoffthewall.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>johnoffthewall.html</span></button>
+      <button class="desktop-icon di-html" data-app="project:pixellog" title="pixellog.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>pixellog.html</span></button>
+      <button class="desktop-icon di-html" data-app="project:jamporudex" title="jamporudex.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>jamporudex.html</span></button>
+      <button class="desktop-icon di-html" data-app="project:route196" title="route196.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>route196.html</span></button>
+    </nav>
+    <div class="fe-status">10 items</div>
+  </div>
   <!-- Linux-style Floating Dock -->
   <nav aria-label="Desktop dock" class="linux-dock">
     <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" class="dock-item dock-menu"
@@ -253,60 +261,74 @@
       
     </section><!-- /About sticky note -->
 
-    <!-- Skills: three fixed desktop widgets -->
-    <div aria-label="Skills" class="skill-widgets" id="skills">
-      <article class="skill-widget skills-specialization">
-        <h4>Core Specializations</h4>
-        <div class="skills-list">
-          <div class="skill-item">
-            <h5>Technical SEO</h5>
-            <div class="skill-tooltip">Learned through certification course and hands-on projects</div>
-          </div>
-          <div class="skill-item">
-            <h5>WordPress Development</h5>
-            <div class="skill-tooltip">Built and practiced multiple projects on LocalWP</div>
-          </div>
-          <div class="skill-item">
-            <h5>E-Commerce / WooCommerce</h5>
-            <div class="skill-tooltip">Badlands Ink project with product catalog, payments, and optimization</div>
-          </div>
-        </div>
-      </article>
-      <article class="skill-widget skills-specialization">
-        <h4>Expertise Areas</h4>
-        <div class="skills-list">
-          <div class="skill-item">
-            <h5>On-Page SEO</h5>
-            <div class="skill-tooltip">Practical experience optimizing WordPress projects</div>
-          </div>
-          <div class="skill-item">
-            <h5>Off-Page SEO</h5>
-            <div class="skill-tooltip">5+ years link research, prospecting, qualification, and vetting</div>
-          </div>
-          <div class="skill-item">
-            <h5>Performance &amp; Core Web Vitals</h5>
-            <div class="skill-tooltip">Site speed optimization and performance analysis</div>
-          </div>
-        </div>
-      </article>
-      <article class="skill-widget skills-specialization">
-        <h4>Technical Stack</h4>
-        <div class="skills-list">
-          <div class="skill-item">
-            <h5>Frontend Development</h5>
-            <div class="skill-tooltip">HTML, CSS, JavaScript, Bootstrap, responsive design</div>
-          </div>
-          <div class="skill-item">
-            <h5>Backend &amp; Scripting</h5>
-            <div class="skill-tooltip">Node.js, Express.js, automation scripts</div>
-          </div>
-          <div class="skill-item">
-            <h5>Tools &amp; Platforms</h5>
-            <div class="skill-tooltip">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</div>
-          </div>
-        </div>
-      </article>
-    </div><!-- /Skills widgets -->
+    <!-- Conky system monitor (decorative, fake live data, no background/card) -->
+    <div aria-hidden="true" class="conky" id="conky">
+      <div class="cky-head"><span class="cky-host">jp@portfolio</span><span class="cky-sub">arch linux</span></div>
+
+      <div class="cky-block">
+        <div class="cky-row"><span class="cky-label">CPU</span><span class="cky-val" data-cky="cpu">0%</span></div>
+        <svg class="cky-graph" data-cky-graph="cpu" preserveAspectRatio="none" viewBox="0 0 200 36"></svg>
+        <div class="cky-cores"><span class="cky-bar"><i></i></span><span class="cky-bar"><i></i></span><span class="cky-bar"><i></i></span><span class="cky-bar"><i></i></span></div>
+      </div>
+
+      <div class="cky-block">
+        <div class="cky-row"><span class="cky-label">RAM</span><span class="cky-val" data-cky="ram">0 / 16 GiB</span></div>
+        <span class="cky-bar"><i></i></span>
+      </div>
+
+      <div class="cky-block">
+        <div class="cky-row"><span class="cky-label">DISK</span><span class="cky-val" data-cky="disk">0 / 512 GiB</span></div>
+        <span class="cky-bar"><i></i></span>
+        <div class="cky-row cky-sub-row"><span>r <em data-cky="dr">0</em></span><span>w <em data-cky="dw">0</em></span></div>
+      </div>
+
+      <div class="cky-block">
+        <div class="cky-row"><span class="cky-label">NET</span><span class="cky-val"><span class="cky-down" data-cky="down">0</span> <span class="cky-up" data-cky="up">0</span></span></div>
+        <svg class="cky-graph" data-cky-graph="net" preserveAspectRatio="none" viewBox="0 0 200 36"></svg>
+      </div>
+
+      <div class="cky-block">
+        <div class="cky-row"><span class="cky-label">UPTIME</span><span class="cky-val" data-cky="uptime">0d 00:00:00</span></div>
+      </div>
+
+      <div class="cky-block">
+        <div class="cky-row"><span class="cky-label">PROCESSES</span><span class="cky-val" data-cky="procs">0</span></div>
+        <span class="cky-bar"><i></i></span>
+        <div class="cky-row cky-sub-row"><span>running <em data-cky="running">0</em></span></div>
+      </div>
+    </div><!-- /Conky -->
+
+    <!-- Professional Experience (purely visual) -->
+    <aside aria-label="Professional experience" class="exp-widget" id="exp-widget">
+      <div class="cky-head"><span class="cky-host">Professional Experience</span></div>
+      <ol class="exp-list">
+        <li class="exp-item">
+          <span class="exp-title">SEO Outreach Specialist</span>
+          <span class="exp-co">Awisee</span>
+          <span class="exp-time">Jan 2025 – May 2025<b>5 mos</b></span>
+        </li>
+        <li class="exp-item">
+          <span class="exp-title">Research Analyst (SEO Link Prospecting)</span>
+          <span class="exp-co">Intelligent.com LLC</span>
+          <span class="exp-time">Nov 2020 – Sep 2024<b>47 mos</b></span>
+        </li>
+        <li class="exp-item">
+          <span class="exp-title">Contact Finder (SEO Contact Research)</span>
+          <span class="exp-co">Intelligent.com LLC</span>
+          <span class="exp-time">May 2020 – Nov 2020<b>7 mos</b></span>
+        </li>
+        <li class="exp-item">
+          <span class="exp-title">Freelance Research Consultant</span>
+          <span class="exp-co">Independent / Referral-based</span>
+          <span class="exp-time">Jan 2019 – May 2020<b>17 mos</b></span>
+        </li>
+        <li class="exp-item">
+          <span class="exp-title">Research Analyst (Web Researcher)</span>
+          <span class="exp-co">Straive</span>
+          <span class="exp-time">Sep 2013 – Nov 2018<b>63 mos</b></span>
+        </li>
+      </ol>
+    </aside><!-- /Professional Experience -->
     <!-- Resume Section -->
     <section class="resume section" id="resume">
       <!-- Section Title -->

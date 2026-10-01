@@ -22,6 +22,12 @@
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
       adopt: '#portfolio', size: [1040, 720]
+    },
+    /* File Explorer: desktop only, opens by itself on first load, small and centred.
+       `static` = nothing for Isotope/Swiper to re-measure; `center` = dead centre. */
+    files: {
+      title: 'Files', icon: 'fa-solid fa-folder-open', dockClass: 'dock-files',
+      adopt: '#files-explorer', size: [560, 400], center: true, static: true
     }
   };
 
@@ -106,7 +112,7 @@
   const defs = new Map();      // id -> app definition
   const dockBtns = new Map();  // id -> dock <button>
   const frames = new Set();    // live iframes (for theme sync)
-  let zTop = 1, focused = null, cascade = 0;
+  let zTop = 1, focused = null, cascade = 0, filesDismissed = false;
   let dock, dockApps, dockDivider;
 
   Object.entries(APPS).forEach(([id, d]) => defs.set(id, Object.assign({ id, permanent: true }, d)));
@@ -138,7 +144,7 @@
     const menuBtn = dock.querySelector('#dock-menu-btn');
     Array.from(dock.children).forEach(c => { if (c !== menuBtn) c.remove(); });
 
-    ['resume', 'portfolio'].forEach(id => {
+    ['files', 'resume', 'portfolio'].forEach(id => {
       const b = makeDockBtn(defs.get(id));
       dockBtns.set(id, b);
       dock.appendChild(b);
@@ -254,30 +260,19 @@
   }
 
   /* Space taken by the notification panel on the right (0 when it is hidden or on small screens) */
-  function sidebarW() {
-    if (window.innerWidth < 992) return 0;
-    const v = parseFloat(getComputedStyle(document.body).getPropertyValue('--sidebar-w'));
-    return isNaN(v) ? 0 : v;
-  }
+  function sidebarW() { return 0; }   // the hero panel is on the left and windows float above it
 
   /* Space taken by the desktop icons on the left (desktop only) */
-  function iconsW() {
-    if (window.innerWidth < 992) return 0;
-    const ic = document.getElementById('desktop-icons');
-    return ic ? Math.round(ic.getBoundingClientRect().right) + 12 : 112;
-  }
-
-  /* The icon grid can be 2-3 columns wide: tell the CSS where the Skills widgets may start */
-  function syncIconsVar() {
-    document.documentElement.style.setProperty('--icons-w', iconsW() + 'px');
-  }
+  function iconsW() { return 0; }     // desktop icons were removed: they live in the Files window
 
   /* Restart: close every window, put the About sticky note back where it started */
   async function restartDesktop() {
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
+    filesDismissed = false;
     window.scrollTo(0, 0);
     resetNote(true);
+    if (isDesk()) openWindow('files');
   }
 
   function initialRect(def) {
@@ -285,8 +280,9 @@
     const left = iconsW(), right = sidebarW();   // centre in the free area between icons and panel
     const w = Math.min(def.size[0], vw - left - right - 24);
     const h = Math.min(def.size[1], vh - ds - ts - 20);
-    const off = def.lite ? 0 : (cascade++ % 6) * 28;
-    const sh = def.lite ? 0 : 56;                 // lite windows sit dead centre
+    const still = def.lite || def.center;
+    const off = still ? 0 : (cascade++ % 6) * 28;
+    const sh = still ? 0 : 56;                    // lite + centred windows sit dead centre
     return {
       w, h,
       x: clamp(left + (vw - left - right - w) / 2 + off - sh, 8, vw - w - 8),
@@ -392,7 +388,7 @@
     };
 
     /* Controls */
-    root.querySelector('.wm-close').addEventListener('click', () => closeWindow(w));
+    root.querySelector('.wm-close').addEventListener('click', () => { if (def.id === 'files') filesDismissed = true; closeWindow(w); });
     const bar = root.querySelector('.wm-titlebar');
 
     /* Focus on any press (capture: works before inner handlers) */
@@ -583,6 +579,7 @@
   function openWindow(def, rect, origin) {
     if (typeof def === 'string') def = defs.get(def);
     if (!def) return null;
+    if (def.id === 'files' && window.innerWidth < 992) return null;   // File Explorer is desktop-only
     let w = wins.get(def.id);
     if (w) {                              // already open: never duplicate
       if (w.state === 'min') restore(w); else focusWindow(w);
@@ -597,7 +594,7 @@
     applyRect(w);
     if (isMobile()) wins.forEach(applyRect);   // project dock may have just appeared: shift the others
     focusWindow(w);
-    if (def.adopt) { refreshLayout(w); watchLayout(w); }
+    if (def.adopt && !def.static) { refreshLayout(w); watchLayout(w); }
     if (def.lite) { fitLite(w); popIn(w, origin); } else flyIn(w);
     return w;
   }
@@ -782,13 +779,18 @@
     const d = window.innerWidth >= 992;
     if (d === desktopMode) return;
     desktopMode = d;
-    if (!d) window.scrollTo(0, 0);
+    if (!d) {
+      window.scrollTo(0, 0);
+      if (wins.has('files')) closeWindow(wins.get('files'), true);   // desktop-only app
+    } else if (!filesDismissed && !wins.has('files')) {
+      openWindow('files');
+    }
     resetNote(false);          // desktop: back to its start spot; small: back into the page flow
     refreshDock();
   }
 
   window.matchMedia('(min-width: 992px)').addEventListener('change', () => syncMode());
-  window.addEventListener('load', () => { syncMode(); syncIconsVar(); });
+  window.addEventListener('load', () => { syncMode(); });
 
   window.matchMedia('(max-width: 768px)').addEventListener('change', () => {
     placeDockApps();
@@ -800,7 +802,6 @@
     if (e && e.isTrusted === false) return;   // ignore the synthetic event from refreshLayout()
     syncMode();
     syncDockVar();
-    syncIconsVar();
     wins.forEach(w => { fitToViewport(w); applyRect(w); });
     keepNoteInView();
   });
@@ -939,8 +940,9 @@
    * ===================================================================== */
   function dockActivate(id) {
     const w = wins.get(id);
-    if (!w) { openWindow(id); return; }
+    if (!w) { if (id === 'files') filesDismissed = false; openWindow(id); return; }
     if (w.state === 'min') restore(w);
+    else if (id === 'files') focusWindow(w);          // Files: bring forward, don't toggle away
     else if (w === focused) minimize(w);   // clicking the active app's icon minimizes it
     else focusWindow(w);
   }
@@ -1056,7 +1058,7 @@
   }
 
   /* =====================================================================
-   * 8c. DESKTOP WIDGETS: About sticky note + desktop icons
+   * 8c. DESKTOP WIDGETS: About sticky note
    *     The note is a floating widget on desktop (drag the header, resize the
    *     corner). It never closes, has no dock icon, and Restart resets it.
    *     Below 992px it is a normal block in the page and these handlers sleep.
@@ -1071,11 +1073,12 @@
   function noteDefaults() {
     const ts = topSpace();
     const hero = document.getElementById('hero');
-    const open = hero && !document.body.classList.contains('sidebar-collapsed');
     const w = hero ? hero.offsetWidth : 340;
-    const top = open ? hero.offsetTop + hero.offsetHeight + NOTE_GAP : ts + 8;
+    /* offsetHeight is unaffected by the collapse transform, so the note keeps its
+       place under the (open-size) hero panel even while the hero is hidden */
+    const top = hero ? hero.offsetTop + hero.offsetHeight + NOTE_GAP : ts + 8;
     const h = clamp(window.innerHeight - top - 16, NOTE_MIN_H, 360);
-    return { left: window.innerWidth - NOTE_MARGIN - w, top: Math.round(top), w, h };
+    return { left: NOTE_MARGIN, top: Math.round(top), w, h };
   }
 
   function setNoteRect(r) {
@@ -1184,13 +1187,7 @@
 
     note.addEventListener('pointerdown', () => { if (isDesk()) raise(); }, true);
 
-    /* bell: follow the notification panel while the note is still in its default spot */
-    new MutationObserver(() => {
-      if (noteMoved || !isDesk()) return;
-      note.classList.add('is-gliding');
-      resetNote(false);
-      setTimeout(() => note.classList.remove('is-gliding'), 340);
-    }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    /* the bell only collapses the hero panel: the note does not follow it */
     resetNote(false);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!noteMoved) resetNote(false); });
     window.addEventListener('load', () => { if (!noteMoved) resetNote(false); });
@@ -1224,13 +1221,122 @@
   });
 
   /* =====================================================================
+   * 8d. CONKY: decorative system monitor with fake, gently fluctuating data.
+   *     Bars glide (CSS), line graphs scroll one step per second (WAAPI).
+   * ===================================================================== */
+  function initConky() {
+    const root = document.getElementById('conky');
+    if (!root) return;
+    const NS = 'http://www.w3.org/2000/svg';
+    const N = 40, VW = 200, VH = 36, STEP = VW / (N - 1);
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const walk = (v, target, k, sigma, lo, hi) => clamp(v + (target - v) * k + rnd(-sigma, sigma), lo, hi);
+    const pad = n => String(Math.floor(n)).padStart(2, '0');
+    const out = k => root.querySelector('[data-cky="' + k + '"]');
+    const setBar = (bar, p) => { if (bar) bar.style.setProperty('--p', clamp(p, 0, 1).toFixed(3)); };
+
+    /* ----- line graphs ----- */
+    function makeGraph(key, nSeries) {
+      const svg = root.querySelector('[data-cky-graph="' + key + '"]');
+      if (!svg) return null;
+      const g = document.createElementNS(NS, 'g');
+      const series = [];
+      for (let i = 0; i < nSeries; i++) {
+        const area = i === 0 ? document.createElementNS(NS, 'path') : null;
+        const line = document.createElementNS(NS, 'path');
+        line.setAttribute('class', 'ln' + (i ? ' s' + (i + 1) : ''));
+        if (area) { area.setAttribute('class', 'ar'); g.appendChild(area); }
+        g.appendChild(line);
+        series.push({ vals: new Array(N + 1).fill(0), line, area });
+      }
+      svg.appendChild(g);
+      return { g, series };
+    }
+    const yOf = (v, max) => (VH - 2 - clamp(v / max, 0, 1) * (VH - 5)).toFixed(1);
+    function draw(graph, max) {
+      graph.series.forEach(s => {
+        let d = '';
+        s.vals.forEach((v, i) => { d += (i ? 'L' : 'M') + ((i - 1) * STEP).toFixed(1) + ' ' + yOf(v, max) + ' '; });
+        s.line.setAttribute('d', d);
+        if (s.area) s.area.setAttribute('d', d + 'L' + ((N - 1) * STEP).toFixed(1) + ' ' + VH + ' L' + (-STEP).toFixed(1) + ' ' + VH + ' Z');
+      });
+    }
+    function push(graph, values, max, animate) {
+      graph.series.forEach((s, i) => { s.vals.shift(); s.vals.push(values[i]); });
+      draw(graph, max);
+      if (animate && !reduceMotion() && graph.g.animate) {
+        graph.g.animate([{ transform: 'translateX(' + STEP + 'px)' }, { transform: 'translateX(0)' }],
+          { duration: 1000, easing: 'linear' });
+      }
+    }
+
+    const gCpu = makeGraph('cpu', 1), gNet = makeGraph('net', 2);
+    const bars = root.querySelectorAll('.cky-bar');
+    const coreBars = root.querySelectorAll('.cky-cores .cky-bar');
+    const ramBar = bars[coreBars.length], diskBar = bars[coreBars.length + 1], procBar = bars[coreBars.length + 2];
+
+    /* ----- simulated machine ----- */
+    const st = {
+      cpu: 14, cpuT: 16, cores: [12, 15, 10, 18],
+      ram: 6.1, disk: 318.4, dr: 4, dw: 2,
+      down: 420, up: 60, downT: 400, upT: 60,
+      procs: 187, running: 2,
+      up0: 12 * 86400 + 4 * 3600 + 31 * 60 + 9, t0: Date.now()
+    };
+    const RAM_TOTAL = 16, DISK_TOTAL = 512, PROC_MAX = 400;
+
+    const rate = kb => kb >= 1024 ? (kb / 1024).toFixed(1) + ' MB/s' : Math.round(kb) + ' KB/s';
+
+    function step() {
+      if (Math.random() < 0.07) st.cpuT = rnd(24, 58); else if (Math.random() < 0.2) st.cpuT = rnd(9, 22);
+      st.cpu = walk(st.cpu, st.cpuT, 0.22, 2.2, 3, 92);
+      st.cores = st.cores.map(c => walk(c, st.cpu, 0.35, 5, 1, 99));
+      st.ram = walk(st.ram, 6.1, 0.01, 0.05, 4.6, 8.2);
+      st.disk = clamp(st.disk + rnd(0, 0.004), 0, DISK_TOTAL);
+      st.dr = Math.random() < 0.08 ? rnd(25, 70) : walk(st.dr, 3, 0.3, 1.2, 0, 90);
+      st.dw = Math.random() < 0.06 ? rnd(12, 40) : walk(st.dw, 1.5, 0.3, 0.8, 0, 60);
+      if (Math.random() < 0.08) st.downT = rnd(900, 4200); else if (Math.random() < 0.2) st.downT = rnd(120, 600);
+      if (Math.random() < 0.08) st.upT = rnd(150, 700); else if (Math.random() < 0.2) st.upT = rnd(20, 120);
+      st.down = walk(st.down, st.downT, 0.25, 60, 8, 6000);
+      st.up = walk(st.up, st.upT, 0.25, 14, 2, 1200);
+      st.procs = Math.round(walk(st.procs, 187, 0.05, 2.2, 168, 224));
+      st.running = Math.random() < 0.25 ? Math.floor(rnd(1, 5)) : st.running;
+    }
+
+    function render(animate) {
+      out('cpu').textContent = Math.round(st.cpu) + '%';
+      coreBars.forEach((b, i) => setBar(b, st.cores[i] / 100));
+      out('ram').textContent = st.ram.toFixed(1) + ' / ' + RAM_TOTAL + ' GiB';
+      setBar(ramBar, st.ram / RAM_TOTAL);
+      out('disk').textContent = Math.round(st.disk) + ' / ' + DISK_TOTAL + ' GiB';
+      setBar(diskBar, st.disk / DISK_TOTAL);
+      out('dr').textContent = st.dr.toFixed(1) + ' MB/s';
+      out('dw').textContent = st.dw.toFixed(1) + ' MB/s';
+      out('down').textContent = '\u2193 ' + rate(st.down);
+      out('up').textContent = '\u2191 ' + rate(st.up);
+      out('procs').textContent = st.procs + ' total';
+      setBar(procBar, st.procs / PROC_MAX);
+      out('running').textContent = st.running;
+      const u = st.up0 + (Date.now() - st.t0) / 1000;
+      out('uptime').textContent = Math.floor(u / 86400) + 'd ' + pad((u % 86400) / 3600) + ':' + pad((u % 3600) / 60) + ':' + pad(u % 60);
+      const netMax = Math.max(400, ...gNet.series[0].vals, ...gNet.series[1].vals, st.down) * 1.15;
+      if (gCpu) push(gCpu, [st.cpu], 100, animate);
+      if (gNet) push(gNet, [st.down, st.up], netMax, animate);
+    }
+
+    /* pre-fill the history so the graphs are not empty on load */
+    for (let i = 0; i < N; i++) { step(); render(false); }
+    render(false);
+    setInterval(() => { if (document.hidden) return; step(); render(true); }, 1000);
+  }
+
+  /* =====================================================================
    * 9. BOOT
    * ===================================================================== */
   function boot() {
     document.body.append(layer, store);
     buildDock();
     initPanel();
-    syncIconsVar();
 
     /* Park Resume/Portfolio off-page; nothing opens on first load.
        (They stay in the DOM, so content is still there for crawlers.) */
@@ -1241,9 +1347,21 @@
 
     refreshDock();
     initNote();
+    initConky();
     desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
+
+    /* File Explorer opens by itself on first load (desktop only), after the preloader.
+       A deep-linked window keeps the focus. */
+    const openFiles = () => setTimeout(() => {
+      if (!isDesk() || filesDismissed || wins.has('files')) return;
+      const prev = focused;
+      openWindow('files');
+      if (prev && wins.has(prev.id)) focusWindow(prev);
+    }, 250);
+    if (document.readyState === 'complete') openFiles();
+    else window.addEventListener('load', openFiles, { once: true });
   }
 
   window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };

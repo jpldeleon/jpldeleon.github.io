@@ -910,21 +910,19 @@ html body .lightbox-window-panel .win-btn:focus-visible {
 
 /*--------------------------------------------------------------
 # Desktop (>= 992px)
-# - Right side: the hero is a notification panel (bell in the top panel)
-# - Left: desktop icons. Floating: About sticky note + fixed Skills widgets
+# - Left: the hero is a notification panel (bell in the top panel), About note under it
+# - Middle: Conky system monitor.  Right: Professional Experience (visual only)
+# - File icons live ONLY inside the Files window (File Explorer)
 # - Nothing scrolls; Resume / Projects open as windows only when asked
 --------------------------------------------------------------*/
 :root {
   --notif-w: 340px;
-  --hero-w: 358px;           /* room the hero panel takes on the LEFT (icons start after it) */
-  --conky-w: 320px;          /* width of the conky column on the right */
-  --sidebar-w: 340px;        /* room the conky column takes on the right: app.js centres windows around it */
+  --sidebar-w: 358px;        /* room the open panel takes on the right: windows centre around it */
   --lx-ease: cubic-bezier(.2, .8, .2, 1);
 }
 
-/* the bell hides the hero panel (left); the conky column stays */
 body.sidebar-collapsed {
-  --hero-w: 0px;
+  --sidebar-w: 0px;
 }
 
 /* the bell only exists where the panel can collapse */
@@ -932,11 +930,6 @@ body.sidebar-collapsed {
   #panel-notif-btn {
     display: none;
   }
-}
-
-/* ---------- Desktop icons ---------- */
-.desktop-icons {
-  display: none;
 }
 
 @media (min-width: 992px) {
@@ -952,81 +945,6 @@ body.sidebar-collapsed {
     display: none !important;
   }
 
-  /* Bare file icons: glyph + shadow + file name. No tile, no border, no background. */
-  .desktop-icons {
-    position: fixed;
-    top: calc(var(--panel-h) + 14px);
-    left: calc(var(--hero-w) + 14px);   /* icons sit to the right of the hero panel */
-    transition: left 0.28s var(--lx-ease);
-    z-index: 12;
-    display: grid;
-    grid-auto-flow: column;              /* fill a column top-to-bottom, then start the next */
-    grid-template-rows: repeat(5, auto);
-    gap: 6px 4px;
-  }
-
-  @media (max-height: 740px) {
-    .desktop-icons { grid-template-rows: repeat(4, auto); }
-  }
-
-  @media (max-height: 560px) {
-    .desktop-icons { grid-template-rows: repeat(3, auto); }
-  }
-
-  .desktop-icon {
-    width: 88px;
-    padding: 6px 2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    box-shadow: none;
-    color: var(--default-color);
-    font: 500 11.5px/1.25 var(--nav-font);
-    text-align: center;
-    overflow-wrap: anywhere;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .desktop-icon i {
-    width: auto;
-    height: auto;
-    border: 0;
-    background: none;
-    font-size: 46px;
-    line-height: 1;
-    color: var(--ic, var(--accent-color));
-    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.3));
-    transition: transform 0.15s var(--lx-ease), filter 0.15s ease;
-  }
-
-  .desktop-icon span {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.55);
-  }
-
-  .desktop-icon.di-pdf { --ic: #e5534b; }
-  .desktop-icon.di-html { --ic: var(--accent-highlight); }
-
-  .desktop-icon:hover i,
-  .desktop-icon:focus-visible i {
-    transform: translateY(-3px) scale(1.07);
-    filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.6)) drop-shadow(0 12px 14px rgba(0, 0, 0, 0.35));
-  }
-
-  .desktop-icon:hover span,
-  .desktop-icon:focus-visible span {
-    color: var(--accent-highlight);
-  }
-
-  .desktop-icon:focus-visible { outline: none; }
-  .desktop-icon:focus-visible span { text-decoration: underline; text-underline-offset: 3px; }
-
-  .desktop-icon:active i { transform: scale(0.96); }
-
   /* ---------- Notification panel (the hero) ---------- */
   .hero-sidebar {
     top: calc(var(--panel-h) + 8px);
@@ -1034,7 +952,7 @@ body.sidebar-collapsed {
     right: auto;
     width: var(--notif-w);
     height: auto;
-    max-height: calc(100dvh - var(--panel-h) - 112px);
+    max-height: calc(100dvh - var(--panel-h) - 250px);   /* leaves room for the About note below */
     padding: 22px 22px 20px;
     align-items: flex-start;
     border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 62%);
@@ -1047,9 +965,9 @@ body.sidebar-collapsed {
     transition: transform 0.28s var(--lx-ease), opacity 0.2s ease, visibility 0s linear 0s;
   }
 
-  /* collapsed: it rolls up under the top panel, like the bell was clicked */
+  /* collapsed: only the hero panel slides away to the left (About stays put) */
   body.sidebar-collapsed .hero-sidebar {
-    transform: translateY(calc(-100% - 24px));
+    transform: translateX(calc(-100% - 24px));
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -1111,12 +1029,22 @@ body.sidebar-collapsed {
     cursor: grabbing;
   }
 
-  /* ---------- Conky column (skills + experience), right edge ---------- */
+  /* ---------- Conky (middle-left) + Professional Experience (right) ---------- */
   .conky {
     position: fixed;
-    right: 10px;
-    top: calc(var(--panel-h) + 8px);
-    width: var(--conky-w);
+    left: calc(var(--notif-w) + 44px);
+    top: calc(var(--panel-h) + 18px);
+    width: 290px;
+    z-index: 12;
+  }
+
+  .exp-widget {
+    position: fixed;
+    right: 28px;
+    top: calc(var(--panel-h) + 18px);
+    width: min(340px, calc(100vw - var(--notif-w) - 290px - 120px));
+    max-height: calc(100dvh - var(--panel-h) - 110px);
+    overflow: hidden;
     z-index: 12;
   }
 }
@@ -1246,232 +1174,39 @@ body.sidebar-collapsed {
   100% { box-shadow: 0 0 0 0 transparent, 0 12px 30px rgba(0, 0, 0, 0.32); }
 }
 
-/* =====================================================================
-   CONKY WIDGETS — skills as services + experience as a process list
-   Classic conky: no boxes, mono text, accent headings with a rule,
-   status dots. Colours come from the theme variables.
-   ===================================================================== */
-.conky {
-  --cx-ok: #81c995;
-  --cx-warn: #fdd663;
-  --cx-dim: color-mix(in srgb, var(--default-color), transparent 42%);
-  --cx-rule: color-mix(in srgb, var(--accent-highlight), transparent 55%);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  box-sizing: border-box;
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12.5px;
-  line-height: 1.35;
-  color: var(--default-color);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-}
-
-.conky [data-status="active"]   { --c: var(--cx-ok); }
-.conky [data-status="learning"] { --c: var(--cx-warn); }
-
-.conky .cx-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 8px;
-  padding: 0;
-  border: 0;
-  font: 700 11px/1 'JetBrains Mono', ui-monospace, monospace;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent-highlight);
-}
-.conky .cx-head::before { content: none; }
-.conky .cx-head::after {
-  content: "";
-  order: 1;
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--cx-rule), transparent);
-}
-
-.conky .cx-link {
-  order: 2;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: 500 10px/1 'JetBrains Mono', ui-monospace, monospace;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  color: var(--cx-dim);
-  text-shadow: inherit;
-  cursor: pointer;
-}
-.conky .cx-link:hover,
-.conky .cx-link:focus-visible { color: var(--accent-highlight); outline: none; text-decoration: underline; text-underline-offset: 3px; }
-
-.conky .cx-sub {
-  margin: 8px 0 3px;
-  font-size: 10.5px;
-  color: var(--cx-dim);
-}
-.conky .cx-sub:first-of-type { margin-top: 0; }
-
-.conky .cx-list { margin: 0; padding: 0; list-style: none; }
-
-/* one skill = one "service" line */
-.conky .cx-svc {
-  position: relative;
-  display: grid;
-  grid-template-columns: 8px minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: 9px;
-  padding: 3px 0;
-  cursor: default;
-  outline: none;
-}
-.conky .cx-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--c, var(--cx-dim));
-  box-shadow: 0 0 7px color-mix(in srgb, var(--c, transparent), transparent 40%);
-}
-.conky .cx-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.conky .cx-state { font-size: 10.5px; color: var(--cx-dim); }
-.conky .cx-svc:hover .cx-name,
-.conky .cx-svc:focus-visible .cx-name { color: var(--accent-highlight); }
-
-/* the detail line: a popover to the left on desktop, an inline dim line on touch/small screens */
-.conky .cx-note {
-  grid-column: 2 / -1;
-  margin-top: 2px;
-  font-size: 11px;
-  line-height: 1.45;
-  color: var(--cx-dim);
-}
-
-.conky .cx-legend {
-  display: flex;
-  gap: 14px;
-  margin: 8px 0 0;
-  font-size: 10px;
-  color: var(--cx-dim);
-}
-.conky .cx-legend span { display: inline-flex; align-items: center; gap: 6px; }
-.conky .cx-legend .cx-dot { width: 6px; height: 6px; }
-
-/* experience = process list */
-.conky .cx-job {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 10px;
-  row-gap: 1px;
-  width: 100%;
-  margin: 0;
-  padding: 4px 0 5px;
-  border: 0;
-  background: none;
-  font: inherit;
-  text-align: left;
-  color: inherit;
-  text-shadow: inherit;
-  cursor: pointer;
-}
-.conky .cx-role { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
-.conky .cx-dur { font-size: 11px; color: var(--accent-highlight); }
-.conky .cx-org { grid-column: 1 / -1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10.5px; color: var(--cx-dim); }
-.conky .cx-bar {
-  grid-column: 1 / -1;
-  display: block;
-  height: 3px;
-  margin-top: 3px;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--default-color), transparent 88%);
-  overflow: hidden;
-}
-.conky .cx-bar i {
-  display: block;
-  height: 100%;
-  width: var(--w, 40%);
-  border-radius: 2px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-highlight), transparent 35%), var(--accent-highlight));
-  transform-origin: left center;
-  animation: cxFill 0.9s var(--lx-ease) both;
-}
-.conky .cx-job:hover .cx-role,
-.conky .cx-job:focus-visible .cx-role { color: var(--accent-highlight); }
-.conky .cx-job:focus-visible { outline: 1px dashed var(--cx-rule); outline-offset: 2px; }
-.conky .cx-job[data-status="active"] .cx-dur::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-right: 6px;
-  border-radius: 50%;
-  background: var(--cx-ok);
-  animation: cxPulse 2s ease-in-out infinite;
-}
-
-@keyframes cxFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes cxPulse { 50% { opacity: 0.35; } }
-@media (prefers-reduced-motion: reduce) {
-  .conky .cx-bar i,
-  .conky .cx-job[data-status="active"] .cx-dur::before { animation: none; }
-}
-
-/* Desktop: details pop out to the left of the column; tighter on short screens */
-@media (min-width: 992px) {
-  .conky .cx-note {
-    position: absolute;
-    top: 50%;
-    right: calc(100% + 16px);
-    z-index: 20;
-    width: 250px;
-    margin: 0;
-    padding: 8px 10px;
-    border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 55%);
-    border-radius: 8px;
-    background: color-mix(in srgb, var(--surface-color), transparent 4%);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
-    color: var(--default-color);
-    text-shadow: none;
-    opacity: 0;
-    visibility: hidden;
-    transform: translate(6px, -50%);
-    pointer-events: none;
-    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
-  }
-  .conky .cx-svc:hover .cx-note,
-  .conky .cx-svc:focus-visible .cx-note {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(0, -50%);
-    transition-delay: 0s;
-  }
-}
-@media (min-width: 992px) and (max-height: 760px) {
-  .conky { gap: 12px; font-size: 12px; }
-  .conky .cx-svc { padding: 2px 0; }
-  .conky .cx-job { padding: 2px 0 3px; }
-}
-@media (min-width: 992px) and (max-height: 660px) {
-  .conky .cx-org { display: none; }
-  .conky .cx-legend { display: none; }
-}
-
-/* Small screens: the column stacks in the page under the About note (same slot the
-   skills widgets used), one block after another, details always visible. */
+/* ---------- Small screens: everything stacks below the hero panel ---------- */
 @media (max-width: 991px) {
-  .conky {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 22px 28px;
-    margin: 20px 16px 0;
-    text-shadow: none;
+  .sticky-note.section {
+    margin: 16px 16px 0;
   }
-}
 
+  .sticky-note .sticky-handle {
+    cursor: default;
+  }
+
+  .sticky-note .sticky-grip,
+  .sticky-note .sticky-resize {
+    display: none;
+  }
+
+  .sticky-note .sticky-body {
+    max-height: 340px;
+  }
+
+  .conky,
+  .exp-widget {
+    width: auto;
+    max-width: 460px;
+    margin: 22px 20px 0;
+  }
+
+  .exp-widget { margin-bottom: 8px; }
+}
 
 .hero-sidebar,
 .sticky-note,
 .conky,
+.exp-widget,
 .desktop-icon {
   box-sizing: border-box;
 }
@@ -1564,3 +1299,318 @@ body.sidebar-collapsed {
   .wm-body .portfolio .portfolio-info .content h4 { font-size: 14px; }
   .wm-body .portfolio .portfolio-info .content .category { font-size: 10px; }
 }
+
+/*--------------------------------------------------------------
+# Conky system monitor + Professional Experience
+# Bare text on the desktop: no background, card, border or shadow.
+# Purely visual: no pointer events, no selection.
+--------------------------------------------------------------*/
+.conky,
+.exp-widget {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--default-color), transparent 18%);
+}
+
+.cky-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cky-host {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.cky-sub {
+  font-size: 10.5px;
+  opacity: 0.55;
+}
+
+.cky-block { margin-bottom: 14px; }
+
+.cky-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.cky-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent-highlight);
+}
+
+.cky-val {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--heading-color);
+}
+
+.cky-sub-row {
+  margin: 5px 0 0;
+  font-size: 10.5px;
+  opacity: 0.6;
+}
+
+.cky-sub-row em { font-style: normal; font-variant-numeric: tabular-nums; }
+
+.cky-down { color: var(--accent-highlight); }
+.cky-up { color: var(--quote-color, var(--accent-color)); }
+
+/* Bars: thin track + fill that glides to each new value */
+.cky-bar {
+  --p: 0;
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--default-color), transparent 86%);
+}
+
+.cky-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--bar, var(--accent-highlight));
+  transform: scaleX(var(--p));
+  transform-origin: left center;
+  transition: transform 0.95s linear;
+}
+
+.cky-cores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.cky-cores .cky-bar { height: 3px; }
+.cky-cores .cky-bar > i { opacity: 0.75; }
+
+.cky-block:nth-of-type(3) .cky-bar { --bar: var(--typed-color, var(--accent-highlight)); }
+.cky-block:nth-of-type(4) .cky-bar { --bar: var(--quote-color, var(--accent-color)); }
+.cky-block:nth-of-type(7) .cky-bar { --bar: var(--accent-color, var(--accent-highlight)); }
+
+/* Line graphs (SVG, drawn and scrolled by app.js) */
+.cky-graph {
+  display: block;
+  width: 100%;
+  height: 34px;
+  overflow: hidden;
+}
+
+.cky-graph .ln {
+  fill: none;
+  stroke: var(--accent-highlight);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.cky-graph .ln.s2 { stroke: var(--quote-color, var(--accent-color)); opacity: 0.9; }
+.cky-graph .ar { fill: var(--accent-highlight); opacity: 0.1; stroke: none; }
+
+/* Professional Experience: a quiet timeline */
+.exp-list {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 16px;
+  list-style: none;
+}
+
+.exp-list::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: color-mix(in srgb, var(--accent-highlight), transparent 65%);
+}
+
+.exp-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 14px;
+}
+
+.exp-item::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-highlight);
+}
+
+.exp-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.exp-co { color: var(--accent-color, var(--accent-highlight)); }
+
+.exp-time {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+}
+
+.exp-time b {
+  margin-left: 8px;
+  font-weight: 600;
+  color: var(--accent-highlight);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cky-bar > i { transition: none; }
+}
+
+/*--------------------------------------------------------------
+# File Explorer ("Files" window, desktop only)
+# Source markup (#files-explorer) is parked off-screen; app.js moves it
+# into the window. The icons keep their original look.
+--------------------------------------------------------------*/
+.file-explorer { display: none; }
+
+.wm-body .file-explorer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.fe-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--surface-color), var(--background-color) 40%);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
+}
+
+.fe-toolbar > i { color: var(--accent-highlight); font-size: 14px; }
+
+.fe-path {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 5px 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 12px/1.2 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--default-color);
+  background: color-mix(in srgb, var(--default-color), transparent 92%);
+}
+
+.fe-grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  align-content: start;
+  justify-items: center;
+  gap: 8px 4px;
+  padding: 14px 10px;
+}
+
+.fe-status {
+  position: sticky;
+  bottom: 0;
+  padding: 5px 12px;
+  font: 11px/1.2 'JetBrains Mono', ui-monospace, monospace;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  background: color-mix(in srgb, var(--surface-color), var(--background-color) 40%);
+  border-top: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
+}
+
+/* Bare file icons: glyph + shadow + file name (unchanged look) */
+.desktop-icon {
+  width: 88px;
+  padding: 6px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--default-color);
+  font: 500 11.5px/1.25 var(--nav-font);
+  text-align: center;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.desktop-icon i {
+  width: auto;
+  height: auto;
+  border: 0;
+  background: none;
+  font-size: 46px;
+  line-height: 1;
+  color: var(--ic, var(--accent-color));
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.3));
+  transition: transform 0.15s var(--lx-ease), filter 0.15s ease;
+}
+
+.desktop-icon span {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.55);
+}
+
+.desktop-icon.di-pdf { --ic: #e5534b; }
+.desktop-icon.di-html { --ic: var(--accent-highlight); }
+
+.desktop-icon:hover i,
+.desktop-icon:focus-visible i {
+  transform: translateY(-3px) scale(1.07);
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.6)) drop-shadow(0 12px 14px rgba(0, 0, 0, 0.35));
+}
+
+.desktop-icon:hover span,
+.desktop-icon:focus-visible span { color: var(--accent-highlight); }
+
+.desktop-icon:focus-visible { outline: none; }
+.desktop-icon:focus-visible span { text-decoration: underline; text-underline-offset: 3px; }
+.desktop-icon:active i { transform: scale(0.96); }
+
+/* Desktop only: no Files window and no dock button on small screens */
+@media (max-width: 991px) {
+  .wm-window[data-wm-app="files"],
+  .linux-dock .dock-item.dock-files {
+    display: none !important;
+  }
+}
+
+/* Dock: Files button colour (matches the other launcher icons) */
+.linux-dock .dock-item.dock-files i { color: var(--accent-color); }
