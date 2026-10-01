@@ -144,7 +144,7 @@
     const menuBtn = dock.querySelector('#dock-menu-btn');
     Array.from(dock.children).forEach(c => { if (c !== menuBtn) c.remove(); });
 
-    ['files', 'resume', 'portfolio'].forEach(id => {
+    ['files', 'resume', 'portfolio'].forEach(id => {   // always in the dock (also reachable from the Ubuntu menu)
       const b = makeDockBtn(defs.get(id));
       dockBtns.set(id, b);
       dock.appendChild(b);
@@ -1327,7 +1327,36 @@
     /* pre-fill the history so the graphs are not empty on load */
     for (let i = 0; i < N; i++) { step(); render(false); }
     render(false);
-    setInterval(() => { if (document.hidden) return; step(); render(true); }, 1000);
+    setInterval(() => { if (document.hidden || !root.getClientRects().length) return; step(); render(true); }, 1000);
+  }
+
+  /* =====================================================================
+   * 8e. RIGHT COLUMN: live month count for the current role, and scale the
+   *     Experience + Skills column to fit the screen height (nothing is cut).
+   * ===================================================================== */
+  function initRightColumn() {
+    const col = document.getElementById('desk-right');
+    if (!col) return;
+    const now = new Date();
+    col.querySelectorAll('[data-since]').forEach(b => {
+      const [y, m] = b.getAttribute('data-since').split('-').map(Number);
+      const months = (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - m) + 1;   // inclusive
+      const v = b.querySelector('[data-months]');
+      if (v) v.textContent = months + ' mos';
+      const bar = b.querySelector('.cky-bar');
+      if (bar) bar.style.setProperty('--p', clamp(months / 63, 0, 1).toFixed(3));
+    });
+    const fit = () => {
+      col.style.transform = '';
+      if (!isDesk()) return;
+      const avail = window.innerHeight - col.getBoundingClientRect().top - 16;
+      const k = clamp(avail / col.offsetHeight, 0.6, 1);
+      if (k < 1) col.style.transform = 'scale(' + k.toFixed(3) + ')';
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   }
 
   /* =====================================================================
@@ -1348,6 +1377,7 @@
     refreshDock();
     initNote();
     initConky();
+    initRightColumn();
     desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));

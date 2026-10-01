@@ -164,8 +164,14 @@
   </nav>
   <!-- App Menu (launcher for CV summary terminals) -->
   <div aria-hidden="true" class="app-menu" id="app-menu" role="menu">
-    <div class="app-menu-header">Summary</div>
+    <div class="app-menu-header">Apps</div>
     <ul>
+      <li><button data-app="resume" role="menuitem" type="button"><i
+            class="fa-solid fa-timeline"></i>Resume</button></li>
+      <li><button data-app="portfolio" role="menuitem" type="button"><i
+            class="fa-solid fa-flask"></i>Portfolio</button></li>
+      <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
+      <li class="app-menu-label" role="presentation">Summary</li>
       <li><button data-terminal="certifications" role="menuitem" type="button"><i
             class="fa-solid fa-award"></i>Certifications</button></li>
       <li><button data-terminal="experience" role="menuitem" type="button"><i
@@ -298,37 +304,70 @@
       </div>
     </div><!-- /Conky -->
 
-    <!-- Professional Experience (purely visual) -->
-    <aside aria-label="Professional experience" class="exp-widget" id="exp-widget">
-      <div class="cky-head"><span class="cky-host">Professional Experience</span></div>
-      <ol class="exp-list">
-        <li class="exp-item">
-          <span class="exp-title">SEO Outreach Specialist</span>
-          <span class="exp-co">Awisee</span>
-          <span class="exp-time">Jan 2025 – May 2025<b>5 mos</b></span>
-        </li>
-        <li class="exp-item">
-          <span class="exp-title">Research Analyst (SEO Link Prospecting)</span>
-          <span class="exp-co">Intelligent.com LLC</span>
-          <span class="exp-time">Nov 2020 – Sep 2024<b>47 mos</b></span>
-        </li>
-        <li class="exp-item">
-          <span class="exp-title">Contact Finder (SEO Contact Research)</span>
-          <span class="exp-co">Intelligent.com LLC</span>
-          <span class="exp-time">May 2020 – Nov 2020<b>7 mos</b></span>
-        </li>
-        <li class="exp-item">
-          <span class="exp-title">Freelance Research Consultant</span>
-          <span class="exp-co">Independent / Referral-based</span>
-          <span class="exp-time">Jan 2019 – May 2020<b>17 mos</b></span>
-        </li>
-        <li class="exp-item">
-          <span class="exp-title">Research Analyst (Web Researcher)</span>
-          <span class="exp-co">Straive</span>
-          <span class="exp-time">Sep 2013 – Nov 2018<b>63 mos</b></span>
-        </li>
-      </ol>
-    </aside><!-- /Professional Experience -->
+    <!-- Right column: Professional Experience, then Skills (Conky style, purely visual) -->
+    <div class="desk-right" id="desk-right">
+      <aside aria-label="Professional experience" class="cky-widget exp-widget" id="exp-widget">
+        <div class="cky-head"><span class="cky-host">Professional Experience</span><span class="cky-sub">~/career</span></div>
+        <div class="cky-block" data-since="2025-05">
+          <div class="cky-row"><span class="cky-label">Self-Directed Learning &amp; Upskilling</span><span class="cky-val" data-months>18 mos</span></div>
+          <span class="cky-bar" style="--p:0.286"><i></i></span>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Full-Stack Bootcamp · Technical SEO Sprint</span><span>May 2025 – Present</span></div>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">SEO Outreach Specialist</span><span class="cky-val">5 mos</span></div>
+          <span class="cky-bar" style="--p:0.079"><i></i></span>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Awisee</span><span>Jan 2025 – May 2025</span></div>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Research Analyst</span><span class="cky-val">47 mos</span></div>
+          <span class="cky-bar" style="--p:0.746"><i></i></span>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Link Prospecting</span><span>Nov 2020 – Sep 2024</span></div>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Contact Finder</span><span class="cky-val">7 mos</span></div>
+          <span class="cky-bar" style="--p:0.111"><i></i></span>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Contact Research</span><span>May 2020 – Nov 2020</span></div>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Freelance Research Consultant</span><span class="cky-val">17 mos</span></div>
+          <span class="cky-bar" style="--p:0.270"><i></i></span>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Independent / Referral-based</span><span>Jan 2019 – May 2020</span></div>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Research Analyst</span><span class="cky-val">63 mos</span></div>
+          <span class="cky-bar" style="--p:1.000"><i></i></span>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Straive · Web Researcher</span><span>Sep 2013 – Nov 2018</span></div>
+        </div>
+      </aside><!-- /Professional Experience -->
+
+      <aside aria-label="Skills" class="cky-widget skl-widget" id="skills">
+        <div class="cky-head"><span class="cky-host">Skills</span><span class="cky-sub">~/stack</span></div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Core Specializations</span><span class="cky-val">03</span></div>
+          <ul class="skl-list">
+            <li><span class="skl-dot"></span><span class="skl-name">Technical SEO</span><span class="skl-desc">Learned through certification course and hands-on projects</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">WordPress Development</span><span class="skl-desc">Built and practiced multiple projects on LocalWP</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">E-Commerce / WooCommerce</span><span class="skl-desc">Badlands Ink project with product catalog, payments, and optimization</span></li>
+          </ul>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Expertise Areas</span><span class="cky-val">03</span></div>
+          <ul class="skl-list">
+            <li><span class="skl-dot"></span><span class="skl-name">On-Page SEO</span><span class="skl-desc">Practical experience optimizing WordPress projects</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Off-Page SEO</span><span class="skl-desc">5+ years link research, prospecting, qualification, and vetting</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Performance &amp; Core Web Vitals</span><span class="skl-desc">Site speed optimization and performance analysis</span></li>
+          </ul>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">Technical Stack</span><span class="cky-val">03</span></div>
+          <ul class="skl-list">
+            <li><span class="skl-dot"></span><span class="skl-name">Frontend Development</span><span class="skl-desc">HTML, CSS, JavaScript, Bootstrap, responsive design</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Backend &amp; Scripting</span><span class="skl-desc">Node.js, Express.js, automation scripts</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Tools &amp; Platforms</span><span class="skl-desc">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</span></li>
+          </ul>
+        </div>
+      </aside><!-- /Skills -->
+    </div><!-- /Right column -->
     <!-- Resume Section -->
     <section class="resume section" id="resume">
       <!-- Section Title -->
