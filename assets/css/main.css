@@ -943,7 +943,7 @@ section,
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-highlight), color-mix(in srgb, var(--accent-highlight), transparent 50%));
+  background: var(--accent-highlight);
 }
 
 .hero-sidebar .lead {
@@ -1142,7 +1142,7 @@ section,
   height: 6px;
   margin-left: -3px;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent-highlight), transparent 10%) 0%, transparent 70%);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 30%);
   opacity: 0;
   filter: blur(1px);
   animation: contact-smoke-rise 2.6s ease-in infinite;
@@ -1203,7 +1203,7 @@ section,
   height: 14px;
   margin-left: -7px;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent-highlight), transparent 15%) 0%, transparent 70%);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 30%);
   opacity: 0;
   filter: blur(3px);
   animation: profile-smoke-rise 4.8s ease-in infinite;
@@ -1431,7 +1431,7 @@ section,
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-highlight), color-mix(in srgb, var(--accent-highlight), transparent 50%));
+  background: var(--accent-highlight);
 }
 
 .hero .hero-text h2 {
@@ -1667,7 +1667,7 @@ section,
 # About Section
 --------------------------------------------------------------*/
 .about .profile-card {
-  background: linear-gradient(135deg, var(--surface-color) 0%, color-mix(in srgb, var(--surface-color), var(--accent-highlight) 5%) 100%);
+  background: var(--surface-color);
   border-radius: 2rem;
   padding: 3rem;
   text-align: center;
@@ -1684,7 +1684,7 @@ section,
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--accent-highlight), color-mix(in srgb, var(--accent-highlight), var(--heading-color) 30%));
+  background: var(--accent-highlight);
 }
 
 @media (max-width: 991px) {
@@ -1850,7 +1850,7 @@ section,
 }
 
 .about .profile-cta .btn-primary {
-  background: linear-gradient(135deg, var(--accent-highlight) 0%, color-mix(in srgb, var(--accent-highlight), var(--accent-color) 20%) 100%);
+  background: var(--accent-highlight);
   border: none;
   color: var(--contrast-color);
 }
@@ -1858,7 +1858,7 @@ section,
 .about .profile-cta .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-highlight), transparent 70%);
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-highlight), var(--accent-color) 10%) 0%, var(--accent-highlight) 100%);
+  background: color-mix(in srgb, var(--accent-highlight), var(--accent-color) 12%);
 }
 
 .about .profile-cta .btn-github {
@@ -1913,7 +1913,7 @@ section,
 
 .about .about-content .section-header .badge-text {
   display: inline-block;
-  background: linear-gradient(135deg, var(--accent-highlight), color-mix(in srgb, var(--accent-highlight), var(--heading-color) 20%));
+  background: var(--accent-highlight);
   color: var(--contrast-color);
   padding: 0.5rem 1.5rem;
   border-radius: 2rem;
@@ -2052,7 +2052,7 @@ section,
 }
 
 .stats .stats-item {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-color), transparent 5%), var(--surface-color));
+  background: var(--surface-color);
   border-radius: 15px;
   padding: 40px 20px;
   text-align: center;
@@ -2711,7 +2711,7 @@ section,
 }
 
 .portfolio .filters-wrapper {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-color), var(--background-color) 80%) 0%, color-mix(in srgb, var(--surface-color), var(--background-color) 50%) 100%);
+  background: color-mix(in srgb, var(--surface-color), var(--background-color) 65%);
   backdrop-filter: blur(10px);
   padding: 30px;
   border-radius: 10px;
@@ -2801,7 +2801,7 @@ section,
   left: 0;
   right: 0;
   padding: 25px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%);
+  background: rgba(0, 0, 0, 0.72);
   z-index: 3;
   transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
   transform: translateY(20px);

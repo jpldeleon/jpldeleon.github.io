@@ -10,17 +10,14 @@
    * 1. CONFIG: the only part you normally need to edit
    * ===================================================================== */
 
-  /* Permanent apps. `adopt` = an existing <section> on the page that is moved
+  /* Permanent apps (About = sticky note widget and Skills = widgets, see section 8c).
+     `adopt` = an existing <section> on the page that is moved
      into the window (so your current Resume/Portfolio markup is reused as-is).
      `url` = optional iframe fallback if that section isn't on the page. */
   const APPS = {
     resume: {
       title: 'Resume', icon: 'fa-solid fa-timeline', dockClass: 'dock-resume',
       adopt: '#resume', size: [980, 700]
-    },
-    skills: {
-      title: 'Skills', icon: 'fa-solid fa-microchip', dockClass: 'dock-skills',
-      adopt: '#skills', size: [960, 620]
     },
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
@@ -48,10 +45,21 @@
       icon: 'fa-solid fa-route', url: 'route196/' }
   ];
 
+  /* Certificates: each opens in the SAME window system as the projects
+     (drag, resize, minimize, close, dock icon). `image` is the full certificate. */
+  const CERTS = [
+    { id: 'fullstack', title: 'Full Stack Certificate',
+      sub: 'The Complete Full-Stack Web Development Bootcamp',
+      image: 'assets/img/certifications/cert-fullstack-bootcamp_F.webp' },
+    { id: 'techseo', title: 'Technical SEO Certificate',
+      sub: 'Technical SEO and SEO Sprint',
+      image: 'assets/img/certifications/cert_techseosprint_F.webp' }
+  ];
+
   /* Injected into every project iframe so the project pages need NO edits:
      hides the page's own dock / theme dots / breadcrumbs / footer. */
   const EMBED_CSS = `
-    .linux-dock,.theme-dots,.app-menu,.terminal-overlay,.scroll-top,
+    .linux-dock:not(.side-nav),.theme-dots,.app-menu,.terminal-overlay,.scroll-top,
     .breadcrumbs,.page-title,#footer,footer,#preloader{display:none!important}
     main,#footer{padding-bottom:0!important}
     html{scroll-behavior:auto}`;
@@ -102,6 +110,10 @@
   let dock, dockApps, dockDivider;
 
   Object.entries(APPS).forEach(([id, d]) => defs.set(id, Object.assign({ id, permanent: true }, d)));
+  CERTS.forEach(c => defs.set('cert:' + c.id, Object.assign({}, c, {
+    id: 'cert:' + c.id, icon: 'fa-solid fa-file-pdf', permanent: false,
+    size: [940, 680], dockClass: 'dock-app dock-cert'
+  })));
   PROJECTS.forEach(p => defs.set('project:' + p.id, Object.assign({}, p, {
     id: 'project:' + p.id, permanent: false, size: [1000, 720], dockClass: 'dock-app'
   })));
@@ -126,7 +138,7 @@
     const menuBtn = dock.querySelector('#dock-menu-btn');
     Array.from(dock.children).forEach(c => { if (c !== menuBtn) c.remove(); });
 
-    ['resume', 'skills', 'portfolio'].forEach(id => {
+    ['resume', 'portfolio'].forEach(id => {
       const b = makeDockBtn(defs.get(id));
       dockBtns.set(id, b);
       dock.appendChild(b);
@@ -134,6 +146,31 @@
     dockDivider = el('span', { class: 'wm-dock-divider', role: 'separator', hidden: '' });
     dockApps = el('div', { class: 'wm-dock-apps' });
     dock.append(dockDivider, dockApps);
+    placeDockApps();
+  }
+
+  /* Active apps always live inside the bottom dock (after the divider).
+     On phones the strip swipes sideways; there is no separate side dock. */
+  function placeDockApps() {
+    if (!dock || !dockApps) return;
+    if (dockApps.parentNode !== dock) dock.append(dockDivider, dockApps);
+  }
+
+  /* Left inset for full-screen windows (no side dock any more) */
+  function railInset() { return 6; }
+
+  /* Tell the CSS how much space the bottom dock takes (project dock stops above it) */
+  function syncDockVar() {
+    document.documentElement.style.setProperty('--dock-space', dockSpace() + 'px');
+  }
+
+  /* Scroll the swipeable strip so the given app's icon is fully visible */
+  function revealDockBtn(btn) {
+    if (!btn || !dockApps || btn.parentNode !== dockApps) return;
+    if (dockApps.scrollWidth <= dockApps.clientWidth) return;
+    const l = btn.offsetLeft, r = l + btn.offsetWidth;
+    if (l < dockApps.scrollLeft) dockApps.scrollTo({ left: l - 4, behavior: 'smooth' });
+    else if (r > dockApps.scrollLeft + dockApps.clientWidth) dockApps.scrollTo({ left: r - dockApps.clientWidth + 4, behavior: 'smooth' });
   }
 
   function refreshDock() {
@@ -145,6 +182,8 @@
       btn.setAttribute('aria-pressed', String(!!w && w === focused));
     });
     dockDivider.hidden = dockApps.children.length === 0;
+    syncDockVar();
+    if (focused && focused.dockBtn) revealDockBtn(focused.dockBtn);
     const pt = document.getElementById('panel-title');
     if (pt) pt.textContent = (focused && focused.state !== 'min') ? focused.def.title : 'Desktop';
     const anyVisible = Array.from(wins.values()).some(w => w.state !== 'min');
@@ -161,7 +200,7 @@
   /* Height of the top panel: windows must never slide under it */
   function topSpace() {
     const p = document.getElementById('top-panel');
-    return p ? p.offsetHeight : 0;
+    return p ? Math.round(p.getBoundingClientRect().bottom) : 0;   // floating pill: include its top gap
   }
 
   /* =====================================================================
@@ -169,7 +208,11 @@
    * ===================================================================== */
   function targetRect(w) {
     const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
-    if (isMobile()) return { x: 6, y: ts + 6, w: vw - 12, h: vh - ds - ts - 6 };
+    /* phones: a floating window with a visible margin, never edge-to-edge */
+    if (isMobile()) {
+      const L = railInset() + 6, top = ts + 30;
+      return { x: L, y: top, w: vw - L - 10, h: Math.max(240, vh - ds - top - 4) };
+    }
     if (w.state === 'max') return { x: 0, y: ts, w: vw, h: vh - ds - ts };
     return w.rect;
   }
@@ -181,15 +224,42 @@
     s.width = r.w + 'px'; s.height = r.h + 'px';
   }
 
+  /* Space taken by the notification panel on the right (0 when it is hidden or on small screens) */
+  function sidebarW() {
+    if (window.innerWidth < 992) return 0;
+    const v = parseFloat(getComputedStyle(document.body).getPropertyValue('--sidebar-w'));
+    return isNaN(v) ? 0 : v;
+  }
+
+  /* Space taken by the desktop icons on the left (desktop only) */
+  function iconsW() {
+    if (window.innerWidth < 992) return 0;
+    const ic = document.getElementById('desktop-icons');
+    return ic ? Math.round(ic.getBoundingClientRect().right) + 12 : 112;
+  }
+
+  /* The icon grid can be 2-3 columns wide: tell the CSS where the Skills widgets may start */
+  function syncIconsVar() {
+    document.documentElement.style.setProperty('--icons-w', iconsW() + 'px');
+  }
+
+  /* Restart: close every window, put the About sticky note back where it started */
+  async function restartDesktop() {
+    await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
+    cascade = 0;
+    window.scrollTo(0, 0);
+    resetNote(true);
+  }
+
   function initialRect(def) {
     const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
-    const w = Math.min(def.size[0], vw - 40);
+    const left = iconsW(), right = sidebarW();   // centre in the free area between icons and panel
+    const w = Math.min(def.size[0], vw - left - right - 24);
     const h = Math.min(def.size[1], vh - ds - ts - 20);
-    const sidebar = vw >= 992 ? 380 : 0;  // centre in the area beside the sidebar
     const off = (cascade++ % 6) * 28;
     return {
       w, h,
-      x: clamp(sidebar + (vw - sidebar - w) / 2 + off - 56, 8, vw - w - 8),
+      x: clamp(left + (vw - left - right - w) / 2 + off - 56, 8, vw - w - 8),
       y: clamp(ts + (vh - ds - ts - h) / 2 + off - 56, ts + 8, vh - ds - h)
     };
   }
@@ -317,6 +387,7 @@
         return;
       }
     }
+    if (d.image) { renderCert(w); return; }
     if (d.url) { mountFrame(w, d.url); return; }
     if (d.id === 'portfolio') { renderProjectList(w); return; }
     w.body.innerHTML = '<div class="wm-loading">Nothing to show for “' + d.title + '” yet.</div>';
@@ -378,6 +449,15 @@
       raf = requestAnimationFrame(() => relayout(w));
     });
     w.ro.observe(w.body);
+  }
+
+  /* Certificate window: the whole certificate, fitted to the window */
+  function renderCert(w) {
+    w.body.classList.add('is-cert');
+    const wrap = el('div', { class: 'wm-cert' });
+    const img = el('img', { class: 'wm-cert-img', alt: w.def.sub || w.def.title, src: w.def.image, draggable: 'false' });
+    wrap.appendChild(img);
+    w.body.appendChild(wrap);
   }
 
   function renderProjectList(w) {
@@ -462,7 +542,7 @@
     w.dockBtn = b;
   }
 
-  function openWindow(def) {
+  function openWindow(def, rect) {
     if (typeof def === 'string') def = defs.get(def);
     if (!def) return null;
     let w = wins.get(def.id);
@@ -472,10 +552,12 @@
     }
     defs.set(def.id, def);
     w = createWindow(def);
+    if (rect) w.rect = rect;
     wins.set(def.id, w);
     layer.appendChild(w.el);
     ensureDockBtn(w);
     applyRect(w);
+    if (isMobile()) wins.forEach(applyRect);   // project dock may have just appeared: shift the others
     focusWindow(w);
     if (def.adopt) { refreshLayout(w); watchLayout(w); }
     flyIn(w);
@@ -525,19 +607,21 @@
     flyIn(w);
   }
 
-  async function closeWindow(w) {
+  async function closeWindow(w, instant) {
     if (w.busy) return;
     w.busy = true;
-    const anim = await fadeOut(w);
+    let anim = null;
+    if (!instant) anim = await fadeOut(w);          // instant = no await, so the swap is synchronous
     if (w.frame) frames.delete(w.frame);
     if (w.ro) w.ro.disconnect();
-    if (w.adopted) store.appendChild(w.adopted);   // keep Resume/Portfolio state for next open
+    if (w.adopted) store.appendChild(w.adopted);    // keep Resume/Portfolio state for next open
     w.el.remove();
     if (anim) anim.cancel();
     wins.delete(w.id);
     if (!w.def.permanent) {                        // dynamic dock item goes away
       dockBtns.delete(w.id);
       w.dockBtn.remove();
+      if (isMobile()) wins.forEach(applyRect);   // project dock may have just disappeared
     }
     if (focused === w) { focused = null; focusNext(); } else refreshDock();
   }
@@ -579,6 +663,7 @@
   function enableDrag(w, bar) {
     bar.addEventListener('pointerdown', e => {
       if (isMobile() || e.button !== 0 || e.target.closest('.wm-btn')) return;
+      if (w.state === 'max') return;      // a maximized window stays maximized: restore it with the button or a double-click
       const sx = e.clientX, sy = e.clientY;
       let started = false, offX = 0, offY = 0;
       try { bar.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
@@ -588,16 +673,6 @@
           if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 4) return;
           started = true;
           layer.classList.add('wm-dragging');
-          if (w.state === 'max') {            // drag a maximized window = restore under the cursor
-            const r = w.el.getBoundingClientRect();
-            const ratio = (sx - r.left) / r.width;
-            w.state = 'normal';
-            syncMaxUI(w);
-            fitToViewport(w);
-            w.rect.x = sx - ratio * w.rect.w;
-            w.rect.y = 0;
-            applyRect(w);
-          }
           offX = sx - w.rect.x;
           offY = sy - w.rect.y;
         }
@@ -661,10 +736,39 @@
     });
   }
 
+  /* Desktop layout (>= 992px): floating sticky note + widgets + notification panel.
+     Small layout: everything stacks in the page (hero, About note, Skills widgets). */
+  let desktopMode = window.innerWidth >= 992;
+
+  function syncMode() {
+    const d = window.innerWidth >= 992;
+    if (d === desktopMode) return;
+    desktopMode = d;
+    if (!d) window.scrollTo(0, 0);
+    resetNote(false);          // desktop: back to its start spot; small: back into the page flow
+    refreshDock();
+  }
+
+  window.matchMedia('(min-width: 992px)').addEventListener('change', () => syncMode());
+  window.addEventListener('load', () => { syncMode(); syncIconsVar(); });
+
+  window.matchMedia('(max-width: 768px)').addEventListener('change', () => {
+    placeDockApps();
+    refreshDock();
+    wins.forEach(w => { fitToViewport(w); applyRect(w); if (w.def.adopt) setTimeout(() => relayout(w), 60); });
+  });
+
   window.addEventListener('resize', e => {
     if (e && e.isTrusted === false) return;   // ignore the synthetic event from refreshLayout()
+    syncMode();
+    syncDockVar();
+    syncIconsVar();
     wins.forEach(w => { fitToViewport(w); applyRect(w); });
+    keepNoteInView();
   });
+
+  /* Restart (panel + Ubuntu menu) */
+  document.addEventListener('desktop:restart', e => { e.preventDefault(); restartDesktop(); });
 
   /* =====================================================================
    * 8. WIRING: dock, links, deep links
@@ -709,7 +813,7 @@
     const href = a.getAttribute('href');
 
     /* 2) Existing in-page links: <a href="#resume">, <a href="#portfolio"> */
-    if (href === '#resume' || href === '#skills' || href === '#portfolio') {
+    if (href === '#resume' || href === '#portfolio') {
       e.preventDefault();
       openWindow(href.slice(1));
       return;
@@ -788,14 +892,183 @@
   }
 
   /* =====================================================================
+   * 8c. DESKTOP WIDGETS: About sticky note + desktop icons
+   *     The note is a floating widget on desktop (drag the header, resize the
+   *     corner). It never closes, has no dock icon, and Restart resets it.
+   *     Below 992px it is a normal block in the page and these handlers sleep.
+   * ===================================================================== */
+  const note = document.getElementById('about');
+  const NOTE_MIN_W = 260, NOTE_MIN_H = 160, NOTE_MARGIN = 10, NOTE_GAP = 12;
+  const isDesk = () => window.innerWidth >= 992;
+  let noteMoved = false;
+
+  /* Default spot: directly under the notification panel, same width, right-aligned.
+     If the panel is hidden (bell), the note rises to sit just under the top panel. */
+  function noteDefaults() {
+    const ts = topSpace();
+    const hero = document.getElementById('hero');
+    const open = hero && !document.body.classList.contains('sidebar-collapsed');
+    const w = hero ? hero.offsetWidth : 340;
+    const top = open ? hero.offsetTop + hero.offsetHeight + NOTE_GAP : ts + 8;
+    const h = clamp(window.innerHeight - top - 16, NOTE_MIN_H, 360);
+    return { left: window.innerWidth - NOTE_MARGIN - w, top: Math.round(top), w, h };
+  }
+
+  function setNoteRect(r) {
+    note.style.left = Math.round(r.left) + 'px';
+    note.style.top = Math.round(r.top) + 'px';
+    note.style.width = Math.round(r.w) + 'px';
+    note.style.height = Math.round(r.h) + 'px';
+  }
+
+  function resetNote(animate) {
+    if (!note) return;
+    noteMoved = false;
+    const body = note.querySelector('.sticky-body');
+    if (body) body.scrollTop = 0;
+    if (!isDesk()) {                                  // small screens: plain block in the page
+      ['left', 'top', 'width', 'height'].forEach(p => { note.style[p] = ''; });
+      return;
+    }
+    const d = noteDefaults();
+    setNoteRect(d);
+    if (animate && !reduceMotion()) {
+      note.animate([
+        { opacity: 0, transform: 'scale(.9)' },
+        { opacity: 1, transform: 'scale(1)' }
+      ], { duration: 320, easing: POP });
+    }
+  }
+
+  function keepNoteInView() {
+    if (!note || !isDesk()) return;
+    if (!noteMoved) { resetNote(false); return; }
+    const vw = window.innerWidth, vh = window.innerHeight, ts = topSpace();
+    const r = note.getBoundingClientRect();
+    const w = clamp(r.width, NOTE_MIN_W, vw - 16), h = clamp(r.height, NOTE_MIN_H, vh - ts - 16);
+    setNoteRect({
+      left: clamp(r.left, 0, vw - w), top: clamp(r.top, ts, vh - 48), w, h
+    });
+  }
+
+  function flashNote() {
+    if (!note) return;
+    if (!isDesk()) { note.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    note.classList.remove('is-flash');
+    void note.offsetWidth;                            // restart the animation
+    note.classList.add('is-flash');
+    setTimeout(() => note.classList.remove('is-flash'), 1100);
+  }
+
+  function initNote() {
+    if (!note) return;
+    const handle = note.querySelector('.sticky-handle');
+    const grip = note.querySelector('.sticky-resize');
+    let zNote = 14;
+    const raise = () => { note.style.zIndex = ++zNote > 40 ? (zNote = 15) : zNote; };
+
+    /* drag by the header */
+    handle.addEventListener('pointerdown', e => {
+      if (!isDesk() || e.button !== 0) return;
+      raise();
+      const r = note.getBoundingClientRect();
+      const offX = e.clientX - r.left, offY = e.clientY - r.top;
+      note.classList.add('is-dragging');
+      try { handle.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      const move = ev => {
+        const vw = window.innerWidth, vh = window.innerHeight, ts = topSpace();
+        noteMoved = true;
+        note.style.left = clamp(ev.clientX - offX, 0, vw - note.offsetWidth) + 'px';
+        note.style.top = clamp(ev.clientY - offY, ts, vh - 48) + 'px';
+      };
+      const up = () => {
+        handle.removeEventListener('pointermove', move);
+        handle.removeEventListener('pointerup', up);
+        handle.removeEventListener('pointercancel', up);
+        note.classList.remove('is-dragging');
+      };
+      handle.addEventListener('pointermove', move);
+      handle.addEventListener('pointerup', up);
+      handle.addEventListener('pointercancel', up);
+    });
+
+    /* resize from the bottom-right corner */
+    grip.addEventListener('pointerdown', e => {
+      if (!isDesk() || e.button !== 0) return;
+      e.preventDefault();
+      raise();
+      const r = note.getBoundingClientRect();
+      const sx = e.clientX, sy = e.clientY;
+      note.classList.add('is-dragging');
+      try { grip.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      const move = ev => {
+        const vw = window.innerWidth, vh = window.innerHeight;
+        noteMoved = true;
+        note.style.width = clamp(r.width + ev.clientX - sx, NOTE_MIN_W, vw - r.left - 8) + 'px';
+        note.style.height = clamp(r.height + ev.clientY - sy, NOTE_MIN_H, vh - r.top - 8) + 'px';
+      };
+      const up = () => {
+        grip.removeEventListener('pointermove', move);
+        grip.removeEventListener('pointerup', up);
+        grip.removeEventListener('pointercancel', up);
+        note.classList.remove('is-dragging');
+      };
+      grip.addEventListener('pointermove', move);
+      grip.addEventListener('pointerup', up);
+      grip.addEventListener('pointercancel', up);
+    });
+
+    note.addEventListener('pointerdown', () => { if (isDesk()) raise(); }, true);
+
+    /* bell: follow the notification panel while the note is still in its default spot */
+    new MutationObserver(() => {
+      if (noteMoved || !isDesk()) return;
+      note.classList.add('is-gliding');
+      resetNote(false);
+      setTimeout(() => note.classList.remove('is-gliding'), 340);
+    }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    resetNote(false);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!noteMoved) resetNote(false); });
+    window.addEventListener('load', () => { if (!noteMoved) resetNote(false); });
+  }
+
+  /* Certificate cards inside Portfolio (thumbnail or its maximize button) open the
+     certificate WINDOW instead of the GLightbox overlay. Capture phase: runs before
+     GLightbox / main.js see the click. */
+  document.addEventListener('click', e => {
+    if (e.button !== 0) return;
+    const t = e.target.closest(
+      '.portfolio-item.filter-certifications a.glightbox, ' +
+      '.portfolio-item.filter-certifications .portfolio-image-link, ' +
+      '.portfolio-item.filter-certifications [data-portfolio-maximize]');
+    if (!t) return;
+    const item = t.closest('.portfolio-item');
+    const full = (item && item.getAttribute('data-full-image')) || t.getAttribute('href') || '';
+    const def = CERTS.find(c => full.endsWith(c.image.split('/').pop()));
+    if (!def) return;                                // unknown cert: leave the old behaviour
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    openWindow('cert:' + def.id);
+  }, true);
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-desktop]');
+    if (!b) return;
+    e.preventDefault();
+    if (b.getAttribute('data-desktop') === 'about') flashNote();
+  });
+
+  /* =====================================================================
    * 9. BOOT
    * ===================================================================== */
   function boot() {
     document.body.append(layer, store);
     buildDock();
     initPanel();
+    syncIconsVar();
 
-    /* Park Resume/Portfolio off-page: the main page is just sidebar + hero + about.
+    /* Park Resume/Portfolio off-page; nothing opens on first load.
        (They stay in the DOM, so content is still there for crawlers.) */
     Object.values(APPS).forEach(a => {
       const node = a.adopt && document.querySelector(a.adopt);
@@ -803,28 +1076,11 @@
     });
 
     refreshDock();
-    fitHome();
-
+    initNote();
+    desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
-    if (h === '#resume' || h === '#skills' || h === '#portfolio') openWindow(h.slice(1));
+    if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
   }
-
-  /* Home page is locked (no scroll): scale the About section down when the
-     screen is too short, so it always sits between the top panel and the dock. */
-  function fitHome() {
-    const about = document.getElementById('about');
-    const main = about && about.closest('main');
-    if (!main) return;
-    about.style.zoom = '';
-    if (window.innerWidth < 992) return;
-    const cs = getComputedStyle(main);
-    const avail = main.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    const natural = about.getBoundingClientRect().height;
-    if (natural > avail && avail > 0) about.style.zoom = String(Math.max(0.55, avail / natural));
-  }
-  window.addEventListener('resize', fitHome);
-  window.addEventListener('load', fitHome);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHome);
 
   window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };
 

@@ -87,9 +87,7 @@
                 class="fa-solid fa-route"></i>Route 196</button></li>
         </ul>
       </div>
-    </div>
-    <div class="panel-center"><span id="panel-title">Desktop</span></div>
-    <div class="panel-right">
+      <span aria-hidden="true" class="panel-sep"></span>
       <nav aria-label="Connect" class="panel-connect">
         <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
           title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -100,7 +98,12 @@
         <a aria-label="GoLance" href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener"
           target="_blank" title="GoLance"><i class="fa-solid fa-laptop-code"></i></a>
       </nav>
-      <span aria-hidden="true" class="panel-sep"></span>
+    </div>
+    <div class="panel-center"><span id="panel-title">Desktop</span></div>
+    <div class="panel-right">
+      <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
+        class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
+          aria-hidden="true" class="fa-solid fa-bell"></i></button>
       <div class="panel-menu">
         <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true" aria-label="Switch color theme"
           class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme" type="button"><i
@@ -121,17 +124,31 @@
           </div>
         </div>
       </div>
+      <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart"
+        id="panel-restart-btn" title="Restart" type="button"><i aria-hidden="true"
+          class="fa-solid fa-rotate-right"></i></button>
       <time class="panel-clock" id="panel-clock"></time>
     </div>
   </header>
   <div aria-atomic="true" aria-live="polite" class="panel-notice" id="themeNotice"></div>
+  <!-- Desktop icons (hidden on small screens) -->
+  <nav aria-label="Desktop icons" class="desktop-icons" id="desktop-icons">
+    <button class="desktop-icon di-pdf" data-app="resume" title="resume.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>resume.pdf</span></button>
+    <button class="desktop-icon di-pdf" data-app="cert:techseo" title="technical seo certificate.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>technical seo certificate.pdf</span></button>
+    <button class="desktop-icon di-pdf" data-app="cert:fullstack" title="full stack certificate.pdf" type="button"><i aria-hidden="true" class="fa-solid fa-file-pdf"></i><span>full stack certificate.pdf</span></button>
+    <button class="desktop-icon di-html" data-app="project:auditkit" title="auditkit.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>auditkit.html</span></button>
+    <button class="desktop-icon di-html" data-app="project:nothingtechblob" title="nothingtechblob.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>nothingtechblob.html</span></button>
+    <button class="desktop-icon di-html" data-app="project:badlands-ink" title="badlands-ink.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>badlands-ink.html</span></button>
+    <button class="desktop-icon di-html" data-app="project:johnoffthewall" title="johnoffthewall.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>johnoffthewall.html</span></button>
+    <button class="desktop-icon di-html" data-app="project:pixellog" title="pixellog.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>pixellog.html</span></button>
+    <button class="desktop-icon di-html" data-app="project:jamporudex" title="jamporudex.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>jamporudex.html</span></button>
+    <button class="desktop-icon di-html" data-app="project:route196" title="route196.html" type="button"><i aria-hidden="true" class="fa-brands fa-html5"></i><span>route196.html</span></button>
+  </nav>
   <!-- Linux-style Floating Dock -->
   <nav aria-label="Desktop dock" class="linux-dock">
     <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" class="dock-item dock-menu"
       id="dock-menu-btn" title="Menu" type="button"><i class="fa-brands fa-ubuntu"></i><span
         class="dock-tooltip">Menu</span></button>
-    <a class="dock-item dock-about" href="#about" title="About"><i class="fa-solid fa-user-astronaut"></i><span
-        class="dock-tooltip">About</span></a>
     <a class="dock-item dock-resume" href="#resume" title="Resume"><i class="fa-solid fa-timeline"></i><span
         class="dock-tooltip">Resume</span></a>
     <a class="dock-item dock-projects" href="#portfolio" title="Projects"><i
@@ -149,11 +166,12 @@
             class="fa-solid fa-diagram-project"></i>Projects</button></li>
       <li><button data-terminal="socials" role="menuitem" type="button"><i
             class="fa-solid fa-share-nodes"></i>Socials</button></li>
-      <li><button data-app="skills" role="menuitem" type="button"><i
-            class="fa-solid fa-microchip"></i>Skills</button></li>
+      <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
+      <li><button data-power="restart" role="menuitem" type="button"><i
+            class="fa-solid fa-rotate-right"></i>Restart</button></li>
     </ul>
   </div>
-  <!-- Hero Sidebar -->
+  <!-- Hero Sidebar (notification panel, right side) -->
   <aside class="hero-sidebar" id="hero">
     <div class="hero-sidebar-inner">
       <div class="sidebar-avatar">
@@ -164,21 +182,24 @@
       </div>
       <div class="sidebar-header-block">
         <h1>John Paul <span class="accent-text">De Leon</span></h1>
-        <div class="code-container">
-          <span class="punctuation">{</span><span class="quote">"</span><span class="typed"
-            data-typed-items="technicalSeoSpecialist, seoSpecialist, wordpressDeveloper, webDeveloper"></span><span
-            class="quote">"</span><span class="punctuation">}</span>
+        <div aria-hidden="true" class="code-container role-code">
+          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>technicalSeoSpecialist<span class="quote">"</span><span class="brace">}</span></span>
+          <span class="role-comment">// <span class="typed"
+              data-typed-items="seoSpecialist,wordpressDeveloper,webDeveloper"></span></span>
         </div>
+        <span class="visually-hidden">Technical SEO Specialist</span>
       </div>
       <div class="sidebar-contact contact-block">
         <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email" title="Copy email"
           data-copy-value="jpleonard.deleon@gmail.com" type="button">
-          <i class="fa-solid fa-envelope"></i>
+          <i class="fa-solid fa-envelope"></i><span class="sidebar-link-label">Email</span>
         </button>
         <button aria-label="Copy phone number" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone" title="Copy phone number" data-copy-value="+639760109942"
           type="button">
-          <i class="fa-solid fa-phone"></i>
+          <i class="fa-solid fa-phone"></i><span class="sidebar-link-label">Phone</span>
         </button>
+        <a aria-label="GitHub profile" class="sidebar-contact-item" href="https://github.com/jpldeleon" rel="noopener"
+          target="_blank" title="GitHub"><i class="fa-brands fa-github"></i><span class="sidebar-link-label">GitHub</span></a>
         <!-- Copy Toast (Email / Phone) -->
         <div class="copy-toast-container">
           <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToast" role="status">
@@ -190,188 +211,101 @@
           </div>
         </div>
       </div>
-      <div aria-label="Career stats" class="sidebar-stats">
-        <div class="sidebar-stat">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="5" data-purecounter-start="0"></span>
-          <p>Years in Link Prospecting &amp; Research</p>
-        </div>
-        <div class="sidebar-stat">
-          <i class="fa-solid fa-briefcase"></i>
-          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="12" data-purecounter-start="0"></span>
-          <p>Years Professional</p>
-        </div>
-        <div class="sidebar-stat">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="7" data-purecounter-start="0"></span>
-          <p>Experimental Projects</p>
-        </div>
-        <div class="sidebar-stat">
-          <i class="fa-solid fa-rocket"></i>
-          <span class="purecounter" data-purecounter-duration="1" data-purecounter-end="31" data-purecounter-start="0"></span>
-          <p>Projects handled</p>
-        </div>
+      <div aria-label="Resume" class="sidebar-quick">
+        <!-- TODO: set the real resume path -->
+        <a aria-label="Download resume" class="sidebar-cta" download="" href="assets/resume.pdf" title="Download Resume"><i
+            class="fa-solid fa-download"></i><span class="sidebar-quick-label">Download Resume</span></a>
       </div>
     </div>
   </aside><!-- /Hero Sidebar -->
   <main class="main">
-    <!-- About Section -->
-    <section class="about section" id="about">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row">
-          <div class="col-lg-5" data-aos="zoom-in" data-aos-delay="200">
-            <div class="profile-card">
-              <div class="profile-header">
-                <div class="profile-image">
-                  <a aria-label="View profile photo" href="#">
-                    <img alt="John Paul De Leon" class="img-fluid photo-original"
-                      src="assets/img/profile/jp-profile-2.webp" />
-                  </a>
-                </div>
-                <div class="profile-badge">
-                  <i class="fa-brands fa-debian"></i>
-                </div>
-              </div>
-              <div class="profile-details">
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="fa-solid fa-bolt"></i>
-                    <h4>Specialization</h4>
-                  </div>
-                  <p class="detail-value">Technical SEO, SEO, WordPress Development</p>
-                </div>
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="fa-solid fa-arrow-trend-up"></i>
-                    <h4>Experience</h4>
-                  </div>
-                  <p class="detail-value">Mid-level (5+ years in SEO)</p>
-                </div>
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="fa-solid fa-book"></i>
-                    <h4>Education</h4>
-                  </div>
-                  <p class="detail-value">SEO, Technical SEO, Full Stack Web Development, ICT</p>
-                </div>
-                <div class="detail-card">
-                  <div class="detail-card-header">
-                    <i class="fa-solid fa-language"></i>
-                    <h4>Languages</h4>
-                  </div>
-                  <p class="detail-value">English, Filipino</p>
-                </div>
-                <div class="profile-cta">
-                  <div class="profile-cta-buttons">
-                    <a class="btn btn-primary" href="#">
-                      <i class="fa-solid fa-download"></i>
-                      Download Resume
-                    </a>
-                    <a class="btn btn-github" href="https://github.com/jpldeleon" target="_blank">
-                      <i class="fa-brands fa-github"></i>
-                      View on GitHub
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
-            <div class="about-content">
-              <div class="section-header">
-                <span class="badge-text">Get to Know Me</span>
-                <h2>Building things with SEO in mind</h2>
-              </div>
-              <div class="description">
-                <p>I did link prospecting for five years. The work was straightforward, but I was curious about the
+    <!-- About: sticky note widget (draggable + resizable on desktop, stacked in the page on small screens) -->
+    <section aria-label="About me" class="about section sticky-note" id="about">
+      <div class="sticky-handle">
+        <span class="sticky-title"><i aria-hidden="true" class="fa-solid fa-note-sticky"></i>about_me.txt</span>
+        <i aria-hidden="true" class="fa-solid fa-grip sticky-grip"></i>
+      </div>
+      <div class="sticky-body">
+        <span class="badge-text">Get to Know Me</span>
+        <h2>Building things with SEO in mind</h2>
+        <div class="description">
+          <p>I did link prospecting for five years. The work was straightforward, but I was curious about the
                   numbers. I'd see metrics on worksheets and think, there's more to this. What's the bigger picture?
                   What's behind these numbers?</p>
-                <p>So I dug into Technical SEO and got sucked into it. I already had a background in HTML, CSS, and
+          <p>So I dug into Technical SEO and got sucked into it. I already had a background in HTML, CSS, and
                   JavaScript from college, so I took a full-stack bootcamp as a refresher to actually see how everything
                   works at the code level. Not because I wanted to be a developer, but because I needed to understand
                   the full context.</p>
-                <p>Now I can identify problems and implement solutions. I think carefully before moving. I troubleshoot
+          <p>Now I can identify problems and implement solutions. I think carefully before moving. I troubleshoot
                   instead of guessing. I look for ways to improve how things work. I'm easily teachable and adapt to how
                   you work and new technologies and updates, but I'll ask questions first to make sure I understand.</p>
-                <p>How I work: I prefer written or chat communication over calls, but I can adjust when needed. I work
+          <p>How I work: I prefer written or chat communication over calls, but I can adjust when needed. I work
                   independently after understanding what matters and how you position things. My process is iterative,
                   whether I'm solving something urgent or thinking through how to streamline a process. I research
                   thoroughly because good decisions come from understanding your options. I prioritize high-impact work
                   over busywork.</p>
-                <p>I'm solid at a few things and keep learning the rest. I don't have real client work yet, but I've
+          <p>I'm solid at a few things and keep learning the rest. I don't have real client work yet, but I've
                   built solid local projects that demonstrate what I can do. I bring that same curiosity I had five
                   years ago, but now I actually know where to look for answers.</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </section><!-- /About Section -->
-    
-    <!-- Skills Section -->
-    <section class="skills section" id="skills">
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Skills</h2>
-        <p>Technical SEO background meeting web development skills. Hands-on experience in strategy, WordPress, and
-          full-stack projects.</p>
-      </div><!-- End Section Title -->
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="skills-grid">
-          <div class="skills-specialization" data-aos="fade-up" data-aos-delay="150">
-            <h4>Core Specializations</h4>
-            <div class="skills-list">
-              <div class="skill-item">
-                <h5>Technical SEO</h5>
-                <div class="skill-tooltip">Learned through certification course and hands-on projects</div>
-              </div>
-              <div class="skill-item">
-                <h5>WordPress Development</h5>
-                <div class="skill-tooltip">Built and practiced multiple projects on LocalWP</div>
-              </div>
-              <div class="skill-item">
-                <h5>E-Commerce / WooCommerce</h5>
-                <div class="skill-tooltip">Badlands Ink project with product catalog, payments, and optimization</div>
-              </div>
-            </div>
+      <span aria-hidden="true" class="sticky-resize"></span>
+    </section><!-- /About sticky note -->
+
+    <!-- Skills: three fixed desktop widgets -->
+    <div aria-label="Skills" class="skill-widgets" id="skills">
+      <article class="skill-widget skills-specialization">
+        <h4>Core Specializations</h4>
+        <div class="skills-list">
+          <div class="skill-item">
+            <h5>Technical SEO</h5>
+            <div class="skill-tooltip">Learned through certification course and hands-on projects</div>
           </div>
-          <div class="skills-specialization" data-aos="fade-up" data-aos-delay="200">
-            <h4>Expertise Areas</h4>
-            <div class="skills-list">
-              <div class="skill-item">
-                <h5>On-Page SEO</h5>
-                <div class="skill-tooltip">Practical experience optimizing WordPress projects</div>
-              </div>
-              <div class="skill-item">
-                <h5>Off-Page SEO</h5>
-                <div class="skill-tooltip">5+ years link research, prospecting, qualification, and vetting</div>
-              </div>
-              <div class="skill-item">
-                <h5>Performance &amp; Core Web Vitals</h5>
-                <div class="skill-tooltip">Site speed optimization and performance analysis</div>
-              </div>
-            </div>
+          <div class="skill-item">
+            <h5>WordPress Development</h5>
+            <div class="skill-tooltip">Built and practiced multiple projects on LocalWP</div>
           </div>
-          <div class="skills-specialization" data-aos="fade-up" data-aos-delay="250">
-            <h4>Technical Stack</h4>
-            <div class="skills-list">
-              <div class="skill-item">
-                <h5>Frontend Development</h5>
-                <div class="skill-tooltip">HTML, CSS, JavaScript, Bootstrap, responsive design</div>
-              </div>
-              <div class="skill-item">
-                <h5>Backend &amp; Scripting</h5>
-                <div class="skill-tooltip">Node.js, Express.js, automation scripts</div>
-              </div>
-              <div class="skill-item">
-                <h5>Tools &amp; Platforms</h5>
-                <div class="skill-tooltip">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</div>
-              </div>
-            </div>
+          <div class="skill-item">
+            <h5>E-Commerce / WooCommerce</h5>
+            <div class="skill-tooltip">Badlands Ink project with product catalog, payments, and optimization</div>
           </div>
         </div>
-      </div>
-    </section><!-- /Skills Section -->
+      </article>
+      <article class="skill-widget skills-specialization">
+        <h4>Expertise Areas</h4>
+        <div class="skills-list">
+          <div class="skill-item">
+            <h5>On-Page SEO</h5>
+            <div class="skill-tooltip">Practical experience optimizing WordPress projects</div>
+          </div>
+          <div class="skill-item">
+            <h5>Off-Page SEO</h5>
+            <div class="skill-tooltip">5+ years link research, prospecting, qualification, and vetting</div>
+          </div>
+          <div class="skill-item">
+            <h5>Performance &amp; Core Web Vitals</h5>
+            <div class="skill-tooltip">Site speed optimization and performance analysis</div>
+          </div>
+        </div>
+      </article>
+      <article class="skill-widget skills-specialization">
+        <h4>Technical Stack</h4>
+        <div class="skills-list">
+          <div class="skill-item">
+            <h5>Frontend Development</h5>
+            <div class="skill-tooltip">HTML, CSS, JavaScript, Bootstrap, responsive design</div>
+          </div>
+          <div class="skill-item">
+            <h5>Backend &amp; Scripting</h5>
+            <div class="skill-tooltip">Node.js, Express.js, automation scripts</div>
+          </div>
+          <div class="skill-item">
+            <h5>Tools &amp; Platforms</h5>
+            <div class="skill-tooltip">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</div>
+          </div>
+        </div>
+      </article>
+    </div><!-- /Skills widgets -->
     <!-- Resume Section -->
     <section class="resume section" id="resume">
       <!-- Section Title -->
@@ -985,6 +919,38 @@
   <script src="assets/js/main.js"></script>
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
+  <!-- Notification panel (bell) + Restart -->
+  <script>
+    (function () {
+      var KEY = 'sidebarCollapsed', body = document.body, btn = document.getElementById('panel-notif-btn');
+      function save(v) { try { v === null ? localStorage.removeItem(KEY) : localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) { } }
+      function saved() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
+      function setCollapsed(c, persist) {
+        body.classList.toggle('sidebar-collapsed', c);
+        if (btn) {
+          btn.setAttribute('aria-expanded', String(!c));
+          btn.title = c ? 'Show notifications' : 'Hide notifications';
+        }
+        if (persist) save(c);
+      }
+      body.classList.add('sidebar-noanim');
+      setCollapsed(saved(), false);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { body.classList.remove('sidebar-noanim'); }); });
+      if (btn) btn.addEventListener('click', function () { setCollapsed(!body.classList.contains('sidebar-collapsed'), true); });
+
+      // Restart: reopen the notification panel; app.js closes windows and resets the About note
+      // by listening for "desktop:restart" and calling preventDefault(). Without it, reload.
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('[data-power="restart"]')) return;
+        var launcher = document.getElementById('app-menu'), mb = document.getElementById('dock-menu-btn');
+        if (launcher && mb && launcher.classList.contains('open')) mb.click();
+        save(null);
+        setCollapsed(false, false);
+        var ev = new CustomEvent('desktop:restart', { cancelable: true });
+        if (document.dispatchEvent(ev)) location.reload();
+      });
+    })();
+  </script>
 </body>
 
 </html>
