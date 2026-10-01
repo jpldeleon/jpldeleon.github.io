@@ -256,11 +256,12 @@
     const left = iconsW(), right = sidebarW();   // centre in the free area between icons and panel
     const w = Math.min(def.size[0], vw - left - right - 24);
     const h = Math.min(def.size[1], vh - ds - ts - 20);
-    const off = (cascade++ % 6) * 28;
+    const off = def.lite ? 0 : (cascade++ % 6) * 28;
+    const sh = def.lite ? 0 : 56;                 // lite windows sit dead centre
     return {
       w, h,
-      x: clamp(left + (vw - left - right - w) / 2 + off - 56, 8, vw - w - 8),
-      y: clamp(ts + (vh - ds - ts - h) / 2 + off - 56, ts + 8, vh - ds - h)
+      x: clamp(left + (vw - left - right - w) / 2 + off - sh, 8, vw - w - 8),
+      y: clamp(ts + (vh - ds - ts - h) / 2 + off - sh, ts + 8, vh - ds - h)
     };
   }
 
@@ -345,14 +346,16 @@
       '<header class="wm-titlebar">' +
         '<span class="wm-title"><i class="' + def.icon + '"></i><span></span></span>' +
         '<div class="wm-controls" role="group" aria-label="Window controls">' +
-          '<button type="button" class="wm-btn wm-min" aria-label="Minimize" title="Minimize">' + SVG.min + '</button>' +
-          '<button type="button" class="wm-btn wm-max" aria-label="Maximize" title="Maximize">' + SVG.expand + SVG.restore + '</button>' +
+          (def.lite ? '' :
+            '<button type="button" class="wm-btn wm-min" aria-label="Minimize" title="Minimize">' + SVG.min + '</button>' +
+            '<button type="button" class="wm-btn wm-max" aria-label="Maximize" title="Maximize">' + SVG.expand + SVG.restore + '</button>') +
           '<button type="button" class="wm-btn wm-close" aria-label="Close" title="Close">' + SVG.close + '</button>' +
         '</div>' +
       '</header>' +
       '<div class="wm-body"></div>' +
-      HANDLES.map(d => '<span class="wm-resize" data-dir="' + d + '" aria-hidden="true"></span>').join('');
+      (def.lite ? '' : HANDLES.map(d => '<span class="wm-resize" data-dir="' + d + '" aria-hidden="true"></span>').join(''));
     root.querySelector('.wm-title span').textContent = def.title;
+    if (def.lite) root.classList.add('is-lite');   // close-only window: fixed position and size
 
     const w = {
       id: def.id, def, el: root, body: root.querySelector('.wm-body'),
@@ -361,15 +364,17 @@
 
     /* Controls */
     root.querySelector('.wm-close').addEventListener('click', () => closeWindow(w));
-    root.querySelector('.wm-min').addEventListener('click', () => minimize(w));
-    root.querySelector('.wm-max').addEventListener('click', () => toggleMaximize(w));
     const bar = root.querySelector('.wm-titlebar');
-    bar.addEventListener('dblclick', e => { if (!e.target.closest('.wm-btn')) toggleMaximize(w); });
 
     /* Focus on any press (capture: works before inner handlers) */
     root.addEventListener('pointerdown', () => focusWindow(w), true);
-    enableDrag(w, bar);
-    enableResize(w);
+    if (!def.lite) {                       // lite windows: no minimize, maximize, drag or resize
+      root.querySelector('.wm-min').addEventListener('click', () => minimize(w));
+      root.querySelector('.wm-max').addEventListener('click', () => toggleMaximize(w));
+      bar.addEventListener('dblclick', e => { if (!e.target.closest('.wm-btn')) toggleMaximize(w); });
+      enableDrag(w, bar);
+      enableResize(w);
+    }
 
     fillBody(w);
     return w;
@@ -514,12 +519,16 @@
             d.head.appendChild(s);
             d.documentElement.classList.add('wm-embedded');
             syncTheme(d);
+            bindShots(d, w);
           }
           if (d.readyState !== 'loading') { clearInterval(poll); reveal(); }
         }
       } catch (e) { clearInterval(poll); reveal(); }
     }, 30);
-    f.addEventListener('load', () => { clearInterval(poll); reveal(); });
+    f.addEventListener('load', () => {
+      clearInterval(poll); reveal();
+      try { bindShots(f.contentDocument, w); } catch (e) { /* cross-origin */ }
+    });
     setTimeout(() => { clearInterval(poll); reveal(); }, 7000);
 
     f.src = withEmbed(url);
@@ -542,7 +551,7 @@
     w.dockBtn = b;
   }
 
-  function openWindow(def, rect) {
+  function openWindow(def, rect, origin) {
     if (typeof def === 'string') def = defs.get(def);
     if (!def) return null;
     let w = wins.get(def.id);
@@ -555,12 +564,12 @@
     if (rect) w.rect = rect;
     wins.set(def.id, w);
     layer.appendChild(w.el);
-    ensureDockBtn(w);
+    if (!def.lite) ensureDockBtn(w);            // lite windows have no dock icon
     applyRect(w);
     if (isMobile()) wins.forEach(applyRect);   // project dock may have just appeared: shift the others
     focusWindow(w);
     if (def.adopt) { refreshLayout(w); watchLayout(w); }
-    flyIn(w);
+    if (def.lite) { fitLite(w); popIn(w, origin); } else flyIn(w);
     return w;
   }
 
@@ -620,7 +629,7 @@
     wins.delete(w.id);
     if (!w.def.permanent) {                        // dynamic dock item goes away
       dockBtns.delete(w.id);
-      w.dockBtn.remove();
+      if (w.dockBtn) w.dockBtn.remove();
       if (isMobile()) wins.forEach(applyRect);   // project dock may have just disappeared
     }
     if (focused === w) { focused = null; focusNext(); } else refreshDock();
@@ -769,6 +778,132 @@
 
   /* Restart (panel + Ubuntu menu) */
   document.addEventListener('desktop:restart', e => { e.preventDefault(); restartDesktop(); });
+
+  /* =====================================================================
+   * 7b. SCREENSHOT WINDOWS (project pages)
+   *     A screenshot opens as a certificate-style window in THIS page (above the
+   *     project window) instead of a GLightbox inside the small iframe. Same
+   *     title bar + fitted image as the certificates, but close-only: no
+   *     minimize / maximize, not draggable, not resizable, no dock icon.
+   * ===================================================================== */
+  const LITE_CSS = `
+    .wm-window.is-lite .wm-titlebar{cursor:default}
+    .wm-window.is-lite .wm-controls{margin-left:auto}`;
+  document.head.appendChild(el('style', { id: 'wm-lite-css' }, LITE_CSS));
+
+  /* Pop out of the thumbnail that was clicked (or a soft pop when unknown) */
+  function popIn(w, origin) {
+    if (reduceMotion()) return;
+    const r = w.el.getBoundingClientRect();
+    let from = { transform: 'scale(.94)', opacity: 0 };
+    if (origin && r.width && r.height) {
+      const dx = (origin.left + origin.width / 2) - (r.left + r.width / 2);
+      const dy = (origin.top + origin.height / 2) - (r.top + r.height / 2);
+      from = {
+        transform: `translate(${dx}px, ${dy}px) scale(${Math.max(origin.width / r.width, .05)}, ${Math.max(origin.height / r.height, .05)})`,
+        opacity: .2
+      };
+    }
+    w.el.animate([from, { transform: 'translate(0, 0) scale(1)', opacity: 1 }],
+      { duration: 320, easing: POP });
+  }
+
+  /* Desktop: shrink-wrap the window to the screenshot so there is no empty margin.
+     Phones keep the standard floating-window geometry. Measured from the real
+     layout, so it follows whatever the window CSS does. */
+  function fitLite(w) {
+    const nat = w.def.natural, img = w.body.querySelector('.wm-cert-img');
+    if (!nat || !img || isMobile()) return;
+    const box = img.parentElement;
+    const bw = box.clientWidth, bh = box.clientHeight;
+    if (!bw || !bh) return;
+    const r = w.el.getBoundingClientRect();
+    const extraW = r.width - bw, extraH = r.height - bh;          // title bar, borders, padding
+    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    const left = iconsW(), right = sidebarW();
+    const maxW = vw - left - right - 24, maxH = vh - ds - ts - 20;
+    const k = Math.min(1, (maxW - extraW) / nat.w, (maxH - extraH) / nat.h);
+    const W = Math.max(Math.min(MIN_W, maxW), Math.round(nat.w * k + extraW));
+    const H = Math.max(Math.min(MIN_H, maxH), Math.round(nat.h * k + extraH));
+    w.rect = {
+      w: W, h: H,
+      x: clamp(left + (vw - left - right - W) / 2, 8, vw - W - 8),
+      y: clamp(ts + (vh - ds - ts - H) / 2, ts + 8, vh - ds - H)
+    };
+    applyRect(w);
+  }
+
+  function closeShots(instant) {
+    wins.forEach(x => { if (x.def.lite) closeWindow(x, instant); });
+  }
+
+  function openShot(a, owner, frameWin) {
+    const href = a.href;
+    const card = a.closest('.portfolio-wrap, .portfolio-item');
+    const thumb = card && card.querySelector('img');
+    const name = ((thumb && thumb.alt) || (a.getAttribute('aria-label') || '')
+      .replace(/^Open\s+/i, '').replace(/\s+screenshot$/i, '') || 'Screenshot').trim();
+    const id = 'shot:' + (normPath(href) || href);
+
+    /* where the thumbnail sits on the desktop (iframe offset + its own position) */
+    let origin = null;
+    try {
+      const fr = frameWin && frameWin.frameElement && frameWin.frameElement.getBoundingClientRect();
+      const tr = (card || a).getBoundingClientRect();
+      if (fr) origin = { left: fr.left + tr.left, top: fr.top + tr.top, width: tr.width, height: tr.height };
+    } catch (err) { /* cross-origin: plain pop */ }
+
+    const existing = wins.get(id);
+    if (existing) { focusWindow(existing); return; }
+    closeShots(true);                                  // one screenshot at a time, like a lightbox
+
+    const def = {
+      id, title: (owner ? owner.def.title + ' \u00b7 ' : '') + name, sub: name,
+      icon: 'fa-solid fa-image', image: href, lite: true, permanent: false,
+      size: [940, 680], dockClass: 'dock-app', natural: null
+    };
+    /* Preload so the window can open at the image's own proportions */
+    const probe = new Image();
+    let opened = false;
+    const go = () => {
+      if (opened) return;
+      opened = true;
+      if (probe.naturalWidth) def.natural = { w: probe.naturalWidth, h: probe.naturalHeight };
+      if (!wins.has(id)) openWindow(def, undefined, origin);
+    };
+    probe.onload = go;
+    probe.onerror = go;
+    setTimeout(go, 1500);
+    probe.src = href;
+  }
+
+  /* Listen inside a project iframe. Capture phase on the frame's document runs before
+     GLightbox and main.js, exactly like the certificate cards above. */
+  const boundDocs = new WeakSet();
+  function bindShots(d, owner) {
+    if (!d || boundDocs.has(d)) return;
+    boundDocs.add(d);
+    d.addEventListener('click', e => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target && e.target.closest && e.target.closest('a.glightbox');
+      if (!a || !a.href) return;
+      const path = normPath(a.href);
+      if (!path || !IMG.test(path)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      openShot(a, owner, d.defaultView);
+    }, true);
+    /* Esc while the project page has focus */
+    d.addEventListener('keydown', e => { if (e.key === 'Escape') closeShots(); });
+  }
+
+  /* Esc closes the screenshot window */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const open = Array.from(wins.values()).filter(x => x.def.lite);
+    if (open.length) { e.preventDefault(); closeShots(); }
+  });
 
   /* =====================================================================
    * 8. WIRING: dock, links, deep links
