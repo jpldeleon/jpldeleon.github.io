@@ -32,17 +32,17 @@
     { id: 'auditkit', title: 'AuditKit', sub: 'API Capstone Project',
       icon: 'fa-solid fa-magnifying-glass-chart', url: 'auditkit/index.html' },
     { id: 'nothingtechblob', title: 'NothingTechBlob',
-      icon: 'fa-solid fa-blog', url: 'nothingtechblob/' },
+      icon: 'fa-solid fa-mobile-screen', url: 'nothingtechblob/' },
     { id: 'badlands-ink', title: 'Badlands Ink',
       icon: 'fa-solid fa-pen-nib', url: 'badlands-ink/' },
     { id: 'johnoffthewall', title: 'John Off the Wall',
-      icon: 'fa-solid fa-code', url: 'johnoffthewall/' },
+      icon: 'fa-solid fa-fire-flame-curved', url: 'johnoffthewall/' },
     { id: 'pixellog', title: 'PixelLog',
-      icon: 'fa-solid fa-images', url: 'pixellog/' },
+      icon: 'fa-brands fa-mintbit', url: 'pixellog/' },
     { id: 'jamporudex', title: 'JamporuDEX',
-      icon: 'fa-solid fa-book-open', url: 'jamporudex/' },
+      icon: 'fa-brands fa-leanpub', url: 'jamporudex/' },
     { id: 'route196', title: 'Route 196',
-      icon: 'fa-solid fa-route', url: 'route196/' }
+      icon: 'fa-solid fa-shield', url: 'route196/' }
   ];
 
   /* Certificates: each opens in the SAME window system as the projects
