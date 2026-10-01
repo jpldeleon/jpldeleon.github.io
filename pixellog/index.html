@@ -5,8 +5,8 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (saved === 'frost') {
-        document.documentElement.setAttribute('data-theme', 'frost');
+      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+        document.documentElement.setAttribute('data-theme', saved);
       }
     })();
   </script>
@@ -382,13 +382,14 @@
             </div>
           </div>
 
-          <!-- Section Title -->
+          <!-- Screenshot Gallery Carousel Section -->
           <section id="project-screenshots" class="portfolio section">
 
+            <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
               <h2>Gallery</h2>
               <p>A closer look at the screenshots behind this project.</p>
-            </div>
+            </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -397,241 +398,161 @@
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-1-homepage.webp" class="img-fluid"
                         alt="Home Page" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Create Post screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-2-create_f.webp" title="Open Create Post screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-2-create.webp" class="img-fluid"
                         alt="Create Post" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-2-create_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/pixellog/pixellog-3-edit.webp" class="img-fluid" alt="Edit Post"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-3-edit_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Edit Post screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-3-edit_f.webp" title="Open Edit Post screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/pixellog/pixellog-3-edit.webp" class="img-fluid"
+                        alt="Edit Post" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Delete Post screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-4-delete_f.webp" title="Open Delete Post screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-4-delete.webp" class="img-fluid"
                         alt="Delete Post" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-4-delete_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Filter View screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-5-filter_f.webp" title="Open Filter View screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-5-filter.webp" class="img-fluid"
                         alt="Filter View" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-5-filter_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Theme Toggle screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-6-themetoggle_f.webp" title="Open Theme Toggle screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-6-themetoggle.webp" class="img-fluid"
                         alt="Theme Toggle" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-6-themetoggle_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Sort Feature screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-7-lightbox_f.webp" title="Open Sort Feature screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-7-lightbox.webp" class="img-fluid"
                         alt="Sort Feature" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-7-lightbox_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Edit Light Mode screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-8-edit-light_f.webp" title="Open Edit Light Mode screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-8-edit-light.webp" class="img-fluid"
                         alt="Edit Light Mode" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-8-edit-light_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 1 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-9-mobile_f.webp" title="Open Mobile View 1 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-9-mobile.webp" class="img-fluid"
                         alt="Mobile View 1" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-9-mobile_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 2 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-10-mobile_f.webp" title="Open Mobile View 2 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-10-mobile.webp" class="img-fluid"
                         alt="Mobile View 2" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-10-mobile_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 3 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-11-mobile_f.webp" title="Open Mobile View 3 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-11-mobile.webp" class="img-fluid"
                         alt="Mobile View 3" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-11-mobile_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 4 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-12-mobile_f.webp" title="Open Mobile View 4 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-12-mobile.webp" class="img-fluid"
                         alt="Mobile View 4" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-12-mobile_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Index EJS Code screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-13-indexejs_f.webp" title="Open Index EJS Code screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-13-indexejs.webp" class="img-fluid"
                         alt="Index EJS Code" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-13-indexejs_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Index JS Code Part 1 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-14-indexjs_f.webp" title="Open Index JS Code Part 1 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-14-indexjs.webp" class="img-fluid"
                         alt="Index JS Code Part 1" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-14-indexjs_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Index JS Code Part 2 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-15-indexjs2_f.webp" title="Open Index JS Code Part 2 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-15-indexjs2.webp" class="img-fluid"
                         alt="Index JS Code Part 2" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-15-indexjs2_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Edit Template Code screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
+                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-16-edit_f.webp" title="Open Edit Template Code screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/pixellog/pixellog-16-edit.webp" class="img-fluid"
                         alt="Edit Template Code" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/pixellog/pixellog-16-edit_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -646,9 +567,28 @@
 
             </div>
 
-          </section>
+
+            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+            <div class="glightbox-desc desc-pixellog-shot" style="display:none;">
+              <div class="lightbox-window-panel">
+                <div class="lightbox-window-titlebar">
+                  <span class="lightbox-window-title">jp@portfolio: ~/PixelLog</span>
+                  <div class="lightbox-window-controls">
+                    <button aria-label="Close screenshot"
+                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section><!-- /Portfolio Section -->
 
           <style>
+            /* Whole screenshot card opens the lightbox */
+            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
+            .screenshots-swiper .portfolio-image-link { inset: 0; }
+
             .screenshots-swiper {
               padding: 10px 10px 50px;
             }
@@ -694,10 +634,12 @@
                 padding: 10px 10px 80px;
               }
 
+              /* Dots stay centered, higher up */
               .screenshots-swiper .swiper-pagination {
                 bottom: 38px;
               }
 
+              /* Arrows drop into their own centered row below the dots */
               .screenshots-swiper .swiper-button-prev,
               .screenshots-swiper .swiper-button-next {
                 top: auto;

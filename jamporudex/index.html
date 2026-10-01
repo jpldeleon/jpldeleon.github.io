@@ -5,8 +5,8 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (saved === 'frost') {
-        document.documentElement.setAttribute('data-theme', 'frost');
+      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+        document.documentElement.setAttribute('data-theme', saved);
       }
     })();
   </script>
@@ -396,13 +396,14 @@
             </div>
           </div>
 
-          <!-- Section Title -->
+          <!-- Screenshot Gallery Carousel Section -->
           <section id="project-screenshots" class="portfolio section">
 
+            <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
               <h2>Gallery</h2>
               <p>A closer look at the screenshots behind this project.</p>
-            </div>
+            </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -411,317 +412,211 @@
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.webp" class="img-fluid" alt="Home"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" title="Open Home screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.webp" class="img-fluid"
+                        alt="Home" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open README Documentation screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" title="Open README Documentation screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.webp" class="img-fluid"
                         alt="README Documentation" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Environment Variables screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" title="Open Environment Variables screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.webp" class="img-fluid"
                         alt="Environment Variables" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Package JSON Dependencies screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" title="Open Package JSON Dependencies screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.webp" class="img-fluid"
                         alt="Package JSON Dependencies" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Grid Layout screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" title="Open Grid Layout screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.webp" class="img-fluid"
                         alt="Grid Layout" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Filter Functionality screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" title="Open Filter Functionality screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.webp" class="img-fluid"
                         alt="Filter Functionality" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Sort Functionality screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" title="Open Sort Functionality screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.webp" class="img-fluid"
                         alt="Sort Functionality" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Search Modal View 1 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" title="Open Search Modal View 1 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.webp" class="img-fluid"
                         alt="Search Modal View 1" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Search Modal View 2 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" title="Open Search Modal View 2 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.webp" class="img-fluid"
                         alt="Search Modal View 2" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Add Entry Form screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" title="Open Add Entry Form screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.webp" class="img-fluid"
                         alt="Add Entry Form" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Edit Entry Modal 1 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" title="Open Edit Entry Modal 1 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.webp" class="img-fluid"
                         alt="Edit Entry Modal 1" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Edit Entry Modal 2 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" title="Open Edit Entry Modal 2 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.webp" class="img-fluid"
                         alt="Edit Entry Modal 2" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open AniList Fallback API Integration screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" title="Open AniList Fallback API Integration screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.webp" class="img-fluid"
                         alt="AniList Fallback API Integration" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Database Schema Setup screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp" title="Open Database Schema Setup screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.webp" class="img-fluid"
                         alt="Database Schema Setup" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp"
-                              class="glightbox" data-gallery="project-screenshots"><i
-                                class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Delete Route Logic screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" title="Open Delete Route Logic screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-delete.webp" class="img-fluid"
                         alt="Delete Route Logic" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open GET Route Controller screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" title="Open GET Route Controller screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-get.webp" class="img-fluid"
                         alt="GET Route Controller" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Jikan API Handler screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" title="Open Jikan API Handler screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.webp" class="img-fluid"
                         alt="Jikan API Handler" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Lightbox Modal screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" title="Open Lightbox Modal screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-modal.webp" class="img-fluid"
                         alt="Lightbox Modal" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open PostgreSQL Pool Configuration screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" title="Open PostgreSQL Pool Configuration screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.webp" class="img-fluid"
                         alt="PostgreSQL Pool Configuration" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open POST Route Handler screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" title="Open POST Route Handler screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-post.webp" class="img-fluid"
                         alt="POST Route Handler" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Theme Toggle State screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
+                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" title="Open Theme Toggle State screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.webp" class="img-fluid"
                         alt="Theme Toggle State" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -736,9 +631,28 @@
 
             </div>
 
-          </section>
+
+            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+            <div class="glightbox-desc desc-jamporudex-shot" style="display:none;">
+              <div class="lightbox-window-panel">
+                <div class="lightbox-window-titlebar">
+                  <span class="lightbox-window-title">jp@portfolio: ~/JamporuDEX</span>
+                  <div class="lightbox-window-controls">
+                    <button aria-label="Close screenshot"
+                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section><!-- /Portfolio Section -->
 
           <style>
+            /* Whole screenshot card opens the lightbox */
+            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
+            .screenshots-swiper .portfolio-image-link { inset: 0; }
+
             .screenshots-swiper {
               padding: 10px 10px 50px;
             }
@@ -784,10 +698,12 @@
                 padding: 10px 10px 80px;
               }
 
+              /* Dots stay centered, higher up */
               .screenshots-swiper .swiper-pagination {
                 bottom: 38px;
               }
 
+              /* Arrows drop into their own centered row below the dots */
               .screenshots-swiper .swiper-button-prev,
               .screenshots-swiper .swiper-button-next {
                 top: auto;

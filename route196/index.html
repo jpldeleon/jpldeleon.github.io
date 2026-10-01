@@ -5,8 +5,8 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (saved === 'frost') {
-        document.documentElement.setAttribute('data-theme', 'frost');
+      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+        document.documentElement.setAttribute('data-theme', saved);
       }
     })();
   </script>
@@ -404,13 +404,14 @@
             </div>
           </div>
 
-          <!-- Section Title -->
+          <!-- Screenshot Gallery Carousel Section -->
           <section id="project-screenshots" class="portfolio section">
 
+            <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
               <h2>Gallery</h2>
               <p>A closer look at the screenshots behind this project.</p>
-            </div>
+            </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -419,286 +420,191 @@
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Home - Mocha Theme screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-1-home-mocha_f.webp" title="Open Home - Mocha Theme screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-1-home-mocha.webp" class="img-fluid"
                         alt="Home - Mocha Theme" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-1-home-mocha_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Home - Latte Theme screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-2-home-latte_f.webp" title="Open Home - Latte Theme screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-2-home-latte.webp" class="img-fluid"
                         alt="Home - Latte Theme" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-2-home-latte_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 1 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-1_f.webp" title="Open Mobile View 1 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-3-mobile-1.webp" class="img-fluid"
                         alt="Mobile View 1" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-3-mobile-1_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 2 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-2_f.webp" title="Open Mobile View 2 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-3-mobile-2.webp" class="img-fluid"
                         alt="Mobile View 2" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-3-mobile-2_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Mobile View 3 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-3_f.webp" title="Open Mobile View 3 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-3-mobile-3.webp" class="img-fluid"
                         alt="Mobile View 3" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-3-mobile-3_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Robots.txt Analysis screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-4-robots_f.webp" title="Open Robots.txt Analysis screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-4-robots.webp" class="img-fluid"
                         alt="Robots.txt Analysis" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-4-robots_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Sitemap Generator screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-5-sitemap_f.webp" title="Open Sitemap Generator screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-5-sitemap.webp" class="img-fluid"
                         alt="Sitemap Generator" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-5-sitemap_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Redirect Checker screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-6-redirect_f.webp" title="Open Redirect Checker screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-6-redirect.webp" class="img-fluid"
                         alt="Redirect Checker" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-6-redirect_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Wayback Machine Lookup screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-7-wayback_f.webp" title="Open Wayback Machine Lookup screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-7-wayback.webp" class="img-fluid"
                         alt="Wayback Machine Lookup" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-7-wayback_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Wayback Error Handling screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-8-wayback-error_f.webp" title="Open Wayback Error Handling screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-8-wayback-error.webp" class="img-fluid"
                         alt="Wayback Error Handling" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-8-wayback-error_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Redirect Error Handling screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-9-redirect-error_f.webp" title="Open Redirect Error Handling screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-9-redirect-error.webp" class="img-fluid"
                         alt="Redirect Error Handling" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-9-redirect-error_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Robots Error Handling screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-10-robots-error_f.webp" title="Open Robots Error Handling screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-10-robots-error.webp" class="img-fluid"
                         alt="Robots Error Handling" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-10-robots-error_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Express Server Code 1 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-11-server_f.webp" title="Open Express Server Code 1 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-11-server.webp" class="img-fluid"
                         alt="Express Server Code 1" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-11-server_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Package Dependencies screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-12-package_f.webp" title="Open Package Dependencies screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-12-package.webp" class="img-fluid"
                         alt="Package Dependencies" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-12-package_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Robots Route Controller screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-14-robots_f.webp" title="Open Robots Route Controller screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-14-robots.webp" class="img-fluid"
                         alt="Robots Route Controller" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-14-robots_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Sitemap Route Controller screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-15-sitemap_f.webp" title="Open Sitemap Route Controller screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-15-sitemap.webp" class="img-fluid"
                         alt="Sitemap Route Controller" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-15-sitemap_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Redirect Route Controller screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-16-redirect_f.webp" title="Open Redirect Route Controller screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-16-redirect.webp" class="img-fluid"
                         alt="Redirect Route Controller" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-16-redirect_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Wayback API Controller screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-17-wayback_f.webp" title="Open Wayback API Controller screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-17-wayback.webp" class="img-fluid"
                         alt="Wayback API Controller" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-17-wayback_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
+                      <a aria-label="Open Express Server Code 2 screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
+                        data-type="image" href="/assets/img/portfolio/route196/route196-18-server_f.webp" title="Open Express Server Code 2 screenshot"><span class="visually-hidden"></span></a>
                       <img src="/assets/img/portfolio/route196/route196-18-server.webp" class="img-fluid"
                         alt="Express Server Code 2" loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/route196/route196-18-server_f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -714,9 +620,28 @@
 
             </div>
 
-          </section>
+
+            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+            <div class="glightbox-desc desc-route196-shot" style="display:none;">
+              <div class="lightbox-window-panel">
+                <div class="lightbox-window-titlebar">
+                  <span class="lightbox-window-title">jp@portfolio: ~/Route196</span>
+                  <div class="lightbox-window-controls">
+                    <button aria-label="Close screenshot"
+                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section><!-- /Portfolio Section -->
 
           <style>
+            /* Whole screenshot card opens the lightbox */
+            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
+            .screenshots-swiper .portfolio-image-link { inset: 0; }
+
             .screenshots-swiper {
               padding: 10px 10px 50px;
             }
@@ -762,10 +687,12 @@
                 padding: 10px 10px 80px;
               }
 
+              /* Dots stay centered, higher up */
               .screenshots-swiper .swiper-pagination {
                 bottom: 38px;
               }
 
+              /* Arrows drop into their own centered row below the dots */
               .screenshots-swiper .swiper-button-prev,
               .screenshots-swiper .swiper-button-next {
                 top: auto;

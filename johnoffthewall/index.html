@@ -5,8 +5,8 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (saved === 'frost') {
-        document.documentElement.setAttribute('data-theme', 'frost');
+      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+        document.documentElement.setAttribute('data-theme', saved);
       }
     })();
   </script>
@@ -371,13 +371,14 @@
             </div>
           </div>
 
-          <!-- Section Title -->
+          <!-- Screenshot Gallery Carousel Section -->
           <section id="project-screenshots" class="portfolio section">
 
+            <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
               <h2>Gallery</h2>
               <p>A closer look at the screenshots behind this project.</p>
-            </div>
+            </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -386,150 +387,100 @@
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/1-hero.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/1-hero-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/1-hero-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/1-hero.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/2-about.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/2-about-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/2-about-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/2-about.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/3-grid.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/3-grid-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/3-grid-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/3-grid.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/4-contact.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/4-contact-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/4-contact-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/4-contact.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/5-lightbox.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/5-lightbox-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/5-lightbox-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/5-lightbox.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/6-lightbox.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/6-lightbox-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/6-lightbox-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/6-lightbox.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/7-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/7-mobile-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/7-mobile-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/7-mobile.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/8-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/8-mobile-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/8-mobile-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/8-mobile.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/9-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/9-mobile-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/9-mobile-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/9-mobile.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
                   <div class="swiper-slide">
                     <div class="portfolio-wrap">
-                      <img src="/assets/img/portfolio/johnoffthewall/10-mobile.webp" class="img-fluid" alt="Home Page"
-                        loading="lazy">
-                      <div class="portfolio-info">
-                        <div class="content">
-                          <div class="portfolio-links">
-                            <a href="/assets/img/portfolio/johnoffthewall/10-mobile-f.webp" class="glightbox"
-                              data-gallery="project-screenshots"><i class="fa-solid fa-magnifying-glass-plus"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
+                        data-gallery="project-screenshots" data-glightbox="description: .desc-johnoffthewall-shot"
+                        data-type="image" href="/assets/img/portfolio/johnoffthewall/10-mobile-f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
+                      <img src="/assets/img/portfolio/johnoffthewall/10-mobile.webp" class="img-fluid"
+                        alt="Home Page" loading="lazy">
                     </div>
                   </div>
 
@@ -544,9 +495,28 @@
 
             </div>
 
-          </section>
+
+            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+            <div class="glightbox-desc desc-johnoffthewall-shot" style="display:none;">
+              <div class="lightbox-window-panel">
+                <div class="lightbox-window-titlebar">
+                  <span class="lightbox-window-title">jp@portfolio: ~/JohnOffTheWall</span>
+                  <div class="lightbox-window-controls">
+                    <button aria-label="Close screenshot"
+                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section><!-- /Portfolio Section -->
 
           <style>
+            /* Whole screenshot card opens the lightbox */
+            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
+            .screenshots-swiper .portfolio-image-link { inset: 0; }
+
             .screenshots-swiper {
               padding: 10px 10px 50px;
             }
@@ -592,10 +562,12 @@
                 padding: 10px 10px 80px;
               }
 
+              /* Dots stay centered, higher up */
               .screenshots-swiper .swiper-pagination {
                 bottom: 38px;
               }
 
+              /* Arrows drop into their own centered row below the dots */
               .screenshots-swiper .swiper-button-prev,
               .screenshots-swiper .swiper-button-next {
                 top: auto;
@@ -640,6 +612,7 @@
     </div>
 
   </footer>
+
   <!-- Preloader -->
   <div id="preloader"></div>
 
