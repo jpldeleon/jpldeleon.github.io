@@ -39,6 +39,7 @@
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
   <style id="glightbox-overrides">
     .glightbox-container .gclose:not([data-glightbox-close]) {
@@ -168,8 +169,6 @@
       opacity: 1;
     }
 
-    html body .linux-dock.side-nav .dock-menu.active::after { opacity: 0; }
-
     html body .linux-dock.side-nav .dock-item .dock-tooltip {
       bottom: auto;
       top: 50%;
@@ -182,15 +181,6 @@
       transform: translateY(-50%) translateX(0);
     }
 
-    body.portfolio-details-page .app-menu {
-      left: calc(var(--side-w) + 8px) !important;
-      bottom: auto !important;
-      top: 14px;
-    }
-
-    .wm-embedded .linux-dock.side-nav .side-home,
-    .wm-embedded .linux-dock.side-nav .dock-menu { display: none; }
-
     @media (max-width: 768px) {
       :root { --side-w: 46px; }
       html body .linux-dock.side-nav { padding: 10px 0; }
@@ -201,36 +191,19 @@
 
 <body class="portfolio-details-page">
 
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Linux-style Floating Dock -->
+  <!-- Project sidebar -->
   <nav class="linux-dock side-nav" aria-label="Project navigation">
-    <button type="button" id="dock-menu-btn" class="dock-item dock-menu" aria-haspopup="true" aria-expanded="false"
-      aria-controls="app-menu" title="Menu"><i class="fa-solid fa-grip"></i><span
-        class="dock-tooltip">Menu</span></button>
-    <a href="https://jpldeleon.github.io/" class="dock-item dock-about side-home" title="Home"><i
-        class="fa-solid fa-house-chimney"></i><span class="dock-tooltip">Home</span></a>
-    <a href="#portfolio-details" class="dock-item dock-resume" title="Video"><i class="fa-brands fa-youtube"></i><span
+    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
         class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item dock-projects" title="Details"><i class="fa-solid fa-info"></i><span
+    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
         class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item dock-projects" title="Gallery"><i
-        class="fa-solid fa-images"></i><span class="dock-tooltip">Gallery</span></a>
+    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
+        class="dock-tooltip">Gallery</span></a>
   </nav>
-
-  <!-- App Menu (launcher for CV summary terminals) -->
-  <div id="app-menu" class="app-menu" role="menu" aria-hidden="true">
-    <div class="app-menu-header">Summary</div>
-    <ul>
-      <li><button type="button" role="menuitem" data-terminal="certifications"><i
-            class="fa-solid fa-award"></i>Certifications</button></li>
-      <li><button type="button" role="menuitem" data-terminal="experience"><i
-            class="fa-solid fa-briefcase"></i>Professional Experience</button></li>
-      <li><button type="button" role="menuitem" data-terminal="projects"><i
-            class="fa-solid fa-diagram-project"></i>Projects</button></li>
-      <li><button type="button" role="menuitem" data-terminal="socials"><i
-            class="fa-solid fa-share-nodes"></i>Socials</button></li>
-    </ul>
-  </div>
 
   <main class="main">
 
@@ -239,18 +212,12 @@
       <div class="container d-lg-flex justify-content-between align-items-center">
         <div class="page-header">
           <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            Public API Capstone Project
+            WordPress, Technical &amp; E-Commerce SEO
           </span>
           <h1 class="h2 fw-bold mb-3">
-            AuditKit: Simple Technical SEO Tool
+            Case Study: Badlands Ink
           </h1>
         </div>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://jpldeleon.github.io/">Home</a></li>
-            <li class="current">AuditKit</li>
-          </ol>
-        </nav>
       </div>
     </div>
 
@@ -964,61 +931,6 @@
 
   </footer>
 
-  <!-- CV Terminal Lightboxes -->
-  <div class="terminal-overlay" id="terminal-certifications" role="dialog" aria-modal="true"
-    aria-label="Certifications terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat certifications.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-experience" role="dialog" aria-modal="true"
-    aria-label="Professional experience terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat experience.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-projects" role="dialog" aria-modal="true" aria-label="Projects terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat projects.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-socials" role="dialog" aria-modal="true" aria-label="Socials terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat socials.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Preloader -->
   <div id="preloader"></div>
 
@@ -1030,14 +942,6 @@
 
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof GLightbox !== 'undefined') {
-        GLightbox({ selector: '.glightbox' });
-      }
-    });
-  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {

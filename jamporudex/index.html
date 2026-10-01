@@ -42,6 +42,152 @@
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+  <style id="glightbox-overrides">
+    .glightbox-container .gclose:not([data-glightbox-close]) {
+      display: none !important;
+    }
+
+    .glightbox-container .goverlay,
+    .glightbox-container {
+      background: transparent !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+    body.glightbox-open, body.glightbox-open > *:not(.glightbox-container) {
+      filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+    .glightbox-container { z-index: 2147483000 !important; }
+    
+    .glightbox-container .gslide-image img {
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+      pointer-events: none !important;
+    }
+    .glightbox-container .gslide-media {
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+      pointer-events: auto !important;
+    }
+
+    .glightbox-container .gslide-description.lightbox-terminal-mounted {
+      position: relative; z-index: 10; pointer-events: auto !important;
+    }
+    .glightbox-container .lightbox-window-controls,
+    .glightbox-container .lightbox-window-controls .win-btn,
+    .glightbox-container [data-glightbox-close] {
+      position: relative; z-index: 11; pointer-events: auto !important; cursor: pointer;
+      top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
+    }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent); }
+    *::-webkit-scrollbar-thumb { background: var(--sb-thumb, var(--accent-highlight, #178C7A)); border-radius: 8px; }
+    *::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
+  </style>
+
+  <style id="side-nav">
+    :root { --side-w: 56px; }
+
+    body.portfolio-details-page { padding-left: var(--side-w); }
+
+    html body .linux-dock.side-nav {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: auto;
+      width: var(--side-w);
+      max-width: none;
+      height: 100%;
+      transform: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      padding: 14px 0;
+      box-sizing: border-box;
+      background: color-mix(in srgb, var(--surface-color), transparent 8%);
+      border: 0;
+      border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+      border-radius: 0;
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      z-index: 997;
+    }
+
+    html body .linux-dock.side-nav .dock-item {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      font-size: 17px;
+      border-radius: 8px;
+      background: transparent !important;
+      color: color-mix(in srgb, var(--default-color), transparent 35%);
+      transform: none !important;
+      transition: color 0.18s ease;
+    }
+
+    html body .linux-dock.side-nav .dock-item i { color: inherit; }
+
+    html body .linux-dock.side-nav .dock-item:hover,
+    html body .linux-dock.side-nav .dock-item:focus-visible,
+    html body .linux-dock.side-nav .dock-item.active {
+      color: var(--accent-highlight);
+      background: transparent !important;
+      transform: none !important;
+    }
+
+    html body .linux-dock.side-nav .dock-item:focus-visible {
+      outline: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
+      outline-offset: -2px;
+    }
+
+    html body .linux-dock.side-nav .dock-item::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 5px;
+      width: 18px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--accent-highlight);
+      transform: translateX(-50%) scaleX(0);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.22s ease;
+    }
+
+    html body .linux-dock.side-nav .dock-item.active::after {
+      transform: translateX(-50%) scaleX(1);
+      opacity: 1;
+    }
+
+    html body .linux-dock.side-nav .dock-item .dock-tooltip {
+      bottom: auto;
+      top: 50%;
+      left: calc(100% + 10px);
+      transform: translateY(-50%) translateX(-4px);
+    }
+
+    html body .linux-dock.side-nav .dock-item:hover .dock-tooltip,
+    html body .linux-dock.side-nav .dock-item:focus-visible .dock-tooltip {
+      transform: translateY(-50%) translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      :root { --side-w: 46px; }
+      html body .linux-dock.side-nav { padding: 10px 0; }
+      html body .linux-dock.side-nav .dock-item { width: 40px; height: 40px; font-size: 16px; }
+    }
+  </style>
 </head>
 
 <body class="portfolio-details-page">
@@ -50,55 +196,15 @@
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-
-
-  <!-- Theme Controls -->
-  <div class="theme-dots" role="group" aria-label="Switch color theme">
-    <button type="button" class="theme-dot dot-everforest active" data-theme-choice="everforest"
-      title="Everforest theme" aria-label="Everforest theme"></button>
-    <button type="button" class="theme-dot dot-aurora" data-theme-choice="aurora" title="Aurora theme"
-      aria-label="Aurora theme"></button>
-    <button type="button" class="theme-dot dot-gruvbox" data-theme-choice="gruvbox" title="Gruvbox theme"
-      aria-label="Gruvbox theme"></button>
-    <button type="button" class="theme-dot dot-monokai" data-theme-choice="monokai" title="Monokai Pro theme"
-      aria-label="Monokai Pro theme"></button>
-    <button type="button" class="theme-dot dot-draculapro" data-theme-choice="draculapro" title="Dracula Pro theme"
-      aria-label="Dracula Pro theme"></button>
-  </div>
-
-  <!-- Linux-style Floating Dock -->
-  <nav class="linux-dock" aria-label="Desktop dock">
-    <button type="button" id="dock-menu-btn" class="dock-item dock-menu" aria-haspopup="true" aria-expanded="false"
-      aria-controls="app-menu" title="Menu"><i class="fa-solid fa-grip"></i><span
-        class="dock-tooltip">Menu</span></button>
-    <a href="https://jpldeleon.github.io/" class="dock-item dock-about" title="About"><i
-        class="fa-solid fa-house-chimney"></i><span class="dock-tooltip">Home</span></a>
-    <a href="#portfolio-details" class="dock-item dock-resume" title="Resume"><i class="fa-brands fa-youtube"></i><span
+  <!-- Project sidebar -->
+  <nav class="linux-dock side-nav" aria-label="Project navigation">
+    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
         class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item dock-projects" title="Projects"><i class="fa-solid fa-info"></i><span
+    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
         class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item dock-projects" title="Projects"><i
-        class="fa-solid fa-images"></i><span class="dock-tooltip">Gallery</span></a>
+    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
+        class="dock-tooltip">Gallery</span></a>
   </nav>
-
-  <!-- App Menu (launcher for CV summary terminals) -->
-  <div id="app-menu" class="app-menu" role="menu" aria-hidden="true">
-    <div class="app-menu-header">Summary</div>
-    <ul>
-      <li><button type="button" role="menuitem" data-terminal="certifications"><i
-            class="fa-solid fa-award"></i>Certifications</button></li>
-      <li><button type="button" role="menuitem" data-terminal="experience"><i
-            class="fa-solid fa-briefcase"></i>Professional Experience</button></li>
-      <li><button type="button" role="menuitem" data-terminal="projects"><i
-            class="fa-solid fa-diagram-project"></i>Projects</button></li>
-      <li><button type="button" role="menuitem" data-terminal="socials"><i
-            class="fa-solid fa-share-nodes"></i>Socials</button></li>
-    </ul>
-  </div>
-
-  </div>
-
-  </header>
 
   <main class="main">
 
@@ -113,12 +219,6 @@
             JamporuDEX
           </h1>
         </div>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://jpldeleon.github.io/">Home</a></li>
-            <li class="current">JamporuDEX</li>
-          </ol>
-        </nav>
       </div>
     </div>
 
@@ -309,7 +409,7 @@
               <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper-wrapper align-items-center">
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.webp" class="img-fluid" alt="Home"
                         loading="lazy">
@@ -324,7 +424,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.webp" class="img-fluid"
                         alt="README Documentation" loading="lazy">
@@ -339,7 +439,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.webp" class="img-fluid"
                         alt="Environment Variables" loading="lazy">
@@ -354,7 +454,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.webp" class="img-fluid"
                         alt="Package JSON Dependencies" loading="lazy">
@@ -369,7 +469,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.webp" class="img-fluid"
                         alt="Grid Layout" loading="lazy">
@@ -384,7 +484,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.webp" class="img-fluid"
                         alt="Filter Functionality" loading="lazy">
@@ -399,7 +499,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.webp" class="img-fluid"
                         alt="Sort Functionality" loading="lazy">
@@ -414,7 +514,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.webp" class="img-fluid"
                         alt="Search Modal View 1" loading="lazy">
@@ -429,7 +529,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.webp" class="img-fluid"
                         alt="Search Modal View 2" loading="lazy">
@@ -444,7 +544,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.webp" class="img-fluid"
                         alt="Add Entry Form" loading="lazy">
@@ -459,7 +559,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.webp" class="img-fluid"
                         alt="Edit Entry Modal 1" loading="lazy">
@@ -474,7 +574,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.webp" class="img-fluid"
                         alt="Edit Entry Modal 2" loading="lazy">
@@ -489,7 +589,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.webp" class="img-fluid"
                         alt="AniList Fallback API Integration" loading="lazy">
@@ -504,7 +604,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.webp" class="img-fluid"
                         alt="Database Schema Setup" loading="lazy">
@@ -520,7 +620,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-delete.webp" class="img-fluid"
                         alt="Delete Route Logic" loading="lazy">
@@ -535,7 +635,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-get.webp" class="img-fluid"
                         alt="GET Route Controller" loading="lazy">
@@ -550,7 +650,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.webp" class="img-fluid"
                         alt="Jikan API Handler" loading="lazy">
@@ -565,7 +665,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-modal.webp" class="img-fluid"
                         alt="Lightbox Modal" loading="lazy">
@@ -580,7 +680,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.webp" class="img-fluid"
                         alt="PostgreSQL Pool Configuration" loading="lazy">
@@ -595,7 +695,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-post.webp" class="img-fluid"
                         alt="POST Route Handler" loading="lazy">
@@ -610,7 +710,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.webp" class="img-fluid"
                         alt="Theme Toggle State" loading="lazy">
@@ -733,61 +833,6 @@
 
   </footer>
 
-  <!-- CV Terminal Lightboxes -->
-  <div class="terminal-overlay" id="terminal-certifications" role="dialog" aria-modal="true"
-    aria-label="Certifications terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat certifications.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-experience" role="dialog" aria-modal="true"
-    aria-label="Professional experience terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat experience.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-projects" role="dialog" aria-modal="true" aria-label="Projects terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat projects.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-socials" role="dialog" aria-modal="true" aria-label="Socials terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat socials.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Preloader -->
   <div id="preloader"></div>
 
@@ -802,17 +847,8 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      if (typeof GLightbox !== 'undefined') {
-        GLightbox({ selector: '.glightbox' });
-      }
-    });
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      let screenshotsSwiper;
       if (typeof Swiper !== 'undefined') {
-        screenshotsSwiper = new Swiper('.screenshots-swiper', {
+        new Swiper('.screenshots-swiper', {
           loop: false,
           spaceBetween: 20,
           slidesPerView: 1,
@@ -833,31 +869,6 @@
           }
         });
       }
-
-      const filterButtons = document.querySelectorAll('.portfolio-filters li');
-      const slides = document.querySelectorAll('.screenshots-swiper .swiper-slide');
-
-      filterButtons.forEach(button => {
-        button.addEventListener('click', function () {
-          filterButtons.forEach(btn => btn.classList.remove('filter-active'));
-          this.classList.add('filter-active');
-
-          const filterValue = this.getAttribute('data-filter');
-
-          slides.forEach(slide => {
-            if (filterValue === '*' || slide.matches(filterValue)) {
-              slide.style.display = '';
-            } else {
-              slide.style.display = 'none';
-            }
-          });
-
-          if (screenshotsSwiper) {
-            screenshotsSwiper.update();
-            screenshotsSwiper.slideTo(0);
-          }
-        });
-      });
     });
   </script>
 

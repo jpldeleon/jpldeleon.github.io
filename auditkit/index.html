@@ -41,12 +41,10 @@
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
   <style id="glightbox-overrides">
-    /* Hide GLightbox's native default close button */
     .glightbox-container .gclose:not([data-glightbox-close]) {
       display: none !important;
     }
 
-    /* No dimmed / blurred page behind the lightbox */
     .glightbox-container .goverlay,
     .glightbox-container {
       background: transparent !important;
@@ -58,13 +56,8 @@
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
-    /* Keep the lightbox above every window */
     .glightbox-container { z-index: 2147483000 !important; }
     
-    /* Disable image dragging and select within lightbox.
-       The image itself ignores the pointer, but .gslide-media must keep receiving clicks:
-       if both are pointer-events:none, a click on the screenshot falls through to the
-       backdrop and GLightbox treats it as an outside click and closes the lightbox. */
     .glightbox-container .gslide-image img {
       user-select: none !important;
       -webkit-user-drag: none !important;
@@ -86,7 +79,6 @@
       top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
     }
 
-    /* Scrollbars follow the active theme */
     * {
       scrollbar-width: thin;
       scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
@@ -98,9 +90,6 @@
   </style>
 
   <style id="side-nav">
-    /* ===== AuditKit: minimalist left sidebar (replaces the bottom dock) =====
-       Keeps .linux-dock / .dock-item so main.js (scrollspy + menu) still drives it.
-       Active section = a short line under the icon, no dots. */
     :root { --side-w: 56px; }
 
     body.portfolio-details-page { padding-left: var(--side-w); }
@@ -160,7 +149,6 @@
       outline-offset: -2px;
     }
 
-    /* Active indicator: a short line UNDER the icon (grows from the centre) */
     html body .linux-dock.side-nav .dock-item::after {
       content: '';
       position: absolute;
@@ -180,7 +168,6 @@
       opacity: 1;
     }
 
-    /* Tooltips appear to the right of the rail */
     html body .linux-dock.side-nav .dock-item .dock-tooltip {
       bottom: auto;
       top: 50%;
@@ -207,7 +194,7 @@
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Project sidebar: one link per section, underline marks the active one -->
+  <!-- Project sidebar -->
   <nav class="linux-dock side-nav" aria-label="Project navigation">
     <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
         class="dock-tooltip">Video</span></a>
