@@ -38,12 +38,15 @@
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
   <style id="glightbox-overrides">
+    /* Hide GLightbox's native default close button */
     .glightbox-container .gclose:not([data-glightbox-close]) {
       display: none !important;
     }
 
+    /* No dimmed / blurred page behind the lightbox */
     .glightbox-container .goverlay,
     .glightbox-container {
       background: transparent !important;
@@ -55,8 +58,13 @@
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
+    /* Keep the lightbox above every window */
     .glightbox-container { z-index: 2147483000 !important; }
     
+    /* Disable image dragging and select within lightbox.
+       The image itself ignores the pointer, but .gslide-media must keep receiving clicks:
+       if both are pointer-events:none, a click on the screenshot falls through to the
+       backdrop and GLightbox treats it as an outside click and closes the lightbox. */
     .glightbox-container .gslide-image img {
       user-select: none !important;
       -webkit-user-drag: none !important;
@@ -78,6 +86,7 @@
       top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
     }
 
+    /* Scrollbars follow the active theme */
     * {
       scrollbar-width: thin;
       scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
@@ -89,6 +98,9 @@
   </style>
 
   <style id="side-nav">
+    /* ===== AuditKit: minimalist left sidebar (replaces the bottom dock) =====
+       Keeps .linux-dock / .dock-item so main.js (scrollspy + menu) still drives it.
+       Active section = a short line under the icon, no dots. */
     :root { --side-w: 56px; }
 
     body.portfolio-details-page { padding-left: var(--side-w); }
@@ -148,6 +160,7 @@
       outline-offset: -2px;
     }
 
+    /* Active indicator: a short line UNDER the icon (grows from the centre) */
     html body .linux-dock.side-nav .dock-item::after {
       content: '';
       position: absolute;
@@ -167,8 +180,7 @@
       opacity: 1;
     }
 
-    html body .linux-dock.side-nav .dock-menu.active::after { opacity: 0; }
-
+    /* Tooltips appear to the right of the rail */
     html body .linux-dock.side-nav .dock-item .dock-tooltip {
       bottom: auto;
       top: 50%;
@@ -181,15 +193,6 @@
       transform: translateY(-50%) translateX(0);
     }
 
-    body.portfolio-details-page .app-menu {
-      left: calc(var(--side-w) + 8px) !important;
-      bottom: auto !important;
-      top: 14px;
-    }
-
-    .wm-embedded .linux-dock.side-nav .side-home,
-    .wm-embedded .linux-dock.side-nav .dock-menu { display: none; }
-
     @media (max-width: 768px) {
       :root { --side-w: 46px; }
       html body .linux-dock.side-nav { padding: 10px 0; }
@@ -200,15 +203,18 @@
 
 <body class="portfolio-details-page">
 
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Linux-style Floating Dock -->
+  <!-- Project sidebar: one link per section, underline marks the active one -->
   <nav class="linux-dock side-nav" aria-label="Project navigation">
-    <a href="#portfolio-details" class="dock-item dock-resume" title="Video"><i class="fa-brands fa-youtube"></i><span
+    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
         class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item dock-projects" title="Details"><i class="fa-solid fa-info"></i><span
+    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
         class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item dock-projects" title="Gallery"><i
-        class="fa-solid fa-images"></i><span class="dock-tooltip">Gallery</span></a>
+    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
+        class="dock-tooltip">Gallery</span></a>
   </nav>
 
   <main class="main">
@@ -224,12 +230,6 @@
             AuditKit: Simple Technical SEO Tool
           </h1>
         </div>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://jpldeleon.github.io/">Home</a></li>
-            <li class="current">AuditKit</li>
-          </ol>
-        </nav>
       </div>
     </div>
 
@@ -405,7 +405,7 @@
               <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper-wrapper align-items-center">
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -415,7 +415,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Error Handling screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -425,7 +425,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Package Configuration screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -435,7 +435,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Server Overview 1 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -445,7 +445,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Server Overview 2 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -455,7 +455,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Server Overview 3 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -465,7 +465,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Script Setup screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -475,7 +475,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 1 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -485,7 +485,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 2 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -495,7 +495,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 3 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -505,7 +505,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 4 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -515,7 +515,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 5 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -525,7 +525,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 6 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -535,7 +535,7 @@
                     </div>
                   </div>
 
-                  <div class="swiper-slide filter-technical">
+                  <div class="swiper-slide">
                     <div class="portfolio-wrap">
                       <a aria-label="Open Sample Audit 7 screenshot" class="glightbox portfolio-image-link"
                         data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
@@ -669,61 +669,6 @@
 
   </footer>
 
-  <!-- CV Terminal Lightboxes -->
-  <div class="terminal-overlay" id="terminal-certifications" role="dialog" aria-modal="true"
-    aria-label="Certifications terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat certifications.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-experience" role="dialog" aria-modal="true"
-    aria-label="Professional experience terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat experience.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-projects" role="dialog" aria-modal="true" aria-label="Projects terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat projects.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="terminal-overlay" id="terminal-socials" role="dialog" aria-modal="true" aria-label="Socials terminal">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dots"><span></span><span></span><span></span></span>
-        <span class="terminal-title">jp@portfolio: ~/cv</span>
-      </div>
-      <div class="terminal-body" data-command="cat socials.txt"></div>
-      <div class="terminal-footer">
-        <button type="button" class="terminal-close-btn" data-close-terminal>CLOSE</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Preloader -->
   <div id="preloader"></div>
 
@@ -738,9 +683,8 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      let screenshotsSwiper;
       if (typeof Swiper !== 'undefined') {
-        screenshotsSwiper = new Swiper('.screenshots-swiper', {
+        new Swiper('.screenshots-swiper', {
           loop: false,
           spaceBetween: 20,
           slidesPerView: 1,
@@ -761,32 +705,6 @@
           }
         });
       }
-
-      // 2. Add Filter Logic
-      const filterButtons = document.querySelectorAll('.portfolio-filters li');
-      const slides = document.querySelectorAll('.screenshots-swiper .swiper-slide');
-
-      filterButtons.forEach(button => {
-        button.addEventListener('click', function () {
-          filterButtons.forEach(btn => btn.classList.remove('filter-active'));
-          this.classList.add('filter-active');
-
-          const filterValue = this.getAttribute('data-filter');
-
-          slides.forEach(slide => {
-            if (filterValue === '*' || slide.matches(filterValue)) {
-              slide.style.display = '';
-            } else {
-              slide.style.display = 'none';
-            }
-          });
-
-          if (screenshotsSwiper) {
-            screenshotsSwiper.update();
-            screenshotsSwiper.slideTo(0);
-          }
-        });
-      });
     });
   </script>
 
