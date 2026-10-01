@@ -209,12 +209,41 @@
   function targetRect(w) {
     const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
     /* phones: a floating window with a visible margin, never edge-to-edge */
-    if (isMobile()) {
-      const L = railInset() + 6, top = ts + 30;
-      return { x: L, y: top, w: vw - L - 10, h: Math.max(240, vh - ds - top - 4) };
-    }
+    if (isMobile()) return mobileRect(w, vw, vh, ds, ts);
     if (w.state === 'max') return { x: 0, y: ts, w: vw, h: vh - ds - ts };
     return w.rect;
+  }
+
+  /* Phones. Every window sits in the same slot between the top panel and the dock:
+     - screenshot windows shrink-wrap the image (title bar + small padding + image)
+     - project windows (iframe pages) are ~62% of the screen, centred in the slot
+     - everything else (Resume, Portfolio, ...) keeps the full-height slot */
+  const MOBILE_PROJECT_H = 0.62;
+  function mobileRect(w, vw, vh, ds, ts) {
+    const L = railInset() + 6, top = ts + 30;
+    const availW = vw - L - 10, availH = Math.max(240, vh - ds - top - 4);
+
+    if (w.def.lite) {
+      const nat = w.def.natural, cert = w.body && w.body.querySelector('.wm-cert');
+      const bar = w.el.querySelector('.wm-titlebar');
+      if (nat && cert && bar) {
+        const cs = getComputedStyle(cert);
+        const padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+        const padY = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+        const extraW = (w.el.offsetWidth - w.el.clientWidth) + padX;                    // borders + padding
+        const extraH = (w.el.offsetHeight - w.el.clientHeight) + bar.offsetHeight + padY; // + title bar
+        const k = Math.min(1, (availW - extraW) / nat.w, (availH - extraH) / nat.h);
+        const W = Math.round(nat.w * k + extraW), H = Math.round(nat.h * k + extraH);
+        return { x: Math.round(L + (availW - W) / 2), y: Math.round(top + (availH - H) / 2), w: W, h: H };
+      }
+    }
+
+    if (w.frame) {
+      const h = Math.round(Math.min(availH, Math.max(300, vh * MOBILE_PROJECT_H)));
+      return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
+    }
+
+    return { x: L, y: top, w: availW, h: availH };
   }
 
   function applyRect(w) {

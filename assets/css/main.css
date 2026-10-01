@@ -5918,3 +5918,20 @@ html body .glightbox-container .gslide.current .gslide-video {
     max-height: calc(100vh - 24px - 44px) !important;
   }
 }
+
+
+/* =========================================================================
+   MOBILE FIX (keep LAST) — gallery carousel follows each screenshot's own size
+   (no fixed height, no cropping).
+   ========================================================================= */
+@media (max-width: 768px) {
+  .screenshots-swiper .swiper-wrapper { align-items: flex-start !important; }
+  .screenshots-swiper .swiper-slide { height: auto !important; }
+  .screenshots-swiper .portfolio-wrap { height: auto !important; }
+  .screenshots-swiper .portfolio-wrap img {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}

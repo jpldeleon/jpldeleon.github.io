@@ -469,3 +469,11 @@
 
   .wm-projects { padding: 16px; grid-template-columns: 1fr; }
 }
+
+/*--------------------------------------------------------------
+# MOBILE: screenshot window hugs the image with a small padding.
+# (Height/width are computed in app.js: mobileRect)
+--------------------------------------------------------------*/
+@media (max-width: 768px) {
+  .wm-body.is-cert .wm-cert { padding: 8px; }
+}
