@@ -55,11 +55,30 @@
   <link href="assets/css/app.css" rel="stylesheet" />
   <!-- Desktop shell: top panel, sidebar widget, locked home page (must load last) -->
   <link href="assets/css/desktop.css" rel="stylesheet" />
+  <!-- Ambient space scene (astronaut, orbs, stars) -->
+  <link href="assets/css/space-scene.css" rel="stylesheet" />
 </head>
 
 <body class="index-page">
   <!-- Flat desktop-style background -->
   <div aria-hidden="true" class="desktop-background"></div>
+  <!-- Ambient space scene: sits directly above the background, below all UI -->
+  <div aria-hidden="true" class="space-scene" id="space-scene">
+    <canvas class="space-layer" id="space-back"></canvas>
+    <div class="space-astronaut" id="space-astronaut">
+      <img alt="" class="space-astronaut-img" decoding="async" draggable="false" src="assets/img/astronaut.svg" />
+    </div>
+    <!-- Theme tint filter (colour is set by space-scene.js) -->
+    <svg aria-hidden="true" focusable="false" height="0" style="position:absolute" width="0">
+      <filter color-interpolation-filters="sRGB" height="100%" id="space-tint" width="100%" x="0" y="0">
+        <feFlood flood-color="#83c092" id="space-tint-flood" result="flood" />
+        <feBlend in="flood" in2="SourceGraphic" mode="color" result="blend" />
+        <feComposite in="blend" in2="SourceGraphic" operator="in" result="clip" />
+        <feComposite id="space-tint-mix" in="clip" in2="SourceGraphic" k1="0" k2="0.6" k3="0.4" k4="0" operator="arithmetic" />
+      </filter>
+    </svg>
+    <canvas class="space-layer" id="space-front"></canvas>
+  </div>
   <!-- Scroll Top -->
   <a class="scroll-top d-flex align-items-center justify-content-center" href="#" id="scroll-top"><i
       class="fa-brands fa-arch-linux"></i></a>
@@ -193,6 +212,7 @@
           <img alt="John Paul De Leon" class="photo-original" fetchpriority="high"
             src="assets/img/profile/jp_profile_1.webp" />
         </a>
+        <span aria-hidden="true" class="orbit-sys"><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span></span>
       </div>
       <div class="sidebar-header-block">
         <h1>John Paul <span class="accent-text">De Leon</span></h1>
@@ -384,6 +404,7 @@
                   <img alt="John Paul De Leon" class="img-fluid rounded photo-original"
                     src="assets/img/profile/jp-profile-3.webp" />
                 </a>
+                <span aria-hidden="true" class="orbit-sys orbit-sys-resume"><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span></span>
               </div>
               <h3>Professional Summary</h3>
               <p>SEO Specialist with 5 years of experience focused on link prospecting, backlink research, and outreach
@@ -981,6 +1002,8 @@
   <script src="assets/js/main.js"></script>
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
+  <!-- Ambient space scene -->
+  <script src="assets/js/space-scene.js"></script>
   <!-- Notification panel (bell) + Restart -->
   <script>
     (function () {

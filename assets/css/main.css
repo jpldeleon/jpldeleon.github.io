@@ -870,12 +870,11 @@ section,
   width: 250px;
   height: 250px;
   border-radius: 50%;
-  overflow: hidden;
+  overflow: hidden;            /* circular mask is kept on hover */
   z-index: 2;
   border: 4px solid var(--accent-highlight-rgb);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%),
-    0 0 25px 8px transparent;
-  transition: box-shadow 0.4s ease;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .sidebar-avatar .profile-image img {
@@ -888,12 +887,207 @@ section,
   object-position: 50% 1%;
 }
 
-.sidebar-avatar .profile-image:hover {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%),
-    0 0 25px 10px color-mix(in srgb, var(--accent-color), transparent 55%);
+/*--------------------------------------------------------------
+# Profile image hover: theme tint + small 3D planetary orbit
+# Used by the sidebar profile image and the resume profile image (3).
+# - border is removed, the rounded/circular mask stays
+# - a subtle single-hue tint (active palette accent) fades in over the photo
+# - 5 small moons/stars orbit on tilted, perspective-projected paths that stay
+#   tight to the image; each one swaps layer so it passes BEHIND the image on
+#   the far half of its path and IN FRONT of it on the near half
+--------------------------------------------------------------*/
+@property --orbit-a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
 }
 
+/* Border off on hover (mask untouched) */
+.hero-sidebar .sidebar-avatar .profile-image:hover,
+.hero-sidebar .sidebar-avatar .profile-image:focus-visible {
+  border-color: transparent;
+  box-shadow: none;
+  outline: none;
+}
 
+/* Tint: monochrome hue from the active theme, luminosity of the photo is kept */
+.sidebar-avatar .profile-image::after,
+.resume .resume-side .profile-img a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--accent-color);
+  mix-blend-mode: color;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible)::after {
+  opacity: 0.28;
+}
+
+/* Orbit system.
+   NOTE: this wrapper must not create a stacking context (no z-index / opacity /
+   transform / perspective) so each orb can layer against the image directly. */
+.orbit-sys {
+  --os: 1;           /* orb size multiplier */
+  --persp: 800;      /* perspective distance (unitless px) */
+  position: absolute;
+  left: 50%;
+  top: var(--cy, 50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.orbit-sys .orb {
+  --size: calc(var(--s) * var(--os));
+  /* orbit geometry: radius, elevation (tilt toward viewer), roll (in-plane rotation) */
+  --sa: sin(var(--orbit-a));
+  --ca: cos(var(--orbit-a));
+  --z: calc(var(--R) * var(--sa) * cos(var(--e)));          /* depth, + = toward viewer */
+  --k: calc(var(--persp) / (var(--persp) - var(--z)));       /* perspective scale */
+  --x0: calc(var(--R) * var(--ca));
+  --y0: calc(var(--R) * var(--sa) * sin(var(--e)));
+  --X: calc(var(--x0) * cos(var(--roll)) - var(--y0) * sin(var(--roll)));
+  --Y: calc(var(--x0) * sin(var(--roll)) + var(--y0) * cos(var(--roll)));
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size);
+  height: var(--size);
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transform:
+    translate(
+      calc(-50% + var(--X) * var(--k) * 1px),
+      calc(-50% + var(--Y) * var(--k) * 1px)
+    )
+    scale(var(--k));
+  animation:
+    orb-orbit var(--dur) linear infinite var(--dir, normal),
+    orb-depth var(--dur) linear infinite var(--dir, normal);
+  animation-delay:
+    calc(var(--dur) * var(--phase)),
+    calc(var(--dur) * var(--phase));
+  animation-play-state: paused;
+}
+
+/* flat, solid shapes; far side of the path is slightly dimmer for depth */
+.orbit-sys .orb::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--c, var(--accent-color));
+  opacity: calc(0.55 + 0.45 * (var(--sa) + 1) / 2);
+}
+
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible) + .orbit-sys .orb {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+/* two of the five are small four-point stars */
+.orbit-sys .orb:nth-child(2)::before,
+.orbit-sys .orb:nth-child(4)::before {
+  border-radius: 0;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+/* size / colour / radius / elevation / roll / period / start phase / direction */
+.orbit-sys .orb:nth-child(1) { --s: 8px;  --c: var(--accent-color);     --R: 142; --e: 36deg; --roll: -16deg; --dur: 26s; --phase: 0;     }
+.orbit-sys .orb:nth-child(2) { --s: 11px; --c: var(--accent-highlight); --R: 148; --e: 42deg; --roll: 14deg;  --dur: 32s; --phase: -0.35; --dir: reverse; }
+.orbit-sys .orb:nth-child(3) { --s: 9px;  --c: var(--quote-color);      --R: 145; --e: 30deg; --roll: -4deg;  --dur: 38s; --phase: -0.6;  }
+.orbit-sys .orb:nth-child(4) { --s: 9px;  --c: var(--typed-color);      --R: 150; --e: 46deg; --roll: 24deg;  --dur: 44s; --phase: -0.2;  --dir: reverse; }
+.orbit-sys .orb:nth-child(5) { --s: 6px;  --c: var(--heading-color);    --R: 140; --e: 34deg; --roll: -26deg; --dur: 22s; --phase: -0.8;  }
+
+@keyframes orb-orbit {
+  from { --orbit-a: 0deg; }
+  to   { --orbit-a: 360deg; }
+}
+
+/* near half of the path (0-180deg) sits above the image (z 2), far half below it */
+@keyframes orb-depth {
+  0%, 49.9% { z-index: 3; }
+  50%, 100% { z-index: 1; }
+}
+
+/* Twinkling stars and dots: fixed spots just outside the orbit, always behind the image */
+.orbit-sys .tw {
+  --rk: 1;           /* radius multiplier (smaller for image 3) */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--s);
+  height: var(--s);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transform: translate(
+    calc(-50% + cos(var(--ang)) * var(--rad) * var(--rk) * 1px),
+    calc(-50% + sin(var(--ang)) * var(--rad) * var(--rk) * 1px)
+  );
+}
+
+.orbit-sys .tw::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--c);
+  opacity: 0.15;
+  scale: 0.6;
+  animation: tw-twinkle var(--td) ease-in-out infinite;
+  animation-delay: var(--tdl);
+  animation-play-state: paused;
+}
+
+.orbit-sys .tw:nth-child(7)::before,
+.orbit-sys .tw:nth-child(10)::before,
+.orbit-sys .tw:nth-child(13)::before,
+.orbit-sys .tw:nth-child(15)::before,
+.orbit-sys .tw:nth-child(17)::before {
+  border-radius: 0;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible) + .orbit-sys .tw {
+  opacity: 1;
+}
+
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible) + .orbit-sys .tw::before {
+  animation-play-state: running;
+}
+
+.orbit-sys .tw:nth-child(6) { --ang: 8deg; --rad: 158; --s: 3px; --c: var(--default-color); --td: 3.6s; --tdl: -0.0s; }
+.orbit-sys .tw:nth-child(7) { --ang: 26deg; --rad: 164; --s: 8px; --c: var(--heading-color); --td: 4.8s; --tdl: -1.2s; }
+.orbit-sys .tw:nth-child(8) { --ang: 64deg; --rad: 160; --s: 4px; --c: var(--accent-highlight); --td: 4.2s; --tdl: -2.1s; }
+.orbit-sys .tw:nth-child(9) { --ang: 98deg; --rad: 166; --s: 3px; --c: var(--default-color); --td: 3.2s; --tdl: -0.6s; }
+.orbit-sys .tw:nth-child(10) { --ang: 118deg; --rad: 162; --s: 7px; --c: var(--accent-color); --td: 5.2s; --tdl: -2.8s; }
+.orbit-sys .tw:nth-child(11) { --ang: 152deg; --rad: 158; --s: 4px; --c: var(--quote-color); --td: 4.0s; --tdl: -1.7s; }
+.orbit-sys .tw:nth-child(12) { --ang: 174deg; --rad: 165; --s: 3px; --c: var(--default-color); --td: 3.8s; --tdl: -3.1s; }
+.orbit-sys .tw:nth-child(13) { --ang: 202deg; --rad: 160; --s: 9px; --c: var(--accent-highlight); --td: 5.6s; --tdl: -0.4s; }
+.orbit-sys .tw:nth-child(14) { --ang: 244deg; --rad: 164; --s: 3px; --c: var(--typed-color); --td: 3.4s; --tdl: -2.4s; }
+.orbit-sys .tw:nth-child(15) { --ang: 272deg; --rad: 158; --s: 7px; --c: var(--quote-color); --td: 4.6s; --tdl: -1.0s; }
+.orbit-sys .tw:nth-child(16) { --ang: 296deg; --rad: 166; --s: 4px; --c: var(--default-color); --td: 4.4s; --tdl: -3.5s; }
+.orbit-sys .tw:nth-child(17) { --ang: 338deg; --rad: 160; --s: 8px; --c: var(--typed-color); --td: 5.0s; --tdl: -1.9s; }
+
+@keyframes tw-twinkle {
+  0%, 100% { opacity: 0.15; scale: 0.6; }
+  50%      { opacity: 0.9;  scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-sys .orb,
+  .orbit-sys .tw {
+    display: none;
+  }
+}
 
 .profile-smoke-avatar {
   top: 50%;
@@ -1708,8 +1902,7 @@ section,
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid var(--accent-highlight);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 25px 8px transparent;
-  transition: box-shadow 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .about .profile-header .profile-image a {
@@ -1725,11 +1918,6 @@ section,
   height: 100%;
   object-fit: cover;
   object-position: center 15%;
-}
-
-.about .profile-header .profile-image:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15),
-    0 0 25px 10px color-mix(in srgb, var(--accent-color), transparent 55%);
 }
 
 .profile-smoke-about {
@@ -2478,8 +2666,7 @@ section,
   border: 5px solid color-mix(in srgb, var(--accent-highlight), transparent 85%);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 25px 8px transparent;
-  transition: box-shadow 0.4s ease;
+  transition: border-color 0.4s ease;
 }
 
 .resume .resume-side .profile-img img {
@@ -2490,9 +2677,25 @@ section,
   object-fit: cover;
 }
 
-.resume .resume-side .profile-img a:hover {
-  box-shadow: 0 0 25px 10px color-mix(in srgb, var(--accent-color), transparent 55%);
+/* Hover: border removed, rounded mask kept; tint + orbit come from the shared block above */
+.resume .resume-side .profile-img a:hover,
+.resume .resume-side .profile-img a:focus-visible {
+  border-color: transparent;
+  outline: none;
 }
+
+/* Image 3 keeps its rounded mask; the orbit is centred on the 200px box and hugs it closely */
+.orbit-sys-resume {
+  --cy: 100px;
+  --os: 0.85;
+}
+
+.orbit-sys-resume .orb:nth-child(1) { --R: 122; }
+.orbit-sys-resume .orb:nth-child(2) { --R: 127; }
+.orbit-sys-resume .orb:nth-child(3) { --R: 124; }
+.orbit-sys-resume .orb:nth-child(4) { --R: 130; }
+.orbit-sys-resume .orb:nth-child(5) { --R: 120; }
+.orbit-sys-resume .tw { --rk: 0.84; }
 
 .profile-smoke-resume {
   top: 0;

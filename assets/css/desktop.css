@@ -447,58 +447,6 @@
   box-shadow: none;
 }
 
-/*--------------------------------------------------------------
-# Profile photos: border + hover bands
-# Four flush bands (no gaps), 5px each, in the theme's palette.
-# Round photos (sidebar, About) get concentric rings.
-# The rectangular Resume photo gets stripes stacked under it.
-# Built with box-shadow, so it follows each photo's border-radius.
-# Order, nearest the photo first: 1 green, 2 teal, 3 orange, 4 red.
---------------------------------------------------------------*/
-
-/* Band colours per theme, taken from the palettes in main.css.
-   Slots: 1 green, 2 teal, 3 orange, 4 red (1 sits nearest the photo).
-   var(...) = the theme's own variable, so it follows edits in main.css.
-   Hex = colour is in main.css but not as a main variable, or the theme has
-   no red, so the theme's official red is used (marked "not in main.css"). */
-
-/* Everforest (default, no data-theme) */
-:root {
-  --band-size: 5px;
-  --band-1: var(--accent-highlight);  /* #A7C080 */
-  --band-2: var(--typed-color);       /* #7FBBB3 */
-  --band-3: var(--quote-color);       /* #E69875 */
-  --band-4: #E67E80;                  /* red, not in main.css */
-}
-
-[data-theme="aurora"] {
-  --band-1: var(--quote-color);       /* #a3be8c */
-  --band-2: var(--typed-color);       /* #8fbcbb */
-  --band-3: var(--accent-color);      /* #D08770 */
-  --band-4: var(--accent-highlight);  /* #BF616A */
-}
-
-[data-theme="gruvbox"] {
-  --band-1: #689d6a;                  /* = --nav-dropdown-hover-color */
-  --band-2: var(--quote-color);       /* #458588 */
-  --band-3: var(--accent-highlight);  /* #d79921 */
-  --band-4: #cc241d;                  /* red, not in main.css */
-}
-
-[data-theme="monokai"] {
-  --band-1: var(--quote-color);       /* #a2e57b */
-  --band-2: var(--accent-color);      /* #7cd5f1 */
-  --band-3: #ffb270;                  /* = --nav-hover-color */
-  --band-4: #ff6188;                  /* red, not in main.css */
-}
-
-[data-theme="draculapro"] {
-  --band-1: #50FA7B;                  /* = --nav-dropdown-hover-color */
-  --band-2: var(--typed-color);       /* #80FFEA */
-  --band-3: var(--quote-color);       /* #f8f859 (yellow, no orange in file) */
-  --band-4: var(--accent-color);      /* #f87359 */
-}
-
 /* Photo 1 (sidebar): keep the border */
 .sidebar-avatar .profile-image {
   border: 4px solid var(--accent-highlight);
