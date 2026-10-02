@@ -1125,6 +1125,7 @@ body.sidebar-collapsed {
 @media (max-width: 991px) {
   .sticky-note.section {
     margin: 16px 16px 0;
+    max-width: 460px;
   }
 
   .sticky-note .sticky-handle {
