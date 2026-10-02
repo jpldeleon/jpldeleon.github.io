@@ -55,11 +55,12 @@
 }
 
 @media (max-width: 991px) {
-  .sticky-note.section,
-  .desk-right {
-    width: calc(100% - 40px);
-    max-width: 460px;
-    margin-left: auto;
-    margin-right: auto;
+  .desk-right .cky-widget {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--surface-color), transparent 35%);
+    border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
   }
 }
