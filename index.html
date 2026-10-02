@@ -43,9 +43,8 @@
     rel="stylesheet" />
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"
-    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-    crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+
 
   <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
@@ -87,7 +86,7 @@
     <div class="panel-left">
       <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
         class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
-          aria-hidden="true" class="fa-solid fa-bell"></i></button>
+          aria-hidden="true" class="fa-solid fa-angle-up"></i></button>
       <div class="panel-menu">
         <button aria-controls="panel-work-menu" aria-expanded="false" aria-haspopup="true" class="panel-btn"
           id="panel-work-btn" type="button"><i class="fa-solid fa-folder-open"></i><span class="panel-btn-label">My Work</span><i
@@ -893,15 +892,7 @@
     </section><!-- /Portfolio Section -->
   </main>
   <footer class="footer position-relative" id="footer">
-    <div class="container">
-      <div class="copyright">
-        <p>©<strong class="px-1 sitename">2026 John Paul De Leon</strong> <span>All Rights Reserved</span>
-        </p>
-      </div>
-      <div class="credits">
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
+    
   </footer>
   <!-- CV Terminal Lightboxes -->
   <div aria-label="Certifications terminal" aria-modal="true" class="terminal-overlay" id="terminal-certifications"
@@ -1015,6 +1006,8 @@
         if (btn) {
           btn.setAttribute('aria-expanded', String(!c));
           btn.title = c ? 'Show notifications' : 'Hide notifications';
+          var ic = btn.querySelector('i');
+          if (ic) { ic.classList.toggle('fa-angle-up', !c); ic.classList.toggle('fa-angle-down', c); }
         }
         if (persist) save(c);
       }
