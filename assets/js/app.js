@@ -21,7 +21,12 @@
     },
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
-      adopt: '#portfolio', size: [1040, 720]
+      adopt: '#portfolio', size: [760, 540], center: true
+    },
+    socials: {
+      title: 'Socials', icon: 'fa-solid fa-share-nodes', dockClass: 'dock-app',
+      adopt: '#socials', size: [540, 360], center: true, static: true,
+      permanent: false   // dock icon appears while open and is removed on close
     },
     /* File Explorer: desktop only, opens by itself on first load, small and centred.
        `static` = nothing for Isotope/Swiper to re-measure; `center` = dead centre. */
@@ -273,7 +278,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     filesDismissed = false;
     window.scrollTo(0, 0);
     resetNote(true);
-    if (isDesk()) openWindow('files');
+    openWindow('portfolio');
   }
 
   function initialRect(def) {
@@ -781,13 +786,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (d === desktopMode) return;
     desktopMode = d;
     if (!d) {
-      window.scrollTo(0, 0);
-      if (wins.has('files')) closeWindow(wins.get('files'), true);   // desktop-only app
-    } else if (!filesDismissed && !wins.has('files')) {
-      openWindow('files');
-    }
-    resetNote(false);          // desktop: back to its start spot; small: back into the page flow
-    refreshDock();
+  window.scrollTo(0, 0);
+  if (wins.has('files')) closeWindow(wins.get('files'), true);   // desktop-only app
+}
+resetNote(false);
+refreshDock();
   }
 
   window.matchMedia('(min-width: 992px)').addEventListener('change', () => syncMode());
@@ -1383,13 +1386,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
 
-    /* File Explorer opens by itself on first load (desktop only), after the preloader.
-       A deep-linked window keeps the focus. */
+    /* Portfolio (terminal) opens by itself on first load, after the preloader.
+       A deep-linked window keeps the focus. Files is still in the dock / menu. */
     const openFiles = () => setTimeout(() => {
-      if (!isDesk() || filesDismissed || wins.has('files')) return;
-      const prev = focused;
-      openWindow('files');
-      if (prev && wins.has(prev.id)) focusWindow(prev);
+      if (wins.size) return;
+      openWindow('portfolio');
     }, 250);
     if (document.readyState === 'complete') openFiles();
     else window.addEventListener('load', openFiles, { once: true });
