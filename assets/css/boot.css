@@ -1,0 +1,45 @@
+/*--------------------------------------------------------------
+# Boot sequence (GRUB -> Arch boot log -> tty login)
+# Plays once per browser session. Shown only while <html> has .boot-on
+--------------------------------------------------------------*/
+.boot { display: none; }
+.boot-on .boot {
+  display: block; position: fixed; inset: 0; z-index: 100000;
+  background: rgba(0, 0, 0, .8);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  color: #cfd3d6; cursor: default; user-select: none;
+  font: 14px/1.5 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  transition: opacity .7s ease;
+}
+.boot-on .boot.is-out { opacity: 0; pointer-events: none; }
+
+.bt-screen {
+  position: absolute; inset: 0; padding: 18px clamp(12px, 3vw, 28px);
+  display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+}
+.bt-screen.is-grub { justify-content: flex-start; }
+.bt-screen div { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* ---------- GRUB menu ---------- */
+.bt-grub { width: min(100%, 820px); margin: 5vh auto 0; }
+.bt-grub-head { text-align: center; margin-bottom: 14px; color: #e6e6e6; }
+.bt-grub-box { list-style: none; margin: 0; padding: 6px 0; border: 1px solid #9aa0a4; }
+.bt-grub-box li { padding: 0 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bt-grub-box li.is-sel { background: #1793d1; color: #fff; }   /* Arch blue */
+.bt-grub-help { margin: 16px 2px 0; color: #9aa0a4; font-size: 12.5px; }
+
+/* ---------- boot log + login ---------- */
+.bt-ok { color: #4ec36b; }
+.bt-dim { color: #8b9298; }
+.bt-arch { color: #1793d1; font-weight: 700; }
+.bt-caret {
+  display: inline-block; width: .6em; height: 1.05em; background: #cfd3d6;
+  vertical-align: text-bottom; margin-left: 1px; animation: bt-blink 1s steps(1) infinite;
+}
+.bt-caret.is-typing { animation: none; }
+@keyframes bt-blink { 50% { opacity: 0; } }
+
+@media (max-width: 480px) {
+  .boot-on .boot { font-size: 12px; }
+  .bt-grub-help { font-size: 11px; }
+}

@@ -786,11 +786,13 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (d === desktopMode) return;
     desktopMode = d;
     if (!d) {
-  window.scrollTo(0, 0);
-  if (wins.has('files')) closeWindow(wins.get('files'), true);   // desktop-only app
-}
-resetNote(false);
-refreshDock();
+      window.scrollTo(0, 0);
+      if (wins.has('files')) closeWindow(wins.get('files'), true);   // desktop-only app
+    } else if (!filesDismissed && !wins.has('files')) {
+      openWindow('files');
+    }
+    resetNote(false);          // desktop: back to its start spot; small: back into the page flow
+    refreshDock();
   }
 
   window.matchMedia('(min-width: 992px)').addEventListener('change', () => syncMode());
@@ -1392,8 +1394,13 @@ refreshDock();
       if (wins.size) return;
       openWindow('portfolio');
     }, 250);
-    if (document.readyState === 'complete') openFiles();
-    else window.addEventListener('load', openFiles, { once: true });
+    const startPortfolio = () => {
+      if (document.readyState === 'complete') openFiles();
+      else window.addEventListener('load', openFiles, { once: true });
+    };
+    /* boot.js plays the GRUB / login sequence first (once per session) and fires "boot:done" */
+    if (document.documentElement.classList.contains('boot-on')) window.addEventListener('boot:done', startPortfolio, { once: true });
+    else startPortfolio();
   }
 
   window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };
