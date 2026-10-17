@@ -15,6 +15,28 @@
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, reduce() ? Math.min(ms, 60) : ms); }); };
 
+  /* ---------- fit: one base size for the whole app, from the real window size ----------
+     Everything in the CSS is in em, so the two panes always fit side by side
+     (needs ~46em of width and ~42em of height). */
+  function host() {
+    for (var n = root.parentElement; n && n !== document.body; n = n.parentElement) {
+      var oy = getComputedStyle(n).overflowY;
+      if (oy === 'auto' || oy === 'scroll') return n;
+    }
+    return null;
+  }
+  function fit() {
+    var h = host(), w = root.clientWidth, ht = h ? h.clientHeight : window.innerHeight;
+    if (!w) return;
+    var s = Math.max(5.5, Math.min(13, w / 46, ht / 42));
+    root.style.setProperty('--pt-s', s.toFixed(2) + 'px');
+  }
+  fit();
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(fit); ro.observe(root); if (host()) ro.observe(host());
+  }
+  window.addEventListener('resize', fit);
+
   /* ---------- ASCII logo: {jp} on a solid circular ASCII disc (Linux Mint / Ubuntu style) ----------
      Like the real distro logos there are NO blank gaps inside the shape: every cell is a character.
      The monogram stands out by colour/weight, not by empty space. Plain ASCII only.
