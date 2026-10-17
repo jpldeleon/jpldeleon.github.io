@@ -31,12 +31,10 @@
   if (!tabs.length || !views.length || !textPane || !pdfPane || !frameHost) return;
 
   var PDF = root.getAttribute('data-pdf') || 'assets/resume.pdf';
-  var NARROW = 760;                       // same breakpoint as the Project Inspector
 
   var state = {
     view: tabs[0].getAttribute('data-view'),
     mode: 'text',
-    userPickedMode: false,
     frame: null,
     framePage: 0
   };
@@ -103,7 +101,6 @@
   /* ---------- Modes ---------- */
   function setMode(mode, byUser) {
     if (mode !== 'text' && mode !== 'pdf') return;
-    if (byUser) state.userPickedMode = true;
     state.mode = mode;
 
     modeBtns.forEach(function (b) {
@@ -177,21 +174,8 @@
   });
 
   /* ---------- Default mode ----------
-     The section is parked off-page until the window opens, so its width is 0 at load.
-     The first time it has a real width: wide window -> PDF, narrow window / phone -> Text.
-     Once the visitor picks a mode themselves, that choice is kept. */
-  if ('ResizeObserver' in window) {
-    var decided = false;
-    var ro = new ResizeObserver(function (entries) {
-      var w = entries[0].contentRect.width;
-      if (!w || decided) return;
-      decided = true;
-      if (!state.userPickedMode) setMode(w <= NARROW ? 'text' : 'pdf', false);
-      ro.disconnect();
-    });
-    ro.observe(root);
-  }
-
+     Always opens on Text. The visitor can switch to PDF, and the choice is kept
+     for as long as the window stays on the page. */
   show(state.view, { initial: true });
   setMode('text', false);
 })();
