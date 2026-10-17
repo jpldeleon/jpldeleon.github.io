@@ -126,6 +126,7 @@
   var list = $('#pt-list');
   var run = $('#pt-run'), typed = $('#pt-typed'), out = $('#pt-out');
   var items = $$('.pt-item'), cats = $$('.pt-cat'), pathEl = $('#pt-path');
+  items.forEach(function (li) { var sub = li.querySelector('.pt-sub'); if (sub) li.querySelector('.pt-link').title = sub.textContent; });   // full text on hover (list is one-line compact)
   var PATHS = { all: '~/portfolio', seo: '~/portfolio/seo', wordpress: '~/portfolio/wordpress', webdev: '~/portfolio/web-dev', cert: '~/certifications' };
   function inCat(li, f) {
     var c = li.getAttribute('data-cat').split(' ');
