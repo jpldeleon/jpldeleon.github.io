@@ -860,7 +860,6 @@ html body .lightbox-window-panel .win-btn:focus-visible {
 # Desktop (>= 992px)
 # - Left: the hero is a notification panel (bell in the top panel), About note under it
 # - Middle: Conky system monitor.  Right: Professional Experience (visual only)
-# - File icons live ONLY inside the Files window (File Explorer)
 # - Nothing scrolls; Resume / Projects open as windows only when asked
 --------------------------------------------------------------*/
 :root {
@@ -1155,8 +1154,7 @@ body.sidebar-collapsed {
 .sticky-note,
 .conky,
 .desk-right,
-.cky-widget,
-.desktop-icon {
+.cky-widget {
   box-sizing: border-box;
 }
 /* Notes widget glides up/down when the notification panel is toggled */
@@ -1447,130 +1445,6 @@ body.sidebar-collapsed {
   .exp-widget .cky-bar > i { animation: none; transform: scaleX(var(--p)); }
   .skl-dot { animation: none; }
 }
-
-/*--------------------------------------------------------------
-# File Explorer ("Files" window, desktop only)
-# Source markup (#files-explorer) is parked off-screen; app.js moves it
-# into the window. The icons keep their original look.
---------------------------------------------------------------*/
-.file-explorer { display: none; }
-
-.wm-body .file-explorer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
-.fe-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: color-mix(in srgb, var(--surface-color), var(--background-color) 40%);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
-}
-
-.fe-toolbar > i { color: var(--accent-highlight); font-size: 14px; }
-
-.fe-path {
-  flex: 1 1 auto;
-  min-width: 0;
-  padding: 5px 10px;
-  border-radius: 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font: 12px/1.2 'JetBrains Mono', ui-monospace, monospace;
-  color: var(--default-color);
-  background: color-mix(in srgb, var(--default-color), transparent 92%);
-}
-
-.fe-grid {
-  flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  align-content: start;
-  justify-items: center;
-  gap: 8px 4px;
-  padding: 14px 10px;
-}
-
-.fe-status {
-  position: sticky;
-  bottom: 0;
-  padding: 5px 12px;
-  font: 11px/1.2 'JetBrains Mono', ui-monospace, monospace;
-  color: color-mix(in srgb, var(--default-color), transparent 40%);
-  background: color-mix(in srgb, var(--surface-color), var(--background-color) 40%);
-  border-top: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
-}
-
-/* Bare file icons: glyph + shadow + file name (unchanged look) */
-.desktop-icon {
-  width: 88px;
-  padding: 6px 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  color: var(--default-color);
-  font: 500 11.5px/1.25 var(--nav-font);
-  text-align: center;
-  overflow-wrap: anywhere;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.desktop-icon i {
-  width: auto;
-  height: auto;
-  border: 0;
-  background: none;
-  font-size: 46px;
-  line-height: 1;
-  color: var(--ic, var(--accent-color));
-  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55)) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.3));
-  transition: transform 0.15s var(--lx-ease), filter 0.15s ease;
-}
-
-.desktop-icon span {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.55);
-}
-
-.desktop-icon.di-pdf { --ic: #e5534b; }
-.desktop-icon.di-html { --ic: var(--accent-highlight); }
-
-.desktop-icon:hover i,
-.desktop-icon:focus-visible i {
-  transform: translateY(-3px) scale(1.07);
-  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.6)) drop-shadow(0 12px 14px rgba(0, 0, 0, 0.35));
-}
-
-.desktop-icon:hover span,
-.desktop-icon:focus-visible span { color: var(--accent-highlight); }
-
-.desktop-icon:focus-visible { outline: none; }
-.desktop-icon:focus-visible span { text-decoration: underline; text-underline-offset: 3px; }
-.desktop-icon:active i { transform: scale(0.96); }
-
-/* Desktop only: no Files window and no dock button on small screens */
-@media (max-width: 991px) {
-  .wm-window[data-wm-app="files"],
-  .linux-dock .dock-item.dock-files {
-    display: none !important;
-  }
-}
-
-/* Dock: Files button colour (matches the other launcher icons) */
-.linux-dock .dock-item.dock-files i { color: var(--accent-color); }
-
 
 /* Ubuntu menu: sub-heading between Apps and Summary */
 .app-menu .app-menu-label {

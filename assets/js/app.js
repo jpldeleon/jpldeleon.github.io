@@ -27,12 +27,6 @@
       title: 'Socials', icon: 'fa-solid fa-share-nodes', dockClass: 'dock-app',
       adopt: '#socials', size: [540, 360], center: true, static: true,
       permanent: false   // dock icon appears while open and is removed on close
-    },
-    /* File Explorer: desktop only, opens by itself on first load, small and centred.
-       `static` = nothing for Isotope/Swiper to re-measure; `center` = dead centre. */
-    files: {
-      title: 'Files', icon: 'fa-solid fa-folder-open', dockClass: 'dock-files',
-      adopt: '#files-explorer', size: [560, 400], center: true, static: true
     }
   };
 
@@ -117,7 +111,7 @@
   const defs = new Map();      // id -> app definition
   const dockBtns = new Map();  // id -> dock <button>
   const frames = new Set();    // live iframes (for theme sync)
-  let zTop = 1, focused = null, cascade = 0, filesDismissed = false;
+  let zTop = 1, focused = null, cascade = 0;
   let dock, dockApps, dockDivider;
 
   Object.entries(APPS).forEach(([id, d]) => defs.set(id, Object.assign({ id, permanent: true }, d)));
@@ -149,7 +143,7 @@
     const menuBtn = dock.querySelector('#dock-menu-btn');
     Array.from(dock.children).forEach(c => { if (c !== menuBtn) c.remove(); });
 
-    ['files', 'resume', 'portfolio'].forEach(id => {   // always in the dock (also reachable from the Ubuntu menu)
+    ['resume', 'portfolio'].forEach(id => {   // always in the dock (also reachable from the Ubuntu menu)
       const b = makeDockBtn(defs.get(id));
       dockBtns.set(id, b);
       dock.appendChild(b);
@@ -269,13 +263,12 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   function sidebarW() { return 0; }   // the hero panel is on the left and windows float above it
 
   /* Space taken by the desktop icons on the left (desktop only) */
-  function iconsW() { return 0; }     // desktop icons were removed: they live in the Files window
+  function iconsW() { return 0; }     // desktop icons were removed
 
   /* Restart: close every window, put the About sticky note back where it started */
   async function restartDesktop() {
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
-    filesDismissed = false;
     window.scrollTo(0, 0);
     resetNote(true);
     openWindow('portfolio');
@@ -394,7 +387,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     };
 
     /* Controls */
-    root.querySelector('.wm-close').addEventListener('click', () => { if (def.id === 'files') filesDismissed = true; closeWindow(w); });
+    root.querySelector('.wm-close').addEventListener('click', () => closeWindow(w));
     const bar = root.querySelector('.wm-titlebar');
 
     /* Focus on any press (capture: works before inner handlers) */
@@ -585,7 +578,6 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   function openWindow(def, rect, origin) {
     if (typeof def === 'string') def = defs.get(def);
     if (!def) return null;
-    if (def.id === 'files' && window.innerWidth < 992) return null;   // File Explorer is desktop-only
     let w = wins.get(def.id);
     if (w) {                              // already open: never duplicate
       if (w.state === 'min') restore(w); else focusWindow(w);
@@ -785,12 +777,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const d = window.innerWidth >= 992;
     if (d === desktopMode) return;
     desktopMode = d;
-    if (!d) {
-      window.scrollTo(0, 0);
-      if (wins.has('files')) closeWindow(wins.get('files'), true);   // desktop-only app
-    } else if (!filesDismissed && !wins.has('files')) {
-      openWindow('files');
-    }
+    if (!d) window.scrollTo(0, 0);
     resetNote(false);          // desktop: back to its start spot; small: back into the page flow
     refreshDock();
   }
@@ -946,9 +933,8 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
    * ===================================================================== */
   function dockActivate(id) {
     const w = wins.get(id);
-    if (!w) { if (id === 'files') filesDismissed = false; openWindow(id); return; }
+    if (!w) { openWindow(id); return; }
     if (w.state === 'min') restore(w);
-    else if (id === 'files') focusWindow(w);          // Files: bring forward, don't toggle away
     else if (w === focused) minimize(w);   // clicking the active app's icon minimizes it
     else focusWindow(w);
   }
@@ -1389,14 +1375,14 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
 
     /* Portfolio (terminal) opens by itself on first load, after the preloader.
-       A deep-linked window keeps the focus. Files is still in the dock / menu. */
-    const openFiles = () => setTimeout(() => {
+       A deep-linked window keeps the focus. */
+    const openPortfolio = () => setTimeout(() => {
       if (wins.size) return;
       openWindow('portfolio');
     }, 250);
     const startPortfolio = () => {
-      if (document.readyState === 'complete') openFiles();
-      else window.addEventListener('load', openFiles, { once: true });
+      if (document.readyState === 'complete') openPortfolio();
+      else window.addEventListener('load', openPortfolio, { once: true });
     };
     /* boot.js plays the GRUB / login sequence first (once per session) and fires "boot:done" */
     if (document.documentElement.classList.contains('boot-on')) window.addEventListener('boot:done', startPortfolio, { once: true });
