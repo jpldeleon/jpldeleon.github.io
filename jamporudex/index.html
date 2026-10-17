@@ -8,6 +8,8 @@
       if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
         document.documentElement.setAttribute('data-theme', saved);
       }
+      /* embedded in a desktop window: hide the standalone title bar before first paint */
+      if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add('pi-embed');
     })();
   </script>
 
@@ -28,7 +30,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
@@ -38,10 +40,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+  <!-- Project Inspector layout (must load after main.css) -->
+  <link href="/assets/css/inspector.css" rel="stylesheet">
   <style id="glightbox-overrides">
     .glightbox-container .gclose:not([data-glightbox-close]) {
       display: none !important;
@@ -90,652 +93,408 @@
     *::-webkit-scrollbar-thumb { background: var(--sb-thumb, var(--accent-highlight, #178C7A)); border-radius: 8px; }
     *::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
   </style>
-
-  <style id="side-nav">
-    :root { --side-w: 56px; }
-
-    body.portfolio-details-page { padding-left: var(--side-w); }
-
-    html body .linux-dock.side-nav {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: auto;
-      width: var(--side-w);
-      max-width: none;
-      height: 100%;
-      transform: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
-      padding: 14px 0;
-      box-sizing: border-box;
-      background: color-mix(in srgb, var(--surface-color), transparent 8%);
-      border: 0;
-      border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
-      border-radius: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      z-index: 997;
-    }
-
-    html body .linux-dock.side-nav .dock-item {
-      position: relative;
-      width: 44px;
-      height: 44px;
-      flex: 0 0 auto;
-      font-size: 17px;
-      border-radius: 8px;
-      background: transparent !important;
-      color: color-mix(in srgb, var(--default-color), transparent 35%);
-      transform: none !important;
-      transition: color 0.18s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item i { color: inherit; }
-
-    html body .linux-dock.side-nav .dock-item:hover,
-    html body .linux-dock.side-nav .dock-item:focus-visible,
-    html body .linux-dock.side-nav .dock-item.active {
-      color: var(--accent-highlight);
-      background: transparent !important;
-      transform: none !important;
-    }
-
-    html body .linux-dock.side-nav .dock-item:focus-visible {
-      outline: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
-      outline-offset: -2px;
-    }
-
-    html body .linux-dock.side-nav .dock-item::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 5px;
-      width: 18px;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--accent-highlight);
-      transform: translateX(-50%) scaleX(0);
-      opacity: 0;
-      transition: transform 0.22s ease, opacity 0.22s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item.active::after {
-      transform: translateX(-50%) scaleX(1);
-      opacity: 1;
-    }
-
-    html body .linux-dock.side-nav .dock-item .dock-tooltip {
-      bottom: auto;
-      top: 50%;
-      left: calc(100% + 10px);
-      transform: translateY(-50%) translateX(-4px);
-    }
-
-    html body .linux-dock.side-nav .dock-item:hover .dock-tooltip,
-    html body .linux-dock.side-nav .dock-item:focus-visible .dock-tooltip {
-      transform: translateY(-50%) translateX(0);
-    }
-
-    @media (max-width: 768px) {
-      :root { --side-w: 46px; }
-      html body .linux-dock.side-nav { padding: 10px 0; }
-      html body .linux-dock.side-nav .dock-item { width: 40px; height: 40px; font-size: 16px; }
-    }
-  </style>
 </head>
 
-<body class="portfolio-details-page">
+<body class="pi-page">
 
-  <!-- Scroll Top -->
+  <!-- Scroll Top (kept: main.js expects it; hidden by the layout, the panes scroll internally) -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Project sidebar -->
-  <nav class="linux-dock side-nav" aria-label="Project navigation">
-    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
-        class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
-        class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
-        class="dock-tooltip">Gallery</span></a>
-  </nav>
+  <div class="pi">
 
-  <main class="main">
+    <!-- Standalone title bar (hidden when this page is shown inside a desktop window) -->
+    <header class="pi-titlebar">
+      <i class="fa-solid fa-terminal" aria-hidden="true"></i>
+      <span class="pi-titlebar-title"><b>jp@portfolio:</b> ~/jamporudex</span>
+      <a class="pi-back" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Portfolio</a>
+    </header>
 
-    <!-- Page Title -->
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="page-header">
-          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            Node.js, Express, PostgreSQL &amp; EJS Capstone Project
-          </span>
-          <h1 class="h2 fw-bold mb-3">
-            JamporuDEX
-          </h1>
+    <!-- Left navigation -->
+    <aside class="pi-side" aria-label="Project navigation">
+
+      <div class="pi-head">
+        <div class="pi-head-top">
+          <span class="pi-app-icon" aria-hidden="true"><i class="fa-brands fa-leanpub"></i></span>
+          <span class="pi-badge">Node.js, Express, PostgreSQL &amp; EJS Capstone Project</span>
         </div>
+        <h1 class="pi-title" title="JamporuDEX">JamporuDEX</h1>
       </div>
-    </div>
 
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
+      <nav class="pi-tree" role="tablist" aria-orientation="vertical" aria-label="Project files">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>media/</div>
+        <div class="pi-items">
+          <a href="#walkthrough" class="pi-item" role="tab" id="tab-walkthrough" aria-controls="view-walkthrough"
+            data-view="walkthrough" data-dir="media/" data-file="walkthrough.mp4" data-meta="YouTube video">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i><span class="pi-name">walkthrough.mp4</span>
+          </a>
+          <a href="#gallery" class="pi-item" role="tab" id="tab-gallery" aria-controls="view-gallery"
+            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="21 images">
+            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">21</span>
+          </a>
+        </div>
 
-        <div class="row gy-4">
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>docs/</div>
+        <div class="pi-items">
+          <a href="#overview" class="pi-item" role="tab" id="tab-overview" aria-controls="view-overview"
+            data-view="overview" data-dir="docs/" data-file="overview.md" data-meta="markdown">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i><span class="pi-name">overview.md</span>
+          </a>
+          <a href="#implementation" class="pi-item" role="tab" id="tab-implementation" aria-controls="view-implementation"
+            data-view="implementation" data-dir="docs/" data-file="implementation.md" data-meta="markdown">
+            <i class="fa-solid fa-gears" aria-hidden="true"></i><span class="pi-name">implementation.md</span>
+          </a>
+          <a href="#features" class="pi-item" role="tab" id="tab-features" aria-controls="view-features"
+            data-view="features" data-dir="docs/" data-file="features.md" data-meta="4 features">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i><span class="pi-name">features.md</span>
+          </a>
+          <a href="#stack" class="pi-item" role="tab" id="tab-stack" aria-controls="view-stack"
+            data-view="stack" data-dir="docs/" data-file="stack.json" data-meta="properties">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="pi-name">stack.json</span>
+          </a>
+        </div>
 
-          <div class="col-lg-8">
-            <div class="portfolio-video">
-              <div
-                style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
-                  src="https://www.youtube.com/embed/cpVNAfo870s?si=JmMW2d1XPK-lOiIH" title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
+      </nav>
+
+      <div class="pi-actions">
+        <a href="https://jamporudex.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-live">View Site</a>
+        <a href="https://github.com/jpldeleon/jamporudex" target="_blank" rel="noopener noreferrer" class="btn-github">GitHub Repo</a>
+      </div>
+
+    </aside>
+
+    <!-- Right content area -->
+    <main class="pi-content" id="portfolio-details">
+
+      <div class="pi-bar">
+        <div class="pi-crumb" aria-live="polite">~/jamporudex/<span id="pi-crumb-dir"></span><b id="pi-crumb-file"></b></div>
+        <div class="pi-bar-meta" id="pi-meta"></div>
+      </div>
+
+      <div class="pi-scroll">
+
+        <!-- walkthrough.mp4 -->
+        <div class="pi-view" id="view-walkthrough" role="tabpanel" aria-labelledby="tab-walkthrough">
+
+          <div class="pi-stage">
+            <iframe src="https://www.youtube.com/embed/cpVNAfo870s?si=JmMW2d1XPK-lOiIH" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+          <div class="pi-film">
+            <div class="pi-film-head">
+              <span>screenshots/</span>
+              <a href="#gallery" data-goto="gallery">View all 21</a>
+            </div>
+            <div class="pi-strip">
+            <a aria-label="Open Home screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" title="Open Home screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.webp" alt="Home" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home</span><span>1/21</span></span>
+            </a>
+            <a aria-label="Open README Documentation screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" title="Open README Documentation screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.webp" alt="README Documentation" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>README Documentation</span><span>2/21</span></span>
+            </a>
+            <a aria-label="Open Environment Variables screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" title="Open Environment Variables screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.webp" alt="Environment Variables" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Environment Variables</span><span>3/21</span></span>
+            </a>
+            <a aria-label="Open Package JSON Dependencies screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" title="Open Package JSON Dependencies screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.webp" alt="Package JSON Dependencies" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Package JSON Dependencies</span><span>4/21</span></span>
+            </a>
+            <a aria-label="Open Grid Layout screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" title="Open Grid Layout screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.webp" alt="Grid Layout" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Grid Layout</span><span>5/21</span></span>
+            </a>
+            <a aria-label="Open Filter Functionality screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" title="Open Filter Functionality screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.webp" alt="Filter Functionality" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Filter Functionality</span><span>6/21</span></span>
+            </a>
+            <a aria-label="Open Sort Functionality screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" title="Open Sort Functionality screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.webp" alt="Sort Functionality" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sort Functionality</span><span>7/21</span></span>
+            </a>
+            <a aria-label="Open Search Modal View 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" title="Open Search Modal View 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.webp" alt="Search Modal View 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Search Modal View 1</span><span>8/21</span></span>
+            </a>
+            <a aria-label="Open Search Modal View 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" title="Open Search Modal View 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.webp" alt="Search Modal View 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Search Modal View 2</span><span>9/21</span></span>
+            </a>
+            <a aria-label="Open Add Entry Form screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" title="Open Add Entry Form screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.webp" alt="Add Entry Form" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Add Entry Form</span><span>10/21</span></span>
+            </a>
+            <a aria-label="Open Edit Entry Modal 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" title="Open Edit Entry Modal 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.webp" alt="Edit Entry Modal 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Entry Modal 1</span><span>11/21</span></span>
+            </a>
+            <a aria-label="Open Edit Entry Modal 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" title="Open Edit Entry Modal 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.webp" alt="Edit Entry Modal 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Entry Modal 2</span><span>12/21</span></span>
+            </a>
+            <a aria-label="Open AniList Fallback API Integration screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" title="Open AniList Fallback API Integration screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.webp" alt="AniList Fallback API Integration" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>AniList Fallback API Integration</span><span>13/21</span></span>
+            </a>
+            <a aria-label="Open Database Schema Setup screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp" title="Open Database Schema Setup screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.webp" alt="Database Schema Setup" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Database Schema Setup</span><span>14/21</span></span>
+            </a>
+            <a aria-label="Open Delete Route Logic screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" title="Open Delete Route Logic screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-delete.webp" alt="Delete Route Logic" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Delete Route Logic</span><span>15/21</span></span>
+            </a>
+            <a aria-label="Open GET Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" title="Open GET Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-get.webp" alt="GET Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>GET Route Controller</span><span>16/21</span></span>
+            </a>
+            <a aria-label="Open Jikan API Handler screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" title="Open Jikan API Handler screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.webp" alt="Jikan API Handler" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Jikan API Handler</span><span>17/21</span></span>
+            </a>
+            <a aria-label="Open Lightbox Modal screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" title="Open Lightbox Modal screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-modal.webp" alt="Lightbox Modal" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Lightbox Modal</span><span>18/21</span></span>
+            </a>
+            <a aria-label="Open PostgreSQL Pool Configuration screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" title="Open PostgreSQL Pool Configuration screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.webp" alt="PostgreSQL Pool Configuration" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>PostgreSQL Pool Configuration</span><span>19/21</span></span>
+            </a>
+            <a aria-label="Open POST Route Handler screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" title="Open POST Route Handler screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-post.webp" alt="POST Route Handler" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>POST Route Handler</span><span>20/21</span></span>
+            </a>
+            <a aria-label="Open Theme Toggle State screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" title="Open Theme Toggle State screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.webp" alt="Theme Toggle State" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Theme Toggle State</span><span>21/21</span></span>
+            </a>
             </div>
           </div>
 
-          <div class="col-lg-4">
-            <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
-              <h3>Project Information</h3>
-              <ul>
-                <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong> Node.js, Express, PostgreSQL &amp; EJS Capstone Project</li>
-                <li><strong>Focus:</strong> Server-Side Rendering, CRUD Operations, API Integration &amp; Dynamic
-                  Theming</li>
-                <li><strong>Tech Stack:</strong> Node.js, Express.js, PostgreSQL, EJS, JavaScript, CSS3</li>
-                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
-                  <div style="display: flex; gap: 12px; margin-top: 15px;">
-                    <a href="https://jamporudex.onrender.com/" target="_blank" rel="noopener noreferrer"
-                      class="btn-live">View Site</a>
-                    <a href="https://github.com/jpldeleon/jamporudex" target="_blank" rel="noopener noreferrer"
-                      class="btn-github">GitHub Repo</a>
-                  </div>
-                </div>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-
-              <h4>Project Overview</h4>
-              <p>
-                JamporuDEX is my Capstone Project for Angela Yu's Full-Stack Web Development Bootcamp. Inspired by Derek
-                Sivers' book notes site (a key reference in the capstone prompt), I built a personal web app to track
-                anime and manga. Users can search for titles, auto-fetch cover art from MyAnimeList, and save entries to
-                a custom dashboard with status updates, episode or chapter progress, star ratings, and short reviews.
-                The app features dynamic sorting and filtering, backed by full persistence through a PostgreSQL database
-                so data stays intact across server restarts.
-              </p>
-              <p>
-                As an anime fan, I wanted to build a practical tool tailored to my actual hobbies rather than another
-                standard to-do list tutorial. Working on a project I genuinely enjoyed using kept me motivated and
-                engaged through every step of development.
-              </p>
-              <p>
-                To help with the development process, I used Claude (Anthropic's AI assistant) to debug tricky errors,
-                review my code, and talk through complex features like external API fallback logic. Working alongside AI
-                provided fast guidance similar to checking developer forums or official documentation. While leveraging
-                these tools for technical support, I designed the database schema, wrote the Express route handlers, and
-                structured the core backend logic myself to make sure I truly understood how every piece operated.
-              </p>
-
-              <h4>Problem &amp; Objective</h4>
-              <p>
-                The main objective of this capstone was to design and build a full-stack CRUD application from scratch,
-                using PostgreSQL for persistent storage and integrating an external public API without starter
-                templates. This required designing a relational database schema, setting up RESTful Express routes, and
-                managing data flow between PostgreSQL, the Node backend, and EJS template views. As an entry-level
-                developer, my main focus was building a strong grasp of core backend fundamentals, understanding
-                request-response lifecycles, and improving my step-by-step debugging skills.
-              </p>
-
-              <h4>Technical Implementation</h4>
-              <p>
-                The backend is built with Express.js and connects to PostgreSQL using the pg library. A media_entries
-                table manages persistent data storage for items like MAL IDs, titles, status, progress metrics, ratings,
-                reviews, synopses, and image URLs. External data fetching relies on Axios to query the Jikan API (a
-                public MyAnimeList wrapper) for metadata and cover images. To handle rate limits and temporary service
-                outages, the backend includes exponential backoff retry logic and an automated fallback to the AniList
-                GraphQL API to keep search reliable.
-              </p>
-              <p>
-                The application uses EJS for server-side template rendering, paired with plain JavaScript on the
-                frontend to power search modal popups, entry editing, server-side dynamic sorting and filtering, and
-                theme switching without extra frontend frameworks.
-              </p>
-
-              <div class="features mt-4">
-                <h3>Implemented Features</h3>
-                <div class="row gy-3">
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                      <i class="fa-solid fa-pen-to-square"></i>
-                      <h4>Full CRUD with PostgreSQL</h4>
-                      <p>Add, view, edit, and delete entries using Express routes and parameterized SQL queries
-                        connected to a real PostgreSQL database so your index persists across sessions.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
-                      <i class="fa-solid fa-crosshairs"></i>
-                      <h4>Jikan API Search with AniList Fallback</h4>
-                      <p>Search MyAnimeList via the Jikan API directly inside the modal to pull cover art and synopses.
-                        If Jikan times out, the server retries and falls back to AniList automatically.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
-                      <i class="fa-solid fa-filter"></i>
-                      <h4>Sort &amp; Status Filter</h4>
-                      <p>Sort entries by rating, date added, or title, and filter lists by reading or watching status
-                        using query parameters processed on the server.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
-                      <i class="fa-solid fa-circle-half-stroke"></i>
-                      <h4>Dark Theme Toggle</h4>
-                      <p>Switch between dark theme styles (Tokyo Night Storm and Dracula) using CSS variables and
-                        localStorage to save user preferences across page navigation.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
-              <p>
-                This was my first time connecting a live relational database to a backend server instead of using
-                temporary in-memory data. It forced me to think through my database schema before writing backend
-                routes. Integrating the Jikan API was another great learning experience; I didn't expect a free public
-                API to time out so often, so building retry loops and an AniList fallback was an unexpected challenge
-                that became one of the parts I'm most proud of.
-              </p>
-              <p>
-                I ran into plenty of bugs along the way, and using Claude to talk through why errors were happening
-                helped me learn the root causes rather than just pasting quick fixes. As an entry-level developer, this
-                project gave me real confidence in my ability to explain and defend every line of code I shipped.
-              </p>
-
-              <h3 class="mt-4">Video Overview</h3>
-              <p>The demonstration video walks through the core architecture and features of the app:</p>
-              <ul>
-                <li><strong>GitHub Repository &amp; Setup:</strong> Overview of project files, directory structure, and
+          <div class="pi-chapters">
+            <h2 class="pi-h">Video Overview</h2>
+            <p class="pi-sub">The demonstration video walks through the core architecture and features of the app:</p>
+            <ul>
+              <li><strong>GitHub Repository &amp; Setup:</strong> Overview of project files, directory structure, and
                   environment variable configuration.</li>
-                <li><strong>Core Features Walkthrough:</strong> Searching for titles via API, adding them to the index,
+<li><strong>Core Features Walkthrough:</strong> Searching for titles via API, adding them to the index,
                   updating status and ratings, deleting records, and testing sort/filter tools.</li>
-                <li><strong>Responsive Mobile Inspection:</strong> Verifying layout responsiveness across mobile,
+<li><strong>Responsive Mobile Inspection:</strong> Verifying layout responsiveness across mobile,
                   tablet, and desktop viewports using browser developer tools.</li>
-                <li><strong>Codebase Structure:</strong> Reviewing Express route handlers, SQL queries, and EJS
+<li><strong>Codebase Structure:</strong> Reviewing Express route handlers, SQL queries, and EJS
                   templates inside VS Code.</li>
-              </ul>
-
-              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
-              <ul>
-                <li><strong>Backend:</strong> Node.js, Express.js</li>
-                <li><strong>Database:</strong> PostgreSQL (hosted on Neon), accessed using the pg library</li>
-                <li><strong>API Integration:</strong> Axios, Jikan API (MyAnimeList wrapper), AniList API (fallback)
-                </li>
-                <li><strong>Templating:</strong> EJS</li>
-                <li><strong>Frontend:</strong> Vanilla JavaScript, CSS3</li>
-                <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub, Render</li>
-                <li><strong>AI Assistance:</strong> Claude (used for debugging, code review, and discussing backend
-                  logic)</li>
-              </ul>
-            </div>
+            </ul>
           </div>
 
-          <!-- Screenshot Gallery Carousel Section -->
-          <section id="project-screenshots" class="portfolio section">
-
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-              <h2>Gallery</h2>
-              <p>A closer look at the screenshots behind this project.</p>
-            </div><!-- End Section Title -->
-
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-              <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
-                <div class="swiper-wrapper align-items-center">
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Home screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" title="Open Home screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.webp" class="img-fluid"
-                        alt="Home" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open README Documentation screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" title="Open README Documentation screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.webp" class="img-fluid"
-                        alt="README Documentation" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Environment Variables screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" title="Open Environment Variables screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.webp" class="img-fluid"
-                        alt="Environment Variables" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Package JSON Dependencies screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" title="Open Package JSON Dependencies screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.webp" class="img-fluid"
-                        alt="Package JSON Dependencies" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Grid Layout screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" title="Open Grid Layout screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.webp" class="img-fluid"
-                        alt="Grid Layout" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Filter Functionality screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" title="Open Filter Functionality screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.webp" class="img-fluid"
-                        alt="Filter Functionality" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sort Functionality screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" title="Open Sort Functionality screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.webp" class="img-fluid"
-                        alt="Sort Functionality" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Search Modal View 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" title="Open Search Modal View 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.webp" class="img-fluid"
-                        alt="Search Modal View 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Search Modal View 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" title="Open Search Modal View 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.webp" class="img-fluid"
-                        alt="Search Modal View 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Add Entry Form screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" title="Open Add Entry Form screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.webp" class="img-fluid"
-                        alt="Add Entry Form" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Edit Entry Modal 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" title="Open Edit Entry Modal 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.webp" class="img-fluid"
-                        alt="Edit Entry Modal 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Edit Entry Modal 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" title="Open Edit Entry Modal 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.webp" class="img-fluid"
-                        alt="Edit Entry Modal 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open AniList Fallback API Integration screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" title="Open AniList Fallback API Integration screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.webp" class="img-fluid"
-                        alt="AniList Fallback API Integration" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Database Schema Setup screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp" title="Open Database Schema Setup screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.webp" class="img-fluid"
-                        alt="Database Schema Setup" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Delete Route Logic screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" title="Open Delete Route Logic screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-delete.webp" class="img-fluid"
-                        alt="Delete Route Logic" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open GET Route Controller screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" title="Open GET Route Controller screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-get.webp" class="img-fluid"
-                        alt="GET Route Controller" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Jikan API Handler screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" title="Open Jikan API Handler screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.webp" class="img-fluid"
-                        alt="Jikan API Handler" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Lightbox Modal screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" title="Open Lightbox Modal screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-modal.webp" class="img-fluid"
-                        alt="Lightbox Modal" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open PostgreSQL Pool Configuration screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" title="Open PostgreSQL Pool Configuration screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.webp" class="img-fluid"
-                        alt="PostgreSQL Pool Configuration" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open POST Route Handler screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" title="Open POST Route Handler screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-post.webp" class="img-fluid"
-                        alt="POST Route Handler" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Theme Toggle State screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot"
-                        data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" title="Open Theme Toggle State screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.webp" class="img-fluid"
-                        alt="Theme Toggle State" loading="lazy">
-                    </div>
-                  </div>
-
-                </div>
-
-                <!-- Controls -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-
-              </div>
-
-            </div>
-
-
-            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
-            <div class="glightbox-desc desc-jamporudex-shot" style="display:none;">
-              <div class="lightbox-window-panel">
-                <div class="lightbox-window-titlebar">
-                  <span class="lightbox-window-title">jp@portfolio: ~/JamporuDEX</span>
-                  <div class="lightbox-window-controls">
-                    <button aria-label="Close screenshot"
-                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </section><!-- /Portfolio Section -->
-
-          <style>
-            /* Whole screenshot card opens the lightbox */
-            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
-            .screenshots-swiper .portfolio-image-link { inset: 0; }
-
-            .screenshots-swiper {
-              padding: 10px 10px 50px;
-            }
-
-            .screenshots-swiper .swiper-slide {
-              height: auto;
-            }
-
-            .screenshots-swiper .portfolio-wrap {
-              height: 100%;
-            }
-
-            .screenshots-swiper .swiper-button-prev,
-            .screenshots-swiper .swiper-button-next {
-              top: auto;
-              bottom: 0;
-              margin-top: 0;
-              width: 40px;
-              height: 40px;
-              background: var(--accent-highlight, #178C7A);
-              border-radius: 50%;
-              color: #fff;
-            }
-
-            .screenshots-swiper .swiper-button-prev:after,
-            .screenshots-swiper .swiper-button-next:after {
-              font-size: 16px;
-              font-weight: 700;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet {
-              background: rgba(255, 255, 255, 0.5);
-              opacity: 1;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet-active {
-              background: var(--accent-highlight, #178C7A);
-            }
-
-            @media (max-width: 575px) {
-
-              .screenshots-swiper {
-                padding: 10px 10px 80px;
-              }
-
-              /* Dots stay centered, higher up */
-              .screenshots-swiper .swiper-pagination {
-                bottom: 38px;
-              }
-
-              /* Arrows drop into their own centered row below the dots */
-              .screenshots-swiper .swiper-button-prev,
-              .screenshots-swiper .swiper-button-next {
-                top: auto;
-                bottom: 0;
-                left: 50%;
-                right: auto;
-                width: 32px;
-                height: 32px;
-              }
-
-              .screenshots-swiper .swiper-button-prev:after,
-              .screenshots-swiper .swiper-button-next:after {
-                font-size: 13px;
-              }
-
-              .screenshots-swiper .swiper-button-prev {
-                transform: translateX(calc(-100% - 8px));
-              }
-
-              .screenshots-swiper .swiper-button-next {
-                transform: translateX(8px);
-              }
-            }
-          </style>
-
         </div>
+
+        <!-- screenshots/ -->
+        <div class="pi-view" id="view-gallery" role="tabpanel" aria-labelledby="tab-gallery" hidden>
+          <h2 class="pi-h">Gallery</h2>
+          <p class="pi-sub">A closer look at the screenshots behind this project.</p>
+          <div class="pi-grid" id="project-screenshots">
+            <a aria-label="Open Home screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-1-home_f.webp" title="Open Home screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-1-home.webp" alt="Home" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home</span><span>1/21</span></span>
+            </a>
+            <a aria-label="Open README Documentation screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-2-readme_f.webp" title="Open README Documentation screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-2-readme.webp" alt="README Documentation" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>README Documentation</span><span>2/21</span></span>
+            </a>
+            <a aria-label="Open Environment Variables screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-3-env_f.webp" title="Open Environment Variables screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-3-env.webp" alt="Environment Variables" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Environment Variables</span><span>3/21</span></span>
+            </a>
+            <a aria-label="Open Package JSON Dependencies screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson_f.webp" title="Open Package JSON Dependencies screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-4-packagejson.webp" alt="Package JSON Dependencies" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Package JSON Dependencies</span><span>4/21</span></span>
+            </a>
+            <a aria-label="Open Grid Layout screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-5-grid_f.webp" title="Open Grid Layout screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-5-grid.webp" alt="Grid Layout" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Grid Layout</span><span>5/21</span></span>
+            </a>
+            <a aria-label="Open Filter Functionality screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-6-filter_f.webp" title="Open Filter Functionality screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-6-filter.webp" alt="Filter Functionality" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Filter Functionality</span><span>6/21</span></span>
+            </a>
+            <a aria-label="Open Sort Functionality screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-7-sort_f.webp" title="Open Sort Functionality screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-7-sort.webp" alt="Sort Functionality" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sort Functionality</span><span>7/21</span></span>
+            </a>
+            <a aria-label="Open Search Modal View 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal_f.webp" title="Open Search Modal View 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-8-searchmodal.webp" alt="Search Modal View 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Search Modal View 1</span><span>8/21</span></span>
+            </a>
+            <a aria-label="Open Search Modal View 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal_f.webp" title="Open Search Modal View 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-9-searchmodal.webp" alt="Search Modal View 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Search Modal View 2</span><span>9/21</span></span>
+            </a>
+            <a aria-label="Open Add Entry Form screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-10-addentry_f.webp" title="Open Add Entry Form screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-10-addentry.webp" alt="Add Entry Form" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Add Entry Form</span><span>10/21</span></span>
+            </a>
+            <a aria-label="Open Edit Entry Modal 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-11-edit_f.webp" title="Open Edit Entry Modal 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-11-edit.webp" alt="Edit Entry Modal 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Entry Modal 1</span><span>11/21</span></span>
+            </a>
+            <a aria-label="Open Edit Entry Modal 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-12-edit_f.webp" title="Open Edit Entry Modal 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-12-edit.webp" alt="Edit Entry Modal 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Entry Modal 2</span><span>12/21</span></span>
+            </a>
+            <a aria-label="Open AniList Fallback API Integration screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-anilist_f.webp" title="Open AniList Fallback API Integration screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-anilist.webp" alt="AniList Fallback API Integration" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>AniList Fallback API Integration</span><span>13/21</span></span>
+            </a>
+            <a aria-label="Open Database Schema Setup screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-databaseschema_f.webp" title="Open Database Schema Setup screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-databaseschema.webp" alt="Database Schema Setup" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Database Schema Setup</span><span>14/21</span></span>
+            </a>
+            <a aria-label="Open Delete Route Logic screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-delete_f.webp" title="Open Delete Route Logic screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-delete.webp" alt="Delete Route Logic" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Delete Route Logic</span><span>15/21</span></span>
+            </a>
+            <a aria-label="Open GET Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-get_f.webp" title="Open GET Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-get.webp" alt="GET Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>GET Route Controller</span><span>16/21</span></span>
+            </a>
+            <a aria-label="Open Jikan API Handler screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-jikan_f.webp" title="Open Jikan API Handler screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-jikan.webp" alt="Jikan API Handler" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Jikan API Handler</span><span>17/21</span></span>
+            </a>
+            <a aria-label="Open Lightbox Modal screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-modal_f.webp" title="Open Lightbox Modal screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-modal.webp" alt="Lightbox Modal" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Lightbox Modal</span><span>18/21</span></span>
+            </a>
+            <a aria-label="Open PostgreSQL Pool Configuration screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig_f.webp" title="Open PostgreSQL Pool Configuration screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-pgpoolconfig.webp" alt="PostgreSQL Pool Configuration" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>PostgreSQL Pool Configuration</span><span>19/21</span></span>
+            </a>
+            <a aria-label="Open POST Route Handler screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-post_f.webp" title="Open POST Route Handler screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-post.webp" alt="POST Route Handler" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>POST Route Handler</span><span>20/21</span></span>
+            </a>
+            <a aria-label="Open Theme Toggle State screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-jamporudex-shot" data-type="image" href="/assets/img/portfolio/jamporudex/jamporudex-themetoggle_f.webp" title="Open Theme Toggle State screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/jamporudex/jamporudex-themetoggle.webp" alt="Theme Toggle State" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Theme Toggle State</span><span>21/21</span></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- overview.md -->
+        <div class="pi-view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" hidden>
+          <div class="pi-doc" id="details">
+            <h2 class="pi-h">Project Overview</h2>
+            <p>
+              JamporuDEX is my Capstone Project for Angela Yu's Full-Stack Web Development Bootcamp. Inspired by Derek Sivers' book notes site (a key reference in the capstone prompt), I built a personal web app to track anime and manga. Users can search for titles, auto-fetch cover art from MyAnimeList, and save entries to a custom dashboard with status updates, episode or chapter progress, star ratings, and short reviews. The app features dynamic sorting and filtering, backed by full persistence through a PostgreSQL database so data stays intact across server restarts.
+            </p>
+            <p>
+              As an anime fan, I wanted to build a practical tool tailored to my actual hobbies rather than another standard to-do list tutorial. Working on a project I genuinely enjoyed using kept me motivated and engaged through every step of development.
+            </p>
+            <p>
+              To help with the development process, I used Claude (Anthropic's AI assistant) to debug tricky errors, review my code, and talk through complex features like external API fallback logic. Working alongside AI provided fast guidance similar to checking developer forums or official documentation. While leveraging these tools for technical support, I designed the database schema, wrote the Express route handlers, and structured the core backend logic myself to make sure I truly understood how every piece operated.
+            </p>
+
+            <h2 class="pi-h">Problem &amp; Objective</h2>
+            <p>
+              The main objective of this capstone was to design and build a full-stack CRUD application from scratch, using PostgreSQL for persistent storage and integrating an external public API without starter templates. This required designing a relational database schema, setting up RESTful Express routes, and managing data flow between PostgreSQL, the Node backend, and EJS template views. As an entry-level developer, my main focus was building a strong grasp of core backend fundamentals, understanding request-response lifecycles, and improving my step-by-step debugging skills.
+            </p>
+
+            <h2 class="pi-h">Key Outcome &amp; Takeaways</h2>
+            <p>
+              This was my first time connecting a live relational database to a backend server instead of using temporary in-memory data. It forced me to think through my database schema before writing backend routes. Integrating the Jikan API was another great learning experience; I didn't expect a free public API to time out so often, so building retry loops and an AniList fallback was an unexpected challenge that became one of the parts I'm most proud of.
+            </p>
+            <p>
+              I ran into plenty of bugs along the way, and using Claude to talk through why errors were happening helped me learn the root causes rather than just pasting quick fixes. As an entry-level developer, this project gave me real confidence in my ability to explain and defend every line of code I shipped.
+            </p>
+          </div>
+        </div>
+
+        <!-- implementation.md -->
+        <div class="pi-view" id="view-implementation" role="tabpanel" aria-labelledby="tab-implementation" hidden>
+          <div class="pi-doc">
+            <h2 class="pi-h">Technical Implementation</h2>
+            <p>
+              The backend is built with Express.js and connects to PostgreSQL using the pg library. A media_entries table manages persistent data storage for items like MAL IDs, titles, status, progress metrics, ratings, reviews, synopses, and image URLs. External data fetching relies on Axios to query the Jikan API (a public MyAnimeList wrapper) for metadata and cover images. To handle rate limits and temporary service outages, the backend includes exponential backoff retry logic and an automated fallback to the AniList GraphQL API to keep search reliable.
+            </p>
+            <p>
+              The application uses EJS for server-side template rendering, paired with plain JavaScript on the frontend to power search modal popups, entry editing, server-side dynamic sorting and filtering, and theme switching without extra frontend frameworks.
+            </p>
+          </div>
+        </div>
+
+        <!-- features.md -->
+        <div class="pi-view" id="view-features" role="tabpanel" aria-labelledby="tab-features" hidden>
+          <h2 class="pi-h" style="margin-bottom:18px">Implemented Features</h2>
+          <div class="pi-features">
+            <div class="pi-feature">
+              <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+              <h3>Full CRUD with PostgreSQL</h3>
+              <p>Add, view, edit, and delete entries using Express routes and parameterized SQL queries connected to a real PostgreSQL database so your index persists across sessions.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-crosshairs" aria-hidden="true"></i>
+              <h3>Jikan API Search with AniList Fallback</h3>
+              <p>Search MyAnimeList via the Jikan API directly inside the modal to pull cover art and synopses. If Jikan times out, the server retries and falls back to AniList automatically.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-filter" aria-hidden="true"></i>
+              <h3>Sort &amp; Status Filter</h3>
+              <p>Sort entries by rating, date added, or title, and filter lists by reading or watching status using query parameters processed on the server.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+              <h3>Dark Theme Toggle</h3>
+              <p>Switch between dark theme styles (Tokyo Night Storm and Dracula) using CSS variables and localStorage to save user preferences across page navigation.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- stack.json -->
+        <div class="pi-view" id="view-stack" role="tabpanel" aria-labelledby="tab-stack" hidden>
+          <h2 class="pi-h">Project Information</h2>
+          <dl class="pi-props">
+            <dt>Course</dt><dd>The Complete Full-Stack Web Development Bootcamp by Angela Yu</dd>
+            <dt>Type</dt><dd>Node.js, Express, PostgreSQL &amp; EJS Capstone Project</dd>
+            <dt>Focus</dt><dd>Server-Side Rendering, CRUD Operations, API Integration &amp; Dynamic Theming</dd>
+            <dt>Tech Stack</dt><dd>Node.js, Express.js, PostgreSQL, EJS, JavaScript, CSS3</dd>
+          </dl>
+
+          <h2 class="pi-h" style="margin-top:28px">Technologies &amp; Tools Used</h2>
+          <ul class="pi-tools">
+            <li><strong>Backend:</strong> Node.js, Express.js</li>
+<li><strong>Database:</strong> PostgreSQL (hosted on Neon), accessed using the pg library</li>
+<li><strong>API Integration:</strong> Axios, Jikan API (MyAnimeList wrapper), AniList API (fallback)
+                </li>
+<li><strong>Templating:</strong> EJS</li>
+<li><strong>Frontend:</strong> Vanilla JavaScript, CSS3</li>
+<li><strong>Version Control &amp; Hosting:</strong> Git, GitHub, Render</li>
+<li><strong>AI Assistance:</strong> Claude (used for debugging, code review, and discussing backend
+                  logic)</li>
+          </ul>
+        </div>
+
       </div>
-    </section>
+    </main>
 
-  </main>
+  </div>
 
-  
+  <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+  <div class="glightbox-desc desc-jamporudex-shot" style="display:none;">
+<div class="lightbox-window-panel">
+<div class="lightbox-window-titlebar">
+<span class="lightbox-window-title">jp@portfolio: ~/JamporuDEX</span>
+<div class="lightbox-window-controls">
+<button aria-label="Close screenshot" class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot" type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+</div>
+</div>
+</div>
+</div>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -744,37 +503,11 @@
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof Swiper !== 'undefined') {
-        new Swiper('.screenshots-swiper', {
-          loop: false,
-          spaceBetween: 20,
-          slidesPerView: 1,
-          speed: 500,
-          autoHeight: false,
-          pagination: {
-            el: '.screenshots-swiper .swiper-pagination',
-            clickable: true
-          },
-          navigation: {
-            nextEl: '.screenshots-swiper .swiper-button-next',
-            prevEl: '.screenshots-swiper .swiper-button-prev'
-          },
-          breakpoints: {
-            576: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1200: { slidesPerView: 4, spaceBetween: 24 }
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Project Inspector view switching -->
+  <script src="/assets/js/inspector.js"></script>
 
 </body>
 

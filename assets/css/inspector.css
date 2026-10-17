@@ -411,6 +411,38 @@ a.pi-thumb:hover .pi-thumb-img img { transform: scale(1.03); }
   gap: 16px;
 }
 
+/* ---------- Gallery filters (Badlands Ink, NothingTechBlob) ---------- */
+.pi-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.pi-filter {
+  padding: 5px 12px;
+  border: 1px solid var(--pi-line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--pi-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--default-color);
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.pi-filter:hover { color: var(--heading-color); border-color: var(--pi-hl-line); }
+.pi-filter:focus-visible { outline: 2px solid var(--pi-hl); outline-offset: 2px; }
+
+.pi-filter[aria-pressed="true"] {
+  color: var(--heading-color);
+  border-color: var(--pi-hl);
+  background: var(--pi-hl-soft);
+}
+
+a.pi-thumb[hidden] { display: none; }
+
 /* ---------- Document views ---------- */
 .pi-doc { max-width: 74ch; font-size: 15.5px; line-height: 1.75; }
 .pi-doc p { margin: 0 0 16px; }

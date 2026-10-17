@@ -8,6 +8,8 @@
       if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
         document.documentElement.setAttribute('data-theme', saved);
       }
+      /* embedded in a desktop window: hide the standalone title bar before first paint */
+      if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add('pi-embed');
     })();
   </script>
 
@@ -26,7 +28,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
@@ -36,10 +38,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+  <!-- Project Inspector layout (must load after main.css) -->
+  <link href="/assets/css/inspector.css" rel="stylesheet">
   <style id="glightbox-overrides">
     .glightbox-container .gclose:not([data-glightbox-close]) {
       display: none !important;
@@ -88,590 +91,359 @@
     *::-webkit-scrollbar-thumb { background: var(--sb-thumb, var(--accent-highlight, #178C7A)); border-radius: 8px; }
     *::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
   </style>
-
-  <style id="side-nav">
-    :root { --side-w: 56px; }
-
-    body.portfolio-details-page { padding-left: var(--side-w); }
-
-    html body .linux-dock.side-nav {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: auto;
-      width: var(--side-w);
-      max-width: none;
-      height: 100%;
-      transform: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
-      padding: 14px 0;
-      box-sizing: border-box;
-      background: color-mix(in srgb, var(--surface-color), transparent 8%);
-      border: 0;
-      border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
-      border-radius: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      z-index: 997;
-    }
-
-    html body .linux-dock.side-nav .dock-item {
-      position: relative;
-      width: 44px;
-      height: 44px;
-      flex: 0 0 auto;
-      font-size: 17px;
-      border-radius: 8px;
-      background: transparent !important;
-      color: color-mix(in srgb, var(--default-color), transparent 35%);
-      transform: none !important;
-      transition: color 0.18s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item i { color: inherit; }
-
-    html body .linux-dock.side-nav .dock-item:hover,
-    html body .linux-dock.side-nav .dock-item:focus-visible,
-    html body .linux-dock.side-nav .dock-item.active {
-      color: var(--accent-highlight);
-      background: transparent !important;
-      transform: none !important;
-    }
-
-    html body .linux-dock.side-nav .dock-item:focus-visible {
-      outline: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
-      outline-offset: -2px;
-    }
-
-    html body .linux-dock.side-nav .dock-item::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 5px;
-      width: 18px;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--accent-highlight);
-      transform: translateX(-50%) scaleX(0);
-      opacity: 0;
-      transition: transform 0.22s ease, opacity 0.22s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item.active::after {
-      transform: translateX(-50%) scaleX(1);
-      opacity: 1;
-    }
-
-    html body .linux-dock.side-nav .dock-item .dock-tooltip {
-      bottom: auto;
-      top: 50%;
-      left: calc(100% + 10px);
-      transform: translateY(-50%) translateX(-4px);
-    }
-
-    html body .linux-dock.side-nav .dock-item:hover .dock-tooltip,
-    html body .linux-dock.side-nav .dock-item:focus-visible .dock-tooltip {
-      transform: translateY(-50%) translateX(0);
-    }
-
-    @media (max-width: 768px) {
-      :root { --side-w: 46px; }
-      html body .linux-dock.side-nav { padding: 10px 0; }
-      html body .linux-dock.side-nav .dock-item { width: 40px; height: 40px; font-size: 16px; }
-    }
-  </style>
 </head>
 
-<body class="portfolio-details-page">
+<body class="pi-page">
 
-  <!-- Scroll Top -->
+  <!-- Scroll Top (kept: main.js expects it; hidden by the layout, the panes scroll internally) -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Project sidebar -->
-  <nav class="linux-dock side-nav" aria-label="Project navigation">
-    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
-        class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
-        class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
-        class="dock-tooltip">Gallery</span></a>
-  </nav>
+  <div class="pi">
 
-  <main class="main">
+    <!-- Standalone title bar (hidden when this page is shown inside a desktop window) -->
+    <header class="pi-titlebar">
+      <i class="fa-solid fa-terminal" aria-hidden="true"></i>
+      <span class="pi-titlebar-title"><b>jp@portfolio:</b> ~/pixellog</span>
+      <a class="pi-back" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Portfolio</a>
+    </header>
 
-    <!-- Page Title -->
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="page-header">
-          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            Node.js, Express.js &amp; EJS Capstone Project
-          </span>
-          <h1 class="h2 fw-bold mb-3">
-            PixelLog
-          </h1>
+    <!-- Left navigation -->
+    <aside class="pi-side" aria-label="Project navigation">
+
+      <div class="pi-head">
+        <div class="pi-head-top">
+          <span class="pi-app-icon" aria-hidden="true"><i class="fa-brands fa-mintbit"></i></span>
+          <span class="pi-badge">Node.js, Express.js &amp; EJS Capstone Project</span>
         </div>
+        <h1 class="pi-title" title="PixelLog">PixelLog</h1>
       </div>
-    </div>
 
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
+      <nav class="pi-tree" role="tablist" aria-orientation="vertical" aria-label="Project files">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>media/</div>
+        <div class="pi-items">
+          <a href="#walkthrough" class="pi-item" role="tab" id="tab-walkthrough" aria-controls="view-walkthrough"
+            data-view="walkthrough" data-dir="media/" data-file="walkthrough.mp4" data-meta="YouTube video">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i><span class="pi-name">walkthrough.mp4</span>
+          </a>
+          <a href="#gallery" class="pi-item" role="tab" id="tab-gallery" aria-controls="view-gallery"
+            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="16 images">
+            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">16</span>
+          </a>
+        </div>
 
-        <div class="row gy-4">
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>docs/</div>
+        <div class="pi-items">
+          <a href="#overview" class="pi-item" role="tab" id="tab-overview" aria-controls="view-overview"
+            data-view="overview" data-dir="docs/" data-file="overview.md" data-meta="markdown">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i><span class="pi-name">overview.md</span>
+          </a>
+          <a href="#implementation" class="pi-item" role="tab" id="tab-implementation" aria-controls="view-implementation"
+            data-view="implementation" data-dir="docs/" data-file="implementation.md" data-meta="markdown">
+            <i class="fa-solid fa-gears" aria-hidden="true"></i><span class="pi-name">implementation.md</span>
+          </a>
+          <a href="#features" class="pi-item" role="tab" id="tab-features" aria-controls="view-features"
+            data-view="features" data-dir="docs/" data-file="features.md" data-meta="4 features">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i><span class="pi-name">features.md</span>
+          </a>
+          <a href="#stack" class="pi-item" role="tab" id="tab-stack" aria-controls="view-stack"
+            data-view="stack" data-dir="docs/" data-file="stack.json" data-meta="properties">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="pi-name">stack.json</span>
+          </a>
+        </div>
 
-          <div class="col-lg-8">
-            <div class="portfolio-video">
-              <div
-                style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
-                  src="https://www.youtube.com/embed/5uy51WCZQSs?si=XTQBf5eekQnIx9Fb" title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
+      </nav>
+
+      <div class="pi-actions">
+        <a href="https://pixellog-dev.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-live">View Site</a>
+        <a href="https://github.com/jpldeleon/pixellog" target="_blank" rel="noopener noreferrer" class="btn-github">GitHub Repo</a>
+      </div>
+
+    </aside>
+
+    <!-- Right content area -->
+    <main class="pi-content" id="portfolio-details">
+
+      <div class="pi-bar">
+        <div class="pi-crumb" aria-live="polite">~/pixellog/<span id="pi-crumb-dir"></span><b id="pi-crumb-file"></b></div>
+        <div class="pi-bar-meta" id="pi-meta"></div>
+      </div>
+
+      <div class="pi-scroll">
+
+        <!-- walkthrough.mp4 -->
+        <div class="pi-view" id="view-walkthrough" role="tabpanel" aria-labelledby="tab-walkthrough">
+
+          <div class="pi-stage">
+            <iframe src="https://www.youtube.com/embed/5uy51WCZQSs?si=XTQBf5eekQnIx9Fb" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+          <div class="pi-film">
+            <div class="pi-film-head">
+              <span>screenshots/</span>
+              <a href="#gallery" data-goto="gallery">View all 16</a>
+            </div>
+            <div class="pi-strip">
+            <a aria-label="Open Home Page screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" title="Open Home Page screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-1-homepage.webp" alt="Home Page" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home Page</span><span>1/16</span></span>
+            </a>
+            <a aria-label="Open Create Post screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-2-create_f.webp" title="Open Create Post screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-2-create.webp" alt="Create Post" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Create Post</span><span>2/16</span></span>
+            </a>
+            <a aria-label="Open Edit Post screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-3-edit_f.webp" title="Open Edit Post screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-3-edit.webp" alt="Edit Post" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Post</span><span>3/16</span></span>
+            </a>
+            <a aria-label="Open Delete Post screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-4-delete_f.webp" title="Open Delete Post screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-4-delete.webp" alt="Delete Post" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Delete Post</span><span>4/16</span></span>
+            </a>
+            <a aria-label="Open Filter View screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-5-filter_f.webp" title="Open Filter View screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-5-filter.webp" alt="Filter View" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Filter View</span><span>5/16</span></span>
+            </a>
+            <a aria-label="Open Theme Toggle screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-6-themetoggle_f.webp" title="Open Theme Toggle screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-6-themetoggle.webp" alt="Theme Toggle" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Theme Toggle</span><span>6/16</span></span>
+            </a>
+            <a aria-label="Open Sort Feature screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-7-lightbox_f.webp" title="Open Sort Feature screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-7-lightbox.webp" alt="Sort Feature" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sort Feature</span><span>7/16</span></span>
+            </a>
+            <a aria-label="Open Edit Light Mode screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-8-edit-light_f.webp" title="Open Edit Light Mode screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-8-edit-light.webp" alt="Edit Light Mode" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Light Mode</span><span>8/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-9-mobile_f.webp" title="Open Mobile View 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-9-mobile.webp" alt="Mobile View 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 1</span><span>9/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-10-mobile_f.webp" title="Open Mobile View 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-10-mobile.webp" alt="Mobile View 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 2</span><span>10/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-11-mobile_f.webp" title="Open Mobile View 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-11-mobile.webp" alt="Mobile View 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 3</span><span>11/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 4 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-12-mobile_f.webp" title="Open Mobile View 4 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-12-mobile.webp" alt="Mobile View 4" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 4</span><span>12/16</span></span>
+            </a>
+            <a aria-label="Open Index EJS Code screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-13-indexejs_f.webp" title="Open Index EJS Code screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-13-indexejs.webp" alt="Index EJS Code" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Index EJS Code</span><span>13/16</span></span>
+            </a>
+            <a aria-label="Open Index JS Code Part 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-14-indexjs_f.webp" title="Open Index JS Code Part 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-14-indexjs.webp" alt="Index JS Code Part 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Index JS Code Part 1</span><span>14/16</span></span>
+            </a>
+            <a aria-label="Open Index JS Code Part 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-15-indexjs2_f.webp" title="Open Index JS Code Part 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-15-indexjs2.webp" alt="Index JS Code Part 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Index JS Code Part 2</span><span>15/16</span></span>
+            </a>
+            <a aria-label="Open Edit Template Code screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-16-edit_f.webp" title="Open Edit Template Code screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-16-edit.webp" alt="Edit Template Code" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Template Code</span><span>16/16</span></span>
+            </a>
             </div>
           </div>
 
-          <div class="col-lg-4">
-            <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
-              <h3>Project Information</h3>
-              <ul>
-                <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong> Node.js, Express.js &amp; EJS Capstone Project</li>
-                <li><strong>Focus:</strong> Server-Side Rendering, CRUD Operations &amp; Dynamic Theming</li>
-                <li><strong>Tech Stack:</strong> Node.js, Express.js, EJS, JavaScript, CSS3</li>
-                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
-                  <div style="display: flex; gap: 12px; margin-top: 15px;">
-                    <a href="https://pixellog-dev.onrender.com/" target="_blank" rel="noopener noreferrer"
-                      class="btn-live">View Site</a>
-                    <a href="https://github.com/jpldeleon/pixellog" target="_blank" rel="noopener noreferrer"
-                      class="btn-github">GitHub Repo</a>
-                  </div>
-                </div>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-
-              <h4>Project Overview</h4>
-              <p>
-                PixelLog is a blog web app I built as my Capstone Project for Angela Yu's Complete Full-Stack
-                Web Development Bootcamp. It's a nostalgia-themed blog where you can create, view, edit, and
-                delete posts, filter them by category, and sort them by date or title. It's built with
-                Node.js, Express, and EJS on the backend, with no database — posts live in memory and reset
-                when the server restarts, which was one of the project requirements.
-              </p>
-              <p>
-                Honestly, my love of retro design, pixel aesthetics, and nostalgia is what pushed me to build
-                this in the first place. Instead of another generic to-do list or portfolio clone, I wanted a
-                project that actually felt like mine, something themed around old consoles, childhood games,
-                and the kind of memories I'd want to write about myself.
-              </p>
-              <p>
-                I'll be upfront about this: I used Claude (Anthropic's AI assistant) while building this,
-                mainly to help me debug issues I got stuck on, review my code for bugs I couldn't see myself,
-                and talk through how to structure a few features. The core logic, routes, and design decisions
-                are mine, but I wanted to be transparent that AI was part of my workflow, the same way I'd use
-                Stack Overflow or documentation, just faster and more conversational.
-              </p>
-
-              <h4>Problem &amp; Objective</h4>
-              <p>
-                The goal of this capstone was to build a working full-stack CRUD application from scratch,
-                without starter files or a solution to copy from. That meant figuring out my own route
-                structure, deciding how data should flow between the server and the EJS templates, and
-                actually sitting with bugs until I understood why they were happening instead of just
-                pattern-matching a fix. As someone still early in my dev journey, this project was as much
-                about building confidence in reading my own code as it was about shipping a feature.
-              </p>
-
-              <h4>Technical Implementation</h4>
-              <p>
-                The backend is an Express.js server that handles routing and form submissions, with EJS as the
-                templating engine for rendering dynamic HTML. Posts are stored in a simple in-memory array on
-                the server rather than a database, per the project spec, which meant thinking carefully about
-                how IDs get assigned so new posts don't collide with existing ones. The frontend uses vanilla
-                JavaScript for interactive pieces like the light/dark theme toggle, category filtering, and
-                sorting, all built without any external UI framework.
-              </p>
-
-              <div class="features mt-4">
-                <h3>Implemented Features</h3>
-                <div class="row gy-3">
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                      <i class="fa-solid fa-pen-to-square"></i>
-                      <h4>Full CRUD Functionality</h4>
-                      <p>Create, view, edit, and delete blog posts using Express routes and EJS forms, all
-                        backed by an in-memory data store.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
-                      <i class="fa-solid fa-filter"></i>
-                      <h4>Category Filter &amp; Sort</h4>
-                      <p>Client-side filtering by category and sorting by date or title, so posts can be
-                        browsed however you like without a page reload.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
-                      <i class="fa-solid fa-circle-half-stroke"></i>
-                      <h4>Light / Dark Theme Toggle</h4>
-                      <p>Client-side theme switching with CSS variables and LocalStorage so your preference
-                        sticks around as you navigate the app.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
-                      <i class="fa-solid fa-mobile-screen-button"></i>
-                      <h4>Fully Responsive Layout</h4>
-                      <p>Custom CSS media queries keep the feed, forms, and toolbar usable across desktop,
-                        tablet, and mobile screens.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
-              <p>
-                This was my first time building something with a real backend instead of just static pages,
-                and it forced me to actually understand how data moves between routes, templates, and the
-                browser instead of just copying patterns. I ran into a few bugs I'm a little embarrassed by
-                now, like a post ID collision that made editing a new post accidentally edit an old one, but
-                working through those (with some help debugging alongside Claude) taught me more than getting
-                it right the first time would have. I'm still early in my dev journey, but this project is the
-                first one where I felt like I actually understood every piece of what I shipped.
-              </p>
-
-              <h3 class="mt-4">Video Overview</h3>
-              <p>The video demonstration covers the full project breakdown across key structural elements:</p>
-              <ul>
-                <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file
+          <div class="pi-chapters">
+            <h2 class="pi-h">Video Overview</h2>
+            <p class="pi-sub">The video demonstration covers the full project breakdown across key structural elements:</p>
+            <ul>
+              <li><strong>GitHub Repository &amp; Setup:</strong> Reviewing project documentation, file
                   structure, and repository configuration.</li>
-                <li><strong>Core Features Walkthrough:</strong> Creating, editing, deleting, filtering, and
+<li><strong>Core Features Walkthrough:</strong> Creating, editing, deleting, filtering, and
                   sorting posts.</li>
-                <li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
+<li><strong>Responsive Mobile Inspection:</strong> Verifying design adaptability across mobile,
                   tablet, and desktop viewports using CSS media queries.</li>
-                <li><strong>Code Base Structure:</strong> Reviewing the Express routes and EJS templates in
+<li><strong>Code Base Structure:</strong> Reviewing the Express routes and EJS templates in
                   VS Code.</li>
-              </ul>
-
-              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
-              <ul>
-                <li><strong>Backend:</strong> Node.js, Express.js</li>
-                <li><strong>Templating:</strong> EJS</li>
-                <li><strong>Frontend:</strong> JavaScript, CSS3</li>
-                <li><strong>Version Control &amp; Hosting:</strong> Git, GitHub</li>
-                <li><strong>AI Assistance:</strong> Claude, used for debugging and code review during
-                  development</li>
-              </ul>
-            </div>
+            </ul>
           </div>
 
-          <!-- Screenshot Gallery Carousel Section -->
-          <section id="project-screenshots" class="portfolio section">
-
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-              <h2>Gallery</h2>
-              <p>A closer look at the screenshots behind this project.</p>
-            </div><!-- End Section Title -->
-
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-              <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
-                <div class="swiper-wrapper align-items-center">
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-1-homepage.webp" class="img-fluid"
-                        alt="Home Page" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Create Post screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-2-create_f.webp" title="Open Create Post screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-2-create.webp" class="img-fluid"
-                        alt="Create Post" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Edit Post screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-3-edit_f.webp" title="Open Edit Post screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-3-edit.webp" class="img-fluid"
-                        alt="Edit Post" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Delete Post screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-4-delete_f.webp" title="Open Delete Post screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-4-delete.webp" class="img-fluid"
-                        alt="Delete Post" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Filter View screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-5-filter_f.webp" title="Open Filter View screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-5-filter.webp" class="img-fluid"
-                        alt="Filter View" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Theme Toggle screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-6-themetoggle_f.webp" title="Open Theme Toggle screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-6-themetoggle.webp" class="img-fluid"
-                        alt="Theme Toggle" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sort Feature screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-7-lightbox_f.webp" title="Open Sort Feature screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-7-lightbox.webp" class="img-fluid"
-                        alt="Sort Feature" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Edit Light Mode screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-8-edit-light_f.webp" title="Open Edit Light Mode screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-8-edit-light.webp" class="img-fluid"
-                        alt="Edit Light Mode" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-9-mobile_f.webp" title="Open Mobile View 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-9-mobile.webp" class="img-fluid"
-                        alt="Mobile View 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-10-mobile_f.webp" title="Open Mobile View 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-10-mobile.webp" class="img-fluid"
-                        alt="Mobile View 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 3 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-11-mobile_f.webp" title="Open Mobile View 3 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-11-mobile.webp" class="img-fluid"
-                        alt="Mobile View 3" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 4 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-12-mobile_f.webp" title="Open Mobile View 4 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-12-mobile.webp" class="img-fluid"
-                        alt="Mobile View 4" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Index EJS Code screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-13-indexejs_f.webp" title="Open Index EJS Code screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-13-indexejs.webp" class="img-fluid"
-                        alt="Index EJS Code" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Index JS Code Part 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-14-indexjs_f.webp" title="Open Index JS Code Part 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-14-indexjs.webp" class="img-fluid"
-                        alt="Index JS Code Part 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Index JS Code Part 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-15-indexjs2_f.webp" title="Open Index JS Code Part 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-15-indexjs2.webp" class="img-fluid"
-                        alt="Index JS Code Part 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Edit Template Code screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot"
-                        data-type="image" href="/assets/img/portfolio/pixellog/pixellog-16-edit_f.webp" title="Open Edit Template Code screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/pixellog/pixellog-16-edit.webp" class="img-fluid"
-                        alt="Edit Template Code" loading="lazy">
-                    </div>
-                  </div>
-
-                </div>
-
-                <!-- Controls -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-
-              </div>
-
-            </div>
-
-
-            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
-            <div class="glightbox-desc desc-pixellog-shot" style="display:none;">
-              <div class="lightbox-window-panel">
-                <div class="lightbox-window-titlebar">
-                  <span class="lightbox-window-title">jp@portfolio: ~/PixelLog</span>
-                  <div class="lightbox-window-controls">
-                    <button aria-label="Close screenshot"
-                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </section><!-- /Portfolio Section -->
-
-          <style>
-            /* Whole screenshot card opens the lightbox */
-            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
-            .screenshots-swiper .portfolio-image-link { inset: 0; }
-
-            .screenshots-swiper {
-              padding: 10px 10px 50px;
-            }
-
-            .screenshots-swiper .swiper-slide {
-              height: auto;
-            }
-
-            .screenshots-swiper .portfolio-wrap {
-              height: 100%;
-            }
-
-            .screenshots-swiper .swiper-button-prev,
-            .screenshots-swiper .swiper-button-next {
-              top: auto;
-              bottom: 0;
-              margin-top: 0;
-              width: 40px;
-              height: 40px;
-              background: var(--accent-highlight, #178C7A);
-              border-radius: 50%;
-              color: #fff;
-            }
-
-            .screenshots-swiper .swiper-button-prev:after,
-            .screenshots-swiper .swiper-button-next:after {
-              font-size: 16px;
-              font-weight: 700;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet {
-              background: rgba(255, 255, 255, 0.5);
-              opacity: 1;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet-active {
-              background: var(--accent-highlight, #178C7A);
-            }
-
-            @media (max-width: 575px) {
-
-              .screenshots-swiper {
-                padding: 10px 10px 80px;
-              }
-
-              /* Dots stay centered, higher up */
-              .screenshots-swiper .swiper-pagination {
-                bottom: 38px;
-              }
-
-              /* Arrows drop into their own centered row below the dots */
-              .screenshots-swiper .swiper-button-prev,
-              .screenshots-swiper .swiper-button-next {
-                top: auto;
-                bottom: 0;
-                left: 50%;
-                right: auto;
-                width: 32px;
-                height: 32px;
-              }
-
-              .screenshots-swiper .swiper-button-prev:after,
-              .screenshots-swiper .swiper-button-next:after {
-                font-size: 13px;
-              }
-
-              .screenshots-swiper .swiper-button-prev {
-                transform: translateX(calc(-100% - 8px));
-              }
-
-              .screenshots-swiper .swiper-button-next {
-                transform: translateX(8px);
-              }
-            }
-          </style>
-
         </div>
+
+        <!-- screenshots/ -->
+        <div class="pi-view" id="view-gallery" role="tabpanel" aria-labelledby="tab-gallery" hidden>
+          <h2 class="pi-h">Gallery</h2>
+          <p class="pi-sub">A closer look at the screenshots behind this project.</p>
+          <div class="pi-grid" id="project-screenshots">
+            <a aria-label="Open Home Page screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-1-homepage_f.webp" title="Open Home Page screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-1-homepage.webp" alt="Home Page" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home Page</span><span>1/16</span></span>
+            </a>
+            <a aria-label="Open Create Post screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-2-create_f.webp" title="Open Create Post screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-2-create.webp" alt="Create Post" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Create Post</span><span>2/16</span></span>
+            </a>
+            <a aria-label="Open Edit Post screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-3-edit_f.webp" title="Open Edit Post screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-3-edit.webp" alt="Edit Post" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Post</span><span>3/16</span></span>
+            </a>
+            <a aria-label="Open Delete Post screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-4-delete_f.webp" title="Open Delete Post screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-4-delete.webp" alt="Delete Post" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Delete Post</span><span>4/16</span></span>
+            </a>
+            <a aria-label="Open Filter View screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-5-filter_f.webp" title="Open Filter View screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-5-filter.webp" alt="Filter View" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Filter View</span><span>5/16</span></span>
+            </a>
+            <a aria-label="Open Theme Toggle screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-6-themetoggle_f.webp" title="Open Theme Toggle screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-6-themetoggle.webp" alt="Theme Toggle" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Theme Toggle</span><span>6/16</span></span>
+            </a>
+            <a aria-label="Open Sort Feature screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-7-lightbox_f.webp" title="Open Sort Feature screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-7-lightbox.webp" alt="Sort Feature" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sort Feature</span><span>7/16</span></span>
+            </a>
+            <a aria-label="Open Edit Light Mode screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-8-edit-light_f.webp" title="Open Edit Light Mode screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-8-edit-light.webp" alt="Edit Light Mode" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Light Mode</span><span>8/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-9-mobile_f.webp" title="Open Mobile View 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-9-mobile.webp" alt="Mobile View 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 1</span><span>9/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-10-mobile_f.webp" title="Open Mobile View 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-10-mobile.webp" alt="Mobile View 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 2</span><span>10/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-11-mobile_f.webp" title="Open Mobile View 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-11-mobile.webp" alt="Mobile View 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 3</span><span>11/16</span></span>
+            </a>
+            <a aria-label="Open Mobile View 4 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-12-mobile_f.webp" title="Open Mobile View 4 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-12-mobile.webp" alt="Mobile View 4" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 4</span><span>12/16</span></span>
+            </a>
+            <a aria-label="Open Index EJS Code screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-13-indexejs_f.webp" title="Open Index EJS Code screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-13-indexejs.webp" alt="Index EJS Code" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Index EJS Code</span><span>13/16</span></span>
+            </a>
+            <a aria-label="Open Index JS Code Part 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-14-indexjs_f.webp" title="Open Index JS Code Part 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-14-indexjs.webp" alt="Index JS Code Part 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Index JS Code Part 1</span><span>14/16</span></span>
+            </a>
+            <a aria-label="Open Index JS Code Part 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-15-indexjs2_f.webp" title="Open Index JS Code Part 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-15-indexjs2.webp" alt="Index JS Code Part 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Index JS Code Part 2</span><span>15/16</span></span>
+            </a>
+            <a aria-label="Open Edit Template Code screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-pixellog-shot" data-type="image" href="/assets/img/portfolio/pixellog/pixellog-16-edit_f.webp" title="Open Edit Template Code screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/pixellog/pixellog-16-edit.webp" alt="Edit Template Code" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Edit Template Code</span><span>16/16</span></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- overview.md -->
+        <div class="pi-view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" hidden>
+          <div class="pi-doc" id="details">
+            <h2 class="pi-h">Project Overview</h2>
+            <p>
+              PixelLog is a blog web app I built as my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp. It's a nostalgia-themed blog where you can create, view, edit, and delete posts, filter them by category, and sort them by date or title. It's built with Node.js, Express, and EJS on the backend, with no database — posts live in memory and reset when the server restarts, which was one of the project requirements.
+            </p>
+            <p>
+              Honestly, my love of retro design, pixel aesthetics, and nostalgia is what pushed me to build this in the first place. Instead of another generic to-do list or portfolio clone, I wanted a project that actually felt like mine, something themed around old consoles, childhood games, and the kind of memories I'd want to write about myself.
+            </p>
+            <p>
+              I'll be upfront about this: I used Claude (Anthropic's AI assistant) while building this, mainly to help me debug issues I got stuck on, review my code for bugs I couldn't see myself, and talk through how to structure a few features. The core logic, routes, and design decisions are mine, but I wanted to be transparent that AI was part of my workflow, the same way I'd use Stack Overflow or documentation, just faster and more conversational.
+            </p>
+
+            <h2 class="pi-h">Problem &amp; Objective</h2>
+            <p>
+              The goal of this capstone was to build a working full-stack CRUD application from scratch, without starter files or a solution to copy from. That meant figuring out my own route structure, deciding how data should flow between the server and the EJS templates, and actually sitting with bugs until I understood why they were happening instead of just pattern-matching a fix. As someone still early in my dev journey, this project was as much about building confidence in reading my own code as it was about shipping a feature.
+            </p>
+
+            <h2 class="pi-h">Key Outcome &amp; Takeaways</h2>
+            <p>
+              This was my first time building something with a real backend instead of just static pages, and it forced me to actually understand how data moves between routes, templates, and the browser instead of just copying patterns. I ran into a few bugs I'm a little embarrassed by now, like a post ID collision that made editing a new post accidentally edit an old one, but working through those (with some help debugging alongside Claude) taught me more than getting it right the first time would have. I'm still early in my dev journey, but this project is the first one where I felt like I actually understood every piece of what I shipped.
+            </p>
+          </div>
+        </div>
+
+        <!-- implementation.md -->
+        <div class="pi-view" id="view-implementation" role="tabpanel" aria-labelledby="tab-implementation" hidden>
+          <div class="pi-doc">
+            <h2 class="pi-h">Technical Implementation</h2>
+            <p>
+              The backend is an Express.js server that handles routing and form submissions, with EJS as the templating engine for rendering dynamic HTML. Posts are stored in a simple in-memory array on the server rather than a database, per the project spec, which meant thinking carefully about how IDs get assigned so new posts don't collide with existing ones. The frontend uses vanilla JavaScript for interactive pieces like the light/dark theme toggle, category filtering, and sorting, all built without any external UI framework.
+            </p>
+          </div>
+        </div>
+
+        <!-- features.md -->
+        <div class="pi-view" id="view-features" role="tabpanel" aria-labelledby="tab-features" hidden>
+          <h2 class="pi-h" style="margin-bottom:18px">Implemented Features</h2>
+          <div class="pi-features">
+            <div class="pi-feature">
+              <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+              <h3>Full CRUD Functionality</h3>
+              <p>Create, view, edit, and delete blog posts using Express routes and EJS forms, all backed by an in-memory data store.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-filter" aria-hidden="true"></i>
+              <h3>Category Filter &amp; Sort</h3>
+              <p>Client-side filtering by category and sorting by date or title, so posts can be browsed however you like without a page reload.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+              <h3>Light / Dark Theme Toggle</h3>
+              <p>Client-side theme switching with CSS variables and LocalStorage so your preference sticks around as you navigate the app.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+              <h3>Fully Responsive Layout</h3>
+              <p>Custom CSS media queries keep the feed, forms, and toolbar usable across desktop, tablet, and mobile screens.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- stack.json -->
+        <div class="pi-view" id="view-stack" role="tabpanel" aria-labelledby="tab-stack" hidden>
+          <h2 class="pi-h">Project Information</h2>
+          <dl class="pi-props">
+            <dt>Course</dt><dd>The Complete Full-Stack Web Development Bootcamp by Angela Yu</dd>
+            <dt>Type</dt><dd>Node.js, Express.js &amp; EJS Capstone Project</dd>
+            <dt>Focus</dt><dd>Server-Side Rendering, CRUD Operations &amp; Dynamic Theming</dd>
+            <dt>Tech Stack</dt><dd>Node.js, Express.js, EJS, JavaScript, CSS3</dd>
+          </dl>
+
+          <h2 class="pi-h" style="margin-top:28px">Technologies &amp; Tools Used</h2>
+          <ul class="pi-tools">
+            <li><strong>Backend:</strong> Node.js, Express.js</li>
+<li><strong>Templating:</strong> EJS</li>
+<li><strong>Frontend:</strong> JavaScript, CSS3</li>
+<li><strong>Version Control &amp; Hosting:</strong> Git, GitHub</li>
+<li><strong>AI Assistance:</strong> Claude, used for debugging and code review during
+                  development</li>
+          </ul>
+        </div>
+
       </div>
-    </section>
+    </main>
 
-  </main>
+  </div>
 
-  
+  <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+  <div class="glightbox-desc desc-pixellog-shot" style="display:none;">
+<div class="lightbox-window-panel">
+<div class="lightbox-window-titlebar">
+<span class="lightbox-window-title">jp@portfolio: ~/PixelLog</span>
+<div class="lightbox-window-controls">
+<button aria-label="Close screenshot" class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot" type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+</div>
+</div>
+</div>
+</div>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -680,37 +452,11 @@
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof Swiper !== 'undefined') {
-        new Swiper('.screenshots-swiper', {
-          loop: false,
-          spaceBetween: 20,
-          slidesPerView: 1,
-          speed: 500,
-          autoHeight: false,
-          pagination: {
-            el: '.screenshots-swiper .swiper-pagination',
-            clickable: true
-          },
-          navigation: {
-            nextEl: '.screenshots-swiper .swiper-button-next',
-            prevEl: '.screenshots-swiper .swiper-button-prev'
-          },
-          breakpoints: {
-            576: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1200: { slidesPerView: 4, spaceBetween: 24 }
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Project Inspector view switching -->
+  <script src="/assets/js/inspector.js"></script>
 
 </body>
 

@@ -60,7 +60,7 @@
       backdrop-filter: none !important;
     }
     .glightbox-container { z-index: 2147483000 !important; }
-
+    
     .glightbox-container .gslide-image img {
       user-select: none !important;
       -webkit-user-drag: none !important;
@@ -249,19 +249,18 @@
 
           <div class="pi-chapters">
             <h2 class="pi-h">Video Overview</h2>
-            <p class="pi-sub">The demonstration video provides a step-by-step walk-through of the application's architecture and
-              features:</p>
+            <p class="pi-sub">The demonstration video provides a step-by-step walk-through of the application's architecture and features:</p>
             <ul>
               <li><strong>Node.js &amp; Express Setup:</strong> An overview of server initialization, middleware
-                setup, and GET/POST route handling.</li>
-              <li><strong>Metadata Extraction:</strong> Inspecting how Cheerio targets and extracts DOM elements and
-                meta attributes from raw HTML responses.</li>
-              <li><strong>API Integration:</strong> Querying the Google PageSpeed Insights API using Axios and
-                processing multi-level JSON responses.</li>
-              <li><strong>Data Rendering:</strong> Demonstrating how backend audit data flows into EJS views to
-                construct the dynamic frontend UI.</li>
-              <li><strong>Error Handling:</strong> Verifying graceful error feedback when handling malformed URLs or
-                failed external API calls.</li>
+                  setup, and GET/POST route handling.</li>
+<li><strong>Metadata Extraction:</strong> Inspecting how Cheerio targets and extracts DOM elements and
+                  meta attributes from raw HTML responses.</li>
+<li><strong>API Integration:</strong> Querying the Google PageSpeed Insights API using Axios and
+                  processing multi-level JSON responses.</li>
+<li><strong>Data Rendering:</strong> Demonstrating how backend audit data flows into EJS views to
+                  construct the dynamic frontend UI.</li>
+<li><strong>Error Handling:</strong> Verifying graceful error feedback when handling malformed URLs or
+                  failed external API calls.</li>
             </ul>
           </div>
 
@@ -336,26 +335,17 @@
           <div class="pi-doc" id="details">
             <h2 class="pi-h">Project Overview</h2>
             <p>
-              AuditKit is a lightweight web application built as my capstone project for Angela Yu’s Complete
-              Full-Stack Web Development Bootcamp. It automates quick technical SEO checks by fetching on-page
-              metadata, parsing DOM structure, and presenting core performance metrics in a single, accessible
-              dashboard.
+              AuditKit is a lightweight web application built as my capstone project for Angela Yu’s Complete Full-Stack Web Development Bootcamp. It automates quick technical SEO checks by fetching on-page metadata, parsing DOM structure, and presenting core performance metrics in a single, accessible dashboard.
             </p>
 
             <h2 class="pi-h">Problem &amp; Objective</h2>
             <p>
-              Manually auditing basic technical SEO factors across multiple individual tools can be time-consuming. My
-              goal for this project was to build a streamlined, single-page application that accepts a target URL,
-              executes the necessary requests behind the scenes, and automatically generates an easy-to-read audit
-              summary.
+              Manually auditing basic technical SEO factors across multiple individual tools can be time-consuming. My goal for this project was to build a streamlined, single-page application that accepts a target URL, executes the necessary requests behind the scenes, and automatically generates an easy-to-read audit summary.
             </p>
 
             <h2 class="pi-h">Key Outcome &amp; Takeaways</h2>
             <p>
-              This project provided valuable, hands-on experience in building a functional full-stack application that
-              addresses a real-world web workflow problem. Combining third-party API integration, DOM scraping, and
-              server-side templating strengthened my understanding of asynchronous JavaScript, HTTP response handling,
-              and full-stack application structure.
+              This project provided valuable, hands-on experience in building a functional full-stack application that addresses a real-world web workflow problem. Combining third-party API integration, DOM scraping, and server-side templating strengthened my understanding of asynchronous JavaScript, HTTP response handling, and full-stack application structure.
             </p>
           </div>
         </div>
@@ -365,53 +355,37 @@
           <div class="pi-doc">
             <h2 class="pi-h">Technical Implementation</h2>
             <p>
-              The application runs on a Node.js and Express.js server responsible for processing user inputs and
-              handling server-side logic. When a user submits a URL, Axios handles asynchronous HTTP requests to the
-              Google PageSpeed Insights API to retrieve mobile and desktop performance benchmarks. Concurrently,
-              Cheerio parses the target site's raw HTML document to extract essential on-page SEO signals, including
-              title tags, meta descriptions, heading hierarchies (H1–H6), and Open Graph meta tags. The backend
-              formats this aggregated data and passes it into EJS templates to dynamically render the final audit
-              report.
+              The application runs on a Node.js and Express.js server responsible for processing user inputs and handling server-side logic. When a user submits a URL, Axios handles asynchronous HTTP requests to the Google PageSpeed Insights API to retrieve mobile and desktop performance benchmarks. Concurrently, Cheerio parses the target site's raw HTML document to extract essential on-page SEO signals, including title tags, meta descriptions, heading hierarchies (H1–H6), and Open Graph meta tags. The backend formats this aggregated data and passes it into EJS templates to dynamically render the final audit report.
             </p>
             <p>
-              As an entry-level developer navigating complex server-side operations, I integrated Claude (Anthropic's
-              AI assistant) into my development workflow as a virtual pair programmer. I utilized Claude primarily to
-              debug asynchronous request flows, refine Cheerio selector logic, review error-handling structures for
-              invalid URLs, and talk through backend edge cases. This interactive troubleshooting approach helped me
-              deepen my practical understanding of Node.js, API data extraction, and server-side rendering while
-              ensuring I understood the underlying logic of every route and function.
+              As an entry-level developer navigating complex server-side operations, I integrated Claude (Anthropic's AI assistant) into my development workflow as a virtual pair programmer. I utilized Claude primarily to debug asynchronous request flows, refine Cheerio selector logic, review error-handling structures for invalid URLs, and talk through backend edge cases. This interactive troubleshooting approach helped me deepen my practical understanding of Node.js, API data extraction, and server-side rendering while ensuring I understood the underlying logic of every route and function.
             </p>
           </div>
         </div>
 
         <!-- features.md -->
         <div class="pi-view" id="view-features" role="tabpanel" aria-labelledby="tab-features" hidden>
-          <h2 class="pi-h">Implemented Features</h2>
-          <p class="pi-sub">What AuditKit checks and how each part is built.</p>
+          <h2 class="pi-h" style="margin-bottom:18px">Implemented Features</h2>
           <div class="pi-features">
             <div class="pi-feature">
               <i class="fa-solid fa-code" aria-hidden="true"></i>
               <h3>On-Page SEO Extraction</h3>
-              <p>Automated server-side parsing of title tags, meta descriptions, Open Graph data, and heading
-                structures using Cheerio.</p>
+              <p>Automated server-side parsing of title tags, meta descriptions, Open Graph data, and heading structures using Cheerio.</p>
             </div>
             <div class="pi-feature">
               <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
               <h3>Core Web Vitals Auditing</h3>
-              <p>Direct integration with the Google PageSpeed Insights API via Axios to fetch live desktop and
-                mobile performance metrics.</p>
+              <p>Direct integration with the Google PageSpeed Insights API via Axios to fetch live desktop and mobile performance metrics.</p>
             </div>
             <div class="pi-feature">
               <i class="fa-solid fa-microchip" aria-hidden="true"></i>
               <h3>Server-Side Processing</h3>
-              <p>Asynchronous HTTP request handling, robust error management, and HTML data parsing built using
-                Node.js and Express.js.</p>
+              <p>Asynchronous HTTP request handling, robust error management, and HTML data parsing built using Node.js and Express.js.</p>
             </div>
             <div class="pi-feature">
               <i class="fa-solid fa-chart-bar" aria-hidden="true"></i>
               <h3>Clean UI &amp; Reporting</h3>
-              <p>Dynamic presentation of audit results rendered cleanly using EJS templates and responsive CSS
-                layout techniques.</p>
+              <p>Dynamic presentation of audit results rendered cleanly using EJS templates and responsive CSS layout techniques.</p>
             </div>
           </div>
         </div>
@@ -429,12 +403,12 @@
           <h2 class="pi-h" style="margin-top:28px">Technologies &amp; Tools Used</h2>
           <ul class="pi-tools">
             <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
-            <li><strong>API Integration:</strong> Axios, Google PageSpeed Insights API</li>
-            <li><strong>DOM Parsing &amp; Web Scraping:</strong> Cheerio</li>
-            <li><strong>Server-Side Templating &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
-            <li><strong>Deployment &amp; Version Control:</strong> Git, GitHub, Render</li>
-            <li><strong>AI Pair Programming:</strong> Claude (used for debugging, regex/selector refactoring, and
-              asynchronous logic review)</li>
+<li><strong>API Integration:</strong> Axios, Google PageSpeed Insights API</li>
+<li><strong>DOM Parsing &amp; Web Scraping:</strong> Cheerio</li>
+<li><strong>Server-Side Templating &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
+<li><strong>Deployment &amp; Version Control:</strong> Git, GitHub, Render</li>
+<li><strong>AI Pair Programming:</strong> Claude (used for debugging, regex/selector refactoring, and
+                  asynchronous logic review)</li>
           </ul>
         </div>
 
@@ -445,17 +419,15 @@
 
   <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
   <div class="glightbox-desc desc-auditkit-shot" style="display:none;">
-    <div class="lightbox-window-panel">
-      <div class="lightbox-window-titlebar">
-        <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
-        <div class="lightbox-window-controls">
-          <button aria-label="Close screenshot"
-              class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-              type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="lightbox-window-panel">
+<div class="lightbox-window-titlebar">
+<span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
+<div class="lightbox-window-controls">
+<button aria-label="Close screenshot" class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot" type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+</div>
+</div>
+</div>
+</div>
 
   <!-- Preloader -->
   <div id="preloader"></div>

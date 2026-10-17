@@ -8,6 +8,8 @@
       if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
         document.documentElement.setAttribute('data-theme', saved);
       }
+      /* embedded in a desktop window: hide the standalone title bar before first paint */
+      if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add('pi-embed');
     })();
   </script>
 
@@ -28,7 +30,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
@@ -38,10 +40,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+  <!-- Project Inspector layout (must load after main.css) -->
+  <link href="/assets/css/inspector.css" rel="stylesheet">
   <style id="glightbox-overrides">
     .glightbox-container .gclose:not([data-glightbox-close]) {
       display: none !important;
@@ -90,641 +93,392 @@
     *::-webkit-scrollbar-thumb { background: var(--sb-thumb, var(--accent-highlight, #178C7A)); border-radius: 8px; }
     *::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
   </style>
-
-  <style id="side-nav">
-    :root { --side-w: 56px; }
-
-    body.portfolio-details-page { padding-left: var(--side-w); }
-
-    html body .linux-dock.side-nav {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: auto;
-      width: var(--side-w);
-      max-width: none;
-      height: 100%;
-      transform: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
-      padding: 14px 0;
-      box-sizing: border-box;
-      background: color-mix(in srgb, var(--surface-color), transparent 8%);
-      border: 0;
-      border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
-      border-radius: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      z-index: 997;
-    }
-
-    html body .linux-dock.side-nav .dock-item {
-      position: relative;
-      width: 44px;
-      height: 44px;
-      flex: 0 0 auto;
-      font-size: 17px;
-      border-radius: 8px;
-      background: transparent !important;
-      color: color-mix(in srgb, var(--default-color), transparent 35%);
-      transform: none !important;
-      transition: color 0.18s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item i { color: inherit; }
-
-    html body .linux-dock.side-nav .dock-item:hover,
-    html body .linux-dock.side-nav .dock-item:focus-visible,
-    html body .linux-dock.side-nav .dock-item.active {
-      color: var(--accent-highlight);
-      background: transparent !important;
-      transform: none !important;
-    }
-
-    html body .linux-dock.side-nav .dock-item:focus-visible {
-      outline: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
-      outline-offset: -2px;
-    }
-
-    html body .linux-dock.side-nav .dock-item::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 5px;
-      width: 18px;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--accent-highlight);
-      transform: translateX(-50%) scaleX(0);
-      opacity: 0;
-      transition: transform 0.22s ease, opacity 0.22s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item.active::after {
-      transform: translateX(-50%) scaleX(1);
-      opacity: 1;
-    }
-
-    html body .linux-dock.side-nav .dock-item .dock-tooltip {
-      bottom: auto;
-      top: 50%;
-      left: calc(100% + 10px);
-      transform: translateY(-50%) translateX(-4px);
-    }
-
-    html body .linux-dock.side-nav .dock-item:hover .dock-tooltip,
-    html body .linux-dock.side-nav .dock-item:focus-visible .dock-tooltip {
-      transform: translateY(-50%) translateX(0);
-    }
-
-    @media (max-width: 768px) {
-      :root { --side-w: 46px; }
-      html body .linux-dock.side-nav { padding: 10px 0; }
-      html body .linux-dock.side-nav .dock-item { width: 40px; height: 40px; font-size: 16px; }
-    }
-  </style>
 </head>
 
-<body class="portfolio-details-page">
+<body class="pi-page">
 
-  <!-- Scroll Top -->
+  <!-- Scroll Top (kept: main.js expects it; hidden by the layout, the panes scroll internally) -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Project sidebar -->
-  <nav class="linux-dock side-nav" aria-label="Project navigation">
-    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
-        class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
-        class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
-        class="dock-tooltip">Gallery</span></a>
-  </nav>
+  <div class="pi">
 
-  <main class="main">
+    <!-- Standalone title bar (hidden when this page is shown inside a desktop window) -->
+    <header class="pi-titlebar">
+      <i class="fa-solid fa-terminal" aria-hidden="true"></i>
+      <span class="pi-titlebar-title"><b>jp@portfolio:</b> ~/route196</span>
+      <a class="pi-back" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Portfolio</a>
+    </header>
 
-    <!-- Page Title -->
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="page-header">
-          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            Node.js, Express &amp; EJS Capstone Project
-          </span>
-          <h1 class="h2 fw-bold mb-3">
-            Route 196
-          </h1>
+    <!-- Left navigation -->
+    <aside class="pi-side" aria-label="Project navigation">
+
+      <div class="pi-head">
+        <div class="pi-head-top">
+          <span class="pi-app-icon" aria-hidden="true"><i class="fa-solid fa-shield"></i></span>
+          <span class="pi-badge">Node.js, Express &amp; EJS Capstone Project</span>
         </div>
+        <h1 class="pi-title" title="Route 196">Route 196</h1>
       </div>
-    </div>
 
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
+      <nav class="pi-tree" role="tablist" aria-orientation="vertical" aria-label="Project files">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>media/</div>
+        <div class="pi-items">
+          <a href="#walkthrough" class="pi-item" role="tab" id="tab-walkthrough" aria-controls="view-walkthrough"
+            data-view="walkthrough" data-dir="media/" data-file="walkthrough.mp4" data-meta="YouTube video">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i><span class="pi-name">walkthrough.mp4</span>
+          </a>
+          <a href="#gallery" class="pi-item" role="tab" id="tab-gallery" aria-controls="view-gallery"
+            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="19 images">
+            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">19</span>
+          </a>
+        </div>
 
-        <div class="row gy-4">
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>docs/</div>
+        <div class="pi-items">
+          <a href="#overview" class="pi-item" role="tab" id="tab-overview" aria-controls="view-overview"
+            data-view="overview" data-dir="docs/" data-file="overview.md" data-meta="markdown">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i><span class="pi-name">overview.md</span>
+          </a>
+          <a href="#implementation" class="pi-item" role="tab" id="tab-implementation" aria-controls="view-implementation"
+            data-view="implementation" data-dir="docs/" data-file="implementation.md" data-meta="markdown">
+            <i class="fa-solid fa-gears" aria-hidden="true"></i><span class="pi-name">implementation.md</span>
+          </a>
+          <a href="#features" class="pi-item" role="tab" id="tab-features" aria-controls="view-features"
+            data-view="features" data-dir="docs/" data-file="features.md" data-meta="4 features">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i><span class="pi-name">features.md</span>
+          </a>
+          <a href="#stack" class="pi-item" role="tab" id="tab-stack" aria-controls="view-stack"
+            data-view="stack" data-dir="docs/" data-file="stack.json" data-meta="properties">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="pi-name">stack.json</span>
+          </a>
+        </div>
 
-          <div class="col-lg-8">
-            <div class="portfolio-video">
-              <div
-                style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
-                  src="https://www.youtube.com/embed/zmJkMtnj0iQ?si=rKuGNXMU5Asne70C" title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
+      </nav>
+
+      <div class="pi-actions">
+        <a href="https://route196.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-live">View Site</a>
+        <a href="https://github.com/jpldeleon/route196" target="_blank" rel="noopener noreferrer" class="btn-github">GitHub Repo</a>
+      </div>
+
+    </aside>
+
+    <!-- Right content area -->
+    <main class="pi-content" id="portfolio-details">
+
+      <div class="pi-bar">
+        <div class="pi-crumb" aria-live="polite">~/route196/<span id="pi-crumb-dir"></span><b id="pi-crumb-file"></b></div>
+        <div class="pi-bar-meta" id="pi-meta"></div>
+      </div>
+
+      <div class="pi-scroll">
+
+        <!-- walkthrough.mp4 -->
+        <div class="pi-view" id="view-walkthrough" role="tabpanel" aria-labelledby="tab-walkthrough">
+
+          <div class="pi-stage">
+            <iframe src="https://www.youtube.com/embed/zmJkMtnj0iQ?si=rKuGNXMU5Asne70C" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+          <div class="pi-film">
+            <div class="pi-film-head">
+              <span>screenshots/</span>
+              <a href="#gallery" data-goto="gallery">View all 19</a>
+            </div>
+            <div class="pi-strip">
+            <a aria-label="Open Home - Mocha Theme screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-1-home-mocha_f.webp" title="Open Home - Mocha Theme screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-1-home-mocha.webp" alt="Home - Mocha Theme" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home - Mocha Theme</span><span>1/19</span></span>
+            </a>
+            <a aria-label="Open Home - Latte Theme screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-2-home-latte_f.webp" title="Open Home - Latte Theme screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-2-home-latte.webp" alt="Home - Latte Theme" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home - Latte Theme</span><span>2/19</span></span>
+            </a>
+            <a aria-label="Open Mobile View 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-1_f.webp" title="Open Mobile View 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-3-mobile-1.webp" alt="Mobile View 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 1</span><span>3/19</span></span>
+            </a>
+            <a aria-label="Open Mobile View 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-2_f.webp" title="Open Mobile View 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-3-mobile-2.webp" alt="Mobile View 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 2</span><span>4/19</span></span>
+            </a>
+            <a aria-label="Open Mobile View 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-3_f.webp" title="Open Mobile View 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-3-mobile-3.webp" alt="Mobile View 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 3</span><span>5/19</span></span>
+            </a>
+            <a aria-label="Open Robots.txt Analysis screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-4-robots_f.webp" title="Open Robots.txt Analysis screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-4-robots.webp" alt="Robots.txt Analysis" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Robots.txt Analysis</span><span>6/19</span></span>
+            </a>
+            <a aria-label="Open Sitemap Generator screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-5-sitemap_f.webp" title="Open Sitemap Generator screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-5-sitemap.webp" alt="Sitemap Generator" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sitemap Generator</span><span>7/19</span></span>
+            </a>
+            <a aria-label="Open Redirect Checker screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-6-redirect_f.webp" title="Open Redirect Checker screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-6-redirect.webp" alt="Redirect Checker" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Checker</span><span>8/19</span></span>
+            </a>
+            <a aria-label="Open Wayback Machine Lookup screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-7-wayback_f.webp" title="Open Wayback Machine Lookup screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-7-wayback.webp" alt="Wayback Machine Lookup" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback Machine Lookup</span><span>9/19</span></span>
+            </a>
+            <a aria-label="Open Wayback Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-8-wayback-error_f.webp" title="Open Wayback Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-8-wayback-error.webp" alt="Wayback Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback Error Handling</span><span>10/19</span></span>
+            </a>
+            <a aria-label="Open Redirect Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-9-redirect-error_f.webp" title="Open Redirect Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-9-redirect-error.webp" alt="Redirect Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Error Handling</span><span>11/19</span></span>
+            </a>
+            <a aria-label="Open Robots Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-10-robots-error_f.webp" title="Open Robots Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-10-robots-error.webp" alt="Robots Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Robots Error Handling</span><span>12/19</span></span>
+            </a>
+            <a aria-label="Open Express Server Code 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-11-server_f.webp" title="Open Express Server Code 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-11-server.webp" alt="Express Server Code 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Express Server Code 1</span><span>13/19</span></span>
+            </a>
+            <a aria-label="Open Package Dependencies screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-12-package_f.webp" title="Open Package Dependencies screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-12-package.webp" alt="Package Dependencies" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Package Dependencies</span><span>14/19</span></span>
+            </a>
+            <a aria-label="Open Robots Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-14-robots_f.webp" title="Open Robots Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-14-robots.webp" alt="Robots Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Robots Route Controller</span><span>15/19</span></span>
+            </a>
+            <a aria-label="Open Sitemap Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-15-sitemap_f.webp" title="Open Sitemap Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-15-sitemap.webp" alt="Sitemap Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sitemap Route Controller</span><span>16/19</span></span>
+            </a>
+            <a aria-label="Open Redirect Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-16-redirect_f.webp" title="Open Redirect Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-16-redirect.webp" alt="Redirect Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Route Controller</span><span>17/19</span></span>
+            </a>
+            <a aria-label="Open Wayback API Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-17-wayback_f.webp" title="Open Wayback API Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-17-wayback.webp" alt="Wayback API Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback API Controller</span><span>18/19</span></span>
+            </a>
+            <a aria-label="Open Express Server Code 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-18-server_f.webp" title="Open Express Server Code 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-18-server.webp" alt="Express Server Code 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Express Server Code 2</span><span>19/19</span></span>
+            </a>
             </div>
           </div>
 
-          <div class="col-lg-4">
-            <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
-              <h3>Project Information</h3>
-              <ul>
-                <li><strong>Course:</strong> The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong> Node.js, Express &amp; EJS Capstone Project</li>
-                <li><strong>Focus:</strong> API Integration, Server-Side Rendering &amp; Async Client-Server
-                  Communication</li>
-                <li><strong>Tech Stack:</strong> Node.js, Express.js, Axios, EJS, JavaScript, CSS3</li>
-                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
-                  <div style="display: flex; gap: 12px; margin-top: 15px;">
-                    <a href="https://route196.onrender.com/" target="_blank" rel="noopener noreferrer"
-                      class="btn-live">View Site</a>
-                    <a href="https://github.com/jpldeleon/route196" target="_blank" rel="noopener noreferrer"
-                      class="btn-github">GitHub Repo</a>
-                  </div>
-                </div>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-
-              <h4>Project Overview</h4>
-              <p>
-                Route 196 is my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp.
-                It’s a cozy, single-page site inspector designed to streamline basic web research. Simply enter a URL,
-                and the application fetches the site's robots.txt and sitemap.xml, traces its
-                redirect chain hop by hop, and queries the Wayback Machine for historical archives—all accessible via a
-                floating pill menu without needing multiple browser tabs.
-              </p>
-              <p>
-                The project assignment required integrating a public API using Express and Axios. Driven by a curiosity
-                about website infrastructure and metadata, I decided to build a functional dashboard that gathers these
-                hidden technical details into one unified tool.
-              </p>
-              <p>
-                As a beginner in backend development, I leveraged Claude (Anthropic's AI assistant) as a learning
-                partner—much like an interactive Stack Overflow. I used it to debug asynchronous code, refine my regex
-                parsing, and handle tricky edge cases like redirect loops and sitemap index files. While the application
-                architecture, feature set, and UI design are my own, working through these concepts ensured I gained a
-                solid, practical understanding of backend HTTP requests and data handling.
-              </p>
-
-              <h4>Problem &amp; Objective</h4>
-              <p>
-                The main objective of this capstone project was to integrate a public API into a custom Express
-                application using Axios, implement GET endpoints, and establish structured error handling without
-                starter code. To meet the requirements while building something truly functional, I selected the
-                Internet Archive's Wayback Machine API and expanded the application into a comprehensive site inspection
-                utility by building additional URL inspection modules using native fetch. As an early-career developer,
-                this project offered valuable hands-on experience in reading third-party API documentation, handling
-                network edge cases (such as request timeouts, invalid URLs, missing files, and redirect loops), and
-                designing resilient backend logic beyond the standard "happy path."
-              </p>
-
-              <h4>Technical Implementation</h4>
-              <p>
-                The architecture relies on an Express backend serving four distinct GET endpoints. The robots and
-                sitemap endpoints utilize the native fetch API—wrapped in a custom helper with an AbortController to
-                prevent slow external servers from hanging requests—to parse site metadata, including complex sitemap
-                index files. The wayback endpoint handles the primary Axios integration, executing requests to the
-                Wayback Machine Availability API for the most recent snapshot, alongside secondary calls to the CDX API
-                for capture history. The redirect-check endpoint traces URLs across up to 10 hops, identifying HTTP 3xx
-                responses, meta-refresh tags, and JavaScript window.location redirects using regular expressions, while
-                incorporating loop detection logic. On the client side, EJS renders the core layout, while modular
-                vanilla JavaScript manages single-page tab switching, dynamic fetch calls, asynchronous UI updates,
-                toast notifications, and a light/dark theme toggle backed by LocalStorage.
-              </p>
-              <div class="features mt-4">
-                <h3>Implemented Features</h3>
-                <div class="row gy-3">
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                      <i class="fa-solid fa-robot"></i>
-                      <h4>Robots.txt Inspector</h4>
-                      <p>Fetches and displays any site's robots.txt, showing whether it was
-                        found and what it contains, with a clear "not found" state when it's missing.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
-                      <i class="fa-solid fa-sitemap"></i>
-                      <h4>Sitemap.xml Inspector</h4>
-                      <p>Pulls a site's sitemap.xml, parses out every URL (or sitemap-index
-                        entry) with regex, and lists them as clickable links.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
-                      <i class="fa-solid fa-arrows-split-up-and-left"></i>
-                      <h4>Redirect Path Tracer</h4>
-                      <p>Follows a URL through up to 10 hops, detecting HTTP redirects, meta-refresh tags,
-                        and JavaScript redirects, and flags redirect loops instead of hanging forever.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
-                      <i class="fa-solid fa-hourglass-start"></i>
-                      <h4>Wayback Machine Lookup</h4>
-                      <p>Uses Axios to call the Internet Archive's Availability and CDX APIs, showing the
-                        closest archived snapshot plus a short history of recent captures.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
-              <p>
-                Building this project was a huge milestone in my growth as an entry-level developer, especially when it
-                came to working with third-party data and real-world network reliability. Integrating the Wayback
-                Machine API via Axios challenged me to look beyond ideal scenarios and design robust error handling for
-                request timeouts, unreachable domains, and missing files.
-              </p>
-              <p>
-                The redirect tracer ended up being the most complex feature to implement. Learning how to catch
-                meta-refresh tags and JavaScript redirects using regular expressions—while implementing loop detection
-                logic to keep the server responsive—required significant testing and iteration. It also taught me the
-                importance of thoroughly reading API documentation to understand response structures rather than making
-                assumptions about the data format.
-              </p>
-              <p>
-                Using Claude AI as an interactive pair programmer helped me break down complex bugs, evaluate regex
-                patterns, and understand why certain asynchronous requests failed. Instead of relying on quick fixes,
-                this collaborative troubleshooting deepened my grasp of asynchronous JavaScript, Express routing, and
-                network edge cases. Ultimately, this capstone gave me the confidence to explain the technical details
-                and architecture behind every line of backend code.
-              </p>
-
-              <h3 class="mt-4">Video Overview</h3>
-              <p>The demonstration video provides a comprehensive walk-through of the application, highlighting key
-                technical and visual features:</p>
-              <ul>
-                <li><strong>GitHub Repository &amp; Local Setup:</strong> A tour of the project repository, codebase
+          <div class="pi-chapters">
+            <h2 class="pi-h">Video Overview</h2>
+            <p class="pi-sub">The demonstration video provides a comprehensive walk-through of the application, highlighting key technical and visual features:</p>
+            <ul>
+              <li><strong>GitHub Repository &amp; Local Setup:</strong> A tour of the project repository, codebase
                   documentation, and local development environment setup.</li>
-                <li><strong>Core Features Walkthrough:</strong> Live analysis of URLs across all four tools—robots.txt,
+<li><strong>Core Features Walkthrough:</strong> Live analysis of URLs across all four tools—robots.txt,
                   sitemap index parsing, redirect path tracing, and historical archive lookups—alongside graceful error
                   and empty states.</li>
-                <li><strong>Responsive Mobile Design:</strong> A view of the adaptive user interface across mobile,
+<li><strong>Responsive Mobile Design:</strong> A view of the adaptive user interface across mobile,
                   tablet, and desktop viewports built using fluid CSS media queries.</li>
-                <li><strong>Codebase Walkthrough:</strong> An overview of the Express backend architecture in server.js
+<li><strong>Codebase Walkthrough:</strong> An overview of the Express backend architecture in server.js
                   and client-side DOM/fetch logic in app.js within VS Code.</li>
-              </ul>
-
-              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
-              <ul>
-                <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
-                <li><strong>API Integration:</strong> Axios (Wayback Machine Availability &amp; CDX APIs), native Fetch
-                  (robots.txt, sitemap.xml, redirect tracing)</li>
-                <li><strong>Server-Side Templating:</strong> EJS</li>
-                <li><strong>Frontend Development:</strong> Vanilla JavaScript (ES6+), Modern CSS3</li>
-                <li><strong>Version Control &amp; Deployment:</strong> Git, GitHub, Render</li>
-                <li><strong>AI Pair Programming:</strong> Claude (used for code reviews, regex refactoring, and async
-                  edge-case analysis)</li>
-              </ul>
-            </div>
+            </ul>
           </div>
 
-          <!-- Screenshot Gallery Carousel Section -->
-          <section id="project-screenshots" class="portfolio section">
-
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-              <h2>Gallery</h2>
-              <p>A closer look at the screenshots behind this project.</p>
-            </div><!-- End Section Title -->
-
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-              <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
-                <div class="swiper-wrapper align-items-center">
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Home - Mocha Theme screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-1-home-mocha_f.webp" title="Open Home - Mocha Theme screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-1-home-mocha.webp" class="img-fluid"
-                        alt="Home - Mocha Theme" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Home - Latte Theme screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-2-home-latte_f.webp" title="Open Home - Latte Theme screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-2-home-latte.webp" class="img-fluid"
-                        alt="Home - Latte Theme" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-1_f.webp" title="Open Mobile View 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-3-mobile-1.webp" class="img-fluid"
-                        alt="Mobile View 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-2_f.webp" title="Open Mobile View 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-3-mobile-2.webp" class="img-fluid"
-                        alt="Mobile View 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Mobile View 3 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-3_f.webp" title="Open Mobile View 3 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-3-mobile-3.webp" class="img-fluid"
-                        alt="Mobile View 3" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Robots.txt Analysis screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-4-robots_f.webp" title="Open Robots.txt Analysis screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-4-robots.webp" class="img-fluid"
-                        alt="Robots.txt Analysis" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sitemap Generator screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-5-sitemap_f.webp" title="Open Sitemap Generator screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-5-sitemap.webp" class="img-fluid"
-                        alt="Sitemap Generator" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Redirect Checker screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-6-redirect_f.webp" title="Open Redirect Checker screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-6-redirect.webp" class="img-fluid"
-                        alt="Redirect Checker" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Wayback Machine Lookup screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-7-wayback_f.webp" title="Open Wayback Machine Lookup screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-7-wayback.webp" class="img-fluid"
-                        alt="Wayback Machine Lookup" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Wayback Error Handling screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-8-wayback-error_f.webp" title="Open Wayback Error Handling screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-8-wayback-error.webp" class="img-fluid"
-                        alt="Wayback Error Handling" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Redirect Error Handling screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-9-redirect-error_f.webp" title="Open Redirect Error Handling screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-9-redirect-error.webp" class="img-fluid"
-                        alt="Redirect Error Handling" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Robots Error Handling screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-10-robots-error_f.webp" title="Open Robots Error Handling screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-10-robots-error.webp" class="img-fluid"
-                        alt="Robots Error Handling" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Express Server Code 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-11-server_f.webp" title="Open Express Server Code 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-11-server.webp" class="img-fluid"
-                        alt="Express Server Code 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Package Dependencies screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-12-package_f.webp" title="Open Package Dependencies screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-12-package.webp" class="img-fluid"
-                        alt="Package Dependencies" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Robots Route Controller screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-14-robots_f.webp" title="Open Robots Route Controller screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-14-robots.webp" class="img-fluid"
-                        alt="Robots Route Controller" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sitemap Route Controller screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-15-sitemap_f.webp" title="Open Sitemap Route Controller screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-15-sitemap.webp" class="img-fluid"
-                        alt="Sitemap Route Controller" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Redirect Route Controller screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-16-redirect_f.webp" title="Open Redirect Route Controller screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-16-redirect.webp" class="img-fluid"
-                        alt="Redirect Route Controller" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Wayback API Controller screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-17-wayback_f.webp" title="Open Wayback API Controller screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-17-wayback.webp" class="img-fluid"
-                        alt="Wayback API Controller" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Express Server Code 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot"
-                        data-type="image" href="/assets/img/portfolio/route196/route196-18-server_f.webp" title="Open Express Server Code 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/route196/route196-18-server.webp" class="img-fluid"
-                        alt="Express Server Code 2" loading="lazy">
-                    </div>
-                  </div>
-
-                </div>
-
-                <!-- Controls -->
-
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-
-              </div>
-
-            </div>
-
-
-            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
-            <div class="glightbox-desc desc-route196-shot" style="display:none;">
-              <div class="lightbox-window-panel">
-                <div class="lightbox-window-titlebar">
-                  <span class="lightbox-window-title">jp@portfolio: ~/Route196</span>
-                  <div class="lightbox-window-controls">
-                    <button aria-label="Close screenshot"
-                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </section><!-- /Portfolio Section -->
-
-          <style>
-            /* Whole screenshot card opens the lightbox */
-            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
-            .screenshots-swiper .portfolio-image-link { inset: 0; }
-
-            .screenshots-swiper {
-              padding: 10px 10px 50px;
-            }
-
-            .screenshots-swiper .swiper-slide {
-              height: auto;
-            }
-
-            .screenshots-swiper .portfolio-wrap {
-              height: 100%;
-            }
-
-            .screenshots-swiper .swiper-button-prev,
-            .screenshots-swiper .swiper-button-next {
-              top: auto;
-              bottom: 0;
-              margin-top: 0;
-              width: 40px;
-              height: 40px;
-              background: var(--accent-highlight, #178C7A);
-              border-radius: 50%;
-              color: #fff;
-            }
-
-            .screenshots-swiper .swiper-button-prev:after,
-            .screenshots-swiper .swiper-button-next:after {
-              font-size: 16px;
-              font-weight: 700;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet {
-              background: rgba(255, 255, 255, 0.5);
-              opacity: 1;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet-active {
-              background: var(--accent-highlight, #178C7A);
-            }
-
-            @media (max-width: 575px) {
-
-              .screenshots-swiper {
-                padding: 10px 10px 80px;
-              }
-
-              /* Dots stay centered, higher up */
-              .screenshots-swiper .swiper-pagination {
-                bottom: 38px;
-              }
-
-              /* Arrows drop into their own centered row below the dots */
-              .screenshots-swiper .swiper-button-prev,
-              .screenshots-swiper .swiper-button-next {
-                top: auto;
-                bottom: 0;
-                left: 50%;
-                right: auto;
-                width: 32px;
-                height: 32px;
-              }
-
-              .screenshots-swiper .swiper-button-prev:after,
-              .screenshots-swiper .swiper-button-next:after {
-                font-size: 13px;
-              }
-
-              .screenshots-swiper .swiper-button-prev {
-                transform: translateX(calc(-100% - 8px));
-              }
-
-              .screenshots-swiper .swiper-button-next {
-                transform: translateX(8px);
-              }
-            }
-          </style>
-
         </div>
+
+        <!-- screenshots/ -->
+        <div class="pi-view" id="view-gallery" role="tabpanel" aria-labelledby="tab-gallery" hidden>
+          <h2 class="pi-h">Gallery</h2>
+          <p class="pi-sub">A closer look at the screenshots behind this project.</p>
+          <div class="pi-grid" id="project-screenshots">
+            <a aria-label="Open Home - Mocha Theme screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-1-home-mocha_f.webp" title="Open Home - Mocha Theme screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-1-home-mocha.webp" alt="Home - Mocha Theme" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home - Mocha Theme</span><span>1/19</span></span>
+            </a>
+            <a aria-label="Open Home - Latte Theme screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-2-home-latte_f.webp" title="Open Home - Latte Theme screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-2-home-latte.webp" alt="Home - Latte Theme" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home - Latte Theme</span><span>2/19</span></span>
+            </a>
+            <a aria-label="Open Mobile View 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-1_f.webp" title="Open Mobile View 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-3-mobile-1.webp" alt="Mobile View 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 1</span><span>3/19</span></span>
+            </a>
+            <a aria-label="Open Mobile View 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-2_f.webp" title="Open Mobile View 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-3-mobile-2.webp" alt="Mobile View 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 2</span><span>4/19</span></span>
+            </a>
+            <a aria-label="Open Mobile View 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-3-mobile-3_f.webp" title="Open Mobile View 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-3-mobile-3.webp" alt="Mobile View 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Mobile View 3</span><span>5/19</span></span>
+            </a>
+            <a aria-label="Open Robots.txt Analysis screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-4-robots_f.webp" title="Open Robots.txt Analysis screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-4-robots.webp" alt="Robots.txt Analysis" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Robots.txt Analysis</span><span>6/19</span></span>
+            </a>
+            <a aria-label="Open Sitemap Generator screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-5-sitemap_f.webp" title="Open Sitemap Generator screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-5-sitemap.webp" alt="Sitemap Generator" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sitemap Generator</span><span>7/19</span></span>
+            </a>
+            <a aria-label="Open Redirect Checker screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-6-redirect_f.webp" title="Open Redirect Checker screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-6-redirect.webp" alt="Redirect Checker" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Checker</span><span>8/19</span></span>
+            </a>
+            <a aria-label="Open Wayback Machine Lookup screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-7-wayback_f.webp" title="Open Wayback Machine Lookup screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-7-wayback.webp" alt="Wayback Machine Lookup" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback Machine Lookup</span><span>9/19</span></span>
+            </a>
+            <a aria-label="Open Wayback Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-8-wayback-error_f.webp" title="Open Wayback Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-8-wayback-error.webp" alt="Wayback Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback Error Handling</span><span>10/19</span></span>
+            </a>
+            <a aria-label="Open Redirect Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-9-redirect-error_f.webp" title="Open Redirect Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-9-redirect-error.webp" alt="Redirect Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Error Handling</span><span>11/19</span></span>
+            </a>
+            <a aria-label="Open Robots Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-10-robots-error_f.webp" title="Open Robots Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-10-robots-error.webp" alt="Robots Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Robots Error Handling</span><span>12/19</span></span>
+            </a>
+            <a aria-label="Open Express Server Code 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-11-server_f.webp" title="Open Express Server Code 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-11-server.webp" alt="Express Server Code 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Express Server Code 1</span><span>13/19</span></span>
+            </a>
+            <a aria-label="Open Package Dependencies screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-12-package_f.webp" title="Open Package Dependencies screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-12-package.webp" alt="Package Dependencies" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Package Dependencies</span><span>14/19</span></span>
+            </a>
+            <a aria-label="Open Robots Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-14-robots_f.webp" title="Open Robots Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-14-robots.webp" alt="Robots Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Robots Route Controller</span><span>15/19</span></span>
+            </a>
+            <a aria-label="Open Sitemap Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-15-sitemap_f.webp" title="Open Sitemap Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-15-sitemap.webp" alt="Sitemap Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sitemap Route Controller</span><span>16/19</span></span>
+            </a>
+            <a aria-label="Open Redirect Route Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-16-redirect_f.webp" title="Open Redirect Route Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-16-redirect.webp" alt="Redirect Route Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Route Controller</span><span>17/19</span></span>
+            </a>
+            <a aria-label="Open Wayback API Controller screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-17-wayback_f.webp" title="Open Wayback API Controller screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-17-wayback.webp" alt="Wayback API Controller" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback API Controller</span><span>18/19</span></span>
+            </a>
+            <a aria-label="Open Express Server Code 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-route196-shot" data-type="image" href="/assets/img/portfolio/route196/route196-18-server_f.webp" title="Open Express Server Code 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/route196/route196-18-server.webp" alt="Express Server Code 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Express Server Code 2</span><span>19/19</span></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- overview.md -->
+        <div class="pi-view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" hidden>
+          <div class="pi-doc" id="details">
+            <h2 class="pi-h">Project Overview</h2>
+            <p>
+              Route 196 is my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp. It’s a cozy, single-page site inspector designed to streamline basic web research. Simply enter a URL, and the application fetches the site's robots.txt and sitemap.xml, traces its redirect chain hop by hop, and queries the Wayback Machine for historical archives—all accessible via a floating pill menu without needing multiple browser tabs.
+            </p>
+            <p>
+              The project assignment required integrating a public API using Express and Axios. Driven by a curiosity about website infrastructure and metadata, I decided to build a functional dashboard that gathers these hidden technical details into one unified tool.
+            </p>
+            <p>
+              As a beginner in backend development, I leveraged Claude (Anthropic's AI assistant) as a learning partner—much like an interactive Stack Overflow. I used it to debug asynchronous code, refine my regex parsing, and handle tricky edge cases like redirect loops and sitemap index files. While the application architecture, feature set, and UI design are my own, working through these concepts ensured I gained a solid, practical understanding of backend HTTP requests and data handling.
+            </p>
+
+            <h2 class="pi-h">Problem &amp; Objective</h2>
+            <p>
+              The main objective of this capstone project was to integrate a public API into a custom Express application using Axios, implement GET endpoints, and establish structured error handling without starter code. To meet the requirements while building something truly functional, I selected the Internet Archive's Wayback Machine API and expanded the application into a comprehensive site inspection utility by building additional URL inspection modules using native fetch. As an early-career developer, this project offered valuable hands-on experience in reading third-party API documentation, handling network edge cases (such as request timeouts, invalid URLs, missing files, and redirect loops), and designing resilient backend logic beyond the standard "happy path."
+            </p>
+
+            <h2 class="pi-h">Key Outcome &amp; Takeaways</h2>
+            <p>
+              Building this project was a huge milestone in my growth as an entry-level developer, especially when it came to working with third-party data and real-world network reliability. Integrating the Wayback Machine API via Axios challenged me to look beyond ideal scenarios and design robust error handling for request timeouts, unreachable domains, and missing files.
+            </p>
+            <p>
+              The redirect tracer ended up being the most complex feature to implement. Learning how to catch meta-refresh tags and JavaScript redirects using regular expressions—while implementing loop detection logic to keep the server responsive—required significant testing and iteration. It also taught me the importance of thoroughly reading API documentation to understand response structures rather than making assumptions about the data format.
+            </p>
+            <p>
+              Using Claude AI as an interactive pair programmer helped me break down complex bugs, evaluate regex patterns, and understand why certain asynchronous requests failed. Instead of relying on quick fixes, this collaborative troubleshooting deepened my grasp of asynchronous JavaScript, Express routing, and network edge cases. Ultimately, this capstone gave me the confidence to explain the technical details and architecture behind every line of backend code.
+            </p>
+          </div>
+        </div>
+
+        <!-- implementation.md -->
+        <div class="pi-view" id="view-implementation" role="tabpanel" aria-labelledby="tab-implementation" hidden>
+          <div class="pi-doc">
+            <h2 class="pi-h">Technical Implementation</h2>
+            <p>
+              The architecture relies on an Express backend serving four distinct GET endpoints. The robots and sitemap endpoints utilize the native fetch API—wrapped in a custom helper with an AbortController to prevent slow external servers from hanging requests—to parse site metadata, including complex sitemap index files. The wayback endpoint handles the primary Axios integration, executing requests to the Wayback Machine Availability API for the most recent snapshot, alongside secondary calls to the CDX API for capture history. The redirect-check endpoint traces URLs across up to 10 hops, identifying HTTP 3xx responses, meta-refresh tags, and JavaScript window.location redirects using regular expressions, while incorporating loop detection logic. On the client side, EJS renders the core layout, while modular vanilla JavaScript manages single-page tab switching, dynamic fetch calls, asynchronous UI updates, toast notifications, and a light/dark theme toggle backed by LocalStorage.
+            </p>
+          </div>
+        </div>
+
+        <!-- features.md -->
+        <div class="pi-view" id="view-features" role="tabpanel" aria-labelledby="tab-features" hidden>
+          <h2 class="pi-h" style="margin-bottom:18px">Implemented Features</h2>
+          <div class="pi-features">
+            <div class="pi-feature">
+              <i class="fa-solid fa-robot" aria-hidden="true"></i>
+              <h3>Robots.txt Inspector</h3>
+              <p>Fetches and displays any site's robots.txt, showing whether it was found and what it contains, with a clear "not found" state when it's missing.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-sitemap" aria-hidden="true"></i>
+              <h3>Sitemap.xml Inspector</h3>
+              <p>Pulls a site's sitemap.xml, parses out every URL (or sitemap-index entry) with regex, and lists them as clickable links.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-arrows-split-up-and-left" aria-hidden="true"></i>
+              <h3>Redirect Path Tracer</h3>
+              <p>Follows a URL through up to 10 hops, detecting HTTP redirects, meta-refresh tags, and JavaScript redirects, and flags redirect loops instead of hanging forever.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-hourglass-start" aria-hidden="true"></i>
+              <h3>Wayback Machine Lookup</h3>
+              <p>Uses Axios to call the Internet Archive's Availability and CDX APIs, showing the closest archived snapshot plus a short history of recent captures.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- stack.json -->
+        <div class="pi-view" id="view-stack" role="tabpanel" aria-labelledby="tab-stack" hidden>
+          <h2 class="pi-h">Project Information</h2>
+          <dl class="pi-props">
+            <dt>Course</dt><dd>The Complete Full-Stack Web Development Bootcamp by Angela Yu</dd>
+            <dt>Type</dt><dd>Node.js, Express &amp; EJS Capstone Project</dd>
+            <dt>Focus</dt><dd>API Integration, Server-Side Rendering &amp; Async Client-Server Communication</dd>
+            <dt>Tech Stack</dt><dd>Node.js, Express.js, Axios, EJS, JavaScript, CSS3</dd>
+          </dl>
+
+          <h2 class="pi-h" style="margin-top:28px">Technologies &amp; Tools Used</h2>
+          <ul class="pi-tools">
+            <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
+<li><strong>API Integration:</strong> Axios (Wayback Machine Availability &amp; CDX APIs), native Fetch
+                  (robots.txt, sitemap.xml, redirect tracing)</li>
+<li><strong>Server-Side Templating:</strong> EJS</li>
+<li><strong>Frontend Development:</strong> Vanilla JavaScript (ES6+), Modern CSS3</li>
+<li><strong>Version Control &amp; Deployment:</strong> Git, GitHub, Render</li>
+<li><strong>AI Pair Programming:</strong> Claude (used for code reviews, regex refactoring, and async
+                  edge-case analysis)</li>
+          </ul>
+        </div>
+
       </div>
-    </section>
+    </main>
 
-  </main>
+  </div>
 
-  
+  <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+  <div class="glightbox-desc desc-route196-shot" style="display:none;">
+<div class="lightbox-window-panel">
+<div class="lightbox-window-titlebar">
+<span class="lightbox-window-title">jp@portfolio: ~/Route196</span>
+<div class="lightbox-window-controls">
+<button aria-label="Close screenshot" class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot" type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
+</div>
+</div>
+</div>
+</div>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -733,37 +487,11 @@
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof Swiper !== 'undefined') {
-        new Swiper('.screenshots-swiper', {
-          loop: false,
-          spaceBetween: 20,
-          slidesPerView: 1,
-          speed: 500,
-          autoHeight: false,
-          pagination: {
-            el: '.screenshots-swiper .swiper-pagination',
-            clickable: true
-          },
-          navigation: {
-            nextEl: '.screenshots-swiper .swiper-button-next',
-            prevEl: '.screenshots-swiper .swiper-button-prev'
-          },
-          breakpoints: {
-            576: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1200: { slidesPerView: 4, spaceBetween: 24 }
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Project Inspector view switching -->
+  <script src="/assets/js/inspector.js"></script>
 
 </body>
 

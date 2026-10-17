@@ -98,6 +98,21 @@
     show(a.getAttribute('data-goto'), { push: true });
   });
 
+  /* Gallery filters: chips carry data-filter="*" or a class selector such as ".filter-seo";
+     tiles carry the matching class. Only the gallery grid is filtered. */
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.pi-filter[data-filter]'));
+  if (chips.length) {
+    var gridTiles = Array.prototype.slice.call(document.querySelectorAll('#project-screenshots .pi-thumb'));
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var f = chip.getAttribute('data-filter');
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+        gridTiles.forEach(function (t) { t.hidden = !(f === '*' || t.matches(f)); });
+        if (scroller) scroller.scrollTop = 0;
+      });
+    });
+  }
+
   window.addEventListener('hashchange', function () { show(location.hash); });
 
   show(location.hash, { initial: true });
