@@ -8,6 +8,8 @@
       if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
         document.documentElement.setAttribute('data-theme', saved);
       }
+      /* embedded in a desktop window: hide the standalone title bar before first paint */
+      if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add('pi-embed');
     })();
   </script>
 
@@ -26,7 +28,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
@@ -36,10 +38,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
   <link href="/assets/css/main.css" rel="stylesheet">
+  <!-- Project Inspector layout (must load after main.css) -->
+  <link href="/assets/css/inspector.css" rel="stylesheet">
   <style id="glightbox-overrides">
     .glightbox-container .gclose:not([data-glightbox-close]) {
       display: none !important;
@@ -57,7 +60,7 @@
       backdrop-filter: none !important;
     }
     .glightbox-container { z-index: 2147483000 !important; }
-    
+
     .glightbox-container .gslide-image img {
       user-select: none !important;
       -webkit-user-drag: none !important;
@@ -88,561 +91,371 @@
     *::-webkit-scrollbar-thumb { background: var(--sb-thumb, var(--accent-highlight, #178C7A)); border-radius: 8px; }
     *::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
   </style>
-
-  <style id="side-nav">
-    :root { --side-w: 56px; }
-
-    body.portfolio-details-page { padding-left: var(--side-w); }
-
-    html body .linux-dock.side-nav {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: auto;
-      width: var(--side-w);
-      max-width: none;
-      height: 100%;
-      transform: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
-      padding: 14px 0;
-      box-sizing: border-box;
-      background: color-mix(in srgb, var(--surface-color), transparent 8%);
-      border: 0;
-      border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
-      border-radius: 0;
-      box-shadow: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      z-index: 997;
-    }
-
-    html body .linux-dock.side-nav .dock-item {
-      position: relative;
-      width: 44px;
-      height: 44px;
-      flex: 0 0 auto;
-      font-size: 17px;
-      border-radius: 8px;
-      background: transparent !important;
-      color: color-mix(in srgb, var(--default-color), transparent 35%);
-      transform: none !important;
-      transition: color 0.18s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item i { color: inherit; }
-
-    html body .linux-dock.side-nav .dock-item:hover,
-    html body .linux-dock.side-nav .dock-item:focus-visible,
-    html body .linux-dock.side-nav .dock-item.active {
-      color: var(--accent-highlight);
-      background: transparent !important;
-      transform: none !important;
-    }
-
-    html body .linux-dock.side-nav .dock-item:focus-visible {
-      outline: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
-      outline-offset: -2px;
-    }
-
-    html body .linux-dock.side-nav .dock-item::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 5px;
-      width: 18px;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--accent-highlight);
-      transform: translateX(-50%) scaleX(0);
-      opacity: 0;
-      transition: transform 0.22s ease, opacity 0.22s ease;
-    }
-
-    html body .linux-dock.side-nav .dock-item.active::after {
-      transform: translateX(-50%) scaleX(1);
-      opacity: 1;
-    }
-
-    html body .linux-dock.side-nav .dock-item .dock-tooltip {
-      bottom: auto;
-      top: 50%;
-      left: calc(100% + 10px);
-      transform: translateY(-50%) translateX(-4px);
-    }
-
-    html body .linux-dock.side-nav .dock-item:hover .dock-tooltip,
-    html body .linux-dock.side-nav .dock-item:focus-visible .dock-tooltip {
-      transform: translateY(-50%) translateX(0);
-    }
-
-    @media (max-width: 768px) {
-      :root { --side-w: 46px; }
-      html body .linux-dock.side-nav { padding: 10px 0; }
-      html body .linux-dock.side-nav .dock-item { width: 40px; height: 40px; font-size: 16px; }
-    }
-  </style>
 </head>
 
-<body class="portfolio-details-page">
+<body class="pi-page">
 
-  <!-- Scroll Top -->
+  <!-- Scroll Top (kept: main.js expects it; hidden by the layout, the panes scroll internally) -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-  <!-- Project sidebar -->
-  <nav class="linux-dock side-nav" aria-label="Project navigation">
-    <a href="#portfolio-details" class="dock-item" title="Video"><i class="fa-brands fa-youtube"></i><span
-        class="dock-tooltip">Video</span></a>
-    <a href="#details" class="dock-item" title="Details"><i class="fa-solid fa-info"></i><span
-        class="dock-tooltip">Details</span></a>
-    <a href="#project-screenshots" class="dock-item" title="Gallery"><i class="fa-solid fa-images"></i><span
-        class="dock-tooltip">Gallery</span></a>
-  </nav>
+  <div class="pi">
 
-  <main class="main">
+    <!-- Standalone title bar (hidden when this page is shown inside a desktop window) -->
+    <header class="pi-titlebar">
+      <i class="fa-solid fa-terminal" aria-hidden="true"></i>
+      <span class="pi-titlebar-title"><b>jp@portfolio:</b> ~/auditkit</span>
+      <a class="pi-back" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Portfolio</a>
+    </header>
 
-    <!-- Page Title -->
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="page-header">
-          <span class="badge-text text-uppercase fw-semibold mb-2 d-inline-block">
-            Public API Capstone Project
-          </span>
-          <h1 class="h2 fw-bold mb-3">
-            AuditKit: Simple Technical SEO Tool
-          </h1>
+    <!-- Left navigation -->
+    <aside class="pi-side" aria-label="Project navigation">
+
+      <div class="pi-head">
+        <div class="pi-head-top">
+          <span class="pi-app-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+          <span class="pi-badge">Public API Capstone Project</span>
+        </div>
+        <h1 class="pi-title" title="AuditKit: Simple Technical SEO Tool">AuditKit: Simple Technical SEO Tool</h1>
+      </div>
+
+      <nav class="pi-tree" role="tablist" aria-orientation="vertical" aria-label="Project files">
+
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>media/</div>
+        <div class="pi-items">
+          <a href="#walkthrough" class="pi-item" role="tab" id="tab-walkthrough" aria-controls="view-walkthrough"
+            data-view="walkthrough" data-dir="media/" data-file="walkthrough.mp4" data-meta="YouTube video">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i><span class="pi-name">walkthrough.mp4</span>
+          </a>
+          <a href="#gallery" class="pi-item" role="tab" id="tab-gallery" aria-controls="view-gallery"
+            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="14 images">
+            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">14</span>
+          </a>
+        </div>
+
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>docs/</div>
+        <div class="pi-items">
+          <a href="#overview" class="pi-item" role="tab" id="tab-overview" aria-controls="view-overview"
+            data-view="overview" data-dir="docs/" data-file="overview.md" data-meta="markdown">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i><span class="pi-name">overview.md</span>
+          </a>
+          <a href="#implementation" class="pi-item" role="tab" id="tab-implementation" aria-controls="view-implementation"
+            data-view="implementation" data-dir="docs/" data-file="implementation.md" data-meta="markdown">
+            <i class="fa-solid fa-gears" aria-hidden="true"></i><span class="pi-name">implementation.md</span>
+          </a>
+          <a href="#features" class="pi-item" role="tab" id="tab-features" aria-controls="view-features"
+            data-view="features" data-dir="docs/" data-file="features.md" data-meta="4 features">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i><span class="pi-name">features.md</span>
+          </a>
+          <a href="#stack" class="pi-item" role="tab" id="tab-stack" aria-controls="view-stack"
+            data-view="stack" data-dir="docs/" data-file="stack.json" data-meta="properties">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="pi-name">stack.json</span>
+          </a>
+        </div>
+
+      </nav>
+
+      <div class="pi-actions">
+        <a href="https://auditkit.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-live">Live Demo</a>
+        <a href="https://github.com/jpldeleon/auditKit" target="_blank" rel="noopener noreferrer" class="btn-github">GitHub Repo</a>
+      </div>
+
+    </aside>
+
+    <!-- Right content area -->
+    <main class="pi-content" id="portfolio-details">
+
+      <div class="pi-bar">
+        <div class="pi-crumb" aria-live="polite">~/auditkit/<span id="pi-crumb-dir"></span><b id="pi-crumb-file"></b></div>
+        <div class="pi-bar-meta" id="pi-meta"></div>
+      </div>
+
+      <div class="pi-scroll">
+
+        <!-- walkthrough.mp4 -->
+        <div class="pi-view" id="view-walkthrough" role="tabpanel" aria-labelledby="tab-walkthrough">
+
+          <div class="pi-stage">
+            <iframe src="https://www.youtube.com/embed/jMfSTSqf5ao?si=sXn29jaOvqiYV_Ex" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+          <div class="pi-film">
+            <div class="pi-film-head">
+              <span>screenshots/</span>
+              <a href="#gallery" data-goto="gallery">View all 14</a>
+            </div>
+            <div class="pi-strip">
+            <a aria-label="Open Home Page screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-1-homepage_f.webp" title="Open Home Page screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-1-homepage.webp" alt="Home Page" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home Page</span><span>1/14</span></span>
+            </a>
+            <a aria-label="Open Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-2-error_f.webp" title="Open Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-2-error.webp" alt="Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Error Handling</span><span>2/14</span></span>
+            </a>
+            <a aria-label="Open Package Configuration screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-3-package_f.webp" title="Open Package Configuration screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-3-package.webp" alt="Package Configuration" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Package Configuration</span><span>3/14</span></span>
+            </a>
+            <a aria-label="Open Server Overview 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-4-server_f.webp" title="Open Server Overview 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-4-server.webp" alt="Server Overview 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Server Overview 1</span><span>4/14</span></span>
+            </a>
+            <a aria-label="Open Server Overview 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-5-server_f.webp" title="Open Server Overview 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-5-server.webp" alt="Server Overview 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Server Overview 2</span><span>5/14</span></span>
+            </a>
+            <a aria-label="Open Server Overview 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-6-server_f.webp" title="Open Server Overview 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-6-server.webp" alt="Server Overview 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Server Overview 3</span><span>6/14</span></span>
+            </a>
+            <a aria-label="Open Script Setup screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-7-script_f.webp" title="Open Script Setup screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-7-script.webp" alt="Script Setup" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Script Setup</span><span>7/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-8-sample-audit_f.webp" title="Open Sample Audit 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-8-sample-audit.webp" alt="Sample Audit 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 1</span><span>8/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-9-sample-audit_f.webp" title="Open Sample Audit 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-9-sample-audit.webp" alt="Sample Audit 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 2</span><span>9/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-10-sample-audit_f.webp" title="Open Sample Audit 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-10-sample-audit.webp" alt="Sample Audit 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 3</span><span>10/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 4 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png_f.webp" title="Open Sample Audit 4 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png.webp" alt="Sample Audit 4" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 4</span><span>11/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 5 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png_f.webp" title="Open Sample Audit 5 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png.webp" alt="Sample Audit 5" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 5</span><span>12/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 6 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png_f.webp" title="Open Sample Audit 6 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png.webp" alt="Sample Audit 6" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 6</span><span>13/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 7 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots-strip" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png_f.webp" title="Open Sample Audit 7 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png.webp" alt="Sample Audit 7" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 7</span><span>14/14</span></span>
+            </a>
+            </div>
+          </div>
+
+          <div class="pi-chapters">
+            <h2 class="pi-h">Video Overview</h2>
+            <p class="pi-sub">The demonstration video provides a step-by-step walk-through of the application's architecture and
+              features:</p>
+            <ul>
+              <li><strong>Node.js &amp; Express Setup:</strong> An overview of server initialization, middleware
+                setup, and GET/POST route handling.</li>
+              <li><strong>Metadata Extraction:</strong> Inspecting how Cheerio targets and extracts DOM elements and
+                meta attributes from raw HTML responses.</li>
+              <li><strong>API Integration:</strong> Querying the Google PageSpeed Insights API using Axios and
+                processing multi-level JSON responses.</li>
+              <li><strong>Data Rendering:</strong> Demonstrating how backend audit data flows into EJS views to
+                construct the dynamic frontend UI.</li>
+              <li><strong>Error Handling:</strong> Verifying graceful error feedback when handling malformed URLs or
+                failed external API calls.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- screenshots/ -->
+        <div class="pi-view" id="view-gallery" role="tabpanel" aria-labelledby="tab-gallery" hidden>
+          <h2 class="pi-h">Gallery</h2>
+          <p class="pi-sub">A closer look at the screenshots behind this project.</p>
+          <div class="pi-grid" id="project-screenshots">
+            <a aria-label="Open Home Page screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-1-homepage_f.webp" title="Open Home Page screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-1-homepage.webp" alt="Home Page" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Home Page</span><span>1/14</span></span>
+            </a>
+            <a aria-label="Open Error Handling screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-2-error_f.webp" title="Open Error Handling screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-2-error.webp" alt="Error Handling" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Error Handling</span><span>2/14</span></span>
+            </a>
+            <a aria-label="Open Package Configuration screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-3-package_f.webp" title="Open Package Configuration screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-3-package.webp" alt="Package Configuration" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Package Configuration</span><span>3/14</span></span>
+            </a>
+            <a aria-label="Open Server Overview 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-4-server_f.webp" title="Open Server Overview 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-4-server.webp" alt="Server Overview 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Server Overview 1</span><span>4/14</span></span>
+            </a>
+            <a aria-label="Open Server Overview 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-5-server_f.webp" title="Open Server Overview 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-5-server.webp" alt="Server Overview 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Server Overview 2</span><span>5/14</span></span>
+            </a>
+            <a aria-label="Open Server Overview 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-6-server_f.webp" title="Open Server Overview 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-6-server.webp" alt="Server Overview 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Server Overview 3</span><span>6/14</span></span>
+            </a>
+            <a aria-label="Open Script Setup screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-7-script_f.webp" title="Open Script Setup screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-7-script.webp" alt="Script Setup" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Script Setup</span><span>7/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 1 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-8-sample-audit_f.webp" title="Open Sample Audit 1 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-8-sample-audit.webp" alt="Sample Audit 1" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 1</span><span>8/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 2 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-9-sample-audit_f.webp" title="Open Sample Audit 2 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-9-sample-audit.webp" alt="Sample Audit 2" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 2</span><span>9/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 3 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-10-sample-audit_f.webp" title="Open Sample Audit 3 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-10-sample-audit.webp" alt="Sample Audit 3" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 3</span><span>10/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 4 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png_f.webp" title="Open Sample Audit 4 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png.webp" alt="Sample Audit 4" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 4</span><span>11/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 5 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png_f.webp" title="Open Sample Audit 5 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png.webp" alt="Sample Audit 5" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 5</span><span>12/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 6 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png_f.webp" title="Open Sample Audit 6 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png.webp" alt="Sample Audit 6" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 6</span><span>13/14</span></span>
+            </a>
+            <a aria-label="Open Sample Audit 7 screenshot" class="glightbox pi-thumb" data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot" data-type="image" href="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png_f.webp" title="Open Sample Audit 7 screenshot">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png.webp" alt="Sample Audit 7" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sample Audit 7</span><span>14/14</span></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- overview.md -->
+        <div class="pi-view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" hidden>
+          <div class="pi-doc" id="details">
+            <h2 class="pi-h">Project Overview</h2>
+            <p>
+              AuditKit is a lightweight web application built as my capstone project for Angela Yu’s Complete
+              Full-Stack Web Development Bootcamp. It automates quick technical SEO checks by fetching on-page
+              metadata, parsing DOM structure, and presenting core performance metrics in a single, accessible
+              dashboard.
+            </p>
+
+            <h2 class="pi-h">Problem &amp; Objective</h2>
+            <p>
+              Manually auditing basic technical SEO factors across multiple individual tools can be time-consuming. My
+              goal for this project was to build a streamlined, single-page application that accepts a target URL,
+              executes the necessary requests behind the scenes, and automatically generates an easy-to-read audit
+              summary.
+            </p>
+
+            <h2 class="pi-h">Key Outcome &amp; Takeaways</h2>
+            <p>
+              This project provided valuable, hands-on experience in building a functional full-stack application that
+              addresses a real-world web workflow problem. Combining third-party API integration, DOM scraping, and
+              server-side templating strengthened my understanding of asynchronous JavaScript, HTTP response handling,
+              and full-stack application structure.
+            </p>
+          </div>
+        </div>
+
+        <!-- implementation.md -->
+        <div class="pi-view" id="view-implementation" role="tabpanel" aria-labelledby="tab-implementation" hidden>
+          <div class="pi-doc">
+            <h2 class="pi-h">Technical Implementation</h2>
+            <p>
+              The application runs on a Node.js and Express.js server responsible for processing user inputs and
+              handling server-side logic. When a user submits a URL, Axios handles asynchronous HTTP requests to the
+              Google PageSpeed Insights API to retrieve mobile and desktop performance benchmarks. Concurrently,
+              Cheerio parses the target site's raw HTML document to extract essential on-page SEO signals, including
+              title tags, meta descriptions, heading hierarchies (H1–H6), and Open Graph meta tags. The backend
+              formats this aggregated data and passes it into EJS templates to dynamically render the final audit
+              report.
+            </p>
+            <p>
+              As an entry-level developer navigating complex server-side operations, I integrated Claude (Anthropic's
+              AI assistant) into my development workflow as a virtual pair programmer. I utilized Claude primarily to
+              debug asynchronous request flows, refine Cheerio selector logic, review error-handling structures for
+              invalid URLs, and talk through backend edge cases. This interactive troubleshooting approach helped me
+              deepen my practical understanding of Node.js, API data extraction, and server-side rendering while
+              ensuring I understood the underlying logic of every route and function.
+            </p>
+          </div>
+        </div>
+
+        <!-- features.md -->
+        <div class="pi-view" id="view-features" role="tabpanel" aria-labelledby="tab-features" hidden>
+          <h2 class="pi-h">Implemented Features</h2>
+          <p class="pi-sub">What AuditKit checks and how each part is built.</p>
+          <div class="pi-features">
+            <div class="pi-feature">
+              <i class="fa-solid fa-code" aria-hidden="true"></i>
+              <h3>On-Page SEO Extraction</h3>
+              <p>Automated server-side parsing of title tags, meta descriptions, Open Graph data, and heading
+                structures using Cheerio.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+              <h3>Core Web Vitals Auditing</h3>
+              <p>Direct integration with the Google PageSpeed Insights API via Axios to fetch live desktop and
+                mobile performance metrics.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+              <h3>Server-Side Processing</h3>
+              <p>Asynchronous HTTP request handling, robust error management, and HTML data parsing built using
+                Node.js and Express.js.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-chart-bar" aria-hidden="true"></i>
+              <h3>Clean UI &amp; Reporting</h3>
+              <p>Dynamic presentation of audit results rendered cleanly using EJS templates and responsive CSS
+                layout techniques.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- stack.json -->
+        <div class="pi-view" id="view-stack" role="tabpanel" aria-labelledby="tab-stack" hidden>
+          <h2 class="pi-h">Project Information</h2>
+          <dl class="pi-props">
+            <dt>Course</dt><dd>The Complete Full-Stack Web Development Bootcamp by Angela Yu</dd>
+            <dt>Type</dt><dd>Public API Capstone Project</dd>
+            <dt>Focus</dt><dd>Technical SEO Auditing, HTML Scraping &amp; Core Web Vitals</dd>
+            <dt>Tech Stack</dt><dd>Node.js, Express, Axios, Cheerio, Google PageSpeed API</dd>
+          </dl>
+
+          <h2 class="pi-h" style="margin-top:28px">Technologies &amp; Tools Used</h2>
+          <ul class="pi-tools">
+            <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
+            <li><strong>API Integration:</strong> Axios, Google PageSpeed Insights API</li>
+            <li><strong>DOM Parsing &amp; Web Scraping:</strong> Cheerio</li>
+            <li><strong>Server-Side Templating &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
+            <li><strong>Deployment &amp; Version Control:</strong> Git, GitHub, Render</li>
+            <li><strong>AI Pair Programming:</strong> Claude (used for debugging, regex/selector refactoring, and
+              asynchronous logic review)</li>
+          </ul>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
+  <div class="glightbox-desc desc-auditkit-shot" style="display:none;">
+    <div class="lightbox-window-panel">
+      <div class="lightbox-window-titlebar">
+        <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
+        <div class="lightbox-window-controls">
+          <button aria-label="Close screenshot"
+              class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
+              type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
     </div>
-
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-8">
-            <div class="portfolio-video">
-              <div
-                style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
-                  src="https://www.youtube.com/embed/jMfSTSqf5ao?si=sXn29jaOvqiYV_Ex" title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4">
-            <div class="portfolio-info" data-aos="fade-left" data-aos-delay="200">
-              <h3>Project Information</h3>
-              <ul>
-                <li><strong>Course:</strong>The Complete Full-Stack Web Development Bootcamp by Angela Yu</li>
-                <li><strong>Type:</strong>Public API Capstone Project</li>
-                <li><strong>Focus:</strong>Technical SEO Auditing, HTML Scraping & Core Web Vitals</li>
-                <li><strong>Tech Stack:</strong>Node.js, Express, Axios, Cheerio, Google PageSpeed API</li>
-                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
-                  <!-- Live Demo Button -->
-                  <div style="display: flex; gap: 12px; margin-top: 15px;">
-                    <a href="https://auditkit.onrender.com/" target="_blank" rel="noopener noreferrer"
-                      class="btn-live">Live Demo</a>
-                    <a href="https://github.com/jpldeleon/auditKit" target="_blank" rel="noopener noreferrer"
-                      class="btn-github">GitHub Repo</a>
-                  </div>
-                </div>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-12">
-            <div id="details" class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-
-              <h4>Project Overview</h4>
-              <p>
-                AuditKit is a lightweight web application built as my capstone project for Angela Yu’s Complete
-                Full-Stack Web Development Bootcamp. It automates quick technical SEO checks by fetching on-page
-                metadata, parsing DOM structure, and presenting core performance metrics in a single, accessible
-                dashboard.
-              </p>
-
-              <h4>Problem &amp; Objective</h4>
-              <p>
-                Manually auditing basic technical SEO factors across multiple individual tools can be time-consuming. My
-                goal for this project was to build a streamlined, single-page application that accepts a target URL,
-                executes the necessary requests behind the scenes, and automatically generates an easy-to-read audit
-                summary.
-              </p>
-
-              <h4>Technical Implementation</h4>
-              <p>
-                The application runs on a Node.js and Express.js server responsible for processing user inputs and
-                handling server-side logic. When a user submits a URL, Axios handles asynchronous HTTP requests to the
-                Google PageSpeed Insights API to retrieve mobile and desktop performance benchmarks. Concurrently,
-                Cheerio parses the target site's raw HTML document to extract essential on-page SEO signals, including
-                title tags, meta descriptions, heading hierarchies (H1–H6), and Open Graph meta tags. The backend
-                formats this aggregated data and passes it into EJS templates to dynamically render the final audit
-                report.
-              </p>
-
-              <p>
-                As an entry-level developer navigating complex server-side operations, I integrated Claude (Anthropic's
-                AI assistant) into my development workflow as a virtual pair programmer. I utilized Claude primarily to
-                debug asynchronous request flows, refine Cheerio selector logic, review error-handling structures for
-                invalid URLs, and talk through backend edge cases. This interactive troubleshooting approach helped me
-                deepen my practical understanding of Node.js, API data extraction, and server-side rendering while
-                ensuring I understood the underlying logic of every route and function.
-              </p>
-
-              <div class="features mt-4">
-                <h3>Implemented Features</h3>
-                <div class="row gy-3">
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                      <i class="fa-solid fa-code"></i>
-                      <h4>On-Page SEO Extraction</h4>
-                      <p>Automated server-side parsing of title tags, meta descriptions, Open Graph data, and heading
-                        structures using Cheerio.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
-                      <i class="fa-solid fa-gauge-high"></i>
-                      <h4>Core Web Vitals Auditing</h4>
-                      <p>Direct integration with the Google PageSpeed Insights API via Axios to fetch live desktop and
-                        mobile performance metrics.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
-                      <i class="fa-solid fa-microchip"></i>
-                      <h4>Server-Side Processing</h4>
-                      <p>Asynchronous HTTP request handling, robust error management, and HTML data parsing built using
-                        Node.js and Express.js.</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
-                      <i class="fa-solid fa-chart-bar"></i>
-                      <h4>Clean UI &amp; Reporting</h4>
-                      <p>Dynamic presentation of audit results rendered cleanly using EJS templates and responsive CSS
-                        layout techniques.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <h4 class="mt-4">Key Outcome &amp; Takeaways</h4>
-              <p>
-                This project provided valuable, hands-on experience in building a functional full-stack application that
-                addresses a real-world web workflow problem. Combining third-party API integration, DOM scraping, and
-                server-side templating strengthened my understanding of asynchronous JavaScript, HTTP response handling,
-                and full-stack application structure.
-              </p>
-
-              <h3 class="mt-4">Video Overview</h3>
-              <p>The demonstration video provides a step-by-step walk-through of the application's architecture and
-                features:</p>
-              <ul>
-                <li><strong>Node.js &amp; Express Setup:</strong> An overview of server initialization, middleware
-                  setup, and GET/POST route handling.</li>
-                <li><strong>Metadata Extraction:</strong> Inspecting how Cheerio targets and extracts DOM elements and
-                  meta attributes from raw HTML responses.</li>
-                <li><strong>API Integration:</strong> Querying the Google PageSpeed Insights API using Axios and
-                  processing multi-level JSON responses.</li>
-                <li><strong>Data Rendering:</strong> Demonstrating how backend audit data flows into EJS views to
-                  construct the dynamic frontend UI.</li>
-                <li><strong>Error Handling:</strong> Verifying graceful error feedback when handling malformed URLs or
-                  failed external API calls.</li>
-              </ul>
-
-              <h3 class="mt-4">Technologies &amp; Tools Used</h3>
-              <ul>
-                <li><strong>Backend Architecture:</strong> Node.js, Express.js</li>
-                <li><strong>API Integration:</strong> Axios, Google PageSpeed Insights API</li>
-                <li><strong>DOM Parsing &amp; Web Scraping:</strong> Cheerio</li>
-                <li><strong>Server-Side Templating &amp; Styling:</strong> EJS (Embedded JavaScript), CSS3, HTML5</li>
-                <li><strong>Deployment &amp; Version Control:</strong> Git, GitHub, Render</li>
-                <li><strong>AI Pair Programming:</strong> Claude (used for debugging, regex/selector refactoring, and
-                  asynchronous logic review)</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Screenshot Gallery Carousel Section -->
-          <section id="project-screenshots" class="portfolio section">
-
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-              <h2>Gallery</h2>
-              <p>A closer look at the screenshots behind this project.</p>
-            </div><!-- End Section Title -->
-
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-              <div class="swiper screenshots-swiper" data-aos="fade-up" data-aos-delay="200">
-                <div class="swiper-wrapper align-items-center">
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Home Page screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-1-homepage_f.webp" title="Open Home Page screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-1-homepage.webp" class="img-fluid"
-                        alt="Home Page" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Error Handling screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-2-error_f.webp" title="Open Error Handling screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-2-error.webp" class="img-fluid"
-                        alt="Error Handling" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Package Configuration screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-3-package_f.webp" title="Open Package Configuration screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-3-package.webp" class="img-fluid"
-                        alt="Package Configuration" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Server Overview 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-4-server_f.webp" title="Open Server Overview 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-4-server.webp" class="img-fluid"
-                        alt="Server Overview 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Server Overview 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-5-server_f.webp" title="Open Server Overview 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-5-server.webp" class="img-fluid"
-                        alt="Server Overview 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Server Overview 3 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-6-server_f.webp" title="Open Server Overview 3 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-6-server.webp" class="img-fluid"
-                        alt="Server Overview 3" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Script Setup screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-7-script_f.webp" title="Open Script Setup screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-7-script.webp" class="img-fluid"
-                        alt="Script Setup" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 1 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-8-sample-audit_f.webp" title="Open Sample Audit 1 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-8-sample-audit.webp" class="img-fluid"
-                        alt="Sample Audit 1" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 2 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-9-sample-audit_f.webp" title="Open Sample Audit 2 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-9-sample-audit.webp" class="img-fluid"
-                        alt="Sample Audit 2" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 3 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-10-sample-audit_f.webp" title="Open Sample Audit 3 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-10-sample-audit.webp" class="img-fluid"
-                        alt="Sample Audit 3" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 4 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png_f.webp" title="Open Sample Audit 4 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-11-sample-audit.png.webp" class="img-fluid"
-                        alt="Sample Audit 4" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 5 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png_f.webp" title="Open Sample Audit 5 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-12-sample-audit.png.webp" class="img-fluid"
-                        alt="Sample Audit 5" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 6 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png_f.webp" title="Open Sample Audit 6 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-13-sample-audit.png.webp" class="img-fluid"
-                        alt="Sample Audit 6" loading="lazy">
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <div class="portfolio-wrap">
-                      <a aria-label="Open Sample Audit 7 screenshot" class="glightbox portfolio-image-link"
-                        data-gallery="project-screenshots" data-glightbox="description: .desc-auditkit-shot"
-                        data-type="image" href="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png_f.webp" title="Open Sample Audit 7 screenshot"><span class="visually-hidden"></span></a>
-                      <img src="/assets/img/portfolio/auditkit/auditkit-14-sample-audit.png.webp" class="img-fluid"
-                        alt="Sample Audit 7" loading="lazy">
-                    </div>
-                  </div>
-
-                </div>
-
-                <!-- Controls -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-
-              </div>
-
-            </div>
-
-            <!-- Shared lightbox chrome for every screenshot: title bar + a single Close command -->
-            <div class="glightbox-desc desc-auditkit-shot" style="display:none;">
-              <div class="lightbox-window-panel">
-                <div class="lightbox-window-titlebar">
-                  <span class="lightbox-window-title">jp@portfolio: ~/AuditKit</span>
-                  <div class="lightbox-window-controls">
-                    <button aria-label="Close screenshot"
-                        class="win-btn win-btn-close" data-glightbox-close="" title="Close screenshot"
-                        type="button"><i aria-hidden="true" class="fa-solid fa-xmark"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </section><!-- /Portfolio Section -->
-
-          <style>
-            /* Whole screenshot card opens the lightbox */
-            .screenshots-swiper .portfolio-wrap { position: relative; overflow: hidden; }
-            .screenshots-swiper .portfolio-image-link { inset: 0; }
-
-            .screenshots-swiper {
-              padding: 10px 10px 50px;
-            }
-
-            .screenshots-swiper .swiper-slide {
-              height: auto;
-            }
-
-            .screenshots-swiper .portfolio-wrap {
-              height: 100%;
-            }
-
-            .screenshots-swiper .swiper-button-prev,
-            .screenshots-swiper .swiper-button-next {
-              top: auto;
-              bottom: 0;
-              margin-top: 0;
-              width: 40px;
-              height: 40px;
-              background: var(--accent-highlight, #178C7A);
-              border-radius: 50%;
-              color: #fff;
-            }
-
-            .screenshots-swiper .swiper-button-prev:after,
-            .screenshots-swiper .swiper-button-next:after {
-              font-size: 16px;
-              font-weight: 700;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet {
-              background: rgba(255, 255, 255, 0.5);
-              opacity: 1;
-            }
-
-            .screenshots-swiper .swiper-pagination-bullet-active {
-              background: var(--accent-highlight, #178C7A);
-            }
-
-            @media (max-width: 575px) {
-
-              .screenshots-swiper {
-                padding: 10px 10px 80px;
-              }
-
-              /* Dots stay centered, higher up */
-              .screenshots-swiper .swiper-pagination {
-                bottom: 38px;
-              }
-
-              /* Arrows drop into their own centered row below the dots */
-              .screenshots-swiper .swiper-button-prev,
-              .screenshots-swiper .swiper-button-next {
-                top: auto;
-                bottom: 0;
-                left: 50%;
-                right: auto;
-                width: 32px;
-                height: 32px;
-              }
-
-              .screenshots-swiper .swiper-button-prev:after,
-              .screenshots-swiper .swiper-button-next:after {
-                font-size: 13px;
-              }
-
-              .screenshots-swiper .swiper-button-prev {
-                transform: translateX(calc(-100% - 8px));
-              }
-
-              .screenshots-swiper .swiper-button-next {
-                transform: translateX(8px);
-              }
-            }
-          </style>
-
-  </main>
-
-  
+  </div>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -651,37 +464,11 @@
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof Swiper !== 'undefined') {
-        new Swiper('.screenshots-swiper', {
-          loop: false,
-          spaceBetween: 20,
-          slidesPerView: 1,
-          speed: 500,
-          autoHeight: false,
-          pagination: {
-            el: '.screenshots-swiper .swiper-pagination',
-            clickable: true
-          },
-          navigation: {
-            nextEl: '.screenshots-swiper .swiper-button-next',
-            prevEl: '.screenshots-swiper .swiper-button-prev'
-          },
-          breakpoints: {
-            576: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1200: { slidesPerView: 4, spaceBetween: 24 }
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Project Inspector view switching -->
+  <script src="/assets/js/inspector.js"></script>
 
 </body>
 
