@@ -30,7 +30,7 @@
   var tree = root.querySelector('.rv-tree');
   if (!tabs.length || !views.length || !textPane || !pdfPane || !frameHost) return;
 
-  var PDF = root.getAttribute('data-pdf') || 'assets/resume.pdf';
+  var PDF = root.getAttribute('data-pdf') || 'assets/JohnPaulDeLeon.pdf';
 
   var state = {
     view: tabs[0].getAttribute('data-view'),
