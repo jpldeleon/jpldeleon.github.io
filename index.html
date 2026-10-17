@@ -385,18 +385,324 @@
         </div>
       </aside><!-- /Skills -->
     </div><!-- /Right column -->
-    <!-- Resume Section: a plain PDF viewer. Rendered inside the Resume window by app.js.
-         Swap assets/JohnPaulDeLeon.pdf for your final CV (keep the name, or change the 3 paths below). -->
+    <!-- Resume Section: inspector-style viewer (sidebar + path bar + text views). Rendered inside the Resume window by app.js. -->
     <section aria-label="Resume" class="rv" id="resume">
-      <div class="rv-bar">
-        <span class="rv-crumb">~/cv/<b>JohnPaulDeLeon.pdf</b></span>
-        <a aria-label="Download CV" class="rv-link" download="" href="assets/JohnPaulDeLeon.pdf" title="Download CV"><i
-            class="fa-solid fa-download"></i><span>Download</span></a>
-        <a aria-label="Open CV in a new tab" class="rv-link" href="assets/JohnPaulDeLeon.pdf" rel="noopener"
-          target="_blank" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open in new
-            tab</span></a>
-      </div>
-      <iframe class="rv-frame" src="assets/JohnPaulDeLeon.pdf#view=FitH&toolbar=0&navpanes=0" title="CV (PDF)"></iframe>
+      <!-- Sidebar -->
+      <aside class="rv-side">
+        <div class="rv-head">
+          <div class="rv-head-top">
+            <span aria-hidden="true" class="rv-app-icon"><i class="fa-solid fa-timeline"></i></span>
+            <div>
+              <div class="rv-badge">~/resume</div>
+              <h2 class="rv-title">John Paul De Leon</h2>
+            </div>
+          </div>
+        </div>
+        <nav aria-label="Resume sections" aria-orientation="vertical" class="rv-tree" role="tablist">
+          <div aria-hidden="true" class="rv-group"><i class="fa-regular fa-folder-open"></i> cv/</div>
+          <div class="rv-items">
+            <button aria-controls="rv-view-profile" aria-selected="true" class="rv-item" data-dir="~/cv/"
+              data-file="profile.md" data-meta="summary · contact" data-view="profile" role="tab"
+              type="button"><i class="fa-solid fa-user"></i><span class="rv-name">Profile</span></button>
+            <button aria-controls="rv-view-experience" aria-selected="false" class="rv-item" data-dir="~/cv/"
+              data-file="experience.md" data-meta="6 roles" data-view="experience" role="tab"
+              tabindex="-1" type="button"><i class="fa-solid fa-briefcase"></i><span class="rv-name">Experience</span><span
+                class="rv-count">6</span></button>
+            <button aria-controls="rv-view-skills" aria-selected="false" class="rv-item" data-dir="~/cv/"
+              data-file="skills.md" data-meta="4 categories" data-view="skills" role="tab" tabindex="-1"
+              type="button"><i class="fa-solid fa-code"></i><span class="rv-name">Skills</span><span
+                class="rv-count">4</span></button>
+            <button aria-controls="rv-view-education" aria-selected="false" class="rv-item" data-dir="~/cv/"
+              data-file="education.md" data-meta="2 entries" data-view="education" role="tab"
+              tabindex="-1" type="button"><i class="fa-solid fa-graduation-cap"></i><span class="rv-name">Education</span><span
+                class="rv-count">2</span></button>
+            <button aria-controls="rv-view-certifications" aria-selected="false" class="rv-item" data-dir="~/cv/"
+              data-file="certifications.md" data-meta="2 certificates" data-view="certifications"
+              role="tab" tabindex="-1" type="button"><i class="fa-solid fa-award"></i><span class="rv-name">Certifications</span><span
+                class="rv-count">2</span></button>
+          </div>
+        </nav>
+        <div class="rv-actions">
+          <a aria-label="Download resume" class="btn-live" download="" href="assets/JohnPaulDeLeon.pdf" title="Download CV"><i
+              class="fa-solid fa-download"></i><span class="rv-btn-label">Download CV</span></a>
+        </div>
+      </aside>
+
+      <!-- Main pane -->
+      <div class="rv-content">
+        <div class="rv-bar">
+          <span class="rv-crumb"><span id="rv-crumb-dir">~/cv/</span><b id="rv-crumb-file">profile.md</b></span>
+          <span class="rv-bar-meta" id="rv-meta">summary · contact</span>
+        </div>
+
+        <div class="rv-scroll">
+          <!-- Profile -->
+          <div aria-label="Profile" class="rv-view rv-doc" id="rv-view-profile" role="tabpanel">
+            <div class="rv-profile">
+              <img alt="John Paul De Leon" class="rv-photo" height="112" src="assets/img/profile/jp-profile-3.webp"
+                width="112" />
+              <div>
+                <h3 class="rv-h">Professional Summary</h3>
+                <p>SEO Specialist with 5 years of experience focused on link prospecting, backlink research, and
+                  outreach across Intelligent.com LLC and Awisee. Recently expanded into technical SEO through hands-on
+                  web development training and certification, bringing a growing ability to understand and improve
+                  websites from the code level, not just around it. Detail-focused and research-driven, with a genuine
+                  commitment to SEO as a long-term career.</p>
+              </div>
+            </div>
+            <h3 class="rv-h rv-contact-title">Contact Information</h3>
+            <div class="contact-block">
+              <ul class="rv-contact">
+                <li><i class="fa-solid fa-location-dot"></i> Metro Manila, Philippines</li>
+                <li>
+                  <button class="contact-info-copy js-copy-trigger" data-copy-type="email"
+                    data-copy-value="jpleonard.deleon@gmail.com" type="button">
+                    <i class="fa-solid fa-envelope"></i> ••••••deleon@gmail.com
+                  </button>
+                </li>
+                <li>
+                  <button class="contact-info-copy js-copy-trigger" data-copy-type="phone"
+                    data-copy-value="+639760109942" type="button">
+                    <i class="fa-solid fa-mobile-screen"></i> +63 ••• ••• 9942
+                  </button>
+                </li>
+                <li><a href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"><i
+                      class="fa-brands fa-linkedin"></i> linkedin.com/in/jpldl/</a></li>
+              </ul>
+              <div class="copy-toast-container">
+                <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToastResume" role="status">
+                  <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span id="copyToastResumeBody">Copied to clipboard.</span>
+                    <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast"
+                      type="button"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div aria-label="Experience" class="rv-view rv-doc" hidden id="rv-view-experience" role="tabpanel">
+            <h3 class="rv-h">Professional Experience</h3>
+            <p class="rv-sub">Where I've worked, newest first.</p>
+
+            <article class="rv-job">
+              <h3>Self-Directed Learning &amp; Upskilling</h3>
+              <div class="rv-when">May 2025 - Present</div>
+              <ul>
+                <li>Completed the Complete Full-Stack Web Development Bootcamp</li>
+                <li>Completed Technical SEO and SEO Sprint certification</li>
+                <li>Practiced technical SEO through hands-on projects</li>
+                <li>Practiced WordPress development and site building</li>
+                <li>Built web app and other capstone projects</li>
+              </ul>
+            </article>
+
+            <article class="rv-job">
+              <h3>SEO Outreach Specialist</h3>
+              <div class="rv-when">Jan - May 2025</div>
+              <div class="rv-meta">
+                <span><i class="fa-solid fa-building"></i><a href="https://www.linkedin.com/company/awisee/"
+                    rel="noopener" target="_blank">Awisee</a></span>
+                <span><i class="fa-solid fa-location-dot"></i>Remote, Stockholm, Sweden</span>
+              </div>
+              <ul>
+                <li>Built and verified prospect lists that directly enabled the team's link-building campaigns to run
+                  smoothly, reducing time spent on manual list-building</li>
+                <li>Cleaned and organized lead data, sharpening outreach targeting so campaigns reached more relevant,
+                  higher-quality contacts</li>
+                <li>Identified opportunities to streamline the prospect list workflow and proposed process improvements
+                  to the team</li>
+              </ul>
+            </article>
+
+            <article class="rv-job">
+              <h3>Research Analyst <small>(SEO Link Prospecting)</small></h3>
+              <div class="rv-when">Nov 2020 - Sept 2024</div>
+              <div class="rv-meta">
+                <span><i class="fa-solid fa-building"></i><a href="https://www.linkedin.com/company/intelligent/"
+                    rel="noopener" target="_blank">Intelligent.com LLC</a></span>
+                <span><i class="fa-solid fa-location-dot"></i>Remote, Seattle, WA</span>
+              </div>
+              <ul>
+                <li>Created research specs to guide the US and outreach teams' link prospecting for relevant campaigns
+                </li>
+                <li>Consistently built monthly prospect lists that met and sustained monthly and yearly outreach quotas
+                </li>
+                <li>Sourced high-quality backlink opportunities that supported the outreach team's campaign performance
+                </li>
+                <li>Maintained and troubleshot link and email databases, ensuring accuracy and campaign readiness</li>
+                <li>Built a personal script to streamline research workflow, improving consistency and output quality
+                </li>
+                <li>Collaborated with team leaders to clarify research specs and align prospecting with campaign goals
+                </li>
+                <li>Trusted to pilot link prospecting strategy for new client accounts</li>
+              </ul>
+            </article>
+
+            <article class="rv-job">
+              <h3>Contact Finder <small>(SEO Contact Research &amp; Verification)</small></h3>
+              <div class="rv-when">May 2020 - November 2020</div>
+              <div class="rv-meta">
+                <span><i class="fa-solid fa-building"></i><a href="https://www.linkedin.com/company/intelligent/"
+                    rel="noopener" target="_blank">Intelligent.com LLC</a></span>
+                <span><i class="fa-solid fa-location-dot"></i>Remote, Seattle, WA</span>
+              </div>
+              <ul>
+                <li>Researched and verified high-quality leads for SEO link-building outreach</li>
+                <li>Consistently met daily and monthly quotas under tight deadlines</li>
+                <li>Applied consistent qualification criteria that reduced wasted outreach effort on low-authority or
+                  irrelevant sites</li>
+                <li>Shared research and verification techniques with colleagues, helping streamline the team's workflow
+                </li>
+                <li>Promoted to Research Analyst after building a strong track record in this role</li>
+              </ul>
+            </article>
+
+            <article class="rv-job">
+              <h3>Freelance Research Consultant <small>(Independent / Referral-based)</small></h3>
+              <div class="rv-when">January 2019 - May 2020</div>
+              <ul>
+                <li>Delivered lead generation projects for outsourced clients through professional referrals</li>
+                <li>Performed web scraping and data entry to build and organize prospect/contact lists</li>
+                <li>Maintained accuracy and consistency across client-provided data sets</li>
+              </ul>
+            </article>
+
+            <article class="rv-job">
+              <h3>Research Analyst <small>(Web Researcher)</small></h3>
+              <div class="rv-when">Sep 2013 - November 2018</div>
+              <div class="rv-meta">
+                <span><i class="fa-solid fa-building"></i><a href="https://www.linkedin.com/company/straive_/"
+                    rel="noopener" target="_blank">Straive (formerly SPi Global)</a></span>
+                <span><i class="fa-solid fa-location-dot"></i>On-site, Philippines</span>
+              </div>
+              <ul>
+                <li>Built an automation solution that helped the team win a Lean Six Sigma Award and elevated the
+                  status of the account/project</li>
+                <li>Consistently met quota and deadlines throughout tenure</li>
+                <li>Trusted to pilot several new projects/accounts, successfully onboarding and acquiring them for the
+                  team</li>
+                <li>Shared research and verification techniques with colleagues, helping streamline the team's workflow
+                </li>
+                <li>Stepped in to lead and manage other teams during critical, deadline-driven periods</li>
+                <li>Expanded beyond primary duties by taking on overtime work for other accounts</li>
+              </ul>
+            </article>
+          </div>
+
+          <!-- Skills -->
+          <div aria-label="Skills" class="rv-view rv-doc" hidden id="rv-view-skills" role="tabpanel">
+            <h3 class="rv-h">Technical Skills</h3>
+            <p class="rv-sub">What I use day to day.</p>
+            <div class="rv-skills">
+              <section class="rv-card">
+                <h3><i class="fa-solid fa-magnifying-glass"></i> SEO Expertise</h3>
+                <ul class="rv-chips">
+                  <li>Technical SEO</li>
+                  <li>On-Page SEO</li>
+                  <li>Off-Page SEO</li>
+                  <li>Site Architecture</li>
+                  <li>Core Web Vitals</li>
+                  <li>Performance Optimization</li>
+                  <li>Structured Data / Schema Markup</li>
+                  <li>Email Verification / List Qualification</li>
+                </ul>
+              </section>
+              <section class="rv-card">
+                <h3><i class="fa-solid fa-code"></i> Web Development</h3>
+                <ul class="rv-chips">
+                  <li>HTML</li>
+                  <li>CSS</li>
+                  <li>Bootstrap</li>
+                  <li>JavaScript</li>
+                  <li>Node.js</li>
+                  <li>Express.js</li>
+                  <li>Responsive Design</li>
+                  <li>Git/GitHub</li>
+                  <li>Semantic HTML</li>
+                  <li>API Integration / REST APIs</li>
+                </ul>
+              </section>
+              <section class="rv-card">
+                <h3><i class="fa-brands fa-wordpress"></i> WordPress Development</h3>
+                <ul class="rv-chips">
+                  <li>Elementor</li>
+                  <li>WooCommerce</li>
+                  <li>Rank Math</li>
+                  <li>Yoast SEO</li>
+                  <li>WPForms</li>
+                  <li>WP Optimize</li>
+                  <li>Theme Customization</li>
+                  <li>LocalWP</li>
+                </ul>
+              </section>
+              <section class="rv-card">
+                <h3><i class="fa-solid fa-arrow-trend-up"></i> Tools &amp; Analytics</h3>
+                <ul class="rv-chips">
+                  <li>Google Analytics</li>
+                  <li>Screaming Frog</li>
+                  <li>SEMrush</li>
+                  <li>Ahrefs</li>
+                  <li>Google Search Console</li>
+                  <li>Data Studio</li>
+                  <li>RustySEO</li>
+                  <li>PageSpeed Insights</li>
+                  <li>Lighthouse</li>
+                </ul>
+              </section>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div aria-label="Education" class="rv-view rv-doc" hidden id="rv-view-education" role="tabpanel">
+            <h3 class="rv-h">Education</h3>
+            <p class="rv-sub">Where I studied.</p>
+            <article class="rv-job">
+              <h3>B.S. Marine Engineering</h3>
+              <div class="rv-when">2009 - 2013</div>
+              <div class="rv-meta"><span><i class="fa-solid fa-building"></i>Philippine Merchant Marine School</span>
+              </div>
+            </article>
+            <article class="rv-job">
+              <h3>A.S. Information &amp; Communication Technology</h3>
+              <div class="rv-when">2006 - 2008</div>
+              <div class="rv-meta"><span><i class="fa-solid fa-building"></i>IETI</span></div>
+            </article>
+          </div>
+
+          <!-- Certifications -->
+          <div aria-label="Certifications" class="rv-view rv-doc" hidden id="rv-view-certifications" role="tabpanel">
+            <h3 class="rv-h">Certifications</h3>
+            <p class="rv-sub">Open a certificate in its own window.</p>
+            <article class="rv-job">
+              <div class="rv-job-row">
+                <div>
+                  <h3>The Complete Full-Stack Web Development Bootcamp</h3>
+                  <div class="rv-when">2026</div>
+                  <div class="rv-meta"><span><i class="fa-solid fa-certificate"></i>Udemy</span></div>
+                </div>
+                <button class="rv-link" data-app="cert:fullstack" type="button"><i
+                    class="fa-regular fa-image"></i>View</button>
+              </div>
+            </article>
+            <article class="rv-job">
+              <div class="rv-job-row">
+                <div>
+                  <h3>Technical SEO and SEO Sprint</h3>
+                  <div class="rv-when">2025</div>
+                  <div class="rv-meta"><span><i class="fa-solid fa-certificate"></i>SEO Workout by Gab Valimento</span>
+                  </div>
+                </div>
+                <button class="rv-link" data-app="cert:techseo" type="button"><i
+                    class="fa-regular fa-image"></i>View</button>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div><!-- /.rv-content -->
     </section><!-- /Resume Section -->
     <!-- Portfolio Section (terminal). Rendered inside the Portfolio window by app.js. -->
     <section aria-label="Portfolio" class="pt" id="portfolio">
@@ -491,6 +797,7 @@
   <script src="assets/js/main.js"></script>
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/resume-viewer.js"></script>
   <!-- Terminal-style Portfolio app (after app.js: uses WindowManager) -->
   <script src="assets/js/portfolio-terminal.js"></script>
   <!-- Ambient space scene -->
