@@ -586,3 +586,15 @@ a.pi-thumb[hidden] { display: none; }
   .pi-props { grid-template-columns: minmax(0, 1fr); }
   .pi-props dt { border-right: 0; border-bottom: 0; padding-bottom: 0; }
 }
+/* ---------- Embedded in a desktop window: the title bar is hidden ----------
+   The grid above reserves a first row for the title bar. With that bar gone, the
+   sidebar and content land in that first (auto) row and the 1fr row below stays empty,
+   which leaves a blank strip under both panes and floats the sidebar buttons up.
+   Drop the title-bar row so the panes fill the whole window. */
+html.pi-embed .pi,
+html.wm-embedded .pi { grid-template-rows: minmax(0, 1fr); }
+
+@media (max-width: 760px) {
+  html.pi-embed .pi,
+  html.wm-embedded .pi { grid-template-rows: auto minmax(0, 1fr); }
+}
