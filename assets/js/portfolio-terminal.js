@@ -17,7 +17,7 @@
 
   /* ---------- fit: one base size for the whole app, from the real window size ----------
      Everything in the CSS is in em, so the two panes always fit side by side
-     (needs ~48em of width and ~47em of height). */
+     (needs ~50em of width and ~47em of height). */
   function host() {
     for (var n = root.parentElement; n && n !== document.body; n = n.parentElement) {
       var oy = getComputedStyle(n).overflowY;
@@ -28,7 +28,7 @@
   function fit() {
     var h = host(), w = root.clientWidth, ht = h ? h.clientHeight : window.innerHeight;
     if (!w) return;
-    var s = Math.max(5.5, Math.min(13, w / 48, ht / 47));
+    var s = Math.max(5.5, Math.min(13, w / 50, ht / 47));
     root.style.setProperty('--pt-s', s.toFixed(2) + 'px');
   }
   fit();

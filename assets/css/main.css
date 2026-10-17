@@ -3684,7 +3684,7 @@ section,
 
 .btn-live {
   background-color: var(--accent-highlight);
-  color: #ECEFF4;
+  color: var(--contrast-color);
   border: 2px solid var(--accent-highlight);
 }
 

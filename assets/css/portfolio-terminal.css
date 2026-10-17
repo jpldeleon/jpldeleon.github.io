@@ -46,7 +46,9 @@
   border-right: 1px solid var(--pt-line);
   animation: pt-in .5s ease both;
 }
-.pt-main { min-width: 0; }
+/* right pane size: 1 = same as the left pane, 1.15 = 15% bigger, etc. */
+.pt { --pt-main-scale: 1.15; }
+.pt-main { min-width: 0; font-size: calc(1em * var(--pt-main-scale)); }
 
 /* ---------- status bar ---------- */
 .pt-status {
@@ -90,7 +92,7 @@
 .pt-info dt { white-space: nowrap; }
 .pt-links a { color: var(--accent-highlight); border-bottom: 1px dotted currentColor; margin-right: .8em; }
 .pt-links a:hover { color: var(--heading-color); }
-.pt-palette { display: flex; gap: 4px; margin-top: 6px !important; max-width: 100%; }
+.pt-palette { grid-column: 1 / -1; display: flex; gap: 4px; margin-top: 6px !important; max-width: 100%; }
 .pt-palette i { flex: 0 1 18px; min-width: 2px; height: 12px; border-radius: 2px; display: block; }   /* 18px when there is room, shrinks with the pane when narrow */
 .pt-palette i:nth-child(1) { background: var(--background-color); outline: 1px solid var(--pt-line); }
 .pt-palette i:nth-child(2) { background: var(--surface-color); outline: 1px solid var(--pt-line); }
@@ -106,7 +108,7 @@
 /* ---------- category menu ---------- */
 .pt-menu { display: flex; flex-wrap: wrap; gap: .4em .5em; margin: .1em 0 .8em; }
 .pt-cat {
-  font: inherit; font-size: .92em; line-height: 1.3; color: var(--default-color); cursor: pointer;
+  font: inherit; font-size: .9em; line-height: 1.3; color: var(--default-color); cursor: pointer;
   background: transparent; border: 1px solid var(--pt-line); border-radius: .3em;
   padding: .3em .6em; display: inline-flex; align-items: center; gap: .4em;
   transition: color .18s, background .18s, border-color .18s, transform .12s;
