@@ -17,7 +17,7 @@
 
   /* ---------- fit: one base size for the whole app, from the real window size ----------
      Everything in the CSS is in em, so the two panes always fit side by side
-     (needs ~50em of width and ~47em of height). */
+     (needs ~50em of width and ~54em of height). */
   function host() {
     for (var n = root.parentElement; n && n !== document.body; n = n.parentElement) {
       var oy = getComputedStyle(n).overflowY;
@@ -28,14 +28,14 @@
   function fit() {
     var h = host(), w = root.clientWidth, ht = h ? h.clientHeight : window.innerHeight;
     if (!w) return;
-    var s = Math.max(5.5, Math.min(13, w / 50, ht / 47));
+    var s = Math.max(5.5, Math.min(13, w / 50, ht / 54));
     root.style.setProperty('--pt-s', s.toFixed(2) + 'px');
   }
-  fit();
-  if (window.ResizeObserver) {
-    var ro = new ResizeObserver(fit); ro.observe(root); if (host()) ro.observe(host());
-  }
-  window.addEventListener('resize', fit);
+  try {
+    fit();
+    if (window.ResizeObserver) { var ro = new ResizeObserver(fit); ro.observe(root); if (host()) ro.observe(host()); }
+    window.addEventListener('resize', fit);
+  } catch (err) { /* cosmetic only */ }
 
   /* ---------- ASCII logo: {jp} on a solid circular ASCII disc (Linux Mint / Ubuntu style) ----------
      Like the real distro logos there are NO blank gaps inside the shape: every cell is a character.
@@ -106,12 +106,14 @@
     }
     return html;
   }
-  $('#pt-logo').innerHTML = buildLogo();
-  $('#pt-dashes').textContent = new Array(('jp@portfolio').length + 1).join('-');
+  try {
+    $('#pt-logo').innerHTML = buildLogo();
+    $('#pt-dashes').textContent = new Array(('jp@portfolio').length + 1).join('-');
+  } catch (err) { /* cosmetic only */ }
 
   /* ---------- live neofetch fields ---------- */
   var THEMES = { everforest: 'Everforest', aurora: 'Aurora', gruvbox: 'Gruvbox', monokai: 'Monokai Pro', draculapro: 'Dracula Pro' };
-  var themeEl = $('#pt-theme');
+  var themeEl = $('#pt-theme') || document.createElement('i');
   function syncTheme() {
     var t = document.documentElement.getAttribute('data-theme') || 'everforest';
     themeEl.textContent = THEMES[t] || t;
@@ -119,7 +121,7 @@
   syncTheme();
   new MutationObserver(syncTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-  var t0 = Date.now(), upEl = $('#pt-uptime');
+  var t0 = Date.now(), upEl = $('#pt-uptime') || document.createElement('i');
   function tick() {
     var s = Math.floor((Date.now() - t0) / 1000), m = Math.floor(s / 60), h = Math.floor(m / 60);
     upEl.textContent = h ? h + 'h ' + (m % 60) + 'm' : m ? m + 'm ' + (s % 60) + 's' : s + 's';
@@ -129,7 +131,7 @@
 
   /* ---------- status bar clock ---------- */
   var clockEl = $('#pt-clock');
-  function clock() { var d = new Date(); clockEl.textContent = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function clock() { if (!clockEl) return; var d = new Date(); clockEl.textContent = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
   clock(); setInterval(clock, 20000);
 
   /* ---------- terminal-style autoscroll ---------- */
@@ -268,14 +270,13 @@
       (function step() {
         typed.textContent = text.slice(0, ++i);
         if (i >= text.length) { run.classList.remove('is-typing'); return setTimeout(done, 260); }
-        var d = 34 + Math.random() * 46 + (text.charAt(i - 1) === ' ' ? 55 : 0);
+        var d = 16 + Math.random() * 24 + (text.charAt(i - 1) === ' ' ? 30 : 0);
         setTimeout(step, d);
       })();
     });
   }
   function line(html, cls) {
     var d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d);
-    toBottom();
     return d;
   }
   function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
@@ -286,7 +287,6 @@
     var id = a.getAttribute('data-open'), cmd = a.getAttribute('data-cmd'), isCert = id.indexOf('cert:') === 0;
     var title = a.querySelector('.pt-name').textContent;
     out.innerHTML = ''; typed.textContent = ''; run.hidden = false;
-    toBottom();
     try {
       await typeText(isCert ? 'xdg-open ~/certifications/' + cmd + '.pdf' : './launch ' + cmd + ' --window');
       await sleep(120);
@@ -296,8 +296,9 @@
       await sleep(700);
       line((isCert ? '▶ Opening ' : '▶ Launching ') + esc(title) + '…', 'go');
       await sleep(420);
+      for (var tries = 0; tries < 20 && !(window.WindowManager && window.WindowManager.open); tries++) await sleep(100);
       if (window.WindowManager && window.WindowManager.open) window.WindowManager.open(id);
-      else window.open(a.getAttribute('href'), '_blank', 'noopener');
+      else if (!isCert) window.open(a.getAttribute('href'), '_blank', 'noopener');   // never dump a certificate image into a tab
       await sleep(650);
     } finally {
       out.innerHTML = ''; typed.textContent = ''; run.hidden = true;
