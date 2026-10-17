@@ -15,19 +15,88 @@
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, reduce() ? Math.min(ms, 60) : ms); }); };
 
-  /* ---------- ASCII logo: {jp} in textured, neofetch-style ASCII (JetBrains Mono lowercase) (plain ASCII only) ---------- */
-  var LOGO = [
-    '    ,gm$$                       $$mg,    ',
-    '   d$$P\'     ,$$.                `Y$$b   ',
-    '   $$$:      `$$\'                 :$$$   ',
-    '  ,$$:       ,gg$$:  ,$$gmgm,      :$$.  ',
-    'g$$P\'         :$$:   :$$P"`Y$b      `Y$$g',
-    '  `$$:        :$$:   :$$:  `$$     :$$\'  ',
-    '   $$$:       :$$:   :$$b  ,$$    :$$$   ',
-    '   Y$$b,     ,d$$\'   :$$$gg$P\'   ,d$$P   ',
-    '    `Ym$$  g$$P\'     :$$:       $$mP\'    '
+  /* ---------- ASCII art: {jp} monogram inside a ring, text characters only ----------
+     Every cell is a character. Colors come from CSS classes (.pc1-.pc6, .pm, .pb, .pd),
+     which read the active theme's variables, so the theme toggle recolors it for free. */
+  var logoEl = $('#pt-logo');
+  var LB = [' ▄▀', ' █ ', ' █ ', '▄▀ ', '▀▄ ', ' █ ', ' █ ', ' ▀▄'];
+  var RB = ['▀▄ ', ' █ ', ' █ ', ' ▀▄', ' ▄▀', ' █ ', ' █ ', '▄▀ '];
+  var JP = [                      // j and p share one stem: dot on top, hook bottom-left, bowl on the right
+    '  ██       ',
+    '           ',
+    '  ██▀▀▀▀█▄ ',
+    '  ██     ██',
+    '  ██     ██',
+    '  ██▄▄▄▄█▀ ',
+    '  ██       ',
+    '▄▄▄██      '
   ];
-  $('#pt-logo').textContent = LOGO.join('\n');
+  var MONO = JP.map(function (row, i) { return LB[i] + ' ' + row + ' ' + RB[i]; });   // 19 x 8
+  var ART_ROWS = 19, ART_R = 9.5, ART_PX = 16, builtFor = 0;
+
+  /* width/height of one character cell, measured in the real font so the ring stays round */
+  function cellAspect() {
+    var probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;letter-spacing:0';
+    probe.textContent = 'MMMMMMMMMMMMMMMMMMMM';
+    logoEl.appendChild(probe);
+    var w = probe.getBoundingClientRect().width / 20;
+    var h = parseFloat(getComputedStyle(logoEl).lineHeight);
+    logoEl.removeChild(probe);
+    var a = w && h ? w / h : 0;
+    return a > 0.3 && a < 0.9 ? a : 0.6;
+  }
+
+  function buildArt(A) {
+    var cy = (ART_ROWS - 1) / 2;
+    var cols = Math.round(2 * ART_R / A) + 2; if (cols % 2 === 0) cols++;   // odd, so there is a true center column
+    var cx = (cols - 1) / 2;
+    var mh = MONO.length, mw = MONO[0].length;
+    var r0 = Math.round(cy - (mh - 1) / 2), c0 = Math.round(cx - (mw - 1) / 2);
+    var html = '';
+    for (var r = 0; r < ART_ROWS; r++) {
+      var runCls = null, run = '';
+      for (var c = 0; c < cols; c++) {
+        var dx = (c - cx) * A, dy = r - cy, d = Math.sqrt(dx * dx + dy * dy);
+        var ang = Math.atan2(dx, -dy); if (ang < 0) ang += 2 * Math.PI;
+        var ch = ' ', cls = '';
+        if (d >= 8.0 && d <= ART_R) {                                  // outer ring, six color sectors clockwise from the top
+          cls = 'pc' + (Math.floor(ang / (2 * Math.PI) * 6) % 6 + 1);
+          ch = d > 8.9 ? (((r + c) % 2) ? '.' : 'o') : (((r + c) % 2) ? 'o' : 'O');
+        } else if (d >= 6.9 && d < 7.6) { ch = ':'; cls = 'pd'; }      // dim inner halo
+        var mr = r - r0, mc = c - c0;
+        if (mr >= 0 && mr < mh && mc >= 0 && mc < mw && MONO[mr].charAt(mc) !== ' ') {
+          ch = MONO[mr].charAt(mc); cls = (mc < 3 || mc >= mw - 3) ? 'pb' : 'pm';
+        }
+        if (ch === ' ') cls = '';
+        if (cls !== runCls) { if (run) html += runCls ? '<span class="' + runCls + '">' + run + '</span>' : run; runCls = cls; run = ''; }
+        run += ch;
+      }
+      if (run) html += runCls ? '<span class="' + runCls + '">' + run + '</span>' : run;
+      if (r < ART_ROWS - 1) html += '\n';
+    }
+    logoEl.innerHTML = html;
+    return cols;
+  }
+
+  /* Re-measure on resize: stack when the window is narrow, and scale the whole grid uniformly
+     (font-size only), so the characters stay aligned at any size. */
+  var artCols = 0, artA = 0;
+  function layoutArt() {
+    var w = root.clientWidth; if (!w) return;                            // window parked off-page: try again on next resize
+    var narrow = w < 620;
+    root.classList.toggle('pt-narrow', narrow);
+    logoEl.style.fontSize = ART_PX + 'px';
+    var A = Math.round(cellAspect() * 100) / 100;
+    if (!artCols || A !== artA) { artCols = buildArt(A); artA = A; }
+    var cs = getComputedStyle(root), inner = w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var cap = narrow ? inner : inner * 0.40;                              // art takes at most 40% of a wide window
+    var px = Math.max(7, Math.min(ART_PX, cap / (artCols * artA)));
+    logoEl.style.fontSize = px.toFixed(2) + 'px';
+  }
+  layoutArt();
+  if (window.ResizeObserver) new ResizeObserver(layoutArt).observe(root); else window.addEventListener('resize', layoutArt);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { artCols = 0; layoutArt(); });
 
   /* ---------- live neofetch fields ---------- */
   var THEMES = { everforest: 'Everforest', aurora: 'Aurora', gruvbox: 'Gruvbox', monokai: 'Monokai Pro', draculapro: 'Dracula Pro' };
@@ -71,13 +140,13 @@
   var PATHS = { all: '~/portfolio', seo: '~/portfolio/seo', wordpress: '~/portfolio/wordpress', webdev: '~/portfolio/web-dev', cert: '~/certifications' };
   function inCat(li, f) {
     var c = li.getAttribute('data-cat').split(' ');
-    return f === 'all' ? c.indexOf('cert') < 0 : c.indexOf(f) > -1;   // "All Projects" = projects only
+    return f === 'all' ? true : c.indexOf(f) > -1;   // "All" lists every row (projects, then certs) so nothing hides behind a tab
   }
   cats.forEach(function (b) {
     var n = items.filter(function (li) { return inCat(li, b.getAttribute('data-filter')); }).length;
     b.querySelector('em').textContent = n;
   });
-  var nProj = items.filter(function (li) { return inCat(li, 'all'); }).length;
+  var nProj = items.filter(function (li) { return li.getAttribute('data-cat').split(' ').indexOf('cert') < 0; }).length;
   $('#pt-count').textContent = nProj + ' projects, ' + (items.length - nProj) + ' certs';
 
   function applyFilter(f, scroll) {

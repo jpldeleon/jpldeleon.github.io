@@ -26,42 +26,59 @@
 .pt-cmd { margin-top: 2px; }
 .pt-cmd #pt-path { color: var(--typed-color, var(--accent-color)); }
 
-/* ---------- neofetch ---------- */
+/* ---------- neofetch: art left, info + projects right ---------- */
+/* Six flat "ANSI" hues per theme. The art, the palette row and the ring all read
+   these, so the theme toggle recolors everything with no JS. Default = Everforest. */
+.pt { --pt-c1: #E67E80; --pt-c2: #E69875; --pt-c3: #DBBC7F; --pt-c4: #A7C080; --pt-c5: #7FBBB3; --pt-c6: #D699B6; }
+[data-theme="aurora"] .pt     { --pt-c1: #BF616A; --pt-c2: #D08770; --pt-c3: #EBCB8B; --pt-c4: #A3BE8C; --pt-c5: #88C0D0; --pt-c6: #B48EAD; }
+[data-theme="gruvbox"] .pt    { --pt-c1: #fb4934; --pt-c2: #fe8019; --pt-c3: #fabd2f; --pt-c4: #b8bb26; --pt-c5: #83a598; --pt-c6: #d3869b; }
+[data-theme="draculapro"] .pt { --pt-c1: #ff6e6e; --pt-c2: #ffca80; --pt-c3: #f1fa8c; --pt-c4: #8aff80; --pt-c5: #80ffea; --pt-c6: #9580ff; }
+[data-theme="monokai"] .pt    { --pt-c1: #ff6188; --pt-c2: #fc9867; --pt-c3: #ffd866; --pt-c4: #a9dc76; --pt-c5: #78dce8; --pt-c6: #ab9df2; }
+
+.pc1 { color: var(--pt-c1); } .pc2 { color: var(--pt-c2); } .pc3 { color: var(--pt-c3); }
+.pc4 { color: var(--pt-c4); } .pc5 { color: var(--pt-c5); } .pc6 { color: var(--pt-c6); }
+.pm  { color: var(--accent-highlight); font-weight: 700; }   /* j p */
+.pb  { color: var(--accent-color); font-weight: 700; }       /* { } */
+.pd  { color: var(--pt-dim); }                               /* inner dotted halo */
+.pp-d { color: var(--default-color); } .pp-a { color: var(--accent-highlight); }
+
 .pt-neo {
   display: grid; grid-template-columns: auto minmax(0, 1fr);
-  gap: 6px clamp(14px, 4cqw, 34px); align-items: center;
-  margin: 0 0 18px; padding: 12px 0 14px;
-  border-bottom: 1px dashed var(--pt-line);
+  grid-template-areas: "art side" "hint side";
+  grid-template-rows: auto 1fr;
+  gap: 0 22px; align-items: start;
+  margin: 0 0 12px;
   animation: pt-in .5s ease both;
 }
+/* art: a character grid, nothing else. Size is set by JS (font-size) so the grid never distorts */
 .pt-logo {
-  margin: 0; font: inherit; line-height: 1.1; letter-spacing: 0;
-  font-size: clamp(9px, 1.4cqw, 13px); white-space: pre; user-select: none;
-  max-width: 100%; overflow: hidden;
-  background: linear-gradient(180deg, var(--accent-highlight), var(--accent-color));
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent-highlight), transparent 70%));
+  grid-area: art; margin: 2px 0 0; padding: 0; font-family: inherit; font-size: 16px; line-height: 1; letter-spacing: 0;
+  white-space: pre; user-select: none; overflow: hidden; max-width: 100%;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; font-kerning: none;
+  color: var(--default-color);
 }
-.pt-info { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 1px 12px; min-width: 0; }
+.pt-side { grid-area: side; min-width: 0; font-size: 12.5px; line-height: 1.4; }
+.pt-neo .pt-hint {
+  grid-area: hint; inline-size: 0; min-inline-size: 100%;   /* never widens the art column */
+  margin: 10px 0 0; font-size: 11px; line-height: 1.4;
+}
+
+.pt-info { margin: 0 0 6px; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0 10px; min-width: 0; }
 .pt-info dt { color: var(--accent-highlight); font-weight: 700; margin: 0; }
+.pt-info dt:not(.pt-user):not(.pt-sr)::after { content: ':'; color: var(--pt-dim); font-weight: 400; }
 .pt-info dd { margin: 0; min-width: 0; }
-.pt-info .pt-user { grid-column: 1 / -1; font-size: 1.08em; color: var(--heading-color); }
+.pt-info .pt-user { grid-column: 1 / -1; color: var(--heading-color); }
 .pt-info .pt-user span { color: var(--pt-dim); }
-.pt-info .pt-rule { grid-column: 1 / -1; height: 1px; margin: 3px 0 4px; background: linear-gradient(90deg, var(--accent-color), transparent); opacity: .6; }
+.pt-info .pt-rule { grid-column: 1 / -1; color: var(--pt-dim); white-space: nowrap; overflow: hidden; }
 .pt-links a { color: var(--accent-color); border-bottom: 1px dotted currentColor; margin-right: 10px; }
 .pt-links a:hover { color: var(--accent-highlight); }
-.pt-palette { display: flex; gap: 4px; margin-top: 4px !important; }
-.pt-palette i { width: 18px; height: 12px; border-radius: 2px; display: block; }
-.pt-palette i:nth-child(1) { background: var(--background-color); outline: 1px solid var(--pt-line); }
-.pt-palette i:nth-child(2) { background: var(--surface-color); outline: 1px solid var(--pt-line); }
-.pt-palette i:nth-child(3) { background: var(--default-color); }
-.pt-palette i:nth-child(4) { background: var(--heading-color); }
-.pt-palette i:nth-child(5) { background: var(--accent-color); }
-.pt-palette i:nth-child(6) { background: var(--accent-highlight); }
-.pt-palette i:nth-child(7) { background: var(--quote-color, var(--accent-color)); }
-.pt-palette i:nth-child(8) { background: var(--typed-color, var(--accent-color)); }
+.pt-palette { grid-column: 1 / -1; margin-top: 6px !important; white-space: nowrap; letter-spacing: 0; }
 .pt-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* stacked (narrow window): art on top, centered, then info + list. Class is set by JS from the window width. */
+.pt.pt-narrow .pt-neo { grid-template-columns: minmax(0, 1fr); grid-template-areas: "art" "side" "hint"; grid-template-rows: auto; row-gap: 12px; }
+.pt.pt-narrow .pt-logo { justify-self: center; }
+.pt.pt-narrow .pt-neo .pt-hint { margin-top: 0; }
 
 /* ---------- category menu ---------- */
 .pt-menu { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 2px 0 14px; }
@@ -130,6 +147,18 @@
 .pt-preview img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 3px; background: var(--pt-bg); }
 .pt-preview span { display: block; margin-top: 4px; font-size: 10px; color: var(--accent-highlight); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+/* compact menu + list, scoped to the neofetch so the Socials window keeps its roomy list */
+.pt-neo .pt-pathline { margin: 0 0 4px; }
+.pt-neo .pt-menu { gap: 4px 6px; margin: 0 0 6px; }
+.pt-neo .pt-cat { padding: 1px 7px; min-height: 22px; gap: 5px; font-size: 11.5px; }
+.pt-neo .pt-cat em { display: none; }
+.pt-neo .pt-list { margin: 0; min-height: calc(9 * 1.4em); }   /* room for all 9 rows, so filtering never jumps the layout */
+.pt-neo .pt-link { grid-template-columns: 3ch max-content minmax(0, 1fr); gap: 0 10px; padding: 0 6px 0 2px; }
+.pt-neo .pt-name, .pt-neo .pt-sub { grid-column: auto; font-size: inherit; }
+.pt-neo .pt-link:hover, .pt-neo .pt-link:focus-visible, .pt-neo .pt-link.is-open { padding-left: 8px; }
+.pt-neo .pt-link::before { left: -1px; }
+.pt-neo .pt-inline img, .pt-neo .pt-inline small { margin-left: calc(3ch + 10px); }
+
 .pt-hint { margin: 8px 0 16px; color: var(--pt-dim); font-size: 11.5px; }
 .pt-hint::before { content: '# '; }
 .pt-hint-touch { display: none; }
@@ -159,9 +188,6 @@
 /* ---------- responsive (by window width) ---------- */
 @container wm (max-width: 620px) {
   .pt { font-size: 12.5px; }
-  .pt-neo { grid-template-columns: 1fr; justify-items: start; gap: 12px; }
-  .pt-logo { font-size: clamp(7px, 2.7cqw, 12px); }   /* 54 columns must fit the window width */
-  .pt-logo { justify-self: center; font-size: clamp(7px, 2.7cqw, 12px); }
   .pt-link { grid-template-columns: 2.4ch minmax(0, 1fr); gap: 0 8px; padding: 8px 8px 8px 4px; }
   .pt-name { grid-column: 2; }
   .pt-sub { grid-column: 2; font-size: 11.5px; }
@@ -176,6 +202,9 @@
 @media (hover: none), (pointer: coarse) {
   .pt-cat { min-height: 40px; }
   .pt-link { min-height: 44px; align-content: center; }
+  .pt-neo .pt-cat { min-height: 38px; }
+  .pt-neo .pt-link { min-height: 38px; }
+  .pt-neo .pt-list { min-height: 0; }
   .pt-preview { display: none; }
   .pt-hint-fine { display: none; }
   .pt-hint-touch { display: inline; }

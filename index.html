@@ -723,48 +723,50 @@
     </section><!-- /Resume Section -->
     <!-- Portfolio Section (terminal). Rendered inside the Portfolio window by app.js. -->
     <section aria-label="Portfolio" class="pt" id="portfolio">
-      <!-- neofetch -->
+      <!-- neofetch: art on the left, system info + project list on the right -->
       <div class="pt-neo">
         <pre aria-hidden="true" class="pt-logo" id="pt-logo"></pre>
-        <dl class="pt-info">
-          <dt class="pt-user">jp<span>@</span>portfolio</dt><dd class="pt-rule" aria-hidden="true"></dd>
-          <dt>OS</dt><dd>Arch Linux x86_64</dd>
-          <dt>Role</dt><dd>Technical SEO Specialist</dd>
-          <dt>Focus</dt><dd>SEO · WordPress · Web Dev</dd>
-          <dt>Stack</dt><dd>HTML, CSS, JS, Node, Express, PostgreSQL</dd>
-          <dt>Location</dt><dd>Metro Manila, PH</dd>
-          <dt>Projects</dt><dd><span id="pt-count">7 projects, 2 certs</span></dd>
-          <dt>Shell</dt><dd>zsh 5.9</dd>
-          <dt>Theme</dt><dd id="pt-theme">Everforest</dd>
-          <dt>Uptime</dt><dd id="pt-uptime">0s</dd>
-          <dt>Links</dt><dd class="pt-links"><a href="https://github.com/jpldeleon" rel="noopener" target="_blank">github</a> <a href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank">linkedin</a></dd>
-          <dt class="pt-sr">Palette</dt><dd class="pt-palette" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></dd>
-        </dl>
+        <div class="pt-side">
+          <dl class="pt-info">
+            <dt class="pt-user">jp<span>@</span>portfolio</dt><dd class="pt-rule" aria-hidden="true">────────────</dd>
+            <dt>OS</dt><dd>Arch Linux x86_64</dd>
+            <dt>Role</dt><dd>Technical SEO Specialist</dd>
+            <dt>Focus</dt><dd>SEO · WordPress · Web Dev</dd>
+            <dt>Stack</dt><dd>HTML, CSS, JS, Node, Express, PostgreSQL</dd>
+            <dt>Location</dt><dd>Metro Manila, PH</dd>
+            <dt>Projects</dt><dd><span id="pt-count">7 projects, 2 certs</span></dd>
+            <dt>Shell</dt><dd>zsh 5.9</dd>
+            <dt>Theme</dt><dd id="pt-theme">Everforest</dd>
+            <dt>Uptime</dt><dd id="pt-uptime">0s</dd>
+            <dt>Links</dt><dd class="pt-links"><a href="https://github.com/jpldeleon" rel="noopener" target="_blank">github</a> <a href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank">linkedin</a></dd>
+            <dt class="pt-sr">Palette</dt><dd class="pt-palette" aria-hidden="true"><span class="pp-d">███</span><span class="pc1">███</span><span class="pc2">███</span><span class="pc3">███</span><span class="pc4">███</span><span class="pc5">███</span><span class="pc6">███</span><span class="pp-a">███</span></dd>
+          </dl>
+
+          <!-- category menu -->
+          <div class="pt-line pt-pathline" id="pt-path">~/portfolio</div>
+          <nav aria-label="Project categories" class="pt-menu" id="pt-menu" role="tablist">
+            <button aria-selected="true" aria-label="All projects" class="pt-cat is-active" data-filter="all" role="tab" type="button"><b>1</b> All <em></em></button>
+            <button aria-selected="false" aria-label="SEO" class="pt-cat" data-filter="seo" role="tab" type="button"><b>2</b> SEO <em></em></button>
+            <button aria-selected="false" aria-label="WordPress" class="pt-cat" data-filter="wordpress" role="tab" type="button"><b>3</b> WP <em></em></button>
+            <button aria-selected="false" aria-label="Web development" class="pt-cat" data-filter="webdev" role="tab" type="button"><b>4</b> Web <em></em></button>
+            <button aria-selected="false" aria-label="Certifications" class="pt-cat" data-filter="cert" role="tab" type="button"><b>5</b> Certs <em></em></button>
+          </nav>
+
+          <!-- project list (real links: crawlers and no-JS still work) -->
+          <ul class="pt-list" id="pt-list">
+        <li class="pt-item" data-cat="webdev"><a class="pt-link" href="auditkit/" data-open="project:auditkit" data-cmd="auditkit" data-thumb="assets/img/portfolio/auditkit/auditkit-1-homepage.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">AuditKit</span><span class="pt-sub" aria-hidden="true">api</span><span class="pt-sr">, API Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="seo wordpress"><a class="pt-link" href="nothingtechblob/" data-open="project:nothingtechblob" data-cmd="nothingtechblob" data-thumb="assets/img/portfolio/nothingtechblob/ntb_opt/nothingtechblob_p.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">NothingTechBlob</span><span class="pt-sub" aria-hidden="true">seo wp</span><span class="pt-sr">, Technical &amp; On-Page SEO + WordPress Development</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="seo wordpress"><a class="pt-link" href="badlands-ink/" data-open="project:badlands-ink" data-cmd="badlands-ink" data-thumb="assets/img/portfolio/badlands/badlands-ss/badlands-ink_thumb.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Badlands Ink</span><span class="pt-sub" aria-hidden="true">seo wp woo</span><span class="pt-sr">, Technical, Local &amp; E-Commerce SEO + WordPress Development</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="webdev"><a class="pt-link" href="johnoffthewall/" data-open="project:johnoffthewall" data-cmd="johnoffthewall" data-thumb="assets/img/portfolio/johnoffthewall/1-hero.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">John Off the Wall</span><span class="pt-sub" aria-hidden="true">html css</span><span class="pt-sr">, HTML &amp; CSS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="webdev"><a class="pt-link" href="pixellog/" data-open="project:pixellog" data-cmd="pixellog" data-thumb="assets/img/portfolio/pixellog/pixellog-1-homepage.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">PixelLog</span><span class="pt-sub" aria-hidden="true">node ejs</span><span class="pt-sr">, Node.js, Express.js &amp; EJS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="webdev"><a class="pt-link" href="jamporudex/" data-open="project:jamporudex" data-cmd="jamporudex" data-thumb="assets/img/portfolio/jamporudex/jamporudex-1-home.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">JamporuDEX</span><span class="pt-sub" aria-hidden="true">node pg</span><span class="pt-sr">, Node.js, Express, PostgreSQL &amp; EJS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="webdev"><a class="pt-link" href="route196/" data-open="project:route196" data-cmd="route196" data-thumb="assets/img/portfolio/route196/route196-1-home-mocha.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Route 196</span><span class="pt-sub" aria-hidden="true">node ejs</span><span class="pt-sr">, Node.js, Express.js &amp; EJS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="cert"><a class="pt-link" href="assets/img/certifications/cert-fullstack-bootcamp_F.webp" data-open="cert:fullstack" data-cmd="fullstack-bootcamp" data-thumb="assets/img/certifications/cert-fullstack-bootcamp.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Full Stack Certificate</span><span class="pt-sub" aria-hidden="true">udemy</span><span class="pt-sr">, The Complete Full-Stack Web Development Bootcamp</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+        <li class="pt-item" data-cat="cert"><a class="pt-link" href="assets/img/certifications/cert_techseosprint_F.webp" data-open="cert:techseo" data-cmd="technical-seo-sprint" data-thumb="assets/img/certifications/cert_techseosprint.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Technical SEO Certificate</span><span class="pt-sub" aria-hidden="true">seo sprint</span><span class="pt-sr">, Technical SEO and SEO Sprint</span><span class="pt-inline" aria-hidden="true"></span></a></li>
+          </ul>
+        </div>
+        <p class="pt-hint" id="pt-hint"><span class="pt-hint-fine">hover a project to preview · click to launch</span><span class="pt-hint-touch">tap a project to preview · tap again to launch</span></p>
       </div>
-
-      <!-- category menu -->
-      <div class="pt-line pt-pathline" id="pt-path">~/portfolio</div>
-      <nav aria-label="Project categories" class="pt-menu" id="pt-menu" role="tablist">
-        <button aria-selected="true" class="pt-cat is-active" data-filter="all" role="tab" type="button"><b>1</b> All Projects <em></em></button>
-        <button aria-selected="false" class="pt-cat" data-filter="seo" role="tab" type="button"><b>2</b> SEO <em></em></button>
-        <button aria-selected="false" class="pt-cat" data-filter="wordpress" role="tab" type="button"><b>3</b> Wordpress <em></em></button>
-        <button aria-selected="false" class="pt-cat" data-filter="webdev" role="tab" type="button"><b>4</b> Web Dev <em></em></button>
-        <button aria-selected="false" class="pt-cat" data-filter="cert" role="tab" type="button"><b>5</b> Certifications <em></em></button>
-      </nav>
-
-      <!-- project list (real links: crawlers and no-JS still work) -->
-      <ul class="pt-list" id="pt-list">
-            <li class="pt-item" data-cat="webdev"><a class="pt-link" href="auditkit/" data-open="project:auditkit" data-cmd="auditkit" data-thumb="assets/img/portfolio/auditkit/auditkit-1-homepage.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">AuditKit</span><span class="pt-sub">API Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="seo wordpress"><a class="pt-link" href="nothingtechblob/" data-open="project:nothingtechblob" data-cmd="nothingtechblob" data-thumb="assets/img/portfolio/nothingtechblob/ntb_opt/nothingtechblob_p.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">NothingTechBlob</span><span class="pt-sub">Technical &amp; On-Page SEO + WordPress Development</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="seo wordpress"><a class="pt-link" href="badlands-ink/" data-open="project:badlands-ink" data-cmd="badlands-ink" data-thumb="assets/img/portfolio/badlands/badlands-ss/badlands-ink_thumb.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Badlands Ink</span><span class="pt-sub">Technical, Local &amp; E-Commerce SEO + WordPress Development</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="webdev"><a class="pt-link" href="johnoffthewall/" data-open="project:johnoffthewall" data-cmd="johnoffthewall" data-thumb="assets/img/portfolio/johnoffthewall/1-hero.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">John Off the Wall</span><span class="pt-sub">HTML &amp; CSS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="webdev"><a class="pt-link" href="pixellog/" data-open="project:pixellog" data-cmd="pixellog" data-thumb="assets/img/portfolio/pixellog/pixellog-1-homepage.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">PixelLog</span><span class="pt-sub">Node.js, Express.js &amp; EJS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="webdev"><a class="pt-link" href="jamporudex/" data-open="project:jamporudex" data-cmd="jamporudex" data-thumb="assets/img/portfolio/jamporudex/jamporudex-1-home.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">JamporuDEX</span><span class="pt-sub">Node.js, Express, PostgreSQL &amp; EJS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="webdev"><a class="pt-link" href="route196/" data-open="project:route196" data-cmd="route196" data-thumb="assets/img/portfolio/route196/route196-1-home-mocha.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Route 196</span><span class="pt-sub">Node.js, Express.js &amp; EJS Capstone Project</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="cert"><a class="pt-link" href="assets/img/certifications/cert-fullstack-bootcamp_F.webp" data-open="cert:fullstack" data-cmd="fullstack-bootcamp" data-thumb="assets/img/certifications/cert-fullstack-bootcamp.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Full Stack Certificate</span><span class="pt-sub">The Complete Full-Stack Web Development Bootcamp</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-            <li class="pt-item" data-cat="cert"><a class="pt-link" href="assets/img/certifications/cert_techseosprint_F.webp" data-open="cert:techseo" data-cmd="technical-seo-sprint" data-thumb="assets/img/certifications/cert_techseosprint.webp"><span class="pt-idx" aria-hidden="true"></span><span class="pt-name">Technical SEO Certificate</span><span class="pt-sub">Technical SEO and SEO Sprint</span><span class="pt-inline" aria-hidden="true"></span></a></li>
-      </ul>
-      <p class="pt-hint" id="pt-hint"><span class="pt-hint-fine">hover a project to preview · click to launch</span><span class="pt-hint-touch">tap a project to preview · tap again to launch</span></p>
 
       <!-- launch status: JS moves this under the clicked project while it "types" -->
       <div aria-live="polite" class="pt-run" id="pt-run" hidden>
