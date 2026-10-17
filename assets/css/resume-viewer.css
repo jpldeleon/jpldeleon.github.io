@@ -175,7 +175,7 @@
 }
 
 /* ---------- Main pane ---------- */
-.rv-content { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.rv-content { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding-bottom: 0; }
 
 .rv-bar {
   flex: 0 0 var(--rv-bar-h);
