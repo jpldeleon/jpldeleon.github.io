@@ -15,12 +15,13 @@
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, reduce() ? Math.min(ms, 60) : ms); }); };
 
-  /* ---------- ASCII logo: {jp} monogram on a circular ASCII disc (Ubuntu / Mint style) ----------
-     Built on a character grid, plain ASCII only. Layers (each styled from theme variables in CSS):
+  /* ---------- ASCII logo: {jp} on a solid circular ASCII disc (Linux Mint / Ubuntu style) ----------
+     Like the real distro logos there are NO blank gaps inside the shape: every cell is a character.
+     The monogram stands out by colour/weight, not by empty space. Plain ASCII only.
        ring   - outer circle        node - three "circle of friends" dots
-       b1-b3  - shaded disc fill    mono/brace - the {jp} monogram, drawn with its own letters */
-  var W = 45, H = 23, CX = 22, CY = 11, R = 22.4;      // chars are ~1:2, so y is doubled below
-  var RAMP = '.:-=+*ox08$';
+       b0-b3  - shaded disc fill    mono/brace - the {jp} monogram, drawn with its own letters */
+  var W = 37, H = 19, CX = 18, CY = 9, R = 18.4;       // chars are ~1:2, so y is doubled below
+  var RAMP = '.-:/+osyhdm';
   function noise(x, y) { var n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return n - Math.floor(n); }
   function flip(rows) { return rows.map(function (r) { return r.split('').reverse().join(''); }); }
   var BRACE_L = ['  ##', ' ## ', ' ## ', ' ## ', '##  ', '##  ', ' ## ', ' ## ', ' ## ', '  ##'];
@@ -33,22 +34,10 @@
     { g: flip(BRACE_L), x: 19, ch: '}', cls: 'brace' }
   ];
   function buildLogo() {
-    var grid = [], x, y, i, j;
-    for (y = 0; y < H; y++) { grid.push([]); for (x = 0; x < W; x++) grid[y].push(null); }
-    var hole = [];                                         // cells forced blank (halos) so the art stays legible
-    for (y = 0; y < H; y++) { hole.push([]); for (x = 0; x < W; x++) hole[y].push(false); }
+    var grid = [], near = [], x, y, i, j;
+    for (y = 0; y < H; y++) { grid.push([]); near.push([]); for (x = 0; x < W; x++) { grid[y].push(null); near[y].push(false); } }
 
-    /* disc + ring */
-    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
-      var px = x - CX, py = (y - CY) * 2, r = Math.sqrt(px * px + py * py) / R;
-      if (r > 1) continue;
-      if (r >= 0.9) { grid[y][x] = { c: 'Oo0'.charAt((x + y) % 3), k: 'ring' }; continue; }
-      if (r >= 0.84) continue;                            // gap between ring and disc
-      var s = 0.8 - 0.5 * r - 0.26 * (px + py) / R + (noise(x, y) - 0.5) * 0.14;
-      var idx = Math.max(0, Math.min(RAMP.length - 1, Math.floor(s * RAMP.length)));
-      grid[y][x] = { c: RAMP.charAt(idx), k: idx < 4 ? 'b1' : idx < 8 ? 'b2' : 'b3' };
-    }
-    /* monogram, centred, with a 1-cell blank halo around every stroke */
+    /* monogram strokes (centred) + a 1-cell "quiet zone" that gets the dimmest fill, so letters pop */
     var X0 = CX - 11, Y0 = CY - 5, ink = [];
     MONO.forEach(function (m) {
       m.g.forEach(function (row, gy) {
@@ -58,24 +47,29 @@
     ink.forEach(function (p) {
       for (j = -1; j <= 1; j++) for (i = -1; i <= 1; i++) {
         var hx = p.x + i, hy = p.y + j;
-        if (hx >= 0 && hx < W && hy >= 0 && hy < H) { hole[hy][hx] = true; }
+        if (hx >= 0 && hx < W && hy >= 0 && hy < H) near[hy][hx] = true;
       }
     });
-    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {   // clean elliptical plate behind the monogram
-      var ex = (x - CX) / 13.5, ey = (y - CY) / 6.8;
-      if (hole[y][x] || ex * ex + ey * ey <= 1) grid[y][x] = null;
+
+    /* solid disc + ring */
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      var px = x - CX, py = (y - CY) * 2, r = Math.sqrt(px * px + py * py) / R;
+      if (r > 1) continue;
+      if (r >= 0.88) { grid[y][x] = { c: 'Oo0'.charAt((x + y) % 3), k: 'ring' }; continue; }
+      var s = 0.82 - 0.45 * r - 0.28 * (px + py) / R + (noise(x, y) - 0.5) * 0.12;
+      var idx = Math.max(0, Math.min(RAMP.length - 1, Math.floor(s * RAMP.length)));
+      if (near[y][x]) grid[y][x] = { c: RAMP.charAt(Math.min(idx, 2)), k: 'b0' };
+      else grid[y][x] = { c: RAMP.charAt(idx), k: idx < 4 ? 'b1' : idx < 8 ? 'b2' : 'b3' };
     }
+    /* three nodes sitting on the ring */
+    [90, 210, 330].forEach(function (deg) {
+      var a = deg * Math.PI / 180, ncx = CX + 0.88 * R * Math.cos(a), ncy = CY - 0.88 * R * Math.sin(a) / 2;
+      for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+        if (Math.sqrt(Math.pow(x - ncx, 2) + Math.pow((y - ncy) * 2, 2)) / R <= 0.125) grid[y][x] = { c: '@', k: 'node' };
+      }
+    });
     ink.forEach(function (p) { grid[p.y][p.x] = { c: p.c, k: p.k }; });
 
-    /* three nodes on the ring */
-    [90, 210, 330].forEach(function (deg) {
-      var a = deg * Math.PI / 180, ncx = CX + 0.9 * R * Math.cos(a), ncy = CY - 0.9 * R * Math.sin(a) / 2;
-      for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
-        var d = Math.sqrt(Math.pow(x - ncx, 2) + Math.pow((y - ncy) * 2, 2)) / R;
-        if (d <= 0.115) grid[y][x] = { c: '@', k: 'node' };
-        else if (d <= 0.19) grid[y][x] = null;
-      }
-    });
     /* serialise: one <span class="lr"> per row, runs of equal class merged */
     var html = '';
     for (y = 0; y < H; y++) {

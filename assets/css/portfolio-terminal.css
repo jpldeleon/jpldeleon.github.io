@@ -29,14 +29,14 @@
 /* ---------- two-pane grid ---------- */
 .pt-grid {
   display: grid;
-  grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
-  gap: 0 clamp(18px, 3.5cqw, 36px);
+  grid-template-columns: minmax(236px, 276px) minmax(0, 1fr);
+  gap: 0 clamp(16px, 3cqw, 30px);
   align-items: start;
 }
 .pt-side {
   position: sticky; top: 4px;
   container-type: inline-size;            /* logo scales with the pane */
-  padding-right: clamp(14px, 3cqw, 28px);
+  padding-right: clamp(12px, 2.4cqw, 22px);
   border-right: 1px dashed var(--pt-line);
   animation: pt-in .5s ease both;
 }
@@ -44,32 +44,33 @@
 
 /* ---------- ASCII logo ---------- */
 .pt-logo {
-  margin: 4px 0 14px; font: inherit; font-size: min(14px, 3.6cqw);
+  margin: 2px auto 10px; font: inherit; font-size: min(10.5px, 4.3cqw);
   line-height: 1.2; letter-spacing: 0; white-space: pre; user-select: none;
-  max-width: 100%; overflow: hidden;
+  width: max-content; max-width: 100%; overflow: hidden;
   filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent-highlight), transparent 78%));
 }
 .pt-logo .lr { display: block; height: 1.2em; animation: pt-in .45s ease both; animation-delay: calc(var(--r, 0) * 28ms); }
-.pt-logo .b1 { color: color-mix(in srgb, var(--accent-color), transparent 80%); }
-.pt-logo .b2 { color: color-mix(in srgb, var(--accent-color), transparent 62%); }
-.pt-logo .b3 { color: color-mix(in srgb, var(--accent-color), transparent 40%); }
+.pt-logo .b0 { color: color-mix(in srgb, var(--accent-color), transparent 84%); }
+.pt-logo .b1 { color: color-mix(in srgb, var(--accent-color), transparent 66%); }
+.pt-logo .b2 { color: color-mix(in srgb, var(--accent-color), transparent 46%); }
+.pt-logo .b3 { color: color-mix(in srgb, var(--accent-color), transparent 22%); }
 .pt-logo .ring { color: var(--accent-color); font-weight: 700; }
 .pt-logo .node { color: var(--accent-highlight); font-weight: 800; }
 .pt-logo .brace { color: var(--heading-color); font-weight: 800; }
-.pt-logo .mono { color: var(--accent-highlight); font-weight: 800; }
+.pt-logo .mono { color: var(--accent-highlight); font-weight: 800; text-shadow: 0 0 6px color-mix(in srgb, var(--accent-highlight), transparent 40%); }
 
 /* ---------- system details ---------- */
 .pt-who { font-weight: 700; font-size: 1.08em; color: var(--heading-color); }
 .pt-who .pt-u { color: var(--accent-color); }
 .pt-who .pt-at { color: var(--pt-dim); font-weight: 400; }
 .pt-dashes { color: var(--pt-dim); line-height: 1.2; margin: 0 0 6px; overflow: hidden; white-space: nowrap; }
-.pt-info { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 1px 10px; min-width: 0; }
+.pt-info { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0 10px; min-width: 0; font-size: 12px; line-height: 1.5; }
 .pt-info dt { color: var(--accent-color); font-weight: 700; margin: 0; }
 .pt-info dt:not(.pt-sr)::after { content: ':'; color: var(--pt-dim); font-weight: 400; }
 .pt-info dd { margin: 0; min-width: 0; }
 .pt-links a { color: var(--accent-highlight); border-bottom: 1px dotted currentColor; margin-right: 10px; }
 .pt-links a:hover { color: var(--heading-color); }
-.pt-palette { display: flex; gap: 4px; margin-top: 8px !important; }
+.pt-palette { display: flex; gap: 4px; margin-top: 6px !important; }
 .pt-palette i { width: 18px; height: 12px; border-radius: 2px; display: block; }
 .pt-palette i:nth-child(1) { background: var(--background-color); outline: 1px solid var(--pt-line); }
 .pt-palette i:nth-child(2) { background: var(--surface-color); outline: 1px solid var(--pt-line); }
@@ -183,11 +184,18 @@
     position: static; padding: 0 0 16px; margin-bottom: 16px;
     border-right: 0; border-bottom: 1px dashed var(--pt-line);
   }
-  .pt-logo { font-size: min(12px, 2.9cqw); }
+  .pt-logo { font-size: min(11px, 3.2cqw); }
 }
 @container wm (max-width: 400px) {
   .pt-info { gap: 1px 8px; }
   .pt-cat { padding: 6px 9px; }
+}
+
+/* short windows: keep everything in view on first load */
+@media (max-height: 720px) {
+  .pt-logo { font-size: min(8.5px, 4.3cqw); margin-bottom: 8px; }
+  .pt-info { font-size: 11.5px; line-height: 1.42; }
+  .pt-link { padding-top: 4px; padding-bottom: 4px; }
 }
 
 /* touch / coarse pointers: bigger targets, tap-to-preview instead of hover */
