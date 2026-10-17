@@ -1,6 +1,6 @@
 /**
  * Portfolio (terminal app)
- * Neofetch intro, category menu, hover/tap previews and the typed launch animation.
+ * Two-pane layout: neofetch (left) + projects (right). Circular ASCII {jp} logo, category menu, hover/tap previews and the typed launch animation.
  * Opens projects through the existing window manager: WindowManager.open('project:...').
  * Load AFTER app.js.
  */
@@ -15,88 +15,83 @@
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, reduce() ? Math.min(ms, 60) : ms); }); };
 
-  /* ---------- ASCII art: {jp} monogram inside a ring, text characters only ----------
-     Every cell is a character. Colors come from CSS classes (.pc1-.pc6, .pm, .pb, .pd),
-     which read the active theme's variables, so the theme toggle recolors it for free. */
-  var logoEl = $('#pt-logo');
-  var LB = [' ▄▀', ' █ ', ' █ ', '▄▀ ', '▀▄ ', ' █ ', ' █ ', ' ▀▄'];
-  var RB = ['▀▄ ', ' █ ', ' █ ', ' ▀▄', ' ▄▀', ' █ ', ' █ ', '▄▀ '];
-  var JP = [                      // j and p share one stem: dot on top, hook bottom-left, bowl on the right
-    '  ██       ',
-    '           ',
-    '  ██▀▀▀▀█▄ ',
-    '  ██     ██',
-    '  ██     ██',
-    '  ██▄▄▄▄█▀ ',
-    '  ██       ',
-    '▄▄▄██      '
+  /* ---------- ASCII logo: {jp} monogram on a circular ASCII disc (Ubuntu / Mint style) ----------
+     Built on a character grid, plain ASCII only. Layers (each styled from theme variables in CSS):
+       ring   - outer circle        node - three "circle of friends" dots
+       b1-b3  - shaded disc fill    mono/brace - the {jp} monogram, drawn with its own letters */
+  var W = 45, H = 23, CX = 22, CY = 11, R = 22.4;      // chars are ~1:2, so y is doubled below
+  var RAMP = '.:-=+*ox08$';
+  function noise(x, y) { var n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return n - Math.floor(n); }
+  function flip(rows) { return rows.map(function (r) { return r.split('').reverse().join(''); }); }
+  var BRACE_L = ['  ##', ' ## ', ' ## ', ' ## ', '##  ', '##  ', ' ## ', ' ## ', ' ## ', '  ##'];
+  var GLYPH_J = ['    ##', '      ', '    ##', '    ##', '    ##', '    ##', '    ##', '    ##', '##  ##', ' #### '];
+  var GLYPH_P = ['      ', '      ', '##### ', '##  ##', '##  ##', '##  ##', '##### ', '##    ', '##    ', '##    '];
+  var MONO = [   // narrow, 1-column gaps between characters
+    { g: BRACE_L,       x: 0,  ch: '{', cls: 'brace' },
+    { g: GLYPH_J,       x: 5,  ch: 'j', cls: 'mono' },
+    { g: GLYPH_P,       x: 12, ch: 'p', cls: 'mono' },
+    { g: flip(BRACE_L), x: 19, ch: '}', cls: 'brace' }
   ];
-  var MONO = JP.map(function (row, i) { return LB[i] + ' ' + row + ' ' + RB[i]; });   // 19 x 8
-  var ART_ROWS = 19, ART_R = 9.5, ART_PX = 16, builtFor = 0;
+  function buildLogo() {
+    var grid = [], x, y, i, j;
+    for (y = 0; y < H; y++) { grid.push([]); for (x = 0; x < W; x++) grid[y].push(null); }
+    var hole = [];                                         // cells forced blank (halos) so the art stays legible
+    for (y = 0; y < H; y++) { hole.push([]); for (x = 0; x < W; x++) hole[y].push(false); }
 
-  /* width/height of one character cell, measured in the real font so the ring stays round */
-  function cellAspect() {
-    var probe = document.createElement('span');
-    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;letter-spacing:0';
-    probe.textContent = 'MMMMMMMMMMMMMMMMMMMM';
-    logoEl.appendChild(probe);
-    var w = probe.getBoundingClientRect().width / 20;
-    var h = parseFloat(getComputedStyle(logoEl).lineHeight);
-    logoEl.removeChild(probe);
-    var a = w && h ? w / h : 0;
-    return a > 0.3 && a < 0.9 ? a : 0.6;
-  }
+    /* disc + ring */
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      var px = x - CX, py = (y - CY) * 2, r = Math.sqrt(px * px + py * py) / R;
+      if (r > 1) continue;
+      if (r >= 0.9) { grid[y][x] = { c: 'Oo0'.charAt((x + y) % 3), k: 'ring' }; continue; }
+      if (r >= 0.84) continue;                            // gap between ring and disc
+      var s = 0.8 - 0.5 * r - 0.26 * (px + py) / R + (noise(x, y) - 0.5) * 0.14;
+      var idx = Math.max(0, Math.min(RAMP.length - 1, Math.floor(s * RAMP.length)));
+      grid[y][x] = { c: RAMP.charAt(idx), k: idx < 4 ? 'b1' : idx < 8 ? 'b2' : 'b3' };
+    }
+    /* monogram, centred, with a 1-cell blank halo around every stroke */
+    var X0 = CX - 11, Y0 = CY - 5, ink = [];
+    MONO.forEach(function (m) {
+      m.g.forEach(function (row, gy) {
+        for (var gx = 0; gx < row.length; gx++) if (row.charAt(gx) === '#') ink.push({ x: X0 + m.x + gx, y: Y0 + gy, c: m.ch, k: m.cls });
+      });
+    });
+    ink.forEach(function (p) {
+      for (j = -1; j <= 1; j++) for (i = -1; i <= 1; i++) {
+        var hx = p.x + i, hy = p.y + j;
+        if (hx >= 0 && hx < W && hy >= 0 && hy < H) { hole[hy][hx] = true; }
+      }
+    });
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {   // clean elliptical plate behind the monogram
+      var ex = (x - CX) / 13.5, ey = (y - CY) / 6.8;
+      if (hole[y][x] || ex * ex + ey * ey <= 1) grid[y][x] = null;
+    }
+    ink.forEach(function (p) { grid[p.y][p.x] = { c: p.c, k: p.k }; });
 
-  function buildArt(A) {
-    var cy = (ART_ROWS - 1) / 2;
-    var cols = Math.round(2 * ART_R / A) + 2; if (cols % 2 === 0) cols++;   // odd, so there is a true center column
-    var cx = (cols - 1) / 2;
-    var mh = MONO.length, mw = MONO[0].length;
-    var r0 = Math.round(cy - (mh - 1) / 2), c0 = Math.round(cx - (mw - 1) / 2);
+    /* three nodes on the ring */
+    [90, 210, 330].forEach(function (deg) {
+      var a = deg * Math.PI / 180, ncx = CX + 0.9 * R * Math.cos(a), ncy = CY - 0.9 * R * Math.sin(a) / 2;
+      for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+        var d = Math.sqrt(Math.pow(x - ncx, 2) + Math.pow((y - ncy) * 2, 2)) / R;
+        if (d <= 0.115) grid[y][x] = { c: '@', k: 'node' };
+        else if (d <= 0.19) grid[y][x] = null;
+      }
+    });
+    /* serialise: one <span class="lr"> per row, runs of equal class merged */
     var html = '';
-    for (var r = 0; r < ART_ROWS; r++) {
-      var runCls = null, run = '';
-      for (var c = 0; c < cols; c++) {
-        var dx = (c - cx) * A, dy = r - cy, d = Math.sqrt(dx * dx + dy * dy);
-        var ang = Math.atan2(dx, -dy); if (ang < 0) ang += 2 * Math.PI;
-        var ch = ' ', cls = '';
-        if (d >= 8.0 && d <= ART_R) {                                  // outer ring, six color sectors clockwise from the top
-          cls = 'pc' + (Math.floor(ang / (2 * Math.PI) * 6) % 6 + 1);
-          ch = d > 8.9 ? (((r + c) % 2) ? '.' : 'o') : (((r + c) % 2) ? 'o' : 'O');
-        } else if (d >= 6.9 && d < 7.6) { ch = ':'; cls = 'pd'; }      // dim inner halo
-        var mr = r - r0, mc = c - c0;
-        if (mr >= 0 && mr < mh && mc >= 0 && mc < mw && MONO[mr].charAt(mc) !== ' ') {
-          ch = MONO[mr].charAt(mc); cls = (mc < 3 || mc >= mw - 3) ? 'pb' : 'pm';
-        }
-        if (ch === ' ') cls = '';
-        if (cls !== runCls) { if (run) html += runCls ? '<span class="' + runCls + '">' + run + '</span>' : run; runCls = cls; run = ''; }
+    for (y = 0; y < H; y++) {
+      var row = '', run = '', cur = null;
+      for (x = 0; x < W; x++) {
+        var cell = grid[y][x], k = cell ? cell.k : '', ch = cell ? cell.c : ' ';
+        if (k !== cur) { if (run) row += cur ? '<span class="' + cur + '">' + run + '</span>' : run; run = ''; cur = k; }
         run += ch;
       }
-      if (run) html += runCls ? '<span class="' + runCls + '">' + run + '</span>' : run;
-      if (r < ART_ROWS - 1) html += '\n';
+      if (run) row += cur ? '<span class="' + cur + '">' + run + '</span>' : run;
+      html += '<span class="lr" style="--r:' + y + '">' + row + '</span>';
     }
-    logoEl.innerHTML = html;
-    return cols;
+    return html;
   }
-
-  /* Re-measure on resize: stack when the window is narrow, and scale the whole grid uniformly
-     (font-size only), so the characters stay aligned at any size. */
-  var artCols = 0, artA = 0;
-  function layoutArt() {
-    var w = root.clientWidth; if (!w) return;                            // window parked off-page: try again on next resize
-    var narrow = w < 620;
-    root.classList.toggle('pt-narrow', narrow);
-    logoEl.style.fontSize = ART_PX + 'px';
-    var A = Math.round(cellAspect() * 100) / 100;
-    if (!artCols || A !== artA) { artCols = buildArt(A); artA = A; }
-    var cs = getComputedStyle(root), inner = w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    var cap = narrow ? inner : inner * 0.40;                              // art takes at most 40% of a wide window
-    var px = Math.max(7, Math.min(ART_PX, cap / (artCols * artA)));
-    logoEl.style.fontSize = px.toFixed(2) + 'px';
-  }
-  layoutArt();
-  if (window.ResizeObserver) new ResizeObserver(layoutArt).observe(root); else window.addEventListener('resize', layoutArt);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { artCols = 0; layoutArt(); });
+  $('#pt-logo').innerHTML = buildLogo();
+  $('#pt-dashes').textContent = new Array(('jp@portfolio').length + 1).join('-');
 
   /* ---------- live neofetch fields ---------- */
   var THEMES = { everforest: 'Everforest', aurora: 'Aurora', gruvbox: 'Gruvbox', monokai: 'Monokai Pro', draculapro: 'Dracula Pro' };
@@ -140,13 +135,13 @@
   var PATHS = { all: '~/portfolio', seo: '~/portfolio/seo', wordpress: '~/portfolio/wordpress', webdev: '~/portfolio/web-dev', cert: '~/certifications' };
   function inCat(li, f) {
     var c = li.getAttribute('data-cat').split(' ');
-    return f === 'all' ? true : c.indexOf(f) > -1;   // "All" lists every row (projects, then certs) so nothing hides behind a tab
+    return f === 'all' ? c.indexOf('cert') < 0 : c.indexOf(f) > -1;   // "All Projects" = projects only
   }
   cats.forEach(function (b) {
     var n = items.filter(function (li) { return inCat(li, b.getAttribute('data-filter')); }).length;
     b.querySelector('em').textContent = n;
   });
-  var nProj = items.filter(function (li) { return li.getAttribute('data-cat').split(' ').indexOf('cert') < 0; }).length;
+  var nProj = items.filter(function (li) { return inCat(li, 'all'); }).length;
   $('#pt-count').textContent = nProj + ' projects, ' + (items.length - nProj) + ' certs';
 
   function applyFilter(f, scroll) {
@@ -171,11 +166,11 @@
     if (scroll) toBottom();
   }
   $('#pt-menu').addEventListener('click', function (e) {
-    var b = e.target.closest('.pt-cat'); if (b && !busy) applyFilter(b.getAttribute('data-filter'), true);
+    var b = e.target.closest('.pt-cat'); if (b && !busy) applyFilter(b.getAttribute('data-filter'), false);
   });
   root.addEventListener('keydown', function (e) {   // 1-5 pick a category while the app has focus
     if (busy || e.ctrlKey || e.metaKey || e.altKey) return;
-    var b = cats[parseInt(e.key, 10) - 1]; if (b) { applyFilter(b.getAttribute('data-filter'), true); }
+    var b = cats[parseInt(e.key, 10) - 1]; if (b) { applyFilter(b.getAttribute('data-filter'), false); }
   });
   applyFilter('all');
 
