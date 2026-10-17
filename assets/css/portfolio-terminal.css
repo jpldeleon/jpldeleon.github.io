@@ -22,6 +22,7 @@
   box-sizing: border-box;
   padding: 1em 1.3em 1.2em;
   position: relative;
+  display: flex; flex-direction: column;
   overflow-x: hidden;
   overflow-wrap: anywhere;
 }
@@ -32,21 +33,42 @@
 .pt-line { margin: 0 0 .6em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pt-ps1 { color: var(--accent-color); font-weight: 700; }
 
-/* ---------- two panes, always ---------- */
+/* ---------- two framed panes (tmux style), always ---------- */
 .pt-grid {
-  display: grid;
+  display: grid; flex: 1 1 auto;
   grid-template-columns: 21em minmax(0, 1fr);
-  gap: 0 1.3em;
-  align-items: start;
+  gap: 0 1em;
+  align-items: stretch;
+  margin-top: .7em;
 }
-.pt-side {
-  position: sticky; top: 0;
-  container-type: inline-size;            /* logo scales with the pane */
-  padding-right: 1.2em;
-  border-right: 1px dashed var(--pt-line);
+.pt-pane {
+  position: relative; min-width: 0;
+  border: 1px solid var(--pt-line); border-radius: .4em;
+  padding: 1.1em 1em .8em;
+  background: color-mix(in srgb, var(--pt-bg), var(--surface-color) 22%);
   animation: pt-in .5s ease both;
 }
-.pt-main { min-width: 0; }
+.pt-ptitle {
+  position: absolute; top: -.8em; left: .8em; padding: 0 .5em;
+  font-size: .85em; line-height: 1.6; color: var(--pt-dim);
+  background: var(--pt-bg); border-radius: .3em;
+}
+.pt-main { border-color: color-mix(in srgb, var(--accent-highlight), transparent 55%); }   /* active pane */
+.pt-main .pt-ptitle { color: var(--accent-highlight); font-weight: 700; }
+.pt-side { container-type: inline-size; }           /* logo scales with the pane */
+
+/* ---------- status bar ---------- */
+.pt-status {
+  display: flex; align-items: center; gap: .9em; margin-top: .8em; flex: none;
+  font-size: .88em; line-height: 1.7; white-space: nowrap; overflow: hidden;
+  border-radius: .3em; color: var(--default-color);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 90%);
+}
+.pt-status .sb-name { background: var(--accent-color); color: var(--pt-bg); font-weight: 700; padding: 0 .8em; }
+.pt-status .sb-win { color: var(--pt-dim); }
+.pt-status .sb-win.on { color: var(--accent-highlight); font-weight: 700; }
+.pt-status .sb-r { margin-left: auto; padding-right: .8em; color: var(--pt-dim); display: flex; gap: .8em; }
+.pt-status #pt-clock { color: var(--accent-color); }
 
 /* ---------- ASCII logo (37 cols wide: font-size = pane width / 22.2) ---------- */
 .pt-logo {
@@ -77,8 +99,8 @@
 .pt-info dt { white-space: nowrap; }
 .pt-links a { color: var(--accent-highlight); border-bottom: 1px dotted currentColor; margin-right: .8em; }
 .pt-links a:hover { color: var(--heading-color); }
-.pt-palette { display: flex; gap: .3em; margin-top: .5em !important; }
-.pt-palette i { width: 1.4em; height: .9em; border-radius: 2px; display: block; }
+.pt-palette { display: flex; gap: 4px; margin-top: 6px !important; }
+.pt-palette i { width: 18px; height: 12px; flex: none; border-radius: 2px; display: block; }
 .pt-palette i:nth-child(1) { background: var(--background-color); outline: 1px solid var(--pt-line); }
 .pt-palette i:nth-child(2) { background: var(--surface-color); outline: 1px solid var(--pt-line); }
 .pt-palette i:nth-child(3) { background: var(--default-color); }

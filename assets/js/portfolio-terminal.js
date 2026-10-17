@@ -17,7 +17,7 @@
 
   /* ---------- fit: one base size for the whole app, from the real window size ----------
      Everything in the CSS is in em, so the two panes always fit side by side
-     (needs ~46em of width and ~42em of height). */
+     (needs ~48em of width and ~47em of height). */
   function host() {
     for (var n = root.parentElement; n && n !== document.body; n = n.parentElement) {
       var oy = getComputedStyle(n).overflowY;
@@ -28,7 +28,7 @@
   function fit() {
     var h = host(), w = root.clientWidth, ht = h ? h.clientHeight : window.innerHeight;
     if (!w) return;
-    var s = Math.max(5.5, Math.min(13, w / 46, ht / 42));
+    var s = Math.max(5.5, Math.min(13, w / 48, ht / 47));
     root.style.setProperty('--pt-s', s.toFixed(2) + 'px');
   }
   fit();
@@ -127,6 +127,11 @@
   tick();
   setInterval(function () { if (document.body.contains(root) && root.offsetParent !== null) tick(); }, 1000);
 
+  /* ---------- status bar clock ---------- */
+  var clockEl = $('#pt-clock');
+  function clock() { var d = new Date(); clockEl.textContent = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  clock(); setInterval(clock, 20000);
+
   /* ---------- terminal-style autoscroll ---------- */
   function scroller() {
     for (var n = root; n && n !== document.body; n = n.parentElement) {
@@ -168,6 +173,7 @@
       b.setAttribute('aria-selected', on);
     });
     pathEl.textContent = PATHS[f] || '~/portfolio';
+    var sb = $('#pt-sbwin'); if (sb) sb.textContent = ({ all: 'all', seo: 'seo', wordpress: 'wordpress', webdev: 'web-dev', cert: 'certs' })[f] || f;
     closeInline(); hidePreview();
     var n = 0;
     items.forEach(function (li) {

@@ -726,7 +726,8 @@
       <div class="pt-grid">
 
         <!-- LEFT: neofetch + system details -->
-        <aside aria-label="System information" class="pt-side">
+        <aside aria-label="System information" class="pt-side pt-pane">
+          <span aria-hidden="true" class="pt-ptitle">0:neofetch</span>
           <div class="pt-line"><span class="pt-ps1">$</span> neofetch</div>
           <pre aria-hidden="true" class="pt-logo" id="pt-logo"></pre>
           <div class="pt-who"><span class="pt-u">jp</span><span class="pt-at">@</span><span class="pt-u">portfolio</span></div>
@@ -747,7 +748,8 @@
         </aside>
 
         <!-- RIGHT: projects -->
-        <div class="pt-main">
+        <div class="pt-main pt-pane">
+          <span aria-hidden="true" class="pt-ptitle">1:projects</span>
           <div class="pt-line"><span class="pt-ps1">$</span> ls <span id="pt-path">~/portfolio</span></div>
           <nav aria-label="Project categories" class="pt-menu" id="pt-menu" role="tablist">
             <button aria-selected="true" class="pt-cat is-active" data-filter="all" role="tab" type="button"><b>1</b> All Projects <em></em></button>
@@ -777,6 +779,14 @@
             <div class="pt-out" id="pt-out"></div>
           </div>
         </div>
+      </div>
+
+      <!-- tmux-style status bar -->
+      <div aria-hidden="true" class="pt-status">
+        <span class="sb-name">portfolio</span>
+        <span class="sb-win">0:neofetch</span>
+        <span class="sb-win on">1:<span id="pt-sbwin">all</span>*</span>
+        <span class="sb-r"><span>jp@portfolio</span> <span id="pt-clock">--:--</span></span>
       </div>
 
       <div aria-hidden="true" class="pt-preview" id="pt-preview"><img alt="" /><span></span></div>
