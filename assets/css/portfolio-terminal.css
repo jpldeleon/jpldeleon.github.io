@@ -33,29 +33,20 @@
 .pt-line { margin: 0 0 .6em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pt-ps1 { color: var(--accent-color); font-weight: 700; }
 
-/* ---------- two framed panes (tmux style), always ---------- */
+/* ---------- two panes, one terminal surface (tmux-style single divider) ---------- */
 .pt-grid {
   display: grid; flex: 1 1 auto;
   grid-template-columns: 21em minmax(0, 1fr);
   gap: 0 1em;
   align-items: stretch;
-  margin-top: .7em;
 }
-.pt-pane {
-  position: relative; min-width: 0;
-  border: 1px solid var(--pt-line); border-radius: .4em;
-  padding: 1.1em 1em .8em;
-  background: color-mix(in srgb, var(--pt-bg), var(--surface-color) 22%);
+.pt-side {
+  container-type: inline-size;            /* logo scales with the pane */
+  min-width: 0; padding-right: 1em;
+  border-right: 1px solid var(--pt-line);
   animation: pt-in .5s ease both;
 }
-.pt-ptitle {
-  position: absolute; top: -.8em; left: .8em; padding: 0 .5em;
-  font-size: .85em; line-height: 1.6; color: var(--pt-dim);
-  background: var(--pt-bg); border-radius: .3em;
-}
-.pt-main { border-color: color-mix(in srgb, var(--accent-highlight), transparent 55%); }   /* active pane */
-.pt-main .pt-ptitle { color: var(--accent-highlight); font-weight: 700; }
-.pt-side { container-type: inline-size; }           /* logo scales with the pane */
+.pt-main { min-width: 0; }
 
 /* ---------- status bar ---------- */
 .pt-status {
@@ -99,8 +90,8 @@
 .pt-info dt { white-space: nowrap; }
 .pt-links a { color: var(--accent-highlight); border-bottom: 1px dotted currentColor; margin-right: .8em; }
 .pt-links a:hover { color: var(--heading-color); }
-.pt-palette { display: flex; gap: 4px; margin-top: 6px !important; }
-.pt-palette i { width: 18px; height: 12px; flex: none; border-radius: 2px; display: block; }
+.pt-palette { display: flex; gap: 4px; margin-top: 6px !important; max-width: 100%; }
+.pt-palette i { flex: 0 1 18px; min-width: 2px; height: 12px; border-radius: 2px; display: block; }   /* 18px when there is room, shrinks with the pane when narrow */
 .pt-palette i:nth-child(1) { background: var(--background-color); outline: 1px solid var(--pt-line); }
 .pt-palette i:nth-child(2) { background: var(--surface-color); outline: 1px solid var(--pt-line); }
 .pt-palette i:nth-child(3) { background: var(--default-color); }
