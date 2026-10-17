@@ -112,7 +112,8 @@
 /* Pinned: Download CV (reuses the site's .btn-live) */
 .rv-actions { display: flex; flex-direction: column; gap: 8px; padding: 14px 18px 18px; border-top: 1px solid var(--rv-line); }
 
-.rv-actions .btn-live {
+.rv-actions .btn-live,
+.rv-actions .btn-github {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,6 +220,53 @@
 .rv-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .rv-chips li { padding: 3px 10px; border: 1px solid var(--rv-line-strong); border-radius: 999px; font-family: var(--rv-mono); font-size: 12px; line-height: 1.5; }
 
+/* ---------- Text | PDF tabs (same chips as the inspector's gallery filters) ---------- */
+.rv-modes { flex: 0 0 auto; display: flex; gap: 6px; }
+
+.rv-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border: 1px solid var(--rv-line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--rv-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--default-color);
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.rv-mode:hover { color: var(--heading-color); border-color: var(--rv-hl-line); }
+.rv-mode:focus-visible { outline: 2px solid var(--rv-hl); outline-offset: 2px; }
+.rv-mode[aria-pressed="true"] { color: var(--heading-color); border-color: var(--rv-hl); background: var(--rv-hl-soft); }
+
+/* ---------- PDF tab: a page on a dark canvas, no tools ---------- */
+.rv-pdf { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+
+.rv-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px 18px 28px;
+  background: color-mix(in srgb, var(--background-color), #000 28%);
+}
+
+.rv-page {
+  display: block;
+  width: 100%;
+  max-width: 860px;
+  height: auto;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .35), 0 14px 40px rgba(0, 0, 0, .45);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .rv * {
   scrollbar-width: thin;
   scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
@@ -243,7 +291,8 @@
   .rv-title { font-size: 14.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .rv-actions { grid-area: actions; flex-direction: row; gap: 6px; padding: 10px 14px 10px 0; border-top: 0; }
-  .rv-actions .btn-live { width: auto; padding: 5px 11px; font-size: 12px; border-width: 1px; border-radius: 6px; white-space: nowrap; }
+  .rv-actions .btn-live,
+  .rv-actions .btn-github { width: auto; padding: 5px 11px; font-size: 12px; border-width: 1px; border-radius: 6px; white-space: nowrap; }
 
   .rv-tree { grid-area: tree; display: flex; gap: 4px; overflow-x: auto; overflow-y: hidden; padding: 6px 10px; border-top: 1px solid var(--rv-line); }
   .rv-group { display: none; }
@@ -253,7 +302,8 @@
   .rv-item .rv-count { display: none; }
   .rv-item[aria-selected="true"]::before { left: 10px; right: 10px; top: auto; bottom: 0; width: auto; height: 2px; }
 
-  .rv-bar { padding: 0 14px; }
+  .rv-bar { padding: 0 14px; gap: 10px; }
+  .rv-canvas { padding: 12px 10px 18px; }
   .rv-bar-meta { display: none; }
   .rv-scroll { padding: 16px 14px 28px; }
   .rv-skills { grid-template-columns: minmax(0, 1fr); }
@@ -261,7 +311,8 @@
 
 @container wm (max-width: 520px) {
   .rv-actions .rv-btn-label { display: none; }
-  .rv-actions .btn-live { padding: 6px 10px; }
+  .rv-actions .btn-live,
+  .rv-actions .btn-github { padding: 6px 10px; }
   .rv-profile { flex-direction: column; }
   .rv-job-row { flex-wrap: wrap; }
 }

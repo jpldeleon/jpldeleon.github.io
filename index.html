@@ -385,7 +385,7 @@
         </div>
       </aside><!-- /Skills -->
     </div><!-- /Right column -->
-    <!-- Resume Section: inspector-style viewer (sidebar + path bar + text views). Rendered inside the Resume window by app.js. -->
+    <!-- Resume Section: Hybrid Resume Viewer (sidebar + Text / PDF tabs). Rendered inside the Resume window by app.js. -->
     <section aria-label="Resume" class="rv" id="resume">
       <!-- Sidebar -->
       <aside class="rv-side">
@@ -425,6 +425,9 @@
         <div class="rv-actions">
           <a aria-label="Download resume" class="btn-live" download="" href="assets/JohnPaulDeLeon.pdf" title="Download CV"><i
               class="fa-solid fa-download"></i><span class="rv-btn-label">Download CV</span></a>
+          <a aria-label="Open resume in a new tab" class="btn-github" href="assets/JohnPaulDeLeon.pdf" rel="noopener"
+            target="_blank" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i><span
+              class="rv-btn-label">Open in new tab</span></a>
         </div>
       </aside>
 
@@ -432,9 +435,16 @@
       <div class="rv-content">
         <div class="rv-bar">
           <span class="rv-crumb"><span id="rv-crumb-dir">~/cv/</span><b id="rv-crumb-file">profile.md</b></span>
+          <div aria-label="View mode" class="rv-modes" role="group">
+            <button aria-pressed="true" class="rv-mode" data-mode="text" type="button"><i
+                class="fa-regular fa-file-lines"></i><span>Text</span></button>
+            <button aria-pressed="false" class="rv-mode" data-mode="pdf" type="button"><i
+                class="fa-regular fa-file-pdf"></i><span>PDF</span></button>
+          </div>
           <span class="rv-bar-meta" id="rv-meta">summary · contact</span>
         </div>
 
+        <!-- Text mode -->
         <div class="rv-scroll">
           <!-- Profile -->
           <div aria-label="Profile" class="rv-view rv-doc" id="rv-view-profile" role="tabpanel">
@@ -702,6 +712,13 @@
           </div>
         </div>
 
+        <!-- PDF tab: a look-alike of a PDF viewer (page on a dark canvas, no tools) -->
+        <div class="rv-pdf" hidden>
+          <div class="rv-canvas">
+            <img alt="Curriculum vitae of John Paul De Leon: professional summary, core skills, professional experience, education and certifications."
+              class="rv-page" height="1870" src="assets/img/cv/JohnPaulDeLeon-1.webp" width="1445" />
+          </div>
+        </div>
       </div><!-- /.rv-content -->
     </section><!-- /Resume Section -->
     <!-- Portfolio Section (terminal). Rendered inside the Portfolio window by app.js. -->
