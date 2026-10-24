@@ -10,11 +10,16 @@
    * 1. CONFIG: the only part you normally need to edit
    * ===================================================================== */
 
-  /* Permanent apps (About = sticky note widget and Skills = widgets, see section 8c).
+  /* Apps (About, Resume, Portfolio, Socials).
      `adopt` = an existing <section> on the page that is moved
      into the window (so your current Resume/Portfolio markup is reused as-is).
      `url` = optional iframe fallback if that section isn't on the page. */
   const APPS = {
+    about: {
+      title: 'About Me', icon: 'fa-solid fa-user', dockClass: 'dock-app',
+      adopt: '#about', size: [780, 580], static: true,
+      permanent: false   // dock icon appears while open and is removed on close
+    },
     resume: {
       title: 'Resume', icon: 'fa-solid fa-timeline', dockClass: 'dock-resume',
       adopt: '#resume', size: [980, 700]
@@ -265,12 +270,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* Space taken by the desktop icons on the left (desktop only) */
   function iconsW() { return 0; }     // desktop icons were removed
 
-  /* Restart: close every window, put the About sticky note back where it started */
+  /* Restart: close every window and reopen Portfolio */
   async function restartDesktop() {
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
     window.scrollTo(0, 0);
-    resetNote(true);
     openWindow('portfolio');
   }
 
@@ -769,8 +773,8 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     });
   }
 
-  /* Desktop layout (>= 992px): floating sticky note + widgets + notification panel.
-     Small layout: everything stacks in the page (hero, About note, Skills widgets). */
+  /* Desktop layout (>= 992px): widgets + notification panel.
+     Small layout: everything stacks in the page (hero, widgets). */
   let desktopMode = window.innerWidth >= 992;
 
   function syncMode() {
@@ -778,7 +782,6 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (d === desktopMode) return;
     desktopMode = d;
     if (!d) window.scrollTo(0, 0);
-    resetNote(false);          // desktop: back to its start spot; small: back into the page flow
     refreshDock();
   }
 
@@ -796,7 +799,6 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     syncMode();
     syncDockVar();
     wins.forEach(w => { fitToViewport(w); applyRect(w); });
-    keepNoteInView();
   });
 
   /* Restart (panel + Ubuntu menu) */
@@ -1050,139 +1052,20 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
   /* =====================================================================
-   * 8c. DESKTOP WIDGETS: About sticky note
-   *     The note is a floating widget on desktop (drag the header, resize the
-   *     corner). It never closes, has no dock icon, and Restart resets it.
-   *     Below 992px it is a normal block in the page and these handlers sleep.
+   * 8c. ABOUT WINDOW
+   *     A normal window (drag, resize, minimize, maximize, dock icon). On wide
+   *     screens it first opens on the left, next to the hero panel.
    * ===================================================================== */
-  const note = document.getElementById('about');
-  const NOTE_MIN_W = 260, NOTE_MIN_H = 160, NOTE_MARGIN = 10, NOTE_GAP = 12;
-  const isDesk = () => window.innerWidth >= 992;
-  let noteMoved = false;
+  const isDesk = () => window.innerWidth >= 992;   // also used by the Conky/right-column fit
 
-  /* Default spot: directly under the notification panel, same width, right-aligned.
-     If the panel is hidden (bell), the note rises to sit just under the top panel. */
-  function noteDefaults() {
-    const ts = topSpace();
+  function openAbout() {
+    if (wins.has('about') || window.innerWidth < 992) return openWindow('about');
     const hero = document.getElementById('hero');
-    const w = hero ? hero.offsetWidth : 340;
-    /* offsetHeight is unaffected by the collapse transform, so the note keeps its
-       place under the (open-size) hero panel even while the hero is hidden */
-    const top = hero ? hero.offsetTop + hero.offsetHeight + NOTE_GAP : ts + 8;
-    const h = clamp(window.innerHeight - top - 16, NOTE_MIN_H, 360);
-    return { left: NOTE_MARGIN, top: Math.round(top), w, h };
-  }
-
-  function setNoteRect(r) {
-    note.style.left = Math.round(r.left) + 'px';
-    note.style.top = Math.round(r.top) + 'px';
-    note.style.width = Math.round(r.w) + 'px';
-    note.style.height = Math.round(r.h) + 'px';
-  }
-
-  function resetNote(animate) {
-    if (!note) return;
-    noteMoved = false;
-    const body = note.querySelector('.sticky-body');
-    if (body) body.scrollTop = 0;
-    if (!isDesk()) {                                  // small screens: plain block in the page
-      ['left', 'top', 'width', 'height'].forEach(p => { note.style[p] = ''; });
-      return;
-    }
-    const d = noteDefaults();
-    setNoteRect(d);
-    if (animate && !reduceMotion()) {
-      note.animate([
-        { opacity: 0, transform: 'scale(.9)' },
-        { opacity: 1, transform: 'scale(1)' }
-      ], { duration: 320, easing: POP });
-    }
-  }
-
-  function keepNoteInView() {
-    if (!note || !isDesk()) return;
-    if (!noteMoved) { resetNote(false); return; }
-    const vw = window.innerWidth, vh = window.innerHeight, ts = topSpace();
-    const r = note.getBoundingClientRect();
-    const w = clamp(r.width, NOTE_MIN_W, vw - 16), h = clamp(r.height, NOTE_MIN_H, vh - ts - 16);
-    setNoteRect({
-      left: clamp(r.left, 0, vw - w), top: clamp(r.top, ts, vh - 48), w, h
-    });
-  }
-
-  function flashNote() {
-    if (!note) return;
-    if (!isDesk()) { note.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    note.classList.remove('is-flash');
-    void note.offsetWidth;                            // restart the animation
-    note.classList.add('is-flash');
-    setTimeout(() => note.classList.remove('is-flash'), 1100);
-  }
-
-  function initNote() {
-    if (!note) return;
-    const handle = note.querySelector('.sticky-handle');
-    const grip = note.querySelector('.sticky-resize');
-    let zNote = 14;
-    const raise = () => { note.style.zIndex = ++zNote > 40 ? (zNote = 15) : zNote; };
-
-    /* drag by the header */
-    handle.addEventListener('pointerdown', e => {
-      if (!isDesk() || e.button !== 0) return;
-      raise();
-      const r = note.getBoundingClientRect();
-      const offX = e.clientX - r.left, offY = e.clientY - r.top;
-      note.classList.add('is-dragging');
-      try { handle.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
-      const move = ev => {
-        const vw = window.innerWidth, vh = window.innerHeight, ts = topSpace();
-        noteMoved = true;
-        note.style.left = clamp(ev.clientX - offX, 0, vw - note.offsetWidth) + 'px';
-        note.style.top = clamp(ev.clientY - offY, ts, vh - 48) + 'px';
-      };
-      const up = () => {
-        handle.removeEventListener('pointermove', move);
-        handle.removeEventListener('pointerup', up);
-        handle.removeEventListener('pointercancel', up);
-        note.classList.remove('is-dragging');
-      };
-      handle.addEventListener('pointermove', move);
-      handle.addEventListener('pointerup', up);
-      handle.addEventListener('pointercancel', up);
-    });
-
-    /* resize from the bottom-right corner */
-    grip.addEventListener('pointerdown', e => {
-      if (!isDesk() || e.button !== 0) return;
-      e.preventDefault();
-      raise();
-      const r = note.getBoundingClientRect();
-      const sx = e.clientX, sy = e.clientY;
-      note.classList.add('is-dragging');
-      try { grip.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
-      const move = ev => {
-        const vw = window.innerWidth, vh = window.innerHeight;
-        noteMoved = true;
-        note.style.width = clamp(r.width + ev.clientX - sx, NOTE_MIN_W, vw - r.left - 8) + 'px';
-        note.style.height = clamp(r.height + ev.clientY - sy, NOTE_MIN_H, vh - r.top - 8) + 'px';
-      };
-      const up = () => {
-        grip.removeEventListener('pointermove', move);
-        grip.removeEventListener('pointerup', up);
-        grip.removeEventListener('pointercancel', up);
-        note.classList.remove('is-dragging');
-      };
-      grip.addEventListener('pointermove', move);
-      grip.addEventListener('pointerup', up);
-      grip.addEventListener('pointercancel', up);
-    });
-
-    note.addEventListener('pointerdown', () => { if (isDesk()) raise(); }, true);
-
-    /* the bell only collapses the hero panel: the note does not follow it */
-    resetNote(false);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!noteMoved) resetNote(false); });
-    window.addEventListener('load', () => { if (!noteMoved) resetNote(false); });
+    const x = (hero ? hero.offsetLeft + hero.offsetWidth : 340) + 28;
+    const ts = topSpace(), ds = dockSpace();
+    const w = Math.min(780, window.innerWidth - x - 24);
+    const h = Math.min(580, window.innerHeight - ts - ds - 32);
+    return openWindow('about', { x, y: ts + 16, w, h });
   }
 
   /* Certificate cards inside Portfolio (thumbnail or its maximize button) open the
@@ -1209,7 +1092,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const b = e.target.closest('[data-desktop]');
     if (!b) return;
     e.preventDefault();
-    if (b.getAttribute('data-desktop') === 'about') flashNote();
+    if (b.getAttribute('data-desktop') === 'about') openAbout();
   });
 
   /* =====================================================================
@@ -1367,17 +1250,17 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     });
 
     refreshDock();
-    initNote();
     initConky();
     initRightColumn();
     desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
-    if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
+    if (h === '#resume' || h === '#portfolio' || h === '#about') openWindow(h.slice(1));
 
     /* Portfolio (terminal) opens by itself on first load, after the preloader.
        A deep-linked window keeps the focus. */
     const openPortfolio = () => setTimeout(() => {
       if (wins.size) return;
+      if (window.innerWidth >= 992) openAbout();   // desktop: the profile sits beside the terminal, as the note did
       openWindow('portfolio');
     }, 250);
     const startPortfolio = () => {

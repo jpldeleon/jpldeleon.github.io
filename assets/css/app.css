@@ -477,3 +477,140 @@
 @media (max-width: 768px) {
   .wm-body.is-cert .wm-cert { padding: 8px; }
 }
+/*--------------------------------------------------------------
+# About window (profile). Adopted into a window, so it responds to
+# the WINDOW width (container `wm`), not the browser width.
+# Colours come from the active theme (Frost, Aurora, ...).
+--------------------------------------------------------------*/
+.wm-body > .ab { padding: 0; }
+
+.ab .ab-wrap {
+  display: grid;
+  gap: clamp(18px, 4cqw, 36px);
+  padding: clamp(18px, 4.5cqw, 40px) clamp(16px, 4.5cqw, 40px) clamp(24px, 5cqw, 44px);
+}
+
+.ab .ab-side { text-align: center; }
+
+.ab .ab-photo {
+  width: clamp(112px, 34cqw, 168px);
+  aspect-ratio: 1;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 0 10px 30px rgba(0, 0, 0, .18);
+  transition: box-shadow .35s cubic-bezier(.2, .8, .2, 1);
+}
+
+.ab .ab-photo:hover {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-highlight), transparent 60%),
+    0 0 0 10px color-mix(in srgb, var(--accent-highlight), transparent 82%), 0 10px 30px rgba(0, 0, 0, .18);
+}
+
+.ab .ab-photo img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+.ab .ab-name {
+  margin: 0;
+  font: 700 1.15rem/1.25 var(--heading-font, inherit);
+  color: var(--heading-color);
+}
+
+.ab .ab-role {
+  margin: 6px 0 0;
+  font: 500 .72rem/1.5 'JetBrains Mono', monospace;
+  letter-spacing: .02em;
+  color: var(--accent-highlight);
+}
+
+.ab .badge-text {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 11px;
+  border-radius: 2rem;
+  background: var(--accent-highlight);
+  color: var(--contrast-color);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .4px;
+}
+
+.ab h2 {
+  margin: 0 0 14px;
+  font-size: clamp(1.35rem, 5.2cqw, 1.9rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.ab .ab-main p { margin: 0 0 12px; font-size: .92rem; line-height: 1.7; color: color-mix(in srgb, var(--default-color), transparent 10%); }
+
+.ab .ab-main .ab-lead {
+  padding-left: 14px;
+  border-left: 3px solid var(--accent-highlight);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--heading-color);
+}
+
+.ab .ab-focus {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ab .ab-focus li {
+  display: grid;
+  grid-template-columns: 28px auto 1fr;
+  align-items: baseline;
+  gap: 2px 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-highlight) 9%, var(--surface-color));
+  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 80%);
+  font-size: .84rem;
+}
+
+.ab .ab-focus i { color: var(--accent-highlight); text-align: center; }
+.ab .ab-focus b { color: var(--heading-color); font-weight: 600; }
+.ab .ab-focus span { color: color-mix(in srgb, var(--default-color), transparent 22%); }
+
+.ab .ab-main .ab-note { font-size: .84rem; font-style: italic; }
+
+.ab .ab-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+.ab .ab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-highlight);
+  background: transparent;
+  color: var(--accent-highlight);
+  font: 600 .84rem/1 inherit;
+  cursor: pointer;
+}
+
+.ab .ab-btn.is-primary { background: var(--accent-highlight); color: var(--contrast-color); }
+.ab .ab-btn:hover { background: color-mix(in srgb, var(--accent-highlight), transparent 84%); }
+.ab .ab-btn.is-primary:hover { background: var(--accent-highlight); filter: brightness(1.1); }
+.ab .ab-btn:focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 2px; }
+
+/* Wide window: portrait column on the left, text on the right */
+@container wm (min-width: 620px) {
+  .ab .ab-wrap { grid-template-columns: minmax(170px, 24cqw) 1fr; align-items: start; }
+  .ab .ab-side { position: sticky; top: 8px; }
+  .ab .ab-focus { grid-template-columns: 1fr 1fr; }
+  .ab .ab-focus li { grid-template-columns: 22px 1fr; }
+  .ab .ab-focus li span { grid-column: 2; }
+}
+
+/* Narrow window / phone: single column, comfortable tap targets */
+@container wm (max-width: 420px) {
+  .ab .ab-focus li { grid-template-columns: 24px 1fr; }
+  .ab .ab-focus li span { grid-column: 2; }
+  .ab .ab-actions .ab-btn { flex: 1 1 auto; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) { .ab .ab-photo { transition: none; } }

@@ -67,7 +67,6 @@
 
 @media (max-width: 991px) {
   .hero-sidebar,
-  .sticky-note.section,
   .desk-right {
     width: calc(100% - 40px);   /* 20px gutter each side */
     max-width: 550px;           /* same width for all four */
