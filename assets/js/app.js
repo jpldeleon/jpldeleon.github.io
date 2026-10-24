@@ -10,20 +10,11 @@
    * 1. CONFIG: the only part you normally need to edit
    * ===================================================================== */
 
-<<<<<<< ours
-  /* Apps (About, Resume, Portfolio, Socials).
-=======
   /* Permanent apps (Resume, Portfolio, Socials).
->>>>>>> theirs
      `adopt` = an existing <section> on the page that is moved
      into the window (so your current Resume/Portfolio markup is reused as-is).
      `url` = optional iframe fallback if that section isn't on the page. */
   const APPS = {
-    about: {
-      title: 'About Me', icon: 'fa-solid fa-user', dockClass: 'dock-app',
-      adopt: '#about', size: [780, 580], static: true,
-      permanent: false   // dock icon appears while open and is removed on close
-    },
     resume: {
       title: 'Resume', icon: 'fa-solid fa-timeline', dockClass: 'dock-resume',
       adopt: '#resume', size: [980, 700]
@@ -274,19 +265,12 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* Space taken by the desktop icons on the left (desktop only) */
   function iconsW() { return 0; }     // desktop icons were removed
 
-<<<<<<< ours
-  /* Restart: close every window and reopen Portfolio */
-=======
   /* Restart: close every window and reset the About card */
->>>>>>> theirs
   async function restartDesktop() {
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
     window.scrollTo(0, 0);
-<<<<<<< ours
-=======
     flashAbout(false);
->>>>>>> theirs
     openWindow('portfolio');
   }
 
@@ -786,11 +770,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
   /* Desktop layout (>= 992px): widgets + notification panel.
-<<<<<<< ours
-     Small layout: everything stacks in the page (hero, widgets). */
-=======
      Small layout: everything stacks in the page (hero with About, widgets). */
->>>>>>> theirs
   let desktopMode = window.innerWidth >= 992;
 
   function syncMode() {
@@ -1099,22 +1079,6 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
   /* =====================================================================
-<<<<<<< ours
-   * 8c. ABOUT WINDOW
-   *     A normal window (drag, resize, minimize, maximize, dock icon). On wide
-   *     screens it first opens on the left, next to the hero panel.
-   * ===================================================================== */
-  const isDesk = () => window.innerWidth >= 992;   // also used by the Conky/right-column fit
-
-  function openAbout() {
-    if (wins.has('about') || window.innerWidth < 992) return openWindow('about');
-    const hero = document.getElementById('hero');
-    const x = (hero ? hero.offsetLeft + hero.offsetWidth : 340) + 28;
-    const ts = topSpace(), ds = dockSpace();
-    const w = Math.min(780, window.innerWidth - x - 24);
-    const h = Math.min(580, window.innerHeight - ts - ds - 32);
-    return openWindow('about', { x, y: ts + 16, w, h });
-=======
    * 8c. ABOUT CARD (terminal card inside the hero sidebar)
    *     The header toggle collapses it. Restart re-opens it.
    * ===================================================================== */
@@ -1151,7 +1115,6 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     card.querySelector('.ab-toggle').addEventListener('click', () => {
       setAbout(card.querySelector('.ab-term-body').hidden);
     });
->>>>>>> theirs
   }
 
   /* Certificate cards inside Portfolio (thumbnail or its maximize button) open the
@@ -1178,11 +1141,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const b = e.target.closest('[data-desktop]');
     if (!b) return;
     e.preventDefault();
-<<<<<<< ours
-    if (b.getAttribute('data-desktop') === 'about') openAbout();
-=======
     if (b.getAttribute('data-desktop') === 'about') flashAbout();
->>>>>>> theirs
   });
 
   /* =====================================================================
@@ -1340,21 +1299,17 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     });
 
     refreshDock();
-<<<<<<< ours
-=======
     initAbout();
->>>>>>> theirs
     initConky();
     initRightColumn();
     desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
-    if (h === '#resume' || h === '#portfolio' || h === '#about') openWindow(h.slice(1));
+    if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
 
     /* Portfolio (terminal) opens by itself on first load, after the preloader.
        A deep-linked window keeps the focus. */
     const openPortfolio = () => setTimeout(() => {
       if (wins.size) return;
-      if (window.innerWidth >= 992) openAbout();   // desktop: the profile sits beside the terminal, as the note did
       openWindow('portfolio');
     }, 250);
     const startPortfolio = () => {
