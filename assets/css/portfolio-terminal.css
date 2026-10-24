@@ -68,17 +68,12 @@
   margin: .1em auto .7em; font: inherit; font-size: 4.4cqw;
   line-height: 1.2; letter-spacing: 0; white-space: pre; user-select: none;
   width: max-content; max-width: 100%; overflow: hidden;
-  filter: drop-shadow(0 0 .6em color-mix(in srgb, var(--accent-highlight), transparent 78%));
 }
 .pt-logo .lr { display: block; height: 1.2em; animation: pt-in .45s ease both; animation-delay: calc(var(--r, 0) * 28ms); }
-.pt-logo .b0 { color: color-mix(in srgb, var(--accent-color), transparent 84%); }
-.pt-logo .b1 { color: color-mix(in srgb, var(--accent-color), transparent 66%); }
-.pt-logo .b2 { color: color-mix(in srgb, var(--accent-color), transparent 46%); }
-.pt-logo .b3 { color: color-mix(in srgb, var(--accent-color), transparent 22%); }
-.pt-logo .ring { color: var(--accent-color); font-weight: 700; }
-.pt-logo .node { color: var(--accent-highlight); font-weight: 800; }
-.pt-logo .brace { color: var(--heading-color); font-weight: 800; }
-.pt-logo .mono { color: var(--accent-highlight); font-weight: 800; text-shadow: 0 0 .5em color-mix(in srgb, var(--accent-highlight), transparent 40%); }
+.pt-logo .b2 { color: color-mix(in srgb, var(--accent-color), transparent 55%); }   /* disc: one flat colour */
+.pt-logo .ring { color: var(--accent-color); }
+.pt-logo .node { color: var(--heading-color); }
+.pt-logo .brace, .pt-logo .mono { color: var(--heading-color); }   /* {jp}: one bright colour, same weight as the disc */
 
 /* ---------- system details ---------- */
 .pt-who { font-weight: 700; font-size: 1.05em; color: var(--heading-color); }

@@ -37,54 +37,50 @@
     window.addEventListener('resize', fit);
   } catch (err) { /* cosmetic only */ }
 
-  /* ---------- ASCII logo: {jp} on a solid circular ASCII disc (Linux Mint / Ubuntu style) ----------
-     Like the real distro logos there are NO blank gaps inside the shape: every cell is a character.
-     The monogram stands out by colour/weight, not by empty space. Plain ASCII only.
-       ring   - outer circle        node - three "circle of friends" dots
-       b0-b3  - shaded disc fill    mono/brace - the {jp} monogram, drawn with its own letters */
+  /* ---------- ASCII logo: bold {jp} on a solid circular ASCII disc (Ubuntu style) ----------
+     Every cell of the disc is a character (letters, symbols, numbers), no gaps. Flat look: one colour,
+     one weight and one density everywhere (no gradient, no glow). The {jp} is made of the same
+     characters and is told apart from the disc by colour only. Plain ASCII only.
+       b2 - disc fill        mono/brace - the {jp} monogram
+       RING / NODES - optional Ubuntu-like ring and three dots (off by default)
+     Edit CHARS to change which characters make up the texture. */
   var W = 37, H = 19, CX = 18, CY = 9, R = 18.4;       // chars are ~1:2, so y is doubled below
-  var RAMP = '.-:/+osyhdm';
+  var RING = false, NODES = false;
+  var CHARS = 'oe0s8x*+=n';                        // one even texture: symbols, letters, numbers
   function noise(x, y) { var n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return n - Math.floor(n); }
   function flip(rows) { return rows.map(function (r) { return r.split('').reverse().join(''); }); }
   var BRACE_L = ['  ##', ' ## ', ' ## ', ' ## ', '##  ', '##  ', ' ## ', ' ## ', ' ## ', '  ##'];
-  var GLYPH_J = ['    ##', '      ', '    ##', '    ##', '    ##', '    ##', '    ##', '    ##', '##  ##', ' #### '];
-  var GLYPH_P = ['      ', '      ', '##### ', '##  ##', '##  ##', '##  ##', '##### ', '##    ', '##    ', '##    '];
-  var MONO = [   // narrow, 1-column gaps between characters
-    { g: BRACE_L,       x: 0,  ch: '{', cls: 'brace' },
-    { g: GLYPH_J,       x: 5,  ch: 'j', cls: 'mono' },
-    { g: GLYPH_P,       x: 12, ch: 'p', cls: 'mono' },
-    { g: flip(BRACE_L), x: 19, ch: '}', cls: 'brace' }
+  var GLYPH_J = ['    ###', '       ', '    ###', '    ###', '    ###', '    ###', '    ###', '    ###', '##  ###', ' ##### '];
+  var GLYPH_P = ['       ', '       ', '###### ', '###  ##', '###  ##', '###  ##', '###### ', '###    ', '###    ', '###    '];
+  var MONO = [   // bold 3-wide strokes, 1-column gaps between characters (25 cols wide)
+    { g: BRACE_L,       x: 0,  ch: '{', cls: 'brace', heavy: false },
+    { g: GLYPH_J,       x: 5,  ch: '',  cls: 'mono',  heavy: true  },
+    { g: GLYPH_P,       x: 13, ch: '',  cls: 'mono',  heavy: true  },
+    { g: flip(BRACE_L), x: 21, ch: '}', cls: 'brace', heavy: false }
   ];
   function buildLogo() {
-    var grid = [], near = [], x, y, i, j;
-    for (y = 0; y < H; y++) { grid.push([]); near.push([]); for (x = 0; x < W; x++) { grid[y].push(null); near[y].push(false); } }
+    var grid = [], x, y;
+    for (y = 0; y < H; y++) { grid.push([]); for (x = 0; x < W; x++) grid[y].push(null); }
 
-    /* monogram strokes (centred) + a 1-cell "quiet zone" that gets the dimmest fill, so letters pop */
-    var X0 = CX - 11, Y0 = CY - 5, ink = [];
+    /* monogram strokes (centred) */
+    var X0 = CX - 12, Y0 = CY - 5, ink = [];
     MONO.forEach(function (m) {
       m.g.forEach(function (row, gy) {
-        for (var gx = 0; gx < row.length; gx++) if (row.charAt(gx) === '#') ink.push({ x: X0 + m.x + gx, y: Y0 + gy, c: m.ch, k: m.cls });
+        for (var gx = 0; gx < row.length; gx++) if (row.charAt(gx) === '#') {
+          var ix = X0 + m.x + gx, iy = Y0 + gy;
+          ink.push({ x: ix, y: iy, c: CHARS.charAt(Math.floor(noise(ix, iy) * CHARS.length)), k: m.cls });
+        }
       });
     });
-    ink.forEach(function (p) {
-      for (j = -1; j <= 1; j++) for (i = -1; i <= 1; i++) {
-        var hx = p.x + i, hy = p.y + j;
-        if (hx >= 0 && hx < W && hy >= 0 && hy < H) near[hy][hx] = true;
-      }
-    });
-
     /* solid disc + ring */
     for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
       var px = x - CX, py = (y - CY) * 2, r = Math.sqrt(px * px + py * py) / R;
       if (r > 1) continue;
-      if (r >= 0.88) { grid[y][x] = { c: 'Oo0'.charAt((x + y) % 3), k: 'ring' }; continue; }
-      var s = 0.82 - 0.45 * r - 0.28 * (px + py) / R + (noise(x, y) - 0.5) * 0.12;
-      var idx = Math.max(0, Math.min(RAMP.length - 1, Math.floor(s * RAMP.length)));
-      if (near[y][x]) grid[y][x] = { c: RAMP.charAt(Math.min(idx, 2)), k: 'b0' };
-      else grid[y][x] = { c: RAMP.charAt(idx), k: idx < 4 ? 'b1' : idx < 8 ? 'b2' : 'b3' };
+      if (RING && r >= 0.88) { grid[y][x] = { c: 'Oo0'.charAt((x + y) % 3), k: 'ring' }; continue; }
+      grid[y][x] = { c: CHARS.charAt(Math.floor(noise(y, x) * CHARS.length)), k: 'b2' };
     }
     /* three nodes sitting on the ring */
-    [90, 210, 330].forEach(function (deg) {
+    if (NODES) [90, 210, 330].forEach(function (deg) {
       var a = deg * Math.PI / 180, ncx = CX + 0.88 * R * Math.cos(a), ncy = CY - 0.88 * R * Math.sin(a) / 2;
       for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
         if (Math.sqrt(Math.pow(x - ncx, 2) + Math.pow((y - ncy) * 2, 2)) / R <= 0.125) grid[y][x] = { c: '@', k: 'node' };
