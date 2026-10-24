@@ -155,7 +155,36 @@
       <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart"
         id="panel-restart-btn" title="Restart" type="button"><i aria-hidden="true"
           class="fa-solid fa-rotate-right"></i></button>
-      <time class="panel-clock" id="panel-clock"></time>
+      <div class="panel-menu panel-clock-menu">
+        <button aria-controls="clock-popover" aria-expanded="false" aria-haspopup="dialog" class="panel-btn panel-clock"
+          id="panel-clock" title="Calendar" type="button"></button>
+        <div aria-label="Why hire me now, and calendar" class="panel-popover clock-popover" hidden id="clock-popover" role="dialog">
+          <section aria-label="Why hire me now" class="cp-why">
+            <h3 class="cp-head">Why hire me now?</h3>
+            <p class="cp-sub">Early-career, research-driven, and already building.</p>
+            <ul class="cp-list">
+              <li><i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i><div><b>Research first</b><span>Five years of link prospecting built the habit of digging into the data before acting.</span></div></li>
+              <li><i aria-hidden="true" class="fa-solid fa-gears"></i><div><b>SEO that reads code</b><span>Technical SEO plus a full-stack bootcamp: I can diagnose an issue and ship the fix.</span></div></li>
+              <li><i aria-hidden="true" class="fa-solid fa-folder-open"></i><div><b>Work you can review</b><span>Seven projects and two certifications are ready to open, not just listed.</span></div></li>
+              <li><i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i><div><b>AI-assisted, human-checked</b><span>Faster audits, research and builds, with judgement kept in the loop.</span></div></li>
+            </ul>
+            <div class="cp-actions">
+              <button class="cp-btn is-primary" data-app="resume" type="button"><i aria-hidden="true" class="fa-solid fa-timeline"></i>Resume</button>
+              <button class="cp-btn" data-app="portfolio" type="button"><i aria-hidden="true" class="fa-solid fa-flask"></i>Projects</button>
+            </div>
+          </section>
+          <section aria-label="Calendar" class="cp-cal">
+            <p class="cp-date" id="cal-date"></p>
+            <div class="cp-cal-nav">
+              <button aria-label="Previous month" class="cp-nav" id="cal-prev" type="button"><i aria-hidden="true" class="fa-solid fa-chevron-left"></i></button>
+              <button class="cp-month" id="cal-today" title="Jump to today" type="button"><span id="cal-title"></span></button>
+              <button aria-label="Next month" class="cp-nav" id="cal-next" type="button"><i aria-hidden="true" class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div aria-hidden="true" class="cp-dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+            <div class="cp-grid" id="cal-grid" role="grid" aria-label="Month"></div>
+          </section>
+        </div>
+      </div>
     </div>
   </header>
   <div aria-atomic="true" aria-live="polite" class="panel-notice" id="themeNotice"></div>
@@ -249,9 +278,31 @@
         <a aria-label="Download resume" class="sidebar-cta" download="" href="assets/johnpauldeleon_resume.pdf" title="Download Resume"><i
             class="fa-solid fa-download"></i><span class="sidebar-quick-label">Download Resume</span></a>
       </div>
+      <!-- About: terminal card inside the hero sidebar -->
+      <section aria-label="About me" class="ab-term" id="about">
+        <div class="ab-term-bar">
+          <span aria-hidden="true" class="ab-dots"><i></i><i></i><i></i></span>
+          <span class="ab-term-title">jp@portfolio: ~/about_me.md</span>
+          <button aria-controls="about-body" aria-expanded="true" aria-label="Collapse about me" class="ab-toggle"
+            type="button"><i aria-hidden="true" class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <div class="ab-term-body" id="about-body">
+          <p class="ab-cmd"><span>$</span> cat about_me.md</p>
+          <h2>Building things with SEO in mind</h2>
+          <p>I started in link prospecting, got curious about the numbers behind the worksheets, and followed that
+            curiosity into research-driven SEO, Technical SEO and web development.</p>
+          <p>A full-stack bootcamp on top of HTML, CSS and JavaScript lets me diagnose a problem and fix it in code. I
+            troubleshoot instead of guessing, and I'm exploring AI-assisted workflows to speed up audits, research and builds.</p>
+          <p class="ab-cmd"><span>$</span> ls focus/</p>
+          <ul aria-label="Focus areas" class="ab-tags">
+            <li>research</li><li>seo</li><li>technical-seo</li><li>web-dev</li><li>ai-workflows</li>
+          </ul>
+        </div>
+      </section><!-- /About card -->
     </div>
   </aside><!-- /Hero Sidebar -->
   <main class="main">
+<<<<<<< ours
     <!-- About: profile window (adopted by the window manager, opened from the menu/dock; parked here for crawlers) -->
     <section aria-label="About me" class="about section ab" id="about">
       <div class="ab-wrap">
@@ -286,6 +337,8 @@
       </div>
     </section><!-- /About window -->
 
+=======
+>>>>>>> theirs
     <!-- Conky system monitor (decorative, fake live data, no background/card) -->
     <div aria-hidden="true" class="conky" id="conky">
       <div class="cky-head"><span class="cky-host">jp@portfolio</span><span class="cky-sub">arch linux</span></div>

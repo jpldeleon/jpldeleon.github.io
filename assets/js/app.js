@@ -10,7 +10,11 @@
    * 1. CONFIG: the only part you normally need to edit
    * ===================================================================== */
 
+<<<<<<< ours
   /* Apps (About, Resume, Portfolio, Socials).
+=======
+  /* Permanent apps (Resume, Portfolio, Socials).
+>>>>>>> theirs
      `adopt` = an existing <section> on the page that is moved
      into the window (so your current Resume/Portfolio markup is reused as-is).
      `url` = optional iframe fallback if that section isn't on the page. */
@@ -270,11 +274,19 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* Space taken by the desktop icons on the left (desktop only) */
   function iconsW() { return 0; }     // desktop icons were removed
 
+<<<<<<< ours
   /* Restart: close every window and reopen Portfolio */
+=======
+  /* Restart: close every window and reset the About card */
+>>>>>>> theirs
   async function restartDesktop() {
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
     window.scrollTo(0, 0);
+<<<<<<< ours
+=======
+    flashAbout(false);
+>>>>>>> theirs
     openWindow('portfolio');
   }
 
@@ -774,7 +786,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
   /* Desktop layout (>= 992px): widgets + notification panel.
+<<<<<<< ours
      Small layout: everything stacks in the page (hero, widgets). */
+=======
+     Small layout: everything stacks in the page (hero with About, widgets). */
+>>>>>>> theirs
   let desktopMode = window.innerWidth >= 992;
 
   function syncMode() {
@@ -1049,9 +1065,41 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       tick();
       setInterval(tick, 15000);
     }
+    initCalendar();
+  }
+
+  /* Calendar applet (right pane of the clock popover). Sunday-first month grid. */
+  function initCalendar() {
+    const grid = document.getElementById('cal-grid');
+    if (!grid) return;
+    const title = document.getElementById('cal-title'), dateLine = document.getElementById('cal-date');
+    const same = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    const monthStart = () => { const d = new Date(); d.setDate(1); return d; };
+    let view = monthStart();
+    function render() {
+      const today = new Date();
+      dateLine.textContent = today.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      title.textContent = view.toLocaleDateString([], { month: 'long', year: 'numeric' });
+      const start = new Date(view.getFullYear(), view.getMonth(), 1 - new Date(view.getFullYear(), view.getMonth(), 1).getDay());
+      let out = '';
+      for (let i = 0; i < 42; i++) {
+        const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+        const t = same(d, today);
+        out += '<span class="cp-day' + (d.getMonth() !== view.getMonth() ? ' is-out' : '') + (t ? ' is-today' : '') +
+          '" role="gridcell"' + (t ? ' aria-current="date"' : '') + '>' + d.getDate() + '</span>';
+      }
+      grid.innerHTML = out;
+    }
+    const shift = n => { view = new Date(view.getFullYear(), view.getMonth() + n, 1); render(); };
+    document.getElementById('cal-prev').addEventListener('click', () => shift(-1));
+    document.getElementById('cal-next').addEventListener('click', () => shift(1));
+    document.getElementById('cal-today').addEventListener('click', () => { view = monthStart(); render(); });
+    document.getElementById('panel-clock').addEventListener('click', () => { view = monthStart(); render(); });
+    render();
   }
 
   /* =====================================================================
+<<<<<<< ours
    * 8c. ABOUT WINDOW
    *     A normal window (drag, resize, minimize, maximize, dock icon). On wide
    *     screens it first opens on the left, next to the hero panel.
@@ -1066,6 +1114,44 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const w = Math.min(780, window.innerWidth - x - 24);
     const h = Math.min(580, window.innerHeight - ts - ds - 32);
     return openWindow('about', { x, y: ts + 16, w, h });
+=======
+   * 8c. ABOUT CARD (terminal card inside the hero sidebar)
+   *     The header toggle collapses it. Restart re-opens it.
+   * ===================================================================== */
+  const isDesk = () => window.innerWidth >= 992;
+
+  function setAbout(open) {
+    const card = document.getElementById('about');
+    if (!card) return null;
+    const body = card.querySelector('.ab-term-body'), btn = card.querySelector('.ab-toggle');
+    body.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Collapse about me' : 'Expand about me');
+    card.classList.toggle('is-collapsed', !open);
+    return card;
+  }
+
+  /* Open the card; with `show` also scroll it into view and pulse it */
+  function flashAbout(show) {
+    const card = setAbout(true);
+    if (!card) return;
+    const hero = document.getElementById('hero');
+    if (hero) hero.scrollTop = 0;
+    if (show === false) return;
+    card.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
+    card.classList.remove('is-flash');
+    void card.offsetWidth;                            // restart the animation
+    card.classList.add('is-flash');
+    setTimeout(() => card.classList.remove('is-flash'), 1100);
+  }
+
+  function initAbout() {
+    const card = document.getElementById('about');
+    if (!card) return;
+    card.querySelector('.ab-toggle').addEventListener('click', () => {
+      setAbout(card.querySelector('.ab-term-body').hidden);
+    });
+>>>>>>> theirs
   }
 
   /* Certificate cards inside Portfolio (thumbnail or its maximize button) open the
@@ -1092,7 +1178,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const b = e.target.closest('[data-desktop]');
     if (!b) return;
     e.preventDefault();
+<<<<<<< ours
     if (b.getAttribute('data-desktop') === 'about') openAbout();
+=======
+    if (b.getAttribute('data-desktop') === 'about') flashAbout();
+>>>>>>> theirs
   });
 
   /* =====================================================================
@@ -1250,6 +1340,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     });
 
     refreshDock();
+<<<<<<< ours
+=======
+    initAbout();
+>>>>>>> theirs
     initConky();
     initRightColumn();
     desktopMode = window.innerWidth >= 992;
