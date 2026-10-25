@@ -75,8 +75,78 @@
     /* no divider lines */
     hr{display:none!important}
     section,.section,header,footer,.section-title,.page-title .container{border-top:0!important;border-bottom:0!important}
-    /* soft, borderless cards (matches the Resume / Portfolio windows) */
-    [class~="card"],[class*="-card "],[class$="-card"]{border:0!important;border-radius:14px!important;box-shadow:none!important;background:color-mix(in srgb,var(--default-color,#fff) 6%,transparent)!important}`;
+    /* generic fallback for pages that use plain .card / *-card markup */
+    [class~="card"],[class*="-card "],[class$="-card"]{border:0!important;border-radius:14px!important;box-shadow:none!important;background:color-mix(in srgb,var(--default-color,#fff) 6%,transparent)!important}
+
+    /* ===== Project inspector pages (.pi-*): soft borderless cards, no divider lines =====
+       Same flat, translucent, accent-tinted fill the Resume and hero panes use; every colour
+       comes from theme variables, so all five themes follow. Prefixed html.wm-embedded so it
+       beats inspector.css without !important. */
+    html.wm-embedded .pi{
+      --pc-fill:color-mix(in srgb,color-mix(in srgb,var(--accent-highlight) 5%,var(--surface-color)),transparent 45%);
+      --pc-fill-hover:color-mix(in srgb,color-mix(in srgb,var(--accent-highlight) 16%,var(--surface-color)),transparent 45%);
+      --pc-tile:color-mix(in srgb,var(--accent-highlight) 20%,transparent);
+      --pc-on:color-mix(in srgb,var(--accent-highlight) 28%,transparent);
+      --pc-r:14px;--pc-r-in:10px}
+
+    /* dividers: sidebar edge, header / actions lines, tree guide line, path bar line.
+       The tonal difference between the panes does the separating. */
+    html.wm-embedded .pi-side,
+    html.wm-embedded .pi-head,
+    html.wm-embedded .pi-actions,
+    html.wm-embedded .pi-tree,
+    html.wm-embedded .pi-items,
+    html.wm-embedded .pi-bar{border:0}
+    html.wm-embedded .pi-items{margin-left:12px;padding-left:0}
+    html.wm-embedded .pi-item{border-radius:var(--pc-r-in)}
+    html.wm-embedded .pi-item[aria-selected="true"]::before{content:none}   /* the accent tick sat on the guide line */
+
+    /* feature cards: icon tile left, title + text right */
+    html.wm-embedded .pi-feature{
+      display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:14px;align-items:start;align-content:start;
+      padding:16px 18px;border:0;border-radius:var(--pc-r);background:var(--pc-fill)}
+    html.wm-embedded .pi-feature i{grid-row:1 / span 2;width:40px;height:40px;margin:0;border-radius:11px;background:var(--pc-tile)}
+    html.wm-embedded .pi-feature h3{margin:2px 0 4px;font-size:16px}
+    html.wm-embedded .pi-feature p{grid-column:2;font-size:14px;line-height:1.6}
+
+    /* screenshots: image set into the card like a mat, caption underneath, no border or zoom */
+    html.wm-embedded a.pi-thumb{
+      padding:6px;border:0;border-radius:var(--pc-r);background:var(--pc-fill);
+      transition:background-color .12s ease}
+    html.wm-embedded a.pi-thumb:hover,
+    html.wm-embedded a.pi-thumb:focus-visible{background:var(--pc-fill-hover);color:var(--heading-color)}
+    html.wm-embedded .pi-thumb-img{border-radius:var(--pc-r-in)}
+    html.wm-embedded a.pi-thumb:hover .pi-thumb-img img{transform:none}
+    html.wm-embedded .pi-thumb-cap{padding:9px 6px 4px;border:0}
+
+    /* walkthrough: video and chapter cards */
+    html.wm-embedded .pi-stage{border:0;border-radius:var(--pc-r);box-shadow:none}
+    html.wm-embedded .pi-chapters li{padding:14px 18px;border:0;border-radius:var(--pc-r);background:var(--pc-fill)}
+
+    /* gallery filters */
+    html.wm-embedded .pi-filter{padding:6px 14px;border:0;background:var(--pc-fill)}
+    html.wm-embedded .pi-filter:hover{background:var(--pc-fill-hover);color:var(--heading-color)}
+    html.wm-embedded .pi-filter[aria-pressed="true"]{background:var(--pc-on);color:var(--heading-color)}
+
+    /* stack: every property is its own soft row (label | value), no table lines */
+    html.wm-embedded .pi-props{gap:6px 0;border:0;border-radius:0;overflow:visible;background:none}
+    html.wm-embedded .pi-props dt,
+    html.wm-embedded .pi-props dd{padding:12px 16px;border:0;background:var(--pc-fill)}
+    html.wm-embedded .pi-props dt{padding-right:22px;border-radius:var(--pc-r) 0 0 var(--pc-r)}
+    html.wm-embedded .pi-props dd{border-radius:0 var(--pc-r) var(--pc-r) 0}
+
+    /* tools: one small card per entry, name above its value */
+    html.wm-embedded .pi-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:10px}
+    html.wm-embedded .pi-tools li{padding:12px 16px;border:0;border-radius:var(--pc-r);background:var(--pc-fill)}
+    html.wm-embedded .pi-tools strong{display:block;margin-bottom:2px}
+
+    /* narrow window: the label sits on top of its value inside one card */
+    @media (max-width:760px){
+      html.wm-embedded .pi-props{gap:0}
+      html.wm-embedded .pi-props dt{padding:12px 16px 0;border-radius:var(--pc-r) var(--pc-r) 0 0}
+      html.wm-embedded .pi-props dd{padding:2px 16px 12px;border-radius:0 0 var(--pc-r) var(--pc-r)}
+      html.wm-embedded .pi-props dt:not(:first-of-type){margin-top:6px}
+    }`;
 
   /* =====================================================================
    * 2. HELPERS
