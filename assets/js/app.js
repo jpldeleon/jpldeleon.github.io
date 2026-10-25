@@ -69,7 +69,14 @@
     main,#footer{padding-bottom:0!important}
     html{scroll-behavior:auto}
     *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent-highlight,var(--accent-color,#888)) 40%,transparent) transparent}
-    *:hover{scrollbar-color:color-mix(in srgb,var(--accent-highlight,var(--accent-color,#888)) 65%,transparent) transparent}`;
+    *:hover{scrollbar-color:color-mix(in srgb,var(--accent-highlight,var(--accent-color,#888)) 65%,transparent) transparent}
+    /* translucent: the window glass shows through the project page */
+    html,body,main,section,.section,.light-background,.dark-background{background:transparent!important}
+    /* no divider lines */
+    hr{display:none!important}
+    section,.section,header,footer,.section-title,.page-title .container{border-top:0!important;border-bottom:0!important}
+    /* soft, borderless cards (matches the Resume / Portfolio windows) */
+    [class~="card"],[class*="-card "],[class$="-card"]{border:0!important;border-radius:14px!important;box-shadow:none!important;background:color-mix(in srgb,var(--default-color,#fff) 6%,transparent)!important}`;
 
   /* =====================================================================
    * 2. HELPERS
