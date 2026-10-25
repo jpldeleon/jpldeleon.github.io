@@ -896,8 +896,7 @@
       requestAnimationFrame(function () { requestAnimationFrame(function () { body.classList.remove('sidebar-noanim'); }); });
       if (btn) btn.addEventListener('click', function () { setCollapsed(!body.classList.contains('sidebar-collapsed'), true); });
 
-      // Restart: reopen the notification panel; app.js closes windows and resets the About note
-      // by listening for "desktop:restart" and calling preventDefault(). Without it, reload.
+      
       document.addEventListener('click', function (e) {
         if (!e.target.closest('[data-power="restart"]')) return;
         var launcher = document.getElementById('app-menu'), mb = document.getElementById('dock-menu-btn');

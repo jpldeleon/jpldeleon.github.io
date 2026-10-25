@@ -40,21 +40,11 @@
   function ok(msg) { return add('[  <span class="bt-ok">OK</span>  ] ' + msg); }
 
   var LOG = [
-    ':: running early hook [udev]',
-    ':: running hook [udev]',
-    ':: Triggering uevents...',
-    ":: mounting '/dev/nvme0n1p2' on real root",
-    'root: clean, 214532/3055616 files, 5827430/12206336 blocks',
     'OK|Mounted /boot.',
-    'OK|Started Journal Service.',
-    'OK|Finished Load Kernel Modules.',
-    'OK|Reached target Local File Systems.',
     'OK|Started Network Manager.',
-    'OK|Reached target Network.',
     'OK|Started Technical SEO Crawler.',
     'OK|Started WordPress Service.',
     'OK|Started Portfolio Web Server.',
-    'OK|Reached target Multi-User System.',
     'OK|Reached target Graphical Interface.'
   ];
 
@@ -64,49 +54,44 @@
   }
 
   async function run() {
-    /* 1. GRUB menu (translucent), no countdown */
+    /* 1. GRUB: just the entries, centred over the wallpaper */
     scr.classList.add('is-grub');
     scr.innerHTML =
-      '<div class="bt-grub">' +
-        '<div class="bt-grub-head">GNU GRUB&nbsp; version 2.12</div>' +
-        '<ul class="bt-grub-box">' +
-          '<li class="is-sel">Arch Linux</li>' +
-          '<li>Arch Linux (fallback initramfs)</li>' +
-          '<li>Advanced options for Arch Linux</li>' +
-          '<li>UEFI Firmware Settings</li>' +
-        '</ul>' +
-        '<div class="bt-grub-help">Use the \u2191 and \u2193 keys to select which entry is highlighted.<br>' +
-        'Press enter to boot the selected OS, `e\' to edit the commands before booting or `c\' for a command-line.</div>' +
+      '<div class="bt-grub bt-min">' +
+      '<ul class="bt-grub-box">' +
+      '<li class="is-sel">Arch Linux</li>' +
+      '<li>Arch Linux (fallback initramfs)</li>' +
+      '</ul>' +
       '</div>';
     await sleep(T.grub);
 
-    /* 2. kernel handoff + boot log */
+    /* 2. boot log */
     scr.classList.remove('is-grub'); scr.innerHTML = '';
-    add('Loading Linux linux ...'); await sleep(T.loading);
-    add('Loading initial ramdisk ...'); await sleep(T.loading + 120);
     for (var i = 0; i < LOG.length; i++) {
       var l = LOG[i];
       if (l.indexOf('OK|') === 0) ok(l.slice(3)); else add(l, 'bt-dim');
-      await sleep(rand(T.logMin, T.logMax));
+      await sleep(rand(T.logMin, T.logMax) + 40);
     }
-    await sleep(350);
+    await sleep(450);
 
     /* 3. tty login (typed) */
-    add('');
+    scr.innerHTML = '';
     add('<span class="bt-arch">Arch Linux</span> ' + KERNEL + ' (tty1)');
     add('');
     var lg = promptLine(HOST + ' login: ');
-    await sleep(650);
+    await sleep(600);
     await typeInto(lg.typed, lg.caret, USER);
-    await sleep(260);
+    await sleep(240);
     lg.caret.remove();
-    var pw = promptLine('Password: ');          // like a real tty: nothing echoed
-    await sleep(1000);
+    var pw = promptLine('Password: ');
+    await sleep(500);
+    await typeInto(pw.typed, pw.caret, '********');   // one * per character
+    await sleep(300);
     pw.caret.remove();
     add('Last login: ' + lastLogin() + ' on tty1');
-    await sleep(260);
+    await sleep(240);
     var sh = promptLine('[' + USER + '@' + HOST + ' ~]$ ');
-    await sleep(500);
+    await sleep(450);
     await typeInto(sh.typed, sh.caret, 'startx');
     await sleep(380);
     sh.caret.remove();
@@ -116,7 +101,11 @@
     try { sessionStorage.setItem('boot-seen', '1'); } catch (e) { }
     boot.classList.add('is-out');
     window.dispatchEvent(new Event('boot:done'));          // app.js reveals the desktop now
-    removeTimer = setTimeout(function () { boot.remove(); de.classList.remove('boot-on'); playing = null; }, 800);
+    removeTimer = setTimeout(function () {
+      boot.remove(); de.classList.remove('boot-on'); playing = null;
+      de.classList.add('boot-ui-in');                      // panel + dock fade in over the wallpaper
+      setTimeout(function () { de.classList.remove('boot-ui-in'); }, 1000);
+    }, 800);
   }
 
   /* Build (or reuse) the #boot overlay, then play. Safe to call again after a restart. */

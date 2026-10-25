@@ -1952,7 +1952,7 @@ button.panel-clock { cursor: pointer; }
   .panel-clock { display: inline-flex; align-items: center; justify-content: center; font-size: 0; padding: 0 10px; min-width: 34px; }
   .panel-clock::after {                                  /* briefcase icon instead of the time */
     content: "\f0b1";
-    font-family: "Font Awesome 6 Free";
+    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free";
     font-weight: 900;
     font-size: 14px;
     line-height: 1;
@@ -2102,4 +2102,61 @@ html.desk-reveal .desk-right .cky-bar > i { animation-delay: .75s; }   /* bars g
 @media (max-width: 768px) {
   .panel-vol-menu { position: static; }
   .volume-popover.panel-popover { right: 0; left: auto; width: min(190px, 100%); }
+}
+
+/*--------------------------------------------------------------
+# Boot screen: minimal, centred, translucent over the bare wallpaper.
+# While html.boot-on is set only the wallpaper (and ambient scene) is visible: no panel, dock, widgets or windows.
+# (#boot selectors beat boot.css's .boot rules even though boot.css loads later.)
+--------------------------------------------------------------*/
+html.boot-on #top-panel,
+html.boot-on .linux-dock,
+html.boot-on .panel-notice,
+html.boot-on .hero-sidebar,
+html.boot-on .conky,
+html.boot-on .desk-right,
+html.boot-on #wm-layer {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#boot {
+  background: rgba(8, 10, 14, .42) !important;           /* translucent veil instead of black */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+#boot #bt-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 0 max(6vw, calc((100% - 520px) / 2)) !important;   /* a centred column, text left-aligned inside */
+  background: transparent !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .55);
+}
+
+/* GRUB: two entries, centred, nothing else */
+#boot #bt-screen.is-grub { align-items: center; padding: 0 !important; }
+#boot .bt-grub.bt-min { all: unset; display: block; width: max-content; }
+#boot .bt-min .bt-grub-box { all: unset; display: block; }
+#boot .bt-min .bt-grub-box li {
+  all: unset;
+  display: block;
+  white-space: pre;
+  padding: 4px 0;
+  opacity: .4;
+  letter-spacing: .02em;
+}
+#boot .bt-min .bt-grub-box li::before { content: "  "; }
+#boot .bt-min .bt-grub-box li.is-sel { opacity: 1; }
+#boot .bt-min .bt-grub-box li.is-sel::before { content: "> "; }
+
+/* panel + dock appear after the boot, over the wallpaper */
+@keyframes bt-ui-in { from { opacity: 0; } }
+html.boot-ui-in #top-panel,
+html.boot-ui-in .linux-dock { animation: bt-ui-in .6s ease backwards; }
+@media (prefers-reduced-motion: reduce) {
+  html.boot-ui-in #top-panel, html.boot-ui-in .linux-dock { animation: none; }
 }

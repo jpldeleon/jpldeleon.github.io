@@ -1,14 +1,3 @@
-/**
- * Background music (Satie, Gymnopedie No. 1) + a tiny "Sound" applet in the top panel.
- *  - Panel: just a speaker icon. Click = open / close the applet. Mouse wheel on it = volume, middle click = mute
- *    (the usual Linux panel gestures).
- *  - Applet: just a mute button and a volume slider (no text).
- *  - Playback starts when the boot sequence finishes (and again after a Restart). Browsers block sound until the
- *    visitor has interacted with the page, so if that is refused it starts on the first click, key or tap instead.
- *  - Volume and mute are remembered (localStorage). If the audio file is missing the controls grey out
- *    (the icon never disappears).
- * Put your recording at assets/audio/gymnopedie-no1.mp3 (see SRC). Load AFTER app.js.
- */
 (function () {
   'use strict';
   var SRC = 'assets/audio/gymnopedie-no1.mp3';
@@ -64,7 +53,7 @@
   }
 
   /* ---- playback ---- */
-  function fail() {                       // missing / unsupported file: grey the controls out, keep them
+  function fail() {
     if (failed) return;
     failed = true;
     range.disabled = true; muteBtn.disabled = true;
@@ -88,15 +77,15 @@
 
   function start(force) {
     if (started || failed) return;
-    if (booting() && force !== true) return;          // stay silent during the boot sequence
+    if (booting() && force !== true) return;
     var p = audio.play();
     if (!p || !p.then) { started = true; return; }
     p.then(function () { started = true; fadeIn(); detach(); })
-     .catch(function (e) { if (e && e.name !== 'NotAllowedError') fail(); else attach(); });   // NotAllowed = wait for a gesture
+     .catch(function (e) { if (e && e.name !== 'NotAllowedError') fail(); else attach(); });
   }
 
   var EVENTS = ['pointerdown', 'keydown', 'touchend'], attached = false;
-  function onGesture() { start(); }       // fallback: first interaction after the boot starts the music
+  function onGesture() { start(); }
   function attach() { if (attached) return; attached = true; EVENTS.forEach(function (n) { document.addEventListener(n, onGesture, true); }); }
   function detach() { attached = false; EVENTS.forEach(function (n) { document.removeEventListener(n, onGesture, true); }); }
   attach();
@@ -126,7 +115,7 @@
 
   muteBtn.addEventListener('click', toggleMute);
   range.addEventListener('input', function () { setVolume(range.value / 100); });
-  trigger.addEventListener('wheel', function (e) {          // wheel over the panel icon = volume
+  trigger.addEventListener('wheel', function (e) {
     e.preventDefault();
     setVolume((muted ? 0 : volume) + (e.deltaY < 0 ? WHEEL_STEP : -WHEEL_STEP));
   }, { passive: false });
@@ -143,5 +132,5 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) { setOpen(false); trigger.focus(); } });
 
   render();
-  start();                                // no boot sequence (already seen this session): try straight away
+  start();
 })();
