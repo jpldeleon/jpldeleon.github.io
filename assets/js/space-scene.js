@@ -106,6 +106,10 @@
     }
     if (palMoving) {
       if (tintFlood) tintFlood.setAttribute('flood-color', rgba(mix(palCur[1], palCur[0], 0.45), 1));
+      /* silhouette glow colour: space-scene.css reads these on the astronaut image */
+      var glow = mix(palCur[1], palCur[0], 0.4);
+      astro.style.setProperty('--astro-glow', rgba(glow, 0.55));
+      astro.style.setProperty('--astro-glow-soft', rgba(glow, 0.3));
       if (delta < 0.3) palMoving = false;
     }
   }
@@ -372,18 +376,6 @@
     ctx.beginPath(); ctx.arc(hx, hy, 1.3, 0, TWO_PI); ctx.fill();
   }
 
-  function drawHalo(ctx) {
-    var R = astH * 0.95;
-    var breathe = 1 + 0.12 * Math.sin(T * TWO_PI / 9);
-    var c = mix(palCur[1], palCur[0], 0.4);
-    var g = ctx.createRadialGradient(ax, ay, astH * 0.1, ax, ay, R);
-    g.addColorStop(0, rgba(c, 0.15 * breathe));
-    g.addColorStop(0.5, rgba(c, 0.06 * breathe));
-    g.addColorStop(1, rgba(c, 0));
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(ax, ay, R, 0, TWO_PI); ctx.fill();
-  }
-
   function drawOrb(ctx, x, y, r, c, a) {
     var g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, 0, x, y, r);
     g.addColorStop(0, rgba(mix(c, WHITE, 0.55), a));
@@ -439,7 +431,6 @@
     drawBodies(bctx);
     drawStars(bctx);
     drawShoot(bctx);
-    drawHalo(bctx);
     drawOrbs();          // orbs behind the astronaut -> back canvas, in front -> front canvas
   }
 

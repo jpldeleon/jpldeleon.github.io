@@ -17,7 +17,7 @@
   font-size: var(--pt-s);
   line-height: 1.45;
   color: var(--default-color);
-  background: var(--pt-bg);
+  background: color-mix(in srgb, var(--pt-bg), transparent 25%);   /* translucent: the window glass shows through */
   min-height: 100%;
   box-sizing: border-box;
   padding: 1em 1.3em 1.2em;
@@ -43,7 +43,6 @@
 .pt-side {
   container-type: inline-size;            /* logo scales with the pane */
   min-width: 0; padding-right: 1em;
-  border-right: 1px solid var(--pt-line);
   animation: pt-in .5s ease both;
 }
 /* right pane size: 1 = same as the left pane, 1.15 = 15% bigger, etc. */
@@ -192,7 +191,7 @@
 .pt-out .ok::after { content: ' ]'; color: var(--pt-dim); }
 .pt-out .go { color: var(--accent-highlight); font-weight: 700; }
 .pt-bar { display: inline-block; vertical-align: middle; width: 9em; max-width: 40%; height: .5em; border-radius: 3px; background: color-mix(in srgb, var(--default-color), transparent 85%); overflow: hidden; margin-left: .5em; }
-.pt-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent-color), var(--accent-highlight)); animation: pt-fill var(--pt-fill, .7s) ease-out forwards; }
+.pt-bar i { display: block; height: 100%; width: 0; background: var(--accent-highlight); animation: pt-fill var(--pt-fill, .7s) ease-out forwards; }
 .pt.is-busy .pt-list, .pt.is-busy .pt-menu { pointer-events: none; opacity: .75; }
 
 @keyframes pt-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }

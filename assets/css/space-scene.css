@@ -50,6 +50,17 @@
    space-scene.js changes the filter colour when the theme changes. */
 .space-astronaut-img { filter: url(#space-tint); }
 
+/* Glow that follows the astronaut's outline only (no round halo behind it).
+   drop-shadow uses the image's alpha, so it hugs the silhouette. Colours are set
+   by space-scene.js (--astro-glow / --astro-glow-soft) and follow the theme.
+   Make the glow tighter or stronger by changing the two blur radii (3px / 12px). */
+.space-astronaut-img {
+  filter:
+    url(#space-tint)
+    drop-shadow(0 0 3px var(--astro-glow, transparent))
+    drop-shadow(0 0 12px var(--astro-glow-soft, transparent));
+}
+
 @media print {
   .space-scene { display: none; }
 }

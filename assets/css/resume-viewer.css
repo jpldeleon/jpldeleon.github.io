@@ -10,8 +10,8 @@
   --rv-line: color-mix(in srgb, var(--default-color), transparent 88%);
   --rv-line-strong: color-mix(in srgb, var(--default-color), transparent 76%);
   --rv-dim: color-mix(in srgb, var(--default-color), transparent 34%);
-  --rv-side-bg: color-mix(in srgb, var(--background-color), #000 16%);
-  --rv-bar-bg: color-mix(in srgb, var(--background-color), #000 8%);
+  --rv-side-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 16%), transparent 30%);
+  --rv-bar-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 8%), transparent 30%);
   --rv-hl: var(--accent-highlight);
   --rv-hl-soft: color-mix(in srgb, var(--accent-highlight), transparent 86%);
   --rv-hl-line: color-mix(in srgb, var(--accent-highlight), transparent 55%);
@@ -38,7 +38,7 @@
   height: 100%;
   font-family: var(--default-font);
   color: var(--default-color);
-  background: var(--background-color);
+  background: transparent;   /* the window glass shows through */
   text-align: left;
 }
 
@@ -162,7 +162,7 @@
 .rv-photo { flex: 0 0 auto; width: 112px; height: 112px; border: 1px solid var(--rv-line-strong); border-radius: 12px; object-fit: cover; object-position: top center; background: var(--rv-side-bg); }
 .rv-profile p { margin: 0; }
 
-.rv-contact { margin: 0; padding: 0; list-style: none; max-width: 520px; border: 1px solid var(--rv-line-strong); border-radius: 8px; background: var(--surface-color); overflow: hidden; }
+.rv-contact { margin: 0; padding: 0; list-style: none; max-width: 520px; border: 1px solid var(--rv-line-strong); border-radius: 8px; background: color-mix(in srgb, var(--surface-color), transparent 40%); overflow: hidden; }
 .rv-contact li { display: flex; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--rv-line); font-size: 14.5px; overflow-wrap: anywhere; }
 .rv-contact li:last-child { border-bottom: 0; }
 .rv-contact i { width: 25px; flex: 0 0 auto; margin-right: 6px; color: var(--accent-color); }
@@ -214,7 +214,7 @@
 
 /* Skills */
 .rv-skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 900px; }
-.rv-card { padding: 16px 18px; border: 1px solid var(--rv-line-strong); border-radius: 8px; background: var(--surface-color); }
+.rv-card { padding: 16px 18px; border: 1px solid var(--rv-line-strong); border-radius: 8px; background: color-mix(in srgb, var(--surface-color), transparent 40%); }
 .rv-card h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--default-font); font-size: 15.5px; font-weight: 600; color: var(--heading-color); }
 .rv-card h3 i { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; font-size: 14px; color: var(--rv-hl); background: var(--rv-hl-soft); }
 .rv-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
@@ -252,7 +252,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 22px 18px 28px;
-  background: color-mix(in srgb, var(--background-color), #000 28%);
+  background: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 28%), transparent 30%);
 }
 
 .rv-page {
