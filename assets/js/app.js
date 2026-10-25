@@ -21,7 +21,7 @@
     },
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
-      adopt: '#portfolio', size: [760, 540], center: true
+      adopt: '#portfolio', size: [600, 540], center: true
     },
     socials: {
       title: 'Socials', icon: 'fa-solid fa-share-nodes', dockClass: 'dock-app',
@@ -67,7 +67,9 @@
     .linux-dock:not(.side-nav),.theme-dots,.app-menu,.terminal-overlay,.scroll-top,
     .breadcrumbs,.page-title,#footer,footer,#preloader{display:none!important}
     main,#footer{padding-bottom:0!important}
-    html{scroll-behavior:auto}`;
+    html{scroll-behavior:auto}
+    *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent-highlight,var(--accent-color,#888)) 40%,transparent) transparent}
+    *:hover{scrollbar-color:color-mix(in srgb,var(--accent-highlight,var(--accent-color,#888)) 65%,transparent) transparent}`;
 
   /* =====================================================================
    * 2. HELPERS
@@ -575,6 +577,42 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     w.dockBtn = b;
   }
 
+  /* Portfolio: shrink the window to its longest line of text (title, category, description, filter chip),
+     instead of the fixed 760px. Capped below the 2-column breakpoint (600px) so cards stay in one column.
+     Runs on open only: once you drag/resize, your size wins. */
+  function fitPortfolioWidth(w, refit) {
+    if (isMobile() || w.state !== 'normal' || !w.adopted) return;
+    const MAX = 599, MIN = 440;
+    const nodes = Array.from(w.body.querySelectorAll(
+      '.portfolio-info .content h4, .portfolio-info .content p, .portfolio-info .content .category,' +
+      ' .portfolio-filters li, .portfolio-terminal-title'));
+    let longest = 0, ln = null, oneLine = 0;
+    nodes.forEach(n => {                                   // natural (unwrapped) width of each text
+      const st = n.style, prev = [st.whiteSpace, st.width, st.maxWidth];
+      st.whiteSpace = 'nowrap'; st.width = 'max-content'; st.maxWidth = 'none';
+      const r = n.getBoundingClientRect();
+      if (r.width > longest) { longest = r.width; ln = n; oneLine = r.height; }
+      [st.whiteSpace, st.width, st.maxWidth] = prev;
+    });
+    if (!ln) return;
+    const vwMax = Math.min(MAX, window.innerWidth - 24);
+    let W = Math.max(Math.min(MIN, vwMax), Math.min(vwMax, Math.round(longest + 90)));
+    for (let i = 0; i < 60; i++) {                          // grow in small steps until that text no longer wraps
+      w.el.style.width = W + 'px';
+      if (ln.getBoundingClientRect().height <= oneLine + 2 || W >= vwMax) break;
+      W = Math.min(vwMax, W + 8);
+    }
+    const cx = w.rect.x + w.rect.w / 2;
+    w.rect.w = W;
+    w.rect.x = clamp(Math.round(cx - W / 2), 8, window.innerWidth - W - 8);
+    applyRect(w);
+    if (!refit && document.fonts && document.fonts.ready) {   // web fonts change text widths: measure once more
+      document.fonts.ready.then(() => {
+        if (wins.get(w.id) === w && w.rect.w === W) fitPortfolioWidth(w, true);
+      });
+    }
+  }
+
   function openWindow(def, rect, origin) {
     if (typeof def === 'string') def = defs.get(def);
     if (!def) return null;
@@ -590,6 +628,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     layer.appendChild(w.el);
     if (!def.lite) ensureDockBtn(w);            // lite windows have no dock icon
     applyRect(w);
+    if (def.id === 'portfolio' && !rect) fitPortfolioWidth(w);
     if (isMobile()) wins.forEach(applyRect);   // project dock may have just appeared: shift the others
     focusWindow(w);
     if (def.adopt && !def.static) { refreshLayout(w); watchLayout(w); }
@@ -1038,9 +1077,12 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const clock = document.getElementById('panel-clock');
     if (clock) {
       const tick = () => {
-        clock.textContent = new Date().toLocaleString([], {
+        const now = new Date();
+        clock.textContent = now.toLocaleString([], {
           weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
         });
+        /* phones show only the time (CSS reads data-short) */
+        clock.setAttribute('data-short', now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
       };
       tick();
       setInterval(tick, 15000);
@@ -1074,8 +1116,44 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     document.getElementById('cal-prev').addEventListener('click', () => shift(-1));
     document.getElementById('cal-next').addEventListener('click', () => shift(1));
     document.getElementById('cal-today').addEventListener('click', () => { view = monthStart(); render(); });
-    document.getElementById('panel-clock').addEventListener('click', () => { view = monthStart(); render(); });
+    document.getElementById('panel-clock').addEventListener('click', () => { view = monthStart(); render(); tickClock(); });
     render();
+
+    /* Left pane: live clock + date above the existing "Why hire me" content and buttons.
+       The date element (#cal-date) moves here, so render() keeps updating it. */
+    const pop = document.querySelector('.clock-popover'), why = pop && pop.querySelector('.cp-why');
+    let timeEl = null;
+    if (why && !why.querySelector('.cp-clock')) {
+      const box = el('div', { class: 'cp-clock' },
+        '<time class="cp-time" id="cp-time"></time><span class="cp-tz"></span>');
+      box.querySelector('.cp-tz').textContent = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').replace(/_/g, ' ');
+      if (dateLine) box.insertBefore(dateLine, box.querySelector('.cp-tz'));
+      why.prepend(box);
+      timeEl = box.querySelector('#cp-time');
+    }
+    const timeFmt = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+    function tickClock() {
+      if (!timeEl) return;
+      const now = new Date(), v = {};
+      timeFmt.formatToParts(now).forEach(p => { v[p.type] = p.value; });
+      timeEl.innerHTML = '<span class="t-main">' + v.hour + ':' + v.minute + '</span>' +
+        '<span class="t-sec">' + v.second + '</span>' + (v.dayPeriod ? '<span class="t-ap">' + v.dayPeriod + '</span>' : '');
+      timeEl.setAttribute('datetime', now.toISOString());
+      dateLine.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    }
+    /* Terminal dressing, same language as the About card: window bar + `$ command` prompts */
+    if (pop && !pop.querySelector('.cp-bar')) {
+      const prompt = cmd => el('p', { class: 'ab-cmd cp-cmd' }, '<span>$</span>' + cmd);
+      pop.prepend(el('div', { class: 'cp-bar', 'aria-hidden': 'true' },
+        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title">jp@portfolio: ~ \u2014 date &amp; calendar</span>'));
+      const clockBox = pop.querySelector('.cp-clock'), head = why && why.querySelector('.cp-head'), nav = pop.querySelector('.cp-cal-nav');
+      if (clockBox) clockBox.prepend(prompt('date'));
+      if (head) head.parentNode.insertBefore(prompt('cat why-hire-me.txt'), head);
+      if (nav) nav.parentNode.insertBefore(prompt('cal'), nav);
+    }
+
+    tickClock();
+    setInterval(() => { if (pop && !pop.hidden) tickClock(); }, 1000);   // only runs while the popover is open
   }
 
   /* =====================================================================
@@ -1095,12 +1173,66 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     return card;
   }
 
+  /* Hero as a 2-pane applet: [headerbar] / [hero (left) | About inspector (right)].
+     Pure re-parenting, so every id, listener and class keeps working. Below 992px the
+     wrapper is display:contents and the headerbar is hidden, so mobile is unchanged. */
+  function initHeroApplet() {
+    const hero = document.getElementById('hero'), about = document.getElementById('about');
+    if (!hero || !about || hero.classList.contains('hero-applet')) return;
+    const inner = hero.querySelector('.hero-sidebar-inner');
+    if (!inner) return;
+    const bar = el('div', { class: 'hero-bar', 'aria-hidden': 'true' },
+      '<span class="ab-dots"><i></i><i></i><i></i></span><span class="hero-bar-title">profile \u2014 John Paul De Leon</span>');
+    const body = el('div', { class: 'hero-body' });
+    inner.classList.add('hero-main');
+    about.classList.add('hero-inspector');
+    body.append(inner, about);                 // About may have been nested in the hero: it becomes the right pane
+    hero.classList.add('hero-applet');
+    hero.append(bar, body);
+  }
+
+  /* Conky is static in the bottom-left corner (pure CSS, nothing animates). This only measures it so the
+     hero panel stops above it, and hides it on screens too short to hold both. */
+  function initConkyStatic() {
+    const cky = document.getElementById('conky');
+    if (!cky) return;
+    const root = document.documentElement;
+    const fit = () => {
+      if (window.innerWidth < 992) { root.style.removeProperty('--hero-reserve'); cky.classList.remove('is-clipped'); return; }
+      const need = cky.offsetHeight + 16 + 14;                          // conky + its bottom gap + a gap above it
+      const heroRoom = window.innerHeight - (document.getElementById('top-panel')?.getBoundingClientRect().bottom || 0) - 8 - need;
+      const fits = heroRoom >= 300;                                      // the hero needs at least ~300px
+      cky.classList.toggle('is-clipped', !fits);
+      root.style.setProperty('--hero-reserve', (fits ? need : 120) + 'px');
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cky);
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    fit();
+  }
+
+  /* The hero applet is open on first load (desktop). Runs at boot and again on window load, in case another
+     script restores a collapsed state in between; stops caring once the person uses the bell themselves. */
+  function showHeroOnFirstLoad() {
+    const b = document.body, bell = document.getElementById('panel-notif-btn');
+    let touched = false;
+    if (bell) bell.addEventListener('click', () => { touched = true; });
+    const open = () => {
+      if (touched || window.innerWidth < 992 || !b.classList.contains('sidebar-collapsed')) return;
+      b.classList.add('sidebar-noanim');
+      b.classList.remove('sidebar-collapsed');
+      requestAnimationFrame(() => requestAnimationFrame(() => b.classList.remove('sidebar-noanim')));
+    };
+    open();
+    window.addEventListener('load', open);
+  }
+
   /* Open the card; with `show` also scroll it into view and pulse it */
   function flashAbout(show) {
     const card = setAbout(true);
     if (!card) return;
     const hero = document.getElementById('hero');
-    if (hero) hero.scrollTop = 0;
+    if (hero) { hero.scrollTop = 0; const hb = hero.querySelector('.hero-body'); if (hb) hb.scrollTop = 0; }
     if (show === false) return;
     card.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
     card.classList.remove('is-flash');
@@ -1299,8 +1431,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     });
 
     refreshDock();
+    initHeroApplet();
     initAbout();
     initConky();
+    initConkyStatic();
+    showHeroOnFirstLoad();
     initRightColumn();
     desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio

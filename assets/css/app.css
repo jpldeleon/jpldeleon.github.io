@@ -184,8 +184,7 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--accent-highlight), transparent 55%) transparent;
+  /* scrollbar colours come from the theme-aware rules at the end of desktop.css */
   /* Content inside reacts to the WINDOW's width, not the browser's */
   container: wm / inline-size;
 }
