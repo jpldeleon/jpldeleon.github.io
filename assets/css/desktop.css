@@ -227,7 +227,7 @@
 /* "Theme: Gruvbox" typed notice, tucked under the panel */
 .panel-notice {
   position: fixed;
-  top: calc(var(--panel-h) + 8px);
+  top: calc(var(--panel-h) + 92px);   /* below the theme popover, not on top of it */
   right: 12px;
   z-index: 5001;
   padding: 8px 14px;
@@ -241,6 +241,16 @@
 
 .panel-notice:empty {
   display: none;
+}
+
+/* Inside the theme menu: right under the theme popover, centred under the dots.
+   The popover is ~188px wide and right-aligned, so its centre is 94px from the right edge. */
+.panel-menu > .panel-notice {
+  position: absolute;
+  top: calc(100% + 82px);
+  right: 94px;
+  transform: translateX(50%);
+  white-space: nowrap;
 }
 
 /*--------------------------------------------------------------
@@ -1585,8 +1595,8 @@ button.panel-clock { cursor: pointer; }
     overflow-y: auto;
     overscroll-behavior: contain;
   }
-  .hero-applet .hero-inspector .ab-toggle i { transform: rotate(-90deg); }          /* points to the pane edge: collapse */
-  .hero-applet .hero-inspector.is-collapsed .ab-toggle i { transform: rotate(90deg); }
+  .hero-applet .hero-inspector .ab-toggle i { transform: rotate(90deg); }          /* expanded: arrow points left */
+  .hero-applet .hero-inspector.is-collapsed .ab-toggle i { transform: rotate(-90deg); }   /* collapsed: arrow points right */
 
   /* collapsed: slim rail that only keeps the toggle */
   .hero-applet .hero-inspector.is-collapsed { flex-basis: 44px; }
@@ -2385,6 +2395,10 @@ textarea {
 # About pane: compact type and spacing so the whole text fits without scrolling
 # (JetBrains Mono is wide). It only scrolls as a last resort on very short screens.
 --------------------------------------------------------------*/
+/* The About card is a <section>: cancel main.css's `section { padding: 60px 0 }`,
+   which was the empty space above "About me" and below the text. */
+.ab-term { padding: 0; margin: 0; }
+
 .ab-term .ab-term-body { padding: 10px 14px 12px; }
 
 .ab-term .ab-term-body h2 {

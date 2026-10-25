@@ -316,3 +316,72 @@
   .rv-profile { flex-direction: column; }
   .rv-job-row { flex-wrap: wrap; }
 }
+
+/*--------------------------------------------------------------
+# Redesign: soft, borderless cards and no divider lines.
+# Kept last so it wins over the earlier rules (including the small-window ones).
+--------------------------------------------------------------*/
+.rv {
+  --rv-card-bg: color-mix(in srgb, var(--default-color), transparent 94%);
+  --rv-card-bg-hover: color-mix(in srgb, var(--default-color), transparent 90%);
+  --rv-pill-bg: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+}
+
+/* dividers: sidebar edge, header, tree guide line, action bar, contact rows */
+.rv-side,
+.rv-head,
+.rv-actions,
+.rv-tree,
+.rv-items,
+.rv-contact li {
+  border: 0 !important;
+}
+
+/* cards: experience, education, certifications */
+.rv-job {
+  margin: 0 0 10px;
+  padding: 16px 18px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--rv-card-bg);
+  transition: background-color .15s ease;
+}
+.rv-job:hover { background: var(--rv-card-bg-hover); }
+.rv-job h3 { margin-bottom: 6px; }
+
+/* date as a small pill instead of a line of mono text */
+.rv-when {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--rv-pill-bg);
+  color: var(--accent-highlight);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* skill cards and contact box */
+.rv-card,
+.rv-contact {
+  border: 0;
+  border-radius: 14px;
+  background: var(--rv-card-bg);
+}
+.rv-chips li {
+  border: 0;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--default-color), transparent 91%);
+}
+
+/* pills: View, Text / PDF */
+.rv-link,
+.rv-mode {
+  border: 0;
+  background: var(--rv-card-bg);
+}
+.rv-link:hover,
+.rv-link:focus-visible,
+.rv-mode:hover { background: var(--rv-card-bg-hover); }
+.rv-mode[aria-pressed="true"] { background: var(--rv-pill-bg); }
+
+.rv-photo { border: 0; }

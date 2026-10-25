@@ -210,3 +210,41 @@
 @media (prefers-reduced-motion: reduce) {
   .pt *, .pt *::before, .pt *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
 }
+
+/*--------------------------------------------------------------
+# Redesign: project rows as soft cards, borderless category pills, no divider lines.
+--------------------------------------------------------------*/
+.pt {
+  --pt-card: color-mix(in srgb, var(--default-color), transparent 94%);
+  --pt-card-hover: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+}
+
+/* category pills */
+.pt .pt-cat {
+  border: 0;
+  border-radius: 999px;
+  padding: .35em .8em;
+  background: var(--pt-card);
+}
+.pt .pt-cat:hover { background: var(--pt-card-hover); }
+.pt .pt-cat.is-active { background: color-mix(in srgb, var(--accent-highlight), transparent 80%); }
+
+/* project rows as cards */
+.pt .pt-list { display: grid; gap: .4em; margin-bottom: .5em; }
+.pt .pt-link {
+  padding: .6em .9em;
+  border-radius: .8em;
+  background: var(--pt-card);
+}
+.pt .pt-link:hover,
+.pt .pt-link:focus-visible,
+.pt .pt-link.is-open {
+  padding-left: .9em;              /* no sliding on hover */
+  background: var(--pt-card-hover);
+}
+.pt .pt-link::before { display: none; }   /* the little hover arrow is not needed on cards */
+
+/* no divider above the launch prompt, no outlines on previews */
+.pt .pt-run { border-top: 0; }
+.pt .pt-preview { border: 0; }
+.pt .pt-inline img { border: 0; }
