@@ -267,13 +267,34 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* Space taken by the desktop icons on the left (desktop only) */
   function iconsW() { return 0; }     // desktop icons were removed
 
-  /* Restart: close every window and reset the About card */
+  /* Wallpaper first: hero, Conky, right column and the Portfolio window are hidden (html.desk-pre) until the
+     wallpaper has been on screen for a moment; then they fade in one after another. */
+  const WALLPAPER_MS = 1400, PORTFOLIO_AFTER_MS = 900;
+  function revealDesktop() {
+    return new Promise(res => setTimeout(() => {
+      const de = document.documentElement;
+      de.classList.remove('desk-pre');
+      de.classList.add('desk-reveal');                       // CSS animations (staggered)
+      /* replay the Experience bars' own grow animation so it plays now, as the column appears */
+      document.querySelectorAll('.desk-right .cky-bar > i').forEach(i => { i.style.animation = 'none'; void i.offsetWidth; i.style.animation = ''; });
+      setTimeout(() => de.classList.remove('desk-reveal'), 2400);
+      res();
+    }, WALLPAPER_MS));
+  }
+
+  /* Restart: close every window, reset the About card, replay the boot sequence, then reveal the desktop again */
+  let restarting = false;
   async function restartDesktop() {
+    if (restarting) return;
+    restarting = true;
+    document.documentElement.classList.add('desk-pre');      // hide the desktop behind the boot screen
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
     window.scrollTo(0, 0);
     flashAbout(false);
-    openWindow('portfolio');
+    if (window.Boot && window.Boot.play) await window.Boot.play();
+    await revealDesktop();
+    setTimeout(() => { if (!wins.has('portfolio')) openWindow('portfolio'); restarting = false; }, PORTFOLIO_AFTER_MS);
   }
 
   function initialRect(def) {
@@ -1083,6 +1104,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
         });
         /* phones show only the time (CSS reads data-short) */
         clock.setAttribute('data-short', now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
+        clock.title = isMobile() ? 'Why hire me' : 'Calendar';
       };
       tick();
       setInterval(tick, 15000);
@@ -1145,7 +1167,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (pop && !pop.querySelector('.cp-bar')) {
       const prompt = cmd => el('p', { class: 'ab-cmd cp-cmd' }, '<span>$</span>' + cmd);
       pop.prepend(el('div', { class: 'cp-bar', 'aria-hidden': 'true' },
-        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title">jp@portfolio: ~ \u2014 date &amp; calendar</span>'));
+        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title">jp@portfolio: ~<span class="cp-bar-desk"> \u2014 date &amp; calendar</span><span class="cp-bar-mob"> \u2014 why-hire-me</span></span>'));
       const clockBox = pop.querySelector('.cp-clock'), head = why && why.querySelector('.cp-head'), nav = pop.querySelector('.cp-cal-nav');
       if (clockBox) clockBox.prepend(prompt('date'));
       if (head) head.parentNode.insertBefore(prompt('cat why-hire-me.txt'), head);
@@ -1419,6 +1441,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
    * 9. BOOT
    * ===================================================================== */
   function boot() {
+    clearTimeout(window.__deskFailsafe);
     document.body.append(layer, store);
     buildDock();
     initPanel();
@@ -1441,19 +1464,16 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
 
-    /* Portfolio (terminal) opens by itself on first load, after the preloader.
+    /* First load: wallpaper alone for a moment, then hero + widgets fade in, then the Portfolio terminal opens.
        A deep-linked window keeps the focus. */
-    const openPortfolio = () => setTimeout(() => {
-      if (wins.size) return;
-      openWindow('portfolio');
-    }, 250);
-    const startPortfolio = () => {
-      if (document.readyState === 'complete') openPortfolio();
-      else window.addEventListener('load', openPortfolio, { once: true });
+    const startDesktop = async () => {
+      if (document.readyState !== 'complete') await new Promise(r => window.addEventListener('load', r, { once: true }));
+      await revealDesktop();
+      setTimeout(() => { if (!wins.size) openWindow('portfolio'); }, PORTFOLIO_AFTER_MS);
     };
     /* boot.js plays the GRUB / login sequence first (once per session) and fires "boot:done" */
-    if (document.documentElement.classList.contains('boot-on')) window.addEventListener('boot:done', startPortfolio, { once: true });
-    else startPortfolio();
+    if (document.documentElement.classList.contains('boot-on')) window.addEventListener('boot:done', startDesktop, { once: true });
+    else startDesktop();
   }
 
   window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };

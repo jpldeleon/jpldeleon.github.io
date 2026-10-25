@@ -2,12 +2,12 @@
  * Boot sequence: GRUB (Arch entries) -> boot log -> tty login -> desktop.
  * Plays once per browser session (sessionStorage 'boot-seen'). No input, no countdown.
  * Fires "boot:done" on window when finished (app.js waits for it before opening the terminal).
+ * window.Boot.play() runs it again (the Restart button uses this) and returns a Promise.
  * Load BEFORE app.js.
  */
 (function () {
   'use strict';
-  var de = document.documentElement, boot = document.getElementById('boot'), scr = document.getElementById('bt-screen');
-  if (!boot || !scr || !de.classList.contains('boot-on')) return;
+  var de = document.documentElement, scr = null, removeTimer = 0, playing = null;
 
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
   var rand = function (a, b) { return a + Math.random() * (b - a); };
@@ -112,12 +112,30 @@
     sh.caret.remove();
   }
 
-  function finish() {
+  function finish(boot) {
     try { sessionStorage.setItem('boot-seen', '1'); } catch (e) { }
     boot.classList.add('is-out');
-    window.dispatchEvent(new Event('boot:done'));          // app.js opens the terminal now
-    setTimeout(function () { boot.remove(); de.classList.remove('boot-on'); }, 800);
+    window.dispatchEvent(new Event('boot:done'));          // app.js reveals the desktop now
+    removeTimer = setTimeout(function () { boot.remove(); de.classList.remove('boot-on'); playing = null; }, 800);
   }
 
-  run().catch(function () { }).then(finish);               // never leave the visitor stuck
+  /* Build (or reuse) the #boot overlay, then play. Safe to call again after a restart. */
+  function play() {
+    if (playing) return playing;
+    clearTimeout(removeTimer);
+    var boot = document.getElementById('boot'), s = boot && document.getElementById('bt-screen');
+    if (!boot || !s) {
+      boot = document.createElement('div'); boot.className = 'boot'; boot.id = 'boot'; boot.setAttribute('aria-hidden', 'true');
+      s = document.createElement('div'); s.className = 'bt-screen'; s.id = 'bt-screen';
+      boot.appendChild(s); document.body.insertBefore(boot, document.body.firstChild);
+    }
+    scr = s; scr.className = 'bt-screen'; scr.innerHTML = '';
+    boot.classList.remove('is-out');
+    de.classList.add('boot-on');
+    playing = run().catch(function () { }).then(function () { finish(boot); });   // never leave the visitor stuck
+    return playing;
+  }
+
+  window.Boot = { play: play };
+  if (document.getElementById('boot') && document.getElementById('bt-screen') && de.classList.contains('boot-on')) play();
 })();

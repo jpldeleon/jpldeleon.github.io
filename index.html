@@ -14,6 +14,10 @@
   <script>
     /* boot sequence plays once per session */
     try { if (!sessionStorage.getItem('boot-seen')) document.documentElement.classList.add('boot-on'); } catch (e) { }
+    /* wallpaper first: hero, widgets and the Portfolio window stay hidden until app.js reveals them.
+       The timer is only a failsafe (app.js cancels it as soon as it starts). */
+    document.documentElement.classList.add('desk-pre');
+    window.__deskFailsafe = setTimeout(function () { document.documentElement.classList.remove('desk-pre'); }, 20000);
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -864,6 +868,8 @@
   <script src="assets/js/main.js"></script>
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
+  <!-- Background music + volume control (Satie, Gymnopedie No. 1) -->
+  <script src="assets/js/music.js"></script>
   <script src="assets/js/resume-viewer.js"></script>
   <!-- Terminal-style Portfolio app (after app.js: uses WindowManager) -->
   <script src="assets/js/portfolio-terminal.js"></script>

@@ -1942,3 +1942,164 @@ button.panel-clock { cursor: pointer; }
   .cp-why > .cp-clock { margin-top: 14px; }
   .cp-cal { padding: 14px 0 0; margin: 0 14px; border-left: 0; border-top: 1px dashed color-mix(in srgb, var(--accent-highlight), transparent 70%); background: none; }
 }
+
+/*--------------------------------------------------------------
+# Phones / small tablets (<= 768px): the panel button opens ONLY "Why hire me".
+# No clock, date or calendar there.
+--------------------------------------------------------------*/
+.cp-bar-mob { display: none; }
+@media (max-width: 768px) {
+  .panel-clock { display: inline-flex; align-items: center; justify-content: center; font-size: 0; padding: 0 10px; min-width: 34px; }
+  .panel-clock::after {                                  /* briefcase icon instead of the time */
+    content: "\f0b1";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .clock-popover { grid-template-columns: 1fr; left: auto; right: 0; width: min(420px, 100%); padding: 0; }
+  .clock-popover .cp-clock,
+  .clock-popover .cp-cal { display: none; }
+  .cp-bar-desk { display: none; }
+  .cp-bar-mob { display: inline; }
+
+  .cp-why { display: flex; flex-direction: column; padding: 14px 16px 16px; }
+  .cp-why > * { order: 0; margin-inline: 0; }
+}
+
+/*--------------------------------------------------------------
+# Wallpaper first, using the desktop's OWN animations.
+# html.desk-pre = the hero sits in its collapsed pose (the same pose the bell gives it),
+# so removing the class makes it slide down with the hero's real expand transition.
+# Conky / right column wait hidden, then fade in; the Experience bars, which have their
+# own grow animation, are held at 0 and play when they appear. app.js removes
+# desk-pre after the pause and adds desk-reveal for a couple of seconds.
+--------------------------------------------------------------*/
+@media (min-width: 992px) {
+  html.desk-pre .hero-sidebar {                       /* identical to body.sidebar-collapsed .hero-sidebar */
+    transform: translateY(calc(-100% - var(--panel-h) - 16px));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.26s ease, opacity 0.2s ease, visibility 0s linear 0.26s;
+  }
+}
+@media (max-width: 991px) {                           /* phones: the hero is page content, so it fades in */
+  html.desk-pre .hero-sidebar { opacity: 0; visibility: hidden; pointer-events: none; }
+  html.desk-reveal .hero-sidebar { animation: desk-in .7s var(--lx-ease, ease) .05s backwards; }
+}
+
+html.desk-pre .conky,
+html.desk-pre .desk-right,
+html.desk-pre #wm-layer {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+html.desk-pre .cky-bar > i,
+html.desk-pre .skl-dot { animation-play-state: paused; }
+
+@keyframes desk-in { from { opacity: 0; translate: 0 14px; } }
+html.desk-reveal .conky      { animation: desk-in .7s var(--lx-ease, ease) .40s backwards; }
+html.desk-reveal .desk-right { animation: desk-in .7s var(--lx-ease, ease) .60s backwards; }
+html.desk-reveal .desk-right .cky-bar > i { animation-delay: .75s; }   /* bars grow just after the column appears */
+
+@media (prefers-reduced-motion: reduce) {
+  html.desk-reveal .hero-sidebar,
+  html.desk-reveal .conky,
+  html.desk-reveal .desk-right { animation: none; }
+}
+
+/*--------------------------------------------------------------
+# Clock applet open / close = the profile card's motion:
+# slides down + fades in (.28s, --lx-ease); slides up + fades out (.26s ease).
+# It stays under the top panel's controls, so the travel is short instead of the hero's full height.
+--------------------------------------------------------------*/
+.clock-popover.panel-popover,
+.volume-popover.panel-popover {
+  transform-origin: top right;
+  transition: transform 0.28s var(--lx-ease), opacity 0.2s ease, visibility 0s linear 0s;
+}
+.clock-popover.panel-popover[hidden],
+.volume-popover.panel-popover[hidden] {
+  display: block;                                      /* keep it rendered so it can animate out */
+  transform: translateY(-22px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.26s ease, opacity 0.2s ease, visibility 0s linear 0.26s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clock-popover.panel-popover, .clock-popover.panel-popover[hidden],
+  .volume-popover.panel-popover, .volume-popover.panel-popover[hidden] { transition: none; }
+}
+
+/*--------------------------------------------------------------
+# Sound applet (music.js): speaker icon in the panel + a tiny popover with a mute button and a slider. No text.
+--------------------------------------------------------------*/
+.panel-vol-menu { position: relative; display: inline-flex; align-items: center; }
+.vol-trigger.is-muted { opacity: .7; }
+
+.volume-popover.panel-popover {
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 190px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 10px;
+}
+.volume-popover.panel-popover[hidden] { display: flex; }     /* stays rendered so it can animate out (see the clock rule) */
+.vol-mute {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent-highlight);
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.vol-mute:hover { background: color-mix(in srgb, var(--accent-highlight), transparent 84%); }
+.vol-mute:focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 2px; }
+.vol-mute[aria-pressed="true"] { color: color-mix(in srgb, var(--default-color), transparent 35%); }
+.vol-mute:disabled, .pv-range:disabled { opacity: .4; cursor: not-allowed; }
+
+.pv-range {
+  --pv: 35%;
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 4px;
+  margin: 0;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(to right, var(--accent-highlight) var(--pv), color-mix(in srgb, var(--accent-highlight), transparent 78%) var(--pv));
+}
+.pv-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  border: 0; border-radius: 50%;
+  background: var(--accent-highlight);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-highlight), transparent 80%);
+}
+.pv-range::-moz-range-thumb {
+  width: 13px; height: 13px;
+  border: 0; border-radius: 50%;
+  background: var(--accent-highlight);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-highlight), transparent 80%);
+}
+.pv-range:focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 4px; }
+
+/* small screens: anchor to the panel so the popover can never run off the screen edge */
+@media (max-width: 768px) {
+  .panel-vol-menu { position: static; }
+  .volume-popover.panel-popover { right: 0; left: auto; width: min(190px, 100%); }
+}
