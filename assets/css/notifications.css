@@ -1,0 +1,210 @@
+/*--------------------------------------------------------------
+# Notification center (top panel bell + dropdown feed), minimalist
+# Load AFTER desktop.css. Every colour comes from the theme
+# variables the panel already uses, so all five themes follow.
+--------------------------------------------------------------*/
+.notif-popover [hidden],
+.notif-badge[hidden] { display: none !important; }
+
+/* ----- bell + badge ----- */
+.panel-notif-menu .panel-btn { position: relative; }
+
+.notif-badge {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  box-sizing: border-box;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent-highlight);
+  color: var(--surface-color);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* exactly one unread = a plain dot, no number */
+.notif-badge.is-dot {
+  top: 4px;
+  right: 6px;
+  min-width: 0;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--surface-color), transparent 10%);
+}
+
+/* ----- dropdown (anchored to the right edge, under the bell) ----- */
+.notif-popover.panel-popover {
+  left: auto;
+  right: 0;
+  box-sizing: border-box;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  outline: 0;
+  z-index: 5002;
+  transform-origin: top right;
+  transition: transform 0.28s var(--lx-ease, cubic-bezier(.2, .8, .2, 1)), opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+/* stay rendered while hidden so it can animate out, same as the clock applet */
+.notif-popover.panel-popover[hidden] {
+  display: block;
+  transform: translateY(-22px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.26s ease, opacity 0.2s ease, visibility 0s linear 0.26s;
+}
+
+.notif-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 6px 6px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+}
+
+.notif-title {
+  margin: 0;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--default-color);
+  opacity: 0.65;
+}
+
+.notif-head-actions { display: flex; gap: 2px; }
+
+/* ----- icon buttons (header + per-row) ----- */
+.notif-act {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--default-color);
+  opacity: 0.65;
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.notif-act:hover:not(:disabled),
+.notif-act:focus-visible {
+  opacity: 1;
+  color: var(--accent-highlight);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 85%);
+  outline: none;
+}
+
+.notif-act:disabled { opacity: 0.25; cursor: default; }
+
+/* ----- feed: plain rows separated by hairlines, no cards ----- */
+.notif-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: min(320px, calc(100dvh - var(--panel-h, 48px) - 150px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.notif-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 8px 9px 22px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+}
+
+.notif-item:last-child { border-bottom: 0; }
+
+.notif-item.is-unread { cursor: pointer; }
+
+/* unread = small dot on the left edge + heavier text */
+.notif-item.is-unread::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--accent-highlight);
+}
+
+.notif-main { flex: 1 1 auto; min-width: 0; }
+
+.notif-msg {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--default-color);
+  overflow-wrap: anywhere;
+}
+
+.notif-item.is-unread .notif-msg {
+  font-weight: 600;
+  color: var(--heading-color, var(--default-color));
+}
+
+.notif-time {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+  color: var(--default-color);
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
+.notif-actions {
+  flex: none;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.notif-item:hover .notif-actions,
+.notif-item:focus-within .notif-actions { opacity: 1; }
+
+@media (hover: none) {
+  .notif-actions { opacity: 1; }
+}
+
+/* ----- empty state ----- */
+.notif-empty {
+  padding: 22px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--default-color);
+}
+
+.notif-empty span { opacity: 0.55; }
+
+/* small screens: anchor to the panel so the popover can never run off the screen edge */
+@media (max-width: 768px) {
+  .panel-notif-menu { position: static; }
+  .notif-popover.panel-popover { left: auto; right: 0; width: min(300px, 100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notif-popover.panel-popover,
+  .notif-popover.panel-popover[hidden] { transition: none; }
+}

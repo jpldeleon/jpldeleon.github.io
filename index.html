@@ -62,6 +62,7 @@
   <link href="assets/css/app.css" rel="stylesheet" />
   <!-- Desktop shell: top panel, sidebar widget, locked home page (must load last) -->
   <link href="assets/css/desktop.css" rel="stylesheet" />
+  <link href="assets/css/notifications.css" rel="stylesheet" />
   <link href="assets/css/resume-viewer.css" rel="stylesheet" />
   <!-- Terminal-style Portfolio app -->
   <link href="assets/css/portfolio-terminal.css" rel="stylesheet" />
@@ -189,6 +190,24 @@
             <div aria-hidden="true" class="cp-dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
             <div class="cp-grid" id="cal-grid" role="grid" aria-label="Month"></div>
           </section>
+        </div>
+      </div>
+      <!-- Notification center: bell + dropdown feed (assets/js/notifications.js) -->
+      <div class="panel-menu panel-notif-menu">
+        <button aria-controls="notif-pop" aria-expanded="false" aria-haspopup="true" aria-label="Notifications"
+          class="panel-btn panel-btn-icon" id="panel-bell-btn" title="Notifications" type="button"><i
+            aria-hidden="true" class="fa-solid fa-bell"></i><span class="notif-badge" hidden></span></button>
+        <div aria-label="Notifications" class="panel-popover notif-popover" hidden id="notif-pop" role="dialog">
+          <div class="notif-head">
+            <h3 class="notif-title">Notifications</h3>
+            <div class="notif-head-actions">
+              <button aria-label="Mark all as read" class="notif-act" data-act="read-all" title="Mark all as read" type="button"><i aria-hidden="true" class="fa-solid fa-check-double"></i></button>
+              <button aria-label="Clear all" class="notif-act" data-act="clear-all" title="Clear all" type="button"><i aria-hidden="true" class="fa-solid fa-trash-can"></i></button>
+            </div>
+          </div>
+          <ul class="notif-list" hidden></ul>
+          <div class="notif-empty"><span>No notifications</span></div>
+          <div aria-live="polite" class="visually-hidden notif-announce"></div>
         </div>
       </div>
     </div>
@@ -500,7 +519,7 @@
                 <li>
                   <button class="contact-info-copy js-copy-trigger" data-copy-type="phone"
                     data-copy-value="+639760109942" type="button">
-                    <i class="fa-solid fa-mobile-screen"></i> +63 ••• ••• 9942
+                    <i class="fa-solid fa-mobile-screen"></i> +63 9•• ••• ••2
                   </button>
                 </li>
                 <li><a href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"><i
@@ -867,6 +886,7 @@
   <script src="assets/js/main.js"></script>
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/notifications.js"></script>
   <!-- Background music + volume control (Satie, Gymnopedie No. 1) -->
   <script src="assets/js/music.js"></script>
   <script src="assets/js/resume-viewer.js"></script>
