@@ -1,0 +1,182 @@
+/*--------------------------------------------------------------
+# Hobbies & Interests: dotfiles applet (popover under the top-panel icon)
+# Load AFTER desktop.css. Colours come from the theme variables,
+# so every theme (Everforest, Aurora, Gruvbox, Monokai, Dracula)
+# follows automatically. Plain terminal look: monospace, a prompt,
+# `ls -A` on the left, `cat -n` output on the right. No borders,
+# no glow, no icons or images inside the content.
+--------------------------------------------------------------*/
+
+/* ----- popover shell: placed exactly like the clock applet -----
+   desktop.css anchors the clock popover to the top panel itself (position: static on
+   its .panel-menu), so "top: calc(100% + 8px)" is measured from the bottom edge of the
+   panel bar, not from the small button. Same here, so the gap under the bar matches. */
+.panel-dotfiles-menu,
+.panel-menu:has(> .df-popover) { position: static; }
+
+.top-panel .panel-popover.df-popover {
+  z-index: 5002;
+  box-sizing: border-box;
+  width: min(480px, calc(100vw - 16px));
+  height: auto;
+  max-height: calc(100dvh - var(--panel-h) - 24px);
+  padding: 0;
+  border: 0;
+  outline: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .42);
+  transform-origin: top right;
+  transition: transform 0.28s var(--lx-ease, ease), opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+/* same open/close motion as the clock: slide down + fade in, slide up + fade out */
+.top-panel .panel-popover.df-popover[hidden] {
+  display: block;
+  transform: translateY(-22px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.26s ease, opacity 0.2s ease, visibility 0s linear 0.26s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-panel .panel-popover.df-popover,
+  .top-panel .panel-popover.df-popover[hidden] { transition: none; }
+}
+
+#panel-dotfiles-btn[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+}
+
+/* ----- the window content ----- */
+.dotfiles {
+  container-type: inline-size;
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--default-color);
+  font-family: ui-monospace, "JetBrains Mono", "Fira Code", "Cascadia Code", SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.df-wrap {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr);
+  max-height: calc(100dvh - var(--panel-h) - 24px);
+}
+
+/* ----- left: ls -A ----- */
+.df-files {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--default-color), transparent 95%);
+}
+
+.df-file {
+  display: block;
+  width: 100%;
+  padding: 3px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--default-color);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.df-file::before {
+  content: "";
+  display: inline-block;
+  width: 2ch;
+  color: var(--accent-highlight);
+}
+
+.df-file:hover,
+.df-file:focus-visible {
+  opacity: 1;
+  color: var(--accent-highlight);
+  outline: none;
+}
+
+.df-file[aria-selected="true"] {
+  opacity: 1;
+  color: var(--accent-highlight);
+  font-weight: 600;
+}
+
+.df-file[aria-selected="true"]::before { content: ">"; }
+
+/* ----- right: only the active pane is shown, so there is no empty
+   space above or below the content ----- */
+.df-view {
+  min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 14px;
+}
+
+.df-pane[hidden] { display: none; }
+.df-pane:focus { outline: none; }
+
+.df-path {
+  margin: 0;
+  padding-top: 3px;
+  color: var(--default-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.df-ps  { color: var(--accent-highlight); font-weight: 600; }
+.df-dir { color: var(--accent-color); }
+
+.df-desc {
+  margin: 0 0 4px;
+  color: var(--default-color);
+  opacity: 0.6;
+}
+
+.df-desc::before { content: "# "; }
+
+/* cat -n */
+.df-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: df-n;
+}
+
+.df-list li {
+  counter-increment: df-n;
+  display: grid;
+  grid-template-columns: 2ch minmax(0, 1fr);
+  column-gap: 1.5ch;
+  padding: 0;
+}
+
+.df-list li::before {
+  content: counter(df-n);
+  text-align: right;
+  color: var(--accent-color);
+  opacity: 0.7;
+}
+
+/* narrow window: file names become a scrolling row above the content */
+@container (max-width: 460px) {
+  .df-wrap { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+  .df-files {
+    flex-direction: row;
+    padding: 0 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .df-file { width: auto; flex: none; padding: 2px 8px; white-space: nowrap; }
+  .df-file::before { display: none; }
+  .df-file[aria-selected="true"] { text-decoration: underline; text-underline-offset: 4px; }
+  .df-view { padding: 0 12px; }
+}

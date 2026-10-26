@@ -63,6 +63,7 @@
   <!-- Desktop shell: top panel, sidebar widget, locked home page (must load last) -->
   <link href="assets/css/desktop.css" rel="stylesheet" />
   <link href="assets/css/notifications.css" rel="stylesheet" />
+  <link href="assets/css/dotfiles.css" rel="stylesheet" />
   <link href="assets/css/resume-viewer.css" rel="stylesheet" />
   <!-- Terminal-style Portfolio app -->
   <link href="assets/css/portfolio-terminal.css" rel="stylesheet" />
@@ -162,6 +163,179 @@
       <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart"
         id="panel-restart-btn" title="Restart" type="button"><i aria-hidden="true"
           class="fa-solid fa-rotate-right"></i></button>
+      <!-- Hobbies & Interests applet: small popover next to the bell (assets/js/dotfiles.js) -->
+      <div class="panel-menu panel-dotfiles-menu">
+        <button aria-controls="df-pop" aria-expanded="false" aria-haspopup="dialog" aria-label="Hobbies and interests"
+          class="panel-btn panel-btn-icon" id="panel-dotfiles-btn" title="Hobbies &amp; Interests" type="button"><i
+            aria-hidden="true" class="fa-solid fa-code-branch"></i></button>
+        <div aria-label="Hobbies and interests" class="panel-popover df-popover" hidden id="df-pop" role="dialog">
+    <!-- Hobbies & Interests (dotfiles repository). Lives inside the dotfiles applet popover in the top panel. -->
+    <section aria-label="Hobbies and interests" class="dotfiles" id="dotfiles">
+      <div class="df-wrap">
+        <div aria-label="Categories" aria-orientation="vertical" class="df-files" role="tablist">
+          <button aria-controls="df-pane-tech" aria-selected="true" class="df-file" id="df-tab-tech" role="tab" tabindex="0" type="button">.tech</button>
+          <button aria-controls="df-pane-creative" aria-selected="false" class="df-file" id="df-tab-creative" role="tab" tabindex="-1" type="button">.creative</button>
+          <button aria-controls="df-pane-adventures" aria-selected="false" class="df-file" id="df-tab-adventures" role="tab" tabindex="-1" type="button">.adventures</button>
+          <button aria-controls="df-pane-gaming" aria-selected="false" class="df-file" id="df-tab-gaming" role="tab" tabindex="-1" type="button">.gaming</button>
+          <button aria-controls="df-pane-music" aria-selected="false" class="df-file" id="df-tab-music" role="tab" tabindex="-1" type="button">.music</button>
+          <button aria-controls="df-pane-dogs" aria-selected="false" class="df-file" id="df-tab-dogs" role="tab" tabindex="-1" type="button">.dogs</button>
+          <button aria-controls="df-pane-watchlist" aria-selected="false" class="df-file" id="df-tab-watchlist" role="tab" tabindex="-1" type="button">.watchlist</button>
+          <button aria-controls="df-pane-bucketlist" aria-selected="false" class="df-file" id="df-tab-bucketlist" role="tab" tabindex="-1" type="button">.bucketlist</button>
+          <button aria-controls="df-pane-career" aria-selected="false" class="df-file" id="df-tab-career" role="tab" tabindex="-1" type="button">.career</button>
+          <button aria-controls="df-pane-personal" aria-selected="false" class="df-file" id="df-tab-personal" role="tab" tabindex="-1" type="button">.personal</button>
+        </div>
+        <div class="df-view">
+        <div aria-labelledby="df-tab-tech" class="df-pane" id="df-pane-tech" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .tech</div>
+          <p class="df-desc">Technology, from Linux and open source to mobile, AI, and the web.</p>
+          <ul class="df-list">
+            <li>Linux &amp; desktop customization</li>
+            <li>Android &amp; mobile technology</li>
+            <li>Custom ROMs &amp; firmware</li>
+            <li>PC hardware &amp; troubleshooting</li>
+            <li>FOSS &amp; open-source software</li>
+            <li>Local LLMs &amp; AI tools</li>
+            <li>Web building &amp; experimentation</li>
+            <li>Coding &amp; learning</li>
+            <li>Tech news &amp; emerging technology</li>
+            <li>UI/UX design</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-creative" class="df-pane" hidden id="df-pane-creative" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .creative</div>
+          <p class="df-desc">Visual work: photography, editing, video, and graphic design.</p>
+          <ul class="df-list">
+            <li>Photoshop</li>
+            <li>Lightroom</li>
+            <li>DaVinci Resolve</li>
+            <li>Graphic design</li>
+            <li>Photography</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-adventures" class="df-pane" hidden id="df-pane-adventures" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .adventures</div>
+          <p class="df-desc">New places, scenic routes, and the outdoors.</p>
+          <ul class="df-list">
+            <li>Travel and exploring places</li>
+            <li>Motorcycles</li>
+            <li>Cars and driving</li>
+            <li>Cycling</li>
+            <li>Hiking and nature</li>
+            <li>Food trips and local cuisine</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-gaming" class="df-pane" hidden id="df-pane-gaming" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .gaming</div>
+          <p class="df-desc">Nostalgic classics, competitive shooters, strategy, sports, and racing.</p>
+          <ul class="df-list">
+            <li>Dota 1</li>
+            <li>NBA 2K</li>
+            <li>MAT Online</li>
+            <li>Counter-Strike</li>
+            <li>Red Alert</li>
+            <li>Battle Realms</li>
+            <li>Call of Duty</li>
+            <li>PUBG</li>
+            <li>Left 4 Dead</li>
+            <li>Need for Speed</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-music" class="df-pane" hidden id="df-pane-music" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .music</div>
+          <p class="df-desc">Alternative, nu metal, emo, punk, and metal.</p>
+          <ul class="df-list">
+            <li>Linkin Park</li>
+            <li>Metallica</li>
+            <li>Saosin</li>
+            <li>blink-182</li>
+            <li>My Chemical Romance</li>
+            <li>Silverstein</li>
+            <li>Yellowcard</li>
+            <li>Guns N&#x27; Roses</li>
+            <li>The Used</li>
+            <li>Green Day</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-dogs" class="df-pane" hidden id="df-pane-dogs" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .dogs</div>
+          <p class="df-desc">Life is better with dogs around. Bucky and Loki bring the chaos and the company.</p>
+        </div>
+        <div aria-labelledby="df-tab-watchlist" class="df-pane" hidden id="df-pane-watchlist" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .watchlist</div>
+          <p class="df-desc">Rewatchable sitcoms, superheroes, Ghibli, and comedy. Life of Pi is my favorite movie.</p>
+          <ul class="df-list">
+            <li>The Office</li>
+            <li>The Big Bang Theory</li>
+            <li>How I Met Your Mother</li>
+            <li>Brooklyn Nine-Nine</li>
+            <li>Friends</li>
+            <li>Modern Family</li>
+            <li>Young Sheldon</li>
+            <li>Marvel movies and series</li>
+            <li>Studio Ghibli movies</li>
+            <li>Life of Pi (all-time favorite)</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-bucketlist" class="df-pane" hidden id="df-pane-bucketlist" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .bucketlist</div>
+          <p class="df-desc">Adventure, the outdoors, and the world beyond the beaten path.</p>
+          <ul class="df-list">
+            <li>Solo camping</li>
+            <li>Bikepacking</li>
+            <li>Skydiving</li>
+            <li>Skiing</li>
+            <li>Snowboarding</li>
+            <li>Downhill longboarding</li>
+            <li>Wingsuit flying</li>
+            <li>Hang gliding</li>
+            <li>Paragliding</li>
+            <li>Surfing</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-career" class="df-pane" hidden id="df-pane-career" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .career</div>
+          <p class="df-desc">Working toward a future in search, development, data, and artificial intelligence.</p>
+          <ul class="df-list">
+            <li>SEO Specialist</li>
+            <li>Web Developer</li>
+            <li>Software Developer</li>
+            <li>Data Scientist</li>
+            <li>AI Engineer</li>
+          </ul>
+        </div>
+        <div aria-labelledby="df-tab-personal" class="df-pane" hidden id="df-pane-personal" role="tabpanel" tabindex="0">
+          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .personal</div>
+          <p class="df-desc">Building a life around freedom, nature, and the things I enjoy.</p>
+          <ul class="df-list">
+            <li>A home by the sea, lake, river, or surrounded by nature</li>
+            <li>Off-grid living</li>
+            <li>Dream cars</li>
+            <li>Dream motorcycles</li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </section><!-- /Dotfiles Section -->
+        </div>
+      </div>
+      <!-- Notification center: bell + dropdown feed (assets/js/notifications.js) -->
+      <div class="panel-menu panel-notif-menu">
+        <button aria-controls="notif-pop" aria-expanded="false" aria-haspopup="true" aria-label="Notifications"
+          class="panel-btn panel-btn-icon" id="panel-bell-btn" title="Notifications" type="button"><i
+            aria-hidden="true" class="fa-solid fa-bell"></i><span class="notif-badge" hidden></span></button>
+        <div aria-label="Notifications" class="panel-popover notif-popover" hidden id="notif-pop" role="dialog">
+          <div class="notif-head">
+            <h3 class="notif-title">Notifications</h3>
+            <div class="notif-head-actions">
+              <button aria-label="Mark all as read" class="notif-act" data-act="read-all" title="Mark all as read" type="button"><i aria-hidden="true" class="fa-solid fa-check-double"></i></button>
+              <button aria-label="Clear all" class="notif-act" data-act="clear-all" title="Clear all" type="button"><i aria-hidden="true" class="fa-solid fa-trash-can"></i></button>
+            </div>
+          </div>
+          <ul class="notif-list" hidden></ul>
+          <div class="notif-empty"><span>No notifications</span></div>
+          <div aria-live="polite" class="visually-hidden notif-announce"></div>
+        </div>
+      </div>
       <div class="panel-menu panel-clock-menu">
         <button aria-controls="clock-popover" aria-expanded="false" aria-haspopup="dialog" class="panel-btn panel-clock"
           id="panel-clock" title="Calendar" type="button"></button>
@@ -190,24 +364,6 @@
             <div aria-hidden="true" class="cp-dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
             <div class="cp-grid" id="cal-grid" role="grid" aria-label="Month"></div>
           </section>
-        </div>
-      </div>
-      <!-- Notification center: bell + dropdown feed (assets/js/notifications.js) -->
-      <div class="panel-menu panel-notif-menu">
-        <button aria-controls="notif-pop" aria-expanded="false" aria-haspopup="true" aria-label="Notifications"
-          class="panel-btn panel-btn-icon" id="panel-bell-btn" title="Notifications" type="button"><i
-            aria-hidden="true" class="fa-solid fa-bell"></i><span class="notif-badge" hidden></span></button>
-        <div aria-label="Notifications" class="panel-popover notif-popover" hidden id="notif-pop" role="dialog">
-          <div class="notif-head">
-            <h3 class="notif-title">Notifications</h3>
-            <div class="notif-head-actions">
-              <button aria-label="Mark all as read" class="notif-act" data-act="read-all" title="Mark all as read" type="button"><i aria-hidden="true" class="fa-solid fa-check-double"></i></button>
-              <button aria-label="Clear all" class="notif-act" data-act="clear-all" title="Clear all" type="button"><i aria-hidden="true" class="fa-solid fa-trash-can"></i></button>
-            </div>
-          </div>
-          <ul class="notif-list" hidden></ul>
-          <div class="notif-empty"><span>No notifications</span></div>
-          <div aria-live="polite" class="visually-hidden notif-announce"></div>
         </div>
       </div>
     </div>
@@ -887,6 +1043,7 @@
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
   <script src="assets/js/notifications.js"></script>
+  <script src="assets/js/dotfiles.js"></script>
   <!-- Background music + volume control (Satie, Gymnopedie No. 1) -->
   <script src="assets/js/music.js"></script>
   <script src="assets/js/resume-viewer.js"></script>

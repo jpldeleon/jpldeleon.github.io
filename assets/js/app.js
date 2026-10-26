@@ -10,14 +10,15 @@
    * 1. CONFIG: the only part you normally need to edit
    * ===================================================================== */
 
-  /* Permanent apps (Resume, Portfolio, Socials).
+  /* Apps (Resume, Portfolio, Socials). Hobbies & Interests is no longer a window:
+     it is a top-panel applet (#df-pop, assets/js/dotfiles.js).
      `adopt` = an existing <section> on the page that is moved
      into the window (so your current Resume/Portfolio markup is reused as-is).
      `url` = optional iframe fallback if that section isn't on the page. */
   const APPS = {
     resume: {
       title: 'Resume', icon: 'fa-solid fa-timeline', dockClass: 'dock-resume',
-      adopt: '#resume', size: [980, 700]
+      adopt: '#resume', size: [800, 600]
     },
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
