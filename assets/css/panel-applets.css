@@ -9,6 +9,10 @@
 #   - volume and theme dots: small popovers centred under their own icon
 # The icons are 26px tall inside the 38px bar, so a popover that hangs from
 # its icon needs 6px more to land on the same line as the others.
+#
+# Phones (<= 640px): the big applets (notifications, hobbies, clock) span the
+# bar exactly (same left + right edge as the pill, same width), and the small
+# ones (volume, theme) stay centred under their icon. Same 8px gap everywhere.
 --------------------------------------------------------------*/
 :root {
   --panel-edge: 12px;         /* the bar's left / right inset from the screen (.top-panel left/right) */
@@ -31,18 +35,56 @@
   box-shadow: var(--panel-pop-shadow);
 }
 
-/* 2) volume + theme dots: centred under their icon, same line as the others */
-@media (min-width: 769px) {
-  .panel-menu:has(> #panel-theme-pop) { display: flex; }     /* wrapper = button height */
+/* 2) volume + theme dots: centred under their icon, same line as the others (all screen sizes).
+   desktop.css pins .panel-vol-menu to the bar on <= 768px; it has to be the icon's own box here,
+   otherwise "50%" would be the middle of the bar. */
+.panel-menu:has(> #panel-theme-pop) { display: flex; }     /* wrapper = button height */
+.panel-vol-menu { position: relative; }
+
+.top-panel .volume-popover.panel-popover,
+.top-panel #panel-theme-pop.panel-popover {
+  /* 50% = half the icon's box. The box is centred in the bar, so this lands the popover on the bar's
+     bottom edge + the gap whatever height the icon has (26px on desktop, taller touch targets on phones) */
+  top: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap));
+  left: 50%;
+  right: auto;
+  translate: -50% 0;        /* centres on the icon without touching the open/close transform */
+  max-width: calc(100vw - 2 * var(--panel-edge));
+  box-shadow: var(--panel-pop-shadow);
+}
+
+/* the volume popover is 190px; its desktop.css phone rule (min(190px, 100%)) would shrink it to the icon's width */
+.top-panel .volume-popover.panel-popover { width: 190px; }
+
+/* the "Theme: Gruvbox" notice sits under the popover, so it follows the popover's centre (the icon's centre) */
+.panel-menu:has(> #panel-theme-pop) > .panel-notice { right: 50%; transform: translateX(50%); }
+
+/* phones: the big three span the bar, edge to edge with the pill (same as the clock already did) */
+@media (max-width: 640px) {
+  .top-panel .notif-popover.panel-popover,
+  .top-panel .clock-popover.panel-popover,
+  .top-panel .df-popover.panel-popover {
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* very narrow phones (<= 340px): not enough room to centre under the icon, so the two small ones
+   hang from the bar's right end instead of running off the left edge */
+@media (max-width: 340px) {
+  .panel-vol-menu,
+  .panel-menu:has(> #panel-theme-pop) { position: static; }
 
   .top-panel .volume-popover.panel-popover,
   .top-panel #panel-theme-pop.panel-popover {
-    top: calc((var(--panel-bar-h) + var(--panel-btn-h)) / 2 + var(--panel-pop-gap));
-    left: 50%;
-    right: auto;
-    translate: -50% 0;        /* centres on the icon without touching the open/close transform */
-    box-shadow: var(--panel-pop-shadow);
+    top: calc(100% + var(--panel-pop-gap));
+    left: auto;
+    right: 0;
+    translate: none;
   }
+  .panel-menu:has(> #panel-theme-pop) > .panel-notice { right: 94px; top: calc(100% + 78px); }
 }
 
 /* 3) the hero panel (left): same gap, the bar's left edge */
@@ -52,4 +94,37 @@
     left: var(--panel-edge);
     box-shadow: var(--panel-pop-shadow);
   }
+}
+/* phones: one even rhythm for every icon in the bar.
+   Before: the bar was a 2-column grid (left group / right group) and each group had its own gap
+   (connect icons 2px, buttons 4px) and its own widths (28px links, 30px buttons, 34px+ briefcase),
+   so the spacing jumped from icon to icon. Now the two groups dissolve into the bar, every icon gets
+   the same 32px slot, and the free space is shared equally between all of them.
+   The wrappers (.panel-menu, .panel-vol-menu...) stay real boxes, so the popovers still anchor to them. */
+@media (max-width: 640px) {
+  .top-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+
+  .panel-left,
+  .panel-right,
+  .panel-connect { display: contents; }
+
+  .top-panel .panel-connect a,
+  .top-panel .panel-btn,
+  .top-panel .panel-clock {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    width: 32px;
+    min-width: 0;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .top-panel .panel-sep { margin: 0; }
 }
