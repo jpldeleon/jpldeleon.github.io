@@ -288,6 +288,7 @@ html body .pi-content { padding-bottom: 0; }
   font-size: calc(1em * var(--pi-main-scale));
   padding: 1.47em 1.605em 2.675em;
   scroll-behavior: auto;
+  container: pi-main / size;   /* lets .pi-stage size itself from the pane (cqw / cqh) */
 }
 
 .pi-view[hidden] { display: none; }
@@ -310,9 +311,17 @@ html body .pi-content { padding-bottom: 0; }
 
 /* ---------- Walkthrough (video + filmstrip) ---------- */
 .pi-stage {
-  /* the player is sized so the filmstrip stays visible below it */
-  width: min(100%, max(calc(var(--pi-s) * var(--pi-main-scale) * 20.1), calc((100vh - var(--pi-chrome) - var(--pi-bar-h) - var(--pi-s) * var(--pi-main-scale) * 4.15 - var(--pi-s) * var(--pi-main-scale) * 12.7) * 16 / 9)));
-  width: min(100%, max(calc(var(--pi-s) * var(--pi-main-scale) * 20.1), calc((100dvh - var(--pi-chrome) - var(--pi-bar-h) - var(--pi-s) * var(--pi-main-scale) * 4.15 - var(--pi-s) * var(--pi-main-scale) * 12.7) * 16 / 9)));
+  /* Fluid player. Sized from the reading PANE (a size container, see .pi-scroll), not from the
+     viewport, so it follows the window while you drag-resize it:
+       - as wide as the pane allows (100%)
+       - but never taller than the pane minus a peek of the filmstrip (16:9 maths on 100cqh)
+       - and never narrower than --pi-stage-floor, so a short, wide window keeps a usable player
+         and the pane just scrolls down to the filmstrip instead of shrinking the video to a postage stamp. */
+  --pi-film-peek: 12.7em;                           /* room kept for the filmstrip header + thumbs */
+  --pi-stage-floor: max(20.1em, 60cqw);             /* smallest the player may get */
+  width: 100%;                                      /* fallback for browsers without container units */
+  max-width: 100%;
+  margin-inline: auto;                              /* centred when height-limited */
   aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
@@ -320,6 +329,12 @@ html body .pi-content { padding-bottom: 0; }
   border-radius: .669em;
   background: #000;
   box-shadow: 0 14px 40px rgba(0, 0, 0, .35);
+}
+
+@supports (width: 1cqw) {
+  .pi-stage {
+    width: min(100%, max(var(--pi-stage-floor), calc((100cqh - var(--pi-film-peek)) * 16 / 9)));
+  }
 }
 
 .pi-stage iframe {
