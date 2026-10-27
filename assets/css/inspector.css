@@ -626,6 +626,76 @@ a.pi-thumb[hidden] { display: none; }
   .pi-props { grid-template-columns: minmax(0, 1fr); }
   .pi-props dt { border-right: 0; border-bottom: 0; padding-bottom: 0; }
 }
+/*--------------------------------------------------------------
+# Container-driven layout
+# .pi-scroll is a size container (cqw / cqh / @container pi-main), so
+# everything below follows the WINDOW, not the video and not the viewport.
+#   wide pane   -> walkthrough = video + scrolling screenshot panel side
+#                  by side, chapters straight underneath (nothing hidden
+#                  below the fold because of the video)
+#   narrow pane -> the stacked layout above
+#   text pages  -> use the full pane width; 2 columns when very wide
+--------------------------------------------------------------*/
+@container pi-main (min-width: 40em) {
+
+  /* walkthrough: [ video | screenshots ] / chapters */
+  .pi-view:has(> .pi-stage):not([hidden]) {
+    --pi-gap: 1.2em;
+    --pi-side: clamp(13em, 24cqw, 19em);                 /* min width of the screenshot panel */
+    --pi-vid-w: min(
+      100cqw - var(--pi-side) - var(--pi-gap),           /* leave the panel its space */
+      (100cqh - 3em) * 16 / 9                            /* and never taller than the pane */
+    );
+    display: grid;
+    grid-template-columns: max(var(--pi-vid-w), 50cqw - var(--pi-gap)) minmax(0, 1fr);
+    grid-template-areas: "stage film" "chapters chapters";
+    gap: 1.5em var(--pi-gap);
+    align-items: start;
+  }
+
+  .pi-view:has(> .pi-stage) .pi-stage { grid-area: stage; width: 100%; margin: 0; }
+
+  /* screenshot panel: same height as the video, scrolls inside */
+  .pi-view:has(> .pi-stage) .pi-film { grid-area: film; position: relative; align-self: stretch; margin: 0; min-width: 0; }
+  .pi-view:has(> .pi-stage) .pi-film-head { height: 1.7em; margin: 0; align-items: center; }
+  .pi-view:has(> .pi-stage) .pi-strip {
+    position: absolute;
+    inset: 2.2em 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+    grid-auto-rows: max-content;                        /* keep thumbs at their natural height */
+    align-content: start;
+    gap: .8em;
+    padding: 0 .3em .3em 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: none;
+  }
+  .pi-view:has(> .pi-stage) .pi-strip .pi-thumb { flex: none; }
+
+  .pi-view:has(> .pi-stage) .pi-chapters { grid-area: chapters; max-width: none; margin: 0; }
+}
+
+/* chapters, features, tools: as many columns as fit */
+.pi-chapters ul { grid-template-columns: repeat(auto-fill, minmax(min(100%, 20em), 1fr)); }
+.pi-features    { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19em), 1fr)); max-width: none; }
+.pi-props       { max-width: min(100%, 72em); }
+.pi-tools       { max-width: none; }
+
+@media (max-width: 760px) {
+  .pi-props { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* text pages: fill the pane instead of a narrow 74ch strip */
+.pi-doc { max-width: min(100%, 100ch); }
+
+@container pi-main (min-width: 72em) {
+  .pi-doc { max-width: none; columns: 2; column-gap: 3.4em; column-rule: 1px solid var(--pi-line); }
+  .pi-doc .pi-h { break-after: avoid; }
+  .pi-doc p { orphans: 3; widows: 3; }
+  .pi-doc .pi-h:first-child { margin-top: 0; }
+}
+
 /* ---------- Embedded in a desktop window: the title bar is hidden ----------
    The grid above reserves a first row for the title bar. With that bar gone, the
    sidebar and content land in that first (auto) row and the 1fr row below stays empty,
@@ -643,13 +713,13 @@ html.wm-embedded .pi { grid-template-rows: minmax(0, 1fr); }
 # Embedded in a desktop window (html.wm-embedded, set by app.js)
 # 1) The base size follows the WINDOW width, like the terminal
 #    (inside the frame, 1vw is 1% of the window width).
-#    ~1000px window = 10px sidebar / 11.5px text; floor 10px, cap 13px.
+#    ~1000px window = 11px sidebar / 12.7px text; floor 10.5px, cap 14px.
 # 2) The card rules app.js injects (EMBED_CSS) use px. These selectors are
 #    one class more specific, so the same shapes now scale with the base.
 #    (.pi.pi = extra specificity, no !important needed.)
 --------------------------------------------------------------*/
 html.wm-embedded .pi.pi {
-  --pi-s: clamp(10px, 1vw, 13px);
+  --pi-s: clamp(10.5px, 1.1vw, 14px);
   --pc-r: calc(var(--pi-s) * 1.08);        /* 14px at 13px */
   --pc-r-in: calc(var(--pi-s) * .77);      /* 10px at 13px */
 }
