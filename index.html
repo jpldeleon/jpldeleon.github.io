@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&amp;family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&amp;display=swap"
     rel="stylesheet" />
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -70,6 +70,8 @@
   <link href="assets/css/boot.css" rel="stylesheet" />
   <!-- Ambient space scene (astronaut, orbs, stars) -->
   <link href="assets/css/space-scene.css" rel="stylesheet" />
+  <!-- Shared position for every top-panel applet (load last) -->
+  <link href="assets/css/panel-applets.css" rel="stylesheet" />
 </head>
 
 <body class="index-page">
@@ -103,27 +105,6 @@
       <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
         class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
           aria-hidden="true" class="fa-solid fa-angle-up"></i></button>
-      <div class="panel-menu">
-        <button aria-controls="panel-work-menu" aria-expanded="false" aria-haspopup="true" class="panel-btn"
-          id="panel-work-btn" type="button"><i class="fa-solid fa-folder-open"></i><span class="panel-btn-label">My Work</span><i
-            class="fa-solid fa-chevron-down panel-caret"></i></button>
-        <ul class="panel-dropdown" hidden id="panel-work-menu" role="menu">
-          <li><button data-app="project:auditkit" role="menuitem" type="button"><i
-                class="fa-solid fa-magnifying-glass-chart"></i>AuditKit</button></li>
-          <li><button data-app="project:nothingtechblob" role="menuitem" type="button"><i
-                class="fa-solid fa-mobile-screen"></i>NothingTechBlob</button></li>
-          <li><button data-app="project:badlands-ink" role="menuitem" type="button"><i
-                class="fa-solid fa-pen-nib"></i>Badlands Ink</button></li>
-          <li><button data-app="project:johnoffthewall" role="menuitem" type="button"><i
-                class="fa-solid fa-fire-flame-curved"></i>John Off the Wall</button></li>
-          <li><button data-app="project:pixellog" role="menuitem" type="button"><i
-                class="fa-brands fa-mintbit"></i>PixelLog</button></li>
-          <li><button data-app="project:jamporudex" role="menuitem" type="button"><i
-                class="fa-brands fa-leanpub"></i>JamporuDEX</button></li>
-          <li><button data-app="project:route196" role="menuitem" type="button"><i
-                class="fa-solid fa-shield"></i>Route 196</button></li>
-        </ul>
-      </div>
       <span aria-hidden="true" class="panel-sep"></span>
       <nav aria-label="Connect" class="panel-connect">
         <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
@@ -173,20 +154,19 @@
     <section aria-label="Hobbies and interests" class="dotfiles" id="dotfiles">
       <div class="df-wrap">
         <div aria-label="Categories" aria-orientation="vertical" class="df-files" role="tablist">
-          <button aria-controls="df-pane-tech" aria-selected="true" class="df-file" id="df-tab-tech" role="tab" tabindex="0" type="button">.tech</button>
-          <button aria-controls="df-pane-creative" aria-selected="false" class="df-file" id="df-tab-creative" role="tab" tabindex="-1" type="button">.creative</button>
-          <button aria-controls="df-pane-adventures" aria-selected="false" class="df-file" id="df-tab-adventures" role="tab" tabindex="-1" type="button">.adventures</button>
-          <button aria-controls="df-pane-gaming" aria-selected="false" class="df-file" id="df-tab-gaming" role="tab" tabindex="-1" type="button">.gaming</button>
-          <button aria-controls="df-pane-music" aria-selected="false" class="df-file" id="df-tab-music" role="tab" tabindex="-1" type="button">.music</button>
-          <button aria-controls="df-pane-dogs" aria-selected="false" class="df-file" id="df-tab-dogs" role="tab" tabindex="-1" type="button">.dogs</button>
-          <button aria-controls="df-pane-watchlist" aria-selected="false" class="df-file" id="df-tab-watchlist" role="tab" tabindex="-1" type="button">.watchlist</button>
-          <button aria-controls="df-pane-bucketlist" aria-selected="false" class="df-file" id="df-tab-bucketlist" role="tab" tabindex="-1" type="button">.bucketlist</button>
-          <button aria-controls="df-pane-career" aria-selected="false" class="df-file" id="df-tab-career" role="tab" tabindex="-1" type="button">.career</button>
-          <button aria-controls="df-pane-personal" aria-selected="false" class="df-file" id="df-tab-personal" role="tab" tabindex="-1" type="button">.personal</button>
+          <button aria-controls="df-pane-tech" aria-selected="true" class="df-file" id="df-tab-tech" role="tab" tabindex="0" type="button">Tech</button>
+          <button aria-controls="df-pane-creative" aria-selected="false" class="df-file" id="df-tab-creative" role="tab" tabindex="-1" type="button">Creative</button>
+          <button aria-controls="df-pane-adventures" aria-selected="false" class="df-file" id="df-tab-adventures" role="tab" tabindex="-1" type="button">Adventures</button>
+          <button aria-controls="df-pane-gaming" aria-selected="false" class="df-file" id="df-tab-gaming" role="tab" tabindex="-1" type="button">Gaming</button>
+          <button aria-controls="df-pane-music" aria-selected="false" class="df-file" id="df-tab-music" role="tab" tabindex="-1" type="button">Music</button>
+          <button aria-controls="df-pane-dogs" aria-selected="false" class="df-file" id="df-tab-dogs" role="tab" tabindex="-1" type="button">Dogs</button>
+          <button aria-controls="df-pane-watchlist" aria-selected="false" class="df-file" id="df-tab-watchlist" role="tab" tabindex="-1" type="button">Watchlist</button>
+          <button aria-controls="df-pane-bucketlist" aria-selected="false" class="df-file" id="df-tab-bucketlist" role="tab" tabindex="-1" type="button">Bucket list</button>
+          <button aria-controls="df-pane-career" aria-selected="false" class="df-file" id="df-tab-career" role="tab" tabindex="-1" type="button">Career</button>
+          <button aria-controls="df-pane-personal" aria-selected="false" class="df-file" id="df-tab-personal" role="tab" tabindex="-1" type="button">Personal</button>
         </div>
         <div class="df-view">
         <div aria-labelledby="df-tab-tech" class="df-pane" id="df-pane-tech" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .tech</div>
           <p class="df-desc">Technology, from Linux and open source to mobile, AI, and the web.</p>
           <ul class="df-list">
             <li>Linux &amp; desktop customization</li>
@@ -202,7 +182,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-creative" class="df-pane" hidden id="df-pane-creative" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .creative</div>
           <p class="df-desc">Visual work: photography, editing, video, and graphic design.</p>
           <ul class="df-list">
             <li>Photoshop</li>
@@ -213,7 +192,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-adventures" class="df-pane" hidden id="df-pane-adventures" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .adventures</div>
           <p class="df-desc">New places, scenic routes, and the outdoors.</p>
           <ul class="df-list">
             <li>Travel and exploring places</li>
@@ -225,7 +203,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-gaming" class="df-pane" hidden id="df-pane-gaming" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .gaming</div>
           <p class="df-desc">Nostalgic classics, competitive shooters, strategy, sports, and racing.</p>
           <ul class="df-list">
             <li>Dota 1</li>
@@ -241,7 +218,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-music" class="df-pane" hidden id="df-pane-music" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .music</div>
           <p class="df-desc">Alternative, nu metal, emo, punk, and metal.</p>
           <ul class="df-list">
             <li>Linkin Park</li>
@@ -257,11 +233,9 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-dogs" class="df-pane" hidden id="df-pane-dogs" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .dogs</div>
           <p class="df-desc">Life is better with dogs around. Bucky and Loki bring the chaos and the company.</p>
         </div>
         <div aria-labelledby="df-tab-watchlist" class="df-pane" hidden id="df-pane-watchlist" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .watchlist</div>
           <p class="df-desc">Rewatchable sitcoms, superheroes, Ghibli, and comedy. Life of Pi is my favorite movie.</p>
           <ul class="df-list">
             <li>The Office</li>
@@ -277,7 +251,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-bucketlist" class="df-pane" hidden id="df-pane-bucketlist" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .bucketlist</div>
           <p class="df-desc">Adventure, the outdoors, and the world beyond the beaten path.</p>
           <ul class="df-list">
             <li>Solo camping</li>
@@ -293,7 +266,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-career" class="df-pane" hidden id="df-pane-career" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .career</div>
           <p class="df-desc">Working toward a future in search, development, data, and artificial intelligence.</p>
           <ul class="df-list">
             <li>SEO Specialist</li>
@@ -304,7 +276,6 @@
           </ul>
         </div>
         <div aria-labelledby="df-tab-personal" class="df-pane" hidden id="df-pane-personal" role="tabpanel" tabindex="0">
-          <div class="df-path"><span class="df-ps">jp@portfolio</span>:<span class="df-dir">~/hobbies</span>$ cat .personal</div>
           <p class="df-desc">Building a life around freedom, nature, and the things I enjoy.</p>
           <ul class="df-list">
             <li>A home by the sea, lake, river, or surrounded by nature</li>
@@ -314,6 +285,10 @@
           </ul>
         </div>
         </div>
+        <a class="df-cta" href="https://johnoffthewall.github.io/" rel="noopener noreferrer" target="_blank">
+          <span class="df-cta-name">John Off the Wall</span>
+          <span class="df-cta-desc">Me, off the wall.</span>
+        </a>
       </div>
     </section><!-- /Dotfiles Section -->
         </div>

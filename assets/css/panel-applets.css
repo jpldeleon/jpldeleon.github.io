@@ -1,0 +1,55 @@
+/*--------------------------------------------------------------
+# Panel applets: one gap between the top bar and every applet
+# Load LAST: after desktop.css, notifications.css, dotfiles.css.
+#
+# Every applet opens --panel-pop-gap (8px) below the bar. Where they sit
+# sideways is different on purpose:
+#   - notifications (bell), hobbies, clock: hang from the bar, flush with its
+#     right end; the hero panel: flush with its left end
+#   - volume and theme dots: small popovers centred under their own icon
+# The icons are 26px tall inside the 38px bar, so a popover that hangs from
+# its icon needs 6px more to land on the same line as the others.
+--------------------------------------------------------------*/
+:root {
+  --panel-edge: 12px;         /* the bar's left / right inset from the screen (.top-panel left/right) */
+  --panel-pop-gap: 8px;       /* space between the bar and the applet under it */
+  --panel-btn-h: 26px;        /* height of the buttons inside the bar (.panel-btn) */
+  --panel-pop-shadow: 0 14px 40px rgba(0, 0, 0, .4);
+}
+
+/* 1) bell, hobbies, clock: anchored to the bar */
+.panel-notif-menu,
+.panel-clock-menu,
+.panel-dotfiles-menu { position: static; }
+
+.top-panel .notif-popover.panel-popover,
+.top-panel .clock-popover.panel-popover,
+.top-panel .df-popover.panel-popover {
+  top: calc(100% + var(--panel-pop-gap));
+  right: 0;
+  left: auto;
+  box-shadow: var(--panel-pop-shadow);
+}
+
+/* 2) volume + theme dots: centred under their icon, same line as the others */
+@media (min-width: 769px) {
+  .panel-menu:has(> #panel-theme-pop) { display: flex; }     /* wrapper = button height */
+
+  .top-panel .volume-popover.panel-popover,
+  .top-panel #panel-theme-pop.panel-popover {
+    top: calc((var(--panel-bar-h) + var(--panel-btn-h)) / 2 + var(--panel-pop-gap));
+    left: 50%;
+    right: auto;
+    translate: -50% 0;        /* centres on the icon without touching the open/close transform */
+    box-shadow: var(--panel-pop-shadow);
+  }
+}
+
+/* 3) the hero panel (left): same gap, the bar's left edge */
+@media (min-width: 992px) {
+  .hero-sidebar {
+    top: calc(var(--panel-h) + var(--panel-pop-gap));
+    left: var(--panel-edge);
+    box-shadow: var(--panel-pop-shadow);
+  }
+}

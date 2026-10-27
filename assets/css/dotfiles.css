@@ -57,21 +57,26 @@
   background: transparent;
   color: var(--default-color);
   font-family: ui-monospace, "JetBrains Mono", "Fira Code", "Cascadia Code", SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 13px;
+  font-size: var(--fs-base);
   line-height: 1.55;
+  padding: 0;            /* the applet is a <section>: cancel main.css's `section { padding: 60px 0 }` (the big top/bottom gap) */
+  margin: 0;
 }
+
+.top-panel .panel-popover .dotfiles { padding: 0; margin: 0; }
 
 .df-wrap {
   display: grid;
   grid-template-columns: 148px minmax(0, 1fr);
-  max-height: calc(100dvh - var(--panel-h) - 24px);
+  grid-template-rows: minmax(0, 1fr) auto;      /* content, then the John Off the Wall link */
+  height: min(290px, calc(100dvh - var(--panel-h) - 24px));   /* fixed size: every tab is the same height, long ones scroll */
 }
 
-/* ----- left: ls -A ----- */
+/* ----- left: file names ----- */
 .df-files {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 6px 0;
   overflow-y: auto;
   background: color-mix(in srgb, var(--default-color), transparent 95%);
 }
@@ -89,13 +94,6 @@
   opacity: 0.65;
 }
 
-.df-file::before {
-  content: "";
-  display: inline-block;
-  width: 2ch;
-  color: var(--accent-highlight);
-}
-
 .df-file:hover,
 .df-file:focus-visible {
   opacity: 1;
@@ -109,66 +107,69 @@
   font-weight: 600;
 }
 
-.df-file[aria-selected="true"]::before { content: ">"; }
-
 /* ----- right: only the active pane is shown, so there is no empty
    space above or below the content ----- */
 .df-view {
   min-width: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0 14px;
+  padding: 6px 14px;
+}
+
+/* thin scrollbars in the theme colour, only visible when a pane is longer than the applet */
+.df-files,
+.df-view {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent-highlight), transparent 35%) transparent;
 }
 
 .df-pane[hidden] { display: none; }
 .df-pane:focus { outline: none; }
 
-.df-path {
-  margin: 0;
-  padding-top: 3px;
-  color: var(--default-color);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .df-ps  { color: var(--accent-highlight); font-weight: 600; }
 .df-dir { color: var(--accent-color); }
 
 .df-desc {
-  margin: 0 0 4px;
-  color: var(--default-color);
-  opacity: 0.6;
+  margin: 0 0 6px;
+  color: color-mix(in srgb, var(--default-color), transparent 45%);   /* muted: the intro line */
 }
 
-.df-desc::before { content: "# "; }
 
-/* cat -n */
+/* plain list */
 .df-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  counter-reset: df-n;
 }
 
-.df-list li {
-  counter-increment: df-n;
-  display: grid;
-  grid-template-columns: 2ch minmax(0, 1fr);
-  column-gap: 1.5ch;
-  padding: 0;
+.df-list li { padding: 1px 0; color: var(--heading-color, var(--default-color)); }   /* brighter than the description */
+
+/* ----- CTA: plain link to John Off the Wall (spans both columns, pinned at the bottom) ----- */
+.df-cta {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px 9px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  color: var(--default-color);
+  text-decoration: none;
 }
 
-.df-list li::before {
-  content: counter(df-n);
-  text-align: right;
-  color: var(--accent-color);
-  opacity: 0.7;
-}
+.df-cta-name { white-space: nowrap; color: var(--accent-highlight); text-underline-offset: 3px; transition: color .15s ease; }   /* the link */
+.df-cta-desc { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.55; transition: opacity .15s ease; }
+.df-cta-desc::after { content: " \2192"; }
+
+.df-cta:hover .df-cta-name,
+.df-cta:focus-visible .df-cta-name { text-decoration: underline; }
+.df-cta:hover .df-cta-desc,
+.df-cta:focus-visible .df-cta-desc { opacity: 1; }
+.df-cta:focus-visible { outline: none; }
 
 /* narrow window: file names become a scrolling row above the content */
 @container (max-width: 460px) {
-  .df-wrap { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+  .df-wrap { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; }
   .df-files {
     flex-direction: row;
     padding: 0 8px;
@@ -176,7 +177,6 @@
     overflow-y: hidden;
   }
   .df-file { width: auto; flex: none; padding: 2px 8px; white-space: nowrap; }
-  .df-file::before { display: none; }
   .df-file[aria-selected="true"] { text-decoration: underline; text-underline-offset: 4px; }
-  .df-view { padding: 0 12px; }
+  .df-view { padding: 6px 12px; }
 }

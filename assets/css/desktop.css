@@ -4,6 +4,15 @@
 # Top panel, compact sidebar, stats widget, toast position and
 # the locked (non-scrolling) home page.
 --------------------------------------------------------------*/
+/* Type scale (one set of sizes for the whole desktop; windows scale from --fs-base) */
+:root {
+  --fs-xs: 11px;      /* small labels, captions */
+  --fs-sm: 12px;      /* secondary text */
+  --fs-base: 13px;    /* UI text: panel, menus, popovers */
+  --fs-read: 15px;    /* reading text (windows use base x 1.15) */
+  --fs-title: 17px;   /* panel / window titles */
+}
+
 :root {
   --panel-gap: 10px;                                   /* floating gap above / beside the bar */
   --panel-bar-h: 38px;                                 /* the visible pill */
@@ -33,7 +42,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25);
   color: var(--default-color);
   font-family: var(--nav-font);
-  font-size: 13px;
+  font-size: var(--fs-base);
   line-height: 1;
 }
 
@@ -134,7 +143,7 @@
 
 .panel-popover-label {
   margin-bottom: 8px;
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.65;
@@ -235,7 +244,7 @@
   background: #1e1e2e;
   color: var(--accent-highlight);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   pointer-events: none;
 }
 
@@ -656,7 +665,7 @@ html body .lightbox-window-panel .win-btn:focus-visible {
   background-color: color-mix(in srgb, var(--surface-color), var(--background-color) 50%);
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
   color: var(--default-color);
-  font-size: 13px;
+  font-size: var(--fs-base);
   font-weight: 500;
   text-decoration: none;
   transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
@@ -697,7 +706,7 @@ html body .lightbox-window-panel .win-btn:focus-visible {
   height: 44px;
   gap: 8px;
   padding: 0 8px;
-  font-size: 13px;
+  font-size: var(--fs-base);
   font-weight: 500;
   text-decoration: none;
 }
@@ -758,7 +767,7 @@ html body .lightbox-window-panel .win-btn:focus-visible {
 .role-code .role-comment .typed,
 .role-code .role-comment .typed-cursor {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
+  font-size: var(--fs-base);
   font-style: italic;
   color: color-mix(in srgb, var(--default-color), transparent 45%);
 }
@@ -851,14 +860,14 @@ html body .lightbox-window-panel .win-btn:focus-visible {
     transition: left 0.2s ease, width 0.2s ease;
   }
   .wm-titlebar { min-height: 44px; }
-  .wm-title { font-size: 13px; }
+  .wm-title { font-size: var(--fs-base); }
   .wm-body { overscroll-behavior: contain; }
   .wm-body > section .container { padding-inline: 14px; }
 }
 
 @media (max-width: 360px) {
   .hero-sidebar .sidebar-contact .sidebar-contact-item,
-  .hero-sidebar .sidebar-cta { font-size: 12px; gap: 6px; }
+  .hero-sidebar .sidebar-cta { font-size: var(--fs-sm); gap: 6px; }
   .linux-dock .dock-item { width: 40px; height: 40px; }
 }
 
@@ -1099,7 +1108,7 @@ body.sidebar-collapsed {
   user-select: none;
   -webkit-user-select: none;
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
+  font-size: var(--fs-sm);
   line-height: 1.35;
   color: color-mix(in srgb, var(--default-color), transparent 18%);
 }
@@ -1115,13 +1124,13 @@ body.sidebar-collapsed {
 }
 
 .cky-host {
-  font-size: 12px;
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--heading-color);
 }
 
 .cky-sub {
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   opacity: 0.55;
 }
 
@@ -1136,7 +1145,7 @@ body.sidebar-collapsed {
 }
 
 .cky-label {
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--accent-highlight);
@@ -1150,7 +1159,7 @@ body.sidebar-collapsed {
 
 .cky-sub-row {
   margin: 5px 0 0;
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   opacity: 0.6;
 }
 
@@ -1267,7 +1276,7 @@ body.sidebar-collapsed {
 
 .skl-desc {
   grid-column: 2;
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   line-height: 1.35;
   opacity: 0.6;
 }
@@ -1286,7 +1295,7 @@ body.sidebar-collapsed {
   margin: 6px 0 2px;
   padding: 6px 12px 4px;
   font-family: var(--nav-font);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1374,7 +1383,7 @@ body.sidebar-collapsed {
 
 .ab-term h2 {
   margin: 0 0 8px;
-  font-size: 1rem;
+  font-size: var(--fs-read);
   line-height: 1.3;
   font-weight: 700;
   color: var(--heading-color);
@@ -1382,7 +1391,7 @@ body.sidebar-collapsed {
 
 .ab-term-body > p:not(.ab-cmd) {
   margin: 0 0 10px;
-  font-size: .82rem;
+  font-size: var(--fs-base);
   line-height: 1.6;
   color: color-mix(in srgb, var(--default-color), transparent 10%);
 }
@@ -1422,8 +1431,8 @@ button.panel-clock { cursor: pointer; }
 .clock-popover[hidden] { display: none; }
 
 .cp-why { min-width: 0; }
-.cp-head { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--heading-color); }
-.cp-sub { margin: 4px 0 12px; font-size: .78rem; color: color-mix(in srgb, var(--default-color), transparent 25%); }
+.cp-head { margin: 0; font-size: var(--fs-title); font-weight: 700; color: var(--heading-color); }
+.cp-sub { margin: 4px 0 12px; font-size: var(--fs-sm); color: color-mix(in srgb, var(--default-color), transparent 25%); }
 
 .cp-list { display: grid; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
 .cp-list li {
@@ -1436,8 +1445,8 @@ button.panel-clock { cursor: pointer; }
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 82%);
 }
 .cp-list i { color: var(--accent-highlight); text-align: center; padding-top: 2px; }
-.cp-list b { display: block; font-size: .82rem; color: var(--heading-color); }
-.cp-list span { display: block; margin-top: 2px; font-size: .76rem; line-height: 1.5; color: color-mix(in srgb, var(--default-color), transparent 12%); }
+.cp-list b { display: block; font-size: var(--fs-base); color: var(--heading-color); }
+.cp-list span { display: block; margin-top: 2px; font-size: var(--fs-sm); line-height: 1.5; color: color-mix(in srgb, var(--default-color), transparent 12%); }
 
 .cp-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .cp-btn {
@@ -1450,7 +1459,7 @@ button.panel-clock { cursor: pointer; }
   border: 1px solid var(--accent-highlight);
   background: transparent;
   color: var(--accent-highlight);
-  font: 600 .78rem/1 inherit;
+  font: 600 var(--fs-sm)/1 inherit;
   cursor: pointer;
 }
 .cp-btn.is-primary { background: var(--accent-highlight); color: var(--contrast-color); }
@@ -1462,7 +1471,7 @@ button.panel-clock { cursor: pointer; }
   padding-left: 18px;
   border-left: 1px solid color-mix(in srgb, var(--default-color), transparent 86%);
 }
-.cp-date { margin: 0 0 10px; font-size: .9rem; font-weight: 600; color: var(--heading-color); }
+.cp-date { margin: 0 0 10px; font-size: var(--fs-read); font-weight: 600; color: var(--heading-color); }
 
 .cp-cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-bottom: 6px; }
 .cp-month, .cp-nav {
@@ -1473,7 +1482,7 @@ button.panel-clock { cursor: pointer; }
   color: var(--heading-color);
   cursor: pointer;
 }
-.cp-month { flex: 1; font: 600 .84rem/1 inherit; }
+.cp-month { flex: 1; font: 600 var(--fs-base)/1 inherit; }
 .cp-nav { width: 30px; color: var(--accent-highlight); }
 .cp-month:hover, .cp-nav:hover { background: var(--lx-hover, color-mix(in srgb, var(--accent-highlight), transparent 84%)); }
 
@@ -1485,7 +1494,7 @@ button.panel-clock { cursor: pointer; }
   aspect-ratio: 1;
   margin: 1px;
   border-radius: 50%;
-  font-size: .78rem;
+  font-size: var(--fs-sm);
   font-variant-numeric: tabular-nums;
   color: var(--default-color);
 }
@@ -1638,7 +1647,7 @@ button.panel-clock { cursor: pointer; }
 }
 .cp-clock .cp-date {
   margin: 4px 0 0;
-  font-size: .86rem;
+  font-size: var(--fs-base);
   font-weight: 500;
   color: var(--accent-highlight);
 }
@@ -1650,7 +1659,7 @@ button.panel-clock { cursor: pointer; }
 /* Phones: the time stays in the panel (it used to disappear), the popover spans the screen */
 @media (max-width: 520px) {
   .panel-clock { display: inline-flex; font-size: 0; padding: 0 8px; }
-  .panel-clock::after { content: attr(data-short); font-size: 12px; }
+  .panel-clock::after { content: attr(data-short); font-size: var(--fs-sm); }
 }
 @media (max-width: 640px) {
   .clock-popover {
@@ -1729,21 +1738,21 @@ button.panel-clock { cursor: pointer; }
   color: var(--heading-color);
 }
 .cp-time .t-sec {
-  font: 500 1rem/1 'JetBrains Mono', monospace;
+  font: 500 var(--fs-read)/1 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
   color: var(--accent-highlight);
 }
 .cp-time .t-sec::before { content: ":"; }
-.cp-time .t-ap { margin-left: 2px; font: 600 .78rem/1 var(--nav-font, inherit); color: color-mix(in srgb, var(--default-color), transparent 30%); }
-.cp-clock .cp-date { margin: 6px 0 0; font-size: .88rem; font-weight: 600; color: var(--heading-color); }
+.cp-time .t-ap { margin-left: 2px; font: 600 var(--fs-sm)/1 var(--nav-font, inherit); color: color-mix(in srgb, var(--default-color), transparent 30%); }
+.cp-clock .cp-date { margin: 6px 0 0; font-size: var(--fs-read); font-weight: 600; color: var(--heading-color); }
 .cp-tz { font: 500 10.5px/1.4 'JetBrains Mono', monospace; color: color-mix(in srgb, var(--default-color), transparent 40%); }
 
-.cp-head { font-size: .98rem; }
-.cp-sub { margin: 2px 0 10px; font-size: .76rem; }
+.cp-head { font-size: var(--fs-read); }
+.cp-sub { margin: 2px 0 10px; font-size: var(--fs-sm); }
 .cp-list { gap: 6px; margin: 0 0 12px; }
 .cp-list li { padding: 8px 10px; border-radius: 10px; background: var(--cp-card); border-color: var(--cp-line); }
-.cp-list b { font-size: .8rem; }
-.cp-list span { font-size: .74rem; }
+.cp-list b { font-size: var(--fs-base); }
+.cp-list span { font-size: var(--fs-sm); }
 
 /* right pane: calendar card, rows spread evenly to match the left column's height */
 .cp-cal {
@@ -1775,7 +1784,7 @@ button.panel-clock { cursor: pointer; }
   height: 34px;
   border-radius: 9px;
   font-family: inherit;               /* the old `font: ... inherit` shorthand was invalid and dropped */
-  font-size: .78rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
@@ -1792,7 +1801,7 @@ button.panel-clock { cursor: pointer; }
 .cp-btn.is-primary:hover { background: var(--accent-highlight); filter: brightness(1.1); }
 .cp-btn:active, #cal-today:active, .cp-nav:active, .cp-month:active { transform: translateY(1px); }
 .cp-nav { width: 34px; padding: 0; border: 0; background: transparent; color: var(--accent-highlight); }
-.cp-month { flex: 1; border: 0; background: transparent; color: var(--heading-color); font-size: .86rem; }
+.cp-month { flex: 1; border: 0; background: transparent; color: var(--heading-color); font-size: var(--fs-base); }
 .cp-nav:hover, .cp-month:hover { background: color-mix(in srgb, var(--accent-highlight), transparent 84%); }
 .cp-btn:focus-visible, #cal-today:focus-visible, .cp-nav:focus-visible, .cp-month:focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 2px; }
 
@@ -1836,7 +1845,7 @@ button.panel-clock { cursor: pointer; }
   overflow-y: auto;
   border-radius: 10px;
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
+  font-size: var(--fs-sm);
   box-shadow: 0 14px 40px rgba(0, 0, 0, .42);
 }
 .clock-popover button { font-family: inherit; }
@@ -1875,7 +1884,7 @@ button.panel-clock { cursor: pointer; }
 .cp-clock { margin: 0 0 14px; padding: 0 0 14px; border: 0; border-radius: 0; background: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent-highlight), transparent 70%); }
 .cp-time .t-main { font-family: 'JetBrains Mono', monospace; font-size: clamp(1.9rem, 6vw, 2.4rem); letter-spacing: -.04em; }
-.cp-time .t-sec { font-size: .95rem; }
+.cp-time .t-sec { font-size: var(--fs-read); }
 .cp-time::after {                                    /* terminal cursor */
   content: "";
   align-self: center;
@@ -1886,14 +1895,14 @@ button.panel-clock { cursor: pointer; }
   animation: cp-blink 1.1s steps(1) infinite;
 }
 @keyframes cp-blink { 50% { opacity: 0; } }
-.cp-clock .cp-date { margin-top: 8px; font-size: 12px; font-weight: 600; color: var(--accent-highlight); }
-.cp-tz { font-size: 11px; }
+.cp-clock .cp-date { margin-top: 8px; font-size: var(--fs-sm); font-weight: 600; color: var(--accent-highlight); }
+.cp-tz { font-size: var(--fs-xs); }
 .cp-tz::before { content: "tz: "; }
 
 /* $ cat why-hire-me.txt */
 .cp-head { margin: 0; font: 700 13px/1.35 'JetBrains Mono', monospace; color: var(--heading-color); }
 .cp-head::before { content: "# "; color: var(--accent-highlight); }
-.cp-sub { margin: 2px 0 10px; font-size: 11px; color: color-mix(in srgb, var(--default-color), transparent 30%); }
+.cp-sub { margin: 2px 0 10px; font-size: var(--fs-xs); color: color-mix(in srgb, var(--default-color), transparent 30%); }
 .cp-list { gap: 2px; margin: 0 0 14px; }
 .cp-list li {
   padding: 5px 0 5px 10px;
@@ -1904,8 +1913,8 @@ button.panel-clock { cursor: pointer; }
   transition: border-color .15s ease, background-color .15s ease;
 }
 .cp-list li:hover { border-left-color: var(--accent-highlight); background: color-mix(in srgb, var(--accent-highlight), transparent 92%); }
-.cp-list b { font-size: 12px; font-weight: 700; color: var(--heading-color); }
-.cp-list span { font-size: 11px; }
+.cp-list b { font-size: var(--fs-sm); font-weight: 700; color: var(--heading-color); }
+.cp-list span { font-size: var(--fs-xs); }
 
 /* $ cal: looks like `cal` output */
 .cp-cal .cp-cal-nav { margin-bottom: 6px; }
@@ -1934,7 +1943,7 @@ button.panel-clock { cursor: pointer; }
   height: 30px;
   border-radius: 5px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px;
+  font-size: var(--fs-sm);
   font-weight: 600;
 }
 .cp-btn, #cal-today { border-color: color-mix(in srgb, var(--accent-highlight), transparent 55%); }
@@ -2197,7 +2206,7 @@ html.boot-ui-in .linux-dock { animation: bt-ui-in .6s ease backwards; }
   border-radius: 14px;
   background: color-mix(in srgb, var(--accent-highlight), transparent 90%);
   color: var(--default-color);
-  font-size: 12px;
+  font-size: var(--fs-sm);
   font-weight: 600;
   line-height: 1;
   letter-spacing: .02em;
@@ -2241,7 +2250,7 @@ html.boot-ui-in .linux-dock { animation: bt-ui-in .6s ease backwards; }
   border-radius: 14px;
   background: var(--accent-highlight);
   color: var(--contrast-color);
-  font-size: 12px;
+  font-size: var(--fs-sm);
   font-weight: 700;
   line-height: 1;
   letter-spacing: .02em;
@@ -2321,7 +2330,7 @@ textarea {
   border-radius: 10px;
   background: transparent;
   color: color-mix(in srgb, var(--default-color), transparent 22%);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 0;
   filter: none;
@@ -2403,13 +2412,13 @@ textarea {
 
 .ab-term .ab-term-body h2 {
   margin: 0 0 6px;
-  font-size: .92rem;
+  font-size: var(--fs-read);
   line-height: 1.3;
 }
 
 .ab-term .ab-term-body > p:not(.ab-cmd) {
   margin: 0 0 8px;
-  font-size: .72rem;
+  font-size: var(--fs-sm);
   line-height: 1.55;
 }
 
@@ -2417,5 +2426,5 @@ textarea {
 
 .ab-term .ab-tags li {
   padding: 2px 7px;
-  font-size: 10px;
+  font-size: var(--fs-xs);
 }
