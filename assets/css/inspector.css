@@ -15,6 +15,16 @@
 --------------------------------------------------------------*/
 
 /* ---------- Tokens ---------- */
+/* Fonts: JetBrains Mono everywhere, same as the desktop (desktop.css sets this for the main page,
+   but project pages only load main.css + this file, so they fell back to Roboto / Ubuntu / Nunito). */
+html.wm-embedded,
+body.pi-page,
+.pi {
+  --default-font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --heading-font: var(--default-font);
+  --nav-font: var(--default-font);
+}
+
 .pi {
   --pi-s: 13px;
   --pi-main-scale: 1.15;
