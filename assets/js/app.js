@@ -372,7 +372,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     flashAbout(false);
     if (window.Boot && window.Boot.play) await window.Boot.play();
     await revealDesktop();
-    setTimeout(() => { if (!wins.has('portfolio')) openWindow('portfolio'); restarting = false; }, PORTFOLIO_AFTER_MS);
+    restarting = false;                              // all windows stay closed after a restart
   }
 
   function initialRect(def) {
@@ -1542,12 +1542,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
 
-    /* First load: wallpaper alone for a moment, then hero + widgets fade in, then the Portfolio terminal opens.
+    /* First load: wallpaper alone for a moment, then hero + widgets fade in (no window opens by itself).
        A deep-linked window keeps the focus. */
     const startDesktop = async () => {
       if (document.readyState !== 'complete') await new Promise(r => window.addEventListener('load', r, { once: true }));
-      await revealDesktop();
-      setTimeout(() => { if (!wins.size) openWindow('portfolio'); }, PORTFOLIO_AFTER_MS);
+      await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the dock
     };
     /* boot.js plays the GRUB / login sequence first (once per session) and fires "boot:done" */
     if (document.documentElement.classList.contains('boot-on')) window.addEventListener('boot:done', startDesktop, { once: true });

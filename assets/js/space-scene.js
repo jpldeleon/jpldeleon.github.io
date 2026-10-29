@@ -2,8 +2,11 @@
 # Ambient space scene
 # - Astronaut floats gently around the centre (desktop) or rests in the
 #   lower area above the dock (mobile).
-# - ~10 tiny spheres orbit it on tilted ellipses, passing behind and in
+# - ~10 tiny glowing spheres orbit close around it on tilted ellipses,
+#   slowly shifting through the theme colours, passing behind and in
 #   front of it (back canvas under the astronaut, front canvas over it).
+# - On first load, after the boot sequence and after Restart, the astronaut
+#   (and its orbs) slowly drifts in from far away at the back.
 # - Sparse twinkling stars, 5 faint distant bodies, a rare shooting star.
 # - All colours come from the active theme's CSS variables and ease
 #   smoothly when the theme changes.
@@ -30,6 +33,8 @@
   var MOBILE_HEIGHT = 0.26;    // smaller on mobile so it fits between content and dock
   var MOBILE_DOCK_GAP = 26;    // px of clear space between astronaut and dock
   var ORB_COUNT = 10;
+  var ARRIVE_S = 16;           // seconds for the astronaut to drift in from the back (raise = slower)
+  var ARRIVE_FROM = 0.08;      // starting size when it is 'far away' (1 = full size)
   var TWO_PI = Math.PI * 2;
   var reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -226,17 +231,19 @@
     for (var i = 0; i < ORB_COUNT; i++) {
       var sgn = Math.random() < 0.5 ? -1 : 1;
       orbs.push({
-        a: rand(0.62, 1.38),                       // semi-major axis, in astronaut heights
-        e: rand(0.34, 0.72),                       // minor/major ratio
+        a: rand(0.5, 0.82),                        // semi-major axis, in astronaut heights (close around the astronaut)
+        e: rand(0.42, 0.75),                       // minor/major ratio
         phi: sgn * rand(0.55, 1.25),               // pitch of the orbit plane
         chi: rand(-0.55, 0.55),                    // yaw of the orbit plane
         psi: (i / ORB_COUNT) * Math.PI + rand(-0.2, 0.2), // roll, spread around
         per: rand(40, 100),                        // seconds per revolution
         dir: Math.random() < 0.5 ? -1 : 1,
         th0: rand(0, TWO_PI),
-        r: rand(2.3, 4.4),                         // tiny
-        cper: rand(16, 26),                        // seconds per palette step
-        coff: rand(0, PAL_VARS.length)
+        r: rand(2.6, 4.6),                         // tiny
+        cper: rand(4, 8),                          // seconds per palette step (colour shifting)
+        coff: rand(0, PAL_VARS.length),
+        gper: rand(3.5, 7),                        // glow pulse period
+        gph: rand(0, TWO_PI)
       });
     }
   })();
@@ -266,7 +273,31 @@
   var T = reduceMq.matches ? 20 : 0;
   function wave(p, ph) { return Math.sin(T * TWO_PI / p + ph); }
 
+  var arrSc = 1;
   var ax = 0, ay = 0; // astronaut centre on screen (used by halo + orbits)
+
+  /* ---- Arrival from the back ------------------------------------
+     Waits while the boot sequence is on screen (html.boot-on), then plays once the boot ends.
+     First load without boot: plays straight away. Restart (html.desk-pre comes back after the desktop
+     was revealed): resets, waits for the boot replay to finish, then plays again. */
+  var de = document.documentElement;
+  var phase = 'wait', seenReveal = false, gotBoot = false;
+  var arrT = 0, arrP = 0, arrE = 0, arrOp = 0;
+  astro.style.opacity = '0';
+  astro.style.transition = 'none';   // space-scene.css fades opacity over 1.6s; the arrival drives opacity itself, frame by frame
+
+  function stepArrival(dt) {
+    var bo = de.classList.contains('boot-on'), dp = de.classList.contains('desk-pre');
+    if (!dp) seenReveal = true;
+    if (bo) { phase = 'wait'; gotBoot = true; }
+    else if (phase === 'run' && dp && seenReveal) { phase = 'wait'; gotBoot = false; }   // Restart pressed
+    else if (phase === 'wait' && (gotBoot || !dp || !seenReveal)) { phase = 'run'; gotBoot = false; arrT = 0; }
+    if (phase === 'wait') arrT = 0;
+    else if (astro.classList.contains('is-ready')) arrT += reduceMq.matches ? ARRIVE_S : dt;
+    arrP = clamp(arrT / ARRIVE_S, 0, 1);
+    arrE = arrP * arrP * arrP * (arrP * (arrP * 6 - 15) + 10);   // smootherstep: eases out of the dark, glides, then settles with no abrupt stop
+    arrOp = clamp(arrP * 5, 0, 1);
+  }
 
   function updateAstronaut(dt) {
     var k = 1 - Math.exp(-dt / 0.5);
@@ -285,13 +316,27 @@
     var rx = wave(89, 2.2) * 6.5;           // pitch
     var ry = wave(127, 3.6) * 6;            // slow yaw
 
-    ax = cx + dx;
-    ay = cy + dy;
+    /* arrival: travels from the vanishing point (screen centre) and grows from tiny to full size */
+    var vx = W / 2, vy = H * 0.46;
+    /* true perspective: the distance shrinks smoothly from far to 1, size and sideways offset both follow 1/distance */
+    arrSc = 1 / (1 + (1 / ARRIVE_FROM - 1) * (1 - arrE));
+    ax = vx + (cx + dx - vx) * arrSc;
+    ay = vy + (cy + dy - vy) * arrSc;
+    /* zero-gravity drift: it meanders sideways and up/down on slow overlapping curves instead of flying straight in;
+       the meander fades to nothing exactly as it arrives, so it hands over smoothly to the normal floating */
+    var env = 1 - arrE, mn = Math.min(W, H), P = arrP * TWO_PI;
+    ax += env * mn * 0.22 * (Math.sin(P * 1.15 + 0.6) * 0.65 + Math.sin(P * 0.55 + 2.2) * 0.35);
+    ay += env * mn * 0.15 * (Math.cos(P * 0.9 + 1.1) * 0.6 + Math.sin(P * 0.45 + 0.4) * 0.4);
+    /* slow zero-gravity tumble that dies away as it arrives */
+    rz += (1 - arrE) * 18;
+    ry += (1 - arrE) * 28;
+    astro.style.opacity = arrP >= 1 ? '' : arrOp.toFixed(3);
 
     astro.style.transform =
       'translate3d(' + (ax - astW / 2).toFixed(2) + 'px,' + (ay - astH / 2).toFixed(2) + 'px,0) ' +
       'perspective(1100px) translateZ(' + dz.toFixed(1) + 'px) ' +
-      'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) rotateZ(' + rz.toFixed(2) + 'deg)';
+      'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) rotateZ(' + rz.toFixed(2) + 'deg) ' +
+      'scale(' + arrSc.toFixed(3) + ')';
   }
 
   /* ---- Drawing ---------------------------------------------------- */
@@ -376,9 +421,18 @@
     ctx.beginPath(); ctx.arc(hx, hy, 1.3, 0, TWO_PI); ctx.fill();
   }
 
-  function drawOrb(ctx, x, y, r, c, a) {
+  function drawOrb(ctx, x, y, r, c, a, gl) {
+    var hr = r * 3.6;                           // soft additive glow around the sphere
+    var h = ctx.createRadialGradient(x, y, r * 0.4, x, y, hr);
+    h.addColorStop(0, rgba(c, a * 0.45 * gl));
+    h.addColorStop(0.45, rgba(c, a * 0.16 * gl));
+    h.addColorStop(1, rgba(c, 0));
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = h;
+    ctx.beginPath(); ctx.arc(x, y, hr, 0, TWO_PI); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
     var g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, 0, x, y, r);
-    g.addColorStop(0, rgba(mix(c, WHITE, 0.55), a));
+    g.addColorStop(0, rgba(mix(c, WHITE, 0.25), a));
     g.addColorStop(0.55, rgba(c, a));
     g.addColorStop(1, rgba(mix(c, BLACK, 0.45), a));
     ctx.fillStyle = g;
@@ -387,10 +441,11 @@
 
   function drawOrbs() {
     var n = palCur.length;
+    if (arrOp < 0.01) return;                   // nothing to show until the astronaut starts arriving
     var maxA = Math.min(W * 0.46, Infinity);
     for (var i = 0; i < orbs.length; i++) {
       var o = orbs[i];
-      var a = Math.min(o.a * astH, maxA);
+      var a = Math.min(o.a * astH, maxA) * arrSc;   // orbits shrink with the astronaut while it is far away
       var b = a * o.e;
       var th = o.th0 + o.dir * T * TWO_PI / o.per;
       // ellipse in its own plane, then pitch (X), yaw (Y), roll (Z)
@@ -403,14 +458,15 @@
       var s = 1400 / (1400 - z2);               // gentle perspective
       var px = ax + x3 * s, py = ay + y3 * s;
       var depth = clamp((z2 / (a * 0.6) + 1) / 2, 0, 1);
-      var alpha = 0.6 + 0.4 * depth;
-      var rad = o.r * s * (mobile ? 0.9 : 1);
+      var alpha = (0.6 + 0.4 * depth) * arrOp;
+      var rad = o.r * s * arrSc * (mobile ? 0.9 : 1);
 
       var u = T / o.cper + o.coff;
       var idx = Math.floor(u), f = u - idx;
-      var col = mix(palCur[((idx % n) + n) % n], palCur[(((idx + 1) % n) + n) % n], smooth((f - 0.4) / 0.6));
+      var col = mix(palCur[((idx % n) + n) % n], palCur[(((idx + 1) % n) + n) % n], smooth(f));          // continuous colour drift
+      var gl = 0.8 + 0.2 * Math.sin(T * TWO_PI / o.gper + o.gph);
 
-      drawOrb(z2 > 0 ? fctx : bctx, px, py, rad, col, alpha);
+      drawOrb(z2 > 0 ? fctx : bctx, px, py, rad, col, alpha, gl);
     }
   }
 
@@ -424,6 +480,7 @@
 
     stepPalette(dt);
     stepShoot(dt);
+    stepArrival(dt);
     updateAstronaut(dt);
 
     bctx.clearRect(0, 0, W, H);
