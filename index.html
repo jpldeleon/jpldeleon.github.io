@@ -74,8 +74,8 @@
   <link href="assets/css/resume-viewer.css" rel="stylesheet" />
   <!-- Terminal-style Socials window -->
   <link href="assets/css/portfolio-terminal.css" rel="stylesheet" />
-  <!-- Zen-browser style Portfolio window -->
-  <link href="assets/css/portfolio-zen.css" rel="stylesheet" />
+  <!-- Projects window -->
+  <link href="assets/css/portfolio.css" rel="stylesheet" />
   <link href="assets/css/boot.css" rel="stylesheet" />
   <!-- Ambient space scene (astronaut, orbs, stars) -->
   <link href="assets/css/space-scene.css" rel="stylesheet" />
@@ -371,23 +371,7 @@
       <li><button data-app="resume" role="menuitem" type="button"><i
             class="fa-solid fa-timeline"></i>Resume</button></li>
       <li><button data-app="portfolio" role="menuitem" type="button"><i
-            class="fa-solid fa-flask"></i>Portfolio</button></li>
-      <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
-      <li class="app-menu-label" role="presentation">Projects</li>
-      <li><button data-app="project:auditkit" role="menuitem" type="button"><i
-            class="fa-solid fa-magnifying-glass-chart"></i>AuditKit</button></li>
-      <li><button data-app="project:nothingtechblob" role="menuitem" type="button"><i
-            class="fa-solid fa-mobile-screen"></i>NothingTechBlob</button></li>
-      <li><button data-app="project:badlands-ink" role="menuitem" type="button"><i
-            class="fa-solid fa-pen-nib"></i>Badlands Ink</button></li>
-      <li><button data-app="project:johnoffthewall" role="menuitem" type="button"><i
-            class="fa-solid fa-fire-flame-curved"></i>John Off the Wall</button></li>
-      <li><button data-app="project:pixellog" role="menuitem" type="button"><i
-            class="fa-brands fa-mintbit"></i>PixelLog</button></li>
-      <li><button data-app="project:jamporudex" role="menuitem" type="button"><i
-            class="fa-brands fa-leanpub"></i>JamporuDEX</button></li>
-      <li><button data-app="project:route196" role="menuitem" type="button"><i
-            class="fa-solid fa-shield"></i>Route 196</button></li>
+            class="fa-solid fa-flask"></i>Projects</button></li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-app="socials" role="menuitem" type="button"><i
             class="fa-solid fa-share-nodes"></i>Socials</button></li>
@@ -921,62 +905,71 @@
         </div>
       </div><!-- /.rv-content -->
     </section><!-- /Resume Section -->
-    <!-- Portfolio Section (Zen-browser style): vertical tabs on the left, floating page pane on the right.
-         Rendered inside the Portfolio window by app.js. Behaviour: assets/js/portfolio-zen.js -->
-    <section aria-label="Portfolio" class="zn" id="portfolio">
-      <div class="zn-shell">
-
-        <!-- vertical tabs: one per project / certificate (real links, so crawlers and no-JS still work) -->
-        <nav aria-label="Portfolio tabs" aria-orientation="vertical" class="zn-side" role="tablist">
-          <button aria-controls="zn-panel-home" aria-selected="true" class="zn-tab is-active" data-tab="home" data-title="Home" role="tab" title="Home" type="button">
-            <i aria-hidden="true" class="fa-solid fa-house zn-ico"></i><span class="zn-tab-label">Home</span>
-          </button>
-          <div aria-hidden="true" class="zn-group">Projects</div>
-        <a aria-controls="zn-panel-auditkit" aria-selected="false" class="zn-tab" data-cat="webdev" data-cats="webdev" data-kind="project" data-tab="auditkit" data-title="AuditKit" href="auditkit/" role="tab" tabindex="-1" title="AuditKit"><i aria-hidden="true" class="fa-solid fa-magnifying-glass-chart zn-ico"></i><span class="zn-tab-label">AuditKit</span></a>
-        <a aria-controls="zn-panel-nothingtechblob" aria-selected="false" class="zn-tab" data-cat="seo" data-cats="seo wordpress" data-kind="project" data-tab="nothingtechblob" data-title="NothingTechBlob" href="nothingtechblob/" role="tab" tabindex="-1" title="NothingTechBlob"><i aria-hidden="true" class="fa-solid fa-mobile-screen zn-ico"></i><span class="zn-tab-label">NothingTechBlob</span></a>
-        <a aria-controls="zn-panel-badlands-ink" aria-selected="false" class="zn-tab" data-cat="seo" data-cats="seo wordpress" data-kind="project" data-tab="badlands-ink" data-title="Badlands Ink" href="badlands-ink/" role="tab" tabindex="-1" title="Badlands Ink"><i aria-hidden="true" class="fa-solid fa-pen-nib zn-ico"></i><span class="zn-tab-label">Badlands Ink</span></a>
-        <a aria-controls="zn-panel-johnoffthewall" aria-selected="false" class="zn-tab" data-cat="webdev" data-cats="webdev" data-kind="project" data-tab="johnoffthewall" data-title="John Off the Wall" href="johnoffthewall/" role="tab" tabindex="-1" title="John Off the Wall"><i aria-hidden="true" class="fa-solid fa-fire-flame-curved zn-ico"></i><span class="zn-tab-label">John Off the Wall</span></a>
-        <a aria-controls="zn-panel-pixellog" aria-selected="false" class="zn-tab" data-cat="webdev" data-cats="webdev" data-kind="project" data-tab="pixellog" data-title="PixelLog" href="pixellog/" role="tab" tabindex="-1" title="PixelLog"><i aria-hidden="true" class="fa-brands fa-mintbit zn-ico"></i><span class="zn-tab-label">PixelLog</span></a>
-        <a aria-controls="zn-panel-jamporudex" aria-selected="false" class="zn-tab" data-cat="webdev" data-cats="webdev" data-kind="project" data-tab="jamporudex" data-title="JamporuDEX" href="jamporudex/" role="tab" tabindex="-1" title="JamporuDEX"><i aria-hidden="true" class="fa-brands fa-leanpub zn-ico"></i><span class="zn-tab-label">JamporuDEX</span></a>
-        <a aria-controls="zn-panel-route196" aria-selected="false" class="zn-tab" data-cat="webdev" data-cats="webdev" data-kind="project" data-tab="route196" data-title="Route 196" href="route196/" role="tab" tabindex="-1" title="Route 196"><i aria-hidden="true" class="fa-solid fa-shield zn-ico"></i><span class="zn-tab-label">Route 196</span></a>
-          <div aria-hidden="true" class="zn-group">Certifications</div>
-        <a aria-controls="zn-panel-cert-fullstack" aria-selected="false" class="zn-tab" data-cat="cert" data-cats="cert" data-kind="cert" data-tab="cert-fullstack" data-title="Full Stack Certificate" href="assets/img/certifications/cert-fullstack-bootcamp_F.webp" role="tab" tabindex="-1" title="Full Stack Certificate"><i aria-hidden="true" class="fa-solid fa-award zn-ico"></i><span class="zn-tab-label">Full Stack Certificate</span></a>
-        <a aria-controls="zn-panel-cert-techseo" aria-selected="false" class="zn-tab" data-cat="cert" data-cats="cert" data-kind="cert" data-tab="cert-techseo" data-title="Technical SEO Certificate" href="assets/img/certifications/cert_techseosprint_F.webp" role="tab" tabindex="-1" title="Technical SEO Certificate"><i aria-hidden="true" class="fa-solid fa-award zn-ico"></i><span class="zn-tab-label">Technical SEO Certificate</span></a>
-        </nav>
-
-        <!-- floating page pane -->
-        <div class="zn-main">
-          <div class="zn-bar">
-            <button aria-label="Collapse sidebar" aria-pressed="false" class="zn-iconbtn zn-sidebtn" id="zn-side-toggle" title="Collapse sidebar" type="button"><i aria-hidden="true" class="fa-solid fa-table-columns"></i></button>
-            <div class="zn-url"><i aria-hidden="true" class="fa-solid fa-lock"></i><span class="zn-url-text" id="zn-url"></span></div>
-            <button aria-label="Reload page" class="zn-iconbtn" disabled id="zn-reload" title="Reload" type="button"><i aria-hidden="true" class="fa-solid fa-rotate-right"></i></button>
-            <button aria-label="Open in a new browser tab" class="zn-iconbtn" disabled id="zn-open" title="Open in a new browser tab" type="button"><i aria-hidden="true" class="fa-solid fa-arrow-up-right-from-square"></i></button>
-          </div>
-          <div class="zn-view" id="zn-view">
-
-            <!-- Home: placeholder start page, to be redesigned -->
-            <div aria-label="Home" class="zn-panel zn-home" id="zn-panel-home" role="tabpanel">
-              <div class="zn-home-inner">
-                <img alt="John Paul De Leon" class="zn-avatar" height="96" src="assets/img/profile/jp-profile-3.webp" width="96" />
-                <h2>John Paul De Leon</h2>
-                <p class="zn-role">Technical SEO Specialist</p>
-                <p class="zn-lead">I started in link prospecting, got curious about the numbers behind the worksheets, and followed that curiosity into research-driven SEO, Technical SEO and web development.</p>
-                <div class="zn-actions">
-                  <button class="zn-btn is-primary" data-app="resume" type="button"><i aria-hidden="true" class="fa-solid fa-timeline"></i>Open resume</button>
-                  <a class="zn-btn" download="" href="assets/johnpauldeleon_resume.pdf"><i aria-hidden="true" class="fa-solid fa-download"></i>Download CV</a>
-                </div>
-                <p class="zn-hint">Pick a project or certificate from the sidebar.</p>
-                <div class="zn-links">
-                  <a aria-label="GitHub" href="https://github.com/jpldeleon" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-github"></i></a>
-                  <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank" title="LinkedIn"><i aria-hidden="true" class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-              </div>
-            </div>
-
-          </div>
+    <!-- Projects window: simple card grid. Rendered inside the Projects window by app.js.
+         Each card opens that project (or certificate) in its own window. Behaviour: assets/js/portfolio.js -->
+    <section aria-label="Projects" class="pj" id="portfolio">
+      <header class="pj-head">
+        <div>
+          <h2 class="pj-title">Projects</h2>
+          <p class="pj-lead">Websites and tools I’ve built, plus my certificates. Pick one to see what it does and how I built it.</p>
         </div>
+        <button class="pj-btn" data-app="resume" type="button">View resume</button>
+      </header>
+      <div aria-label="Filter projects" class="pj-filters" role="group">
+          <button aria-pressed="true" class="pj-chip" data-filter="all" type="button">All <span>9</span></button>
+          <button aria-pressed="false" class="pj-chip" data-filter="seo" type="button">SEO <span>2</span></button>
+          <button aria-pressed="false" class="pj-chip" data-filter="wordpress" type="button">WordPress <span>2</span></button>
+          <button aria-pressed="false" class="pj-chip" data-filter="webdev" type="button">Web Dev <span>5</span></button>
+          <button aria-pressed="false" class="pj-chip" data-filter="cert" type="button">Certificates <span>2</span></button>
       </div>
-    </section><!-- /Portfolio Section -->
+      <div class="pj-grid">
+          <a class="pj-card" data-app="project:auditkit" data-cats="webdev" href="auditkit/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-magnifying-glass-chart"></i></span>
+            <span class="pj-text"><strong class="pj-name">AuditKit</strong><span class="pj-sub">A simple tool that checks a website’s technical SEO</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="project:nothingtechblob" data-cats="seo wordpress" href="nothingtechblob/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-mobile-screen"></i></span>
+            <span class="pj-text"><strong class="pj-name">NothingTechBlob</strong><span class="pj-sub">Technical and on-page SEO with WordPress development</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="project:badlands-ink" data-cats="seo wordpress" href="badlands-ink/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-pen-nib"></i></span>
+            <span class="pj-text"><strong class="pj-name">Badlands Ink</strong><span class="pj-sub">Technical, local and e-commerce SEO with WordPress development</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="project:johnoffthewall" data-cats="webdev" href="johnoffthewall/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-fire-flame-curved"></i></span>
+            <span class="pj-text"><strong class="pj-name">John Off the Wall</strong><span class="pj-sub">HTML and CSS capstone project</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="project:pixellog" data-cats="webdev" href="pixellog/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-brands fa-mintbit"></i></span>
+            <span class="pj-text"><strong class="pj-name">PixelLog</strong><span class="pj-sub">Node.js, Express and EJS capstone project</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="project:jamporudex" data-cats="webdev" href="jamporudex/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-brands fa-leanpub"></i></span>
+            <span class="pj-text"><strong class="pj-name">JamporuDEX</strong><span class="pj-sub">Node.js, Express, PostgreSQL and EJS capstone project</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="project:route196" data-cats="webdev" href="route196/">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-shield"></i></span>
+            <span class="pj-text"><strong class="pj-name">Route 196</strong><span class="pj-sub">Node.js, Express and EJS capstone project</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
+          </a>
+          <a class="pj-card" data-app="cert:fullstack" data-cats="cert" href="assets/img/certifications/cert-fullstack-bootcamp_F.webp">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-award"></i></span>
+            <span class="pj-text"><strong class="pj-name">Full Stack Certificate</strong><span class="pj-sub">The Complete Full-Stack Web Development Bootcamp</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View certificate</span></span>
+          </a>
+          <a class="pj-card" data-app="cert:techseo" data-cats="cert" href="assets/img/certifications/cert_techseosprint_F.webp">
+            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-award"></i></span>
+            <span class="pj-text"><strong class="pj-name">Technical SEO Certificate</strong><span class="pj-sub">Technical SEO and SEO Sprint</span></span>
+            <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View certificate</span></span>
+          </a>
+      </div>
+    </section><!-- /Projects window -->
     <!-- Socials Section (terminal style). Rendered inside the Socials window by app.js. -->
     <section aria-label="Socials" class="pt pt-socials" id="socials">
       <div class="pt-line dev-only"><span class="pt-ps1">jp@portfolio</span>:<span class="pt-path">~/socials</span>$ <span class="pt-typed">cat socials.txt</span></div>
@@ -1023,8 +1016,8 @@
   <!-- Background music + volume control (Satie, Gymnopedie No. 1) -->
   <script src="assets/js/music.js"></script>
   <script src="assets/js/resume-viewer.js"></script>
-  <!-- Zen-browser style Portfolio app (after app.js: uses WindowManager.embed) -->
-  <script src="assets/js/portfolio-zen.js"></script>
+  <!-- Projects window filters -->
+  <script src="assets/js/portfolio.js"></script>
   <!-- Ambient space scene -->
   <script src="assets/js/space-scene.js"></script>
   <!-- Notification panel (bell) + Restart -->

@@ -1,0 +1,122 @@
+/*--------------------------------------------------------------
+# Projects window: simple card grid
+# Opens from the dock, the Apps menu and the "Projects" buttons.
+# Each card opens that project in its own window (same as before).
+# Colours: theme variables only, never blended
+#   --background-color page, --surface-color cards, --default-color text,
+#   --accent-highlight accent (text on it: --contrast-color)
+# Size: one base (--pj-s); everything else is em.
+--------------------------------------------------------------*/
+.wm-body > section.pj {                          /* beats app.css `.wm-body > section` padding */
+  --pj-s: 14px;
+  --pj-line: color-mix(in srgb, var(--default-color) 18%, var(--surface-color));
+  --pj-hover: color-mix(in srgb, var(--default-color) 8%, var(--surface-color));
+  --pj-accent: var(--accent-highlight);
+  --pj-on-accent: var(--contrast-color, var(--background-color));
+  min-height: 100%;
+  padding: 1.6em 1.6em 2.4em;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--pj-s);
+  line-height: 1.5;
+  color: var(--default-color);
+  background: var(--background-color);
+}
+.pj *, .pj *::before, .pj *::after { box-sizing: border-box; }
+.pj a { text-decoration: none; }
+.pj :focus-visible { outline: 2px solid var(--pj-accent); outline-offset: 2px; }
+
+/* ---------- Header ---------- */
+.pj-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.2em; margin-bottom: 1.2em; }
+.pj-title { margin: 0 0 .25em; font-family: inherit; font-size: 1.8em; font-weight: 700; line-height: 1.2; color: var(--heading-color); }
+.pj-lead { margin: 0; max-width: 40em; color: var(--default-color); }
+
+.pj-btn {
+  flex: none;
+  padding: .55em 1.15em;
+  border: 1px solid var(--pj-line);
+  border-radius: .6em;
+  background: var(--surface-color);
+  color: var(--default-color);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.pj-btn:hover { background: var(--pj-hover); }
+
+/* ---------- Filters ---------- */
+.pj-filters { display: flex; flex-wrap: wrap; gap: .5em; margin-bottom: 1.4em; }
+
+.pj-chip {
+  display: inline-flex; align-items: center; gap: .5em;
+  padding: .45em 1em;
+  border: 1px solid var(--pj-line);
+  border-radius: 999px;
+  background: var(--surface-color);
+  color: var(--default-color);
+  font: inherit;
+  font-size: .93em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.pj-chip:hover { background: var(--pj-hover); }
+.pj-chip span { font-weight: 400; opacity: .8; }
+.pj-chip[aria-pressed="true"] { background: var(--pj-accent); border-color: var(--pj-accent); color: var(--pj-on-accent); }
+.pj-chip[aria-pressed="true"] span { opacity: 1; }
+
+/* ---------- Cards ---------- */
+.pj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16em), 1fr)); gap: 1.1em; }
+
+.pj-card {
+  display: flex;
+  flex-direction: column;
+  gap: .9em;
+  padding: 1.2em;
+  border: 1px solid var(--pj-line);
+  border-radius: .8em;
+  background: var(--surface-color);
+  color: var(--default-color);
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+.pj-card:hover,
+.pj-card:focus-visible { box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 6px 18px rgba(0, 0, 0, .14); transform: translateY(-2px); color: var(--default-color); }
+.pj-card[hidden] { display: none; }
+
+.pj-ico {
+  display: grid; place-items: center;
+  width: 2.8em; height: 2.8em;
+  border-radius: .75em;
+  background: var(--pj-accent);
+  color: var(--pj-on-accent);
+  font-size: 1.1em;
+}
+
+.pj-text { display: flex; flex-direction: column; gap: .25em; flex: 1; }
+.pj-name { font-size: 1.12em; font-weight: 700; line-height: 1.25; color: var(--heading-color); }
+.pj-sub { font-size: .93em; line-height: 1.5; color: var(--default-color); }
+
+.pj-foot { display: flex; align-items: center; justify-content: space-between; gap: .6em; flex-wrap: wrap; }
+.pj-tags { display: flex; flex-wrap: wrap; gap: .35em; }
+.pj-tags span {
+  padding: .15em .65em;
+  border: 1px solid var(--pj-line);
+  border-radius: 999px;
+  font-size: .8em;
+  font-weight: 600;
+  color: var(--default-color);
+}
+.pj-open { font-size: .9em; font-weight: 700; color: var(--heading-color); }
+.pj-card:hover .pj-open { text-decoration: underline; text-underline-offset: .2em; text-decoration-color: var(--pj-accent); text-decoration-thickness: .15em; }
+
+/* ---------- Small window ---------- */
+@container wm (max-width: 560px) {
+  .wm-body > section.pj { padding: 1.2em 1em 2em; }
+  .pj-head { flex-direction: column; gap: .8em; }
+  .pj-title { font-size: 1.5em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj * { transition-duration: .01ms !important; }
+}

@@ -21,7 +21,7 @@
       adopt: '#resume', size: [800, 600]
     },
     portfolio: {
-      title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
+      title: 'Projects', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
       adopt: '#portfolio', size: [1000, 640], center: true
     },
     socials: {
