@@ -532,3 +532,27 @@
 @media (max-width: 768px) {
   .wm-body.is-cert .wm-cert { padding: 8px; }
 }
+
+/*--------------------------------------------------------------
+# MOBILE: make the active window obvious (no background blur)
+#   active window   -> accent ring + accent line under its title bar
+#   other windows   -> gently dimmed with a light veil, taps focus them
+--------------------------------------------------------------*/
+@media (max-width: 768px) {
+  .wm-window { transition: box-shadow .2s ease; }
+
+  .wm-window.is-focused {
+    box-shadow: 0 0 0 2px var(--accent-highlight), 0 16px 44px rgba(0, 0, 0, 0.55);
+  }
+  .wm-window.is-focused .wm-titlebar { box-shadow: inset 0 -2px 0 var(--accent-highlight); }
+
+  .wm-window:not(.is-focused)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    border-radius: inherit;
+    background: rgba(0, 0, 0, 0.38);
+    pointer-events: none;
+  }
+}

@@ -110,11 +110,31 @@
 .pj-open { font-size: .9em; font-weight: 700; color: var(--heading-color); }
 .pj-card:hover .pj-open { text-decoration: underline; text-underline-offset: .2em; text-decoration-color: var(--pj-accent); text-decoration-thickness: .15em; }
 
-/* ---------- Small window ---------- */
+/* ---------- Small window / phone ---------- */
 @container wm (max-width: 560px) {
-  .wm-body > section.pj { padding: 1.2em 1em 2em; }
-  .pj-head { flex-direction: column; gap: .8em; }
-  .pj-title { font-size: 1.5em; }
+  .wm-body > section.pj { padding: 1.1em 1em 1.8em; }
+  .pj-head { flex-direction: column; align-items: flex-start; gap: .8em; margin-bottom: 1em; }
+  .pj-title { font-size: 1.45em; }
+  .pj-lead { font-size: .95em; }
+  .pj-btn { width: 100%; padding: .65em 1em; text-align: center; }
+
+  /* filters: one row you can swipe, not a wrapping pile */
+  .pj-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin: 0 -1em 1.1em;
+    padding: .1em 1em .3em;
+    scrollbar-width: none;
+  }
+  .pj-filters::-webkit-scrollbar { display: none; }
+  .pj-chip { flex: 0 0 auto; white-space: nowrap; }
+
+  /* cards: icon beside the text, tags and action underneath */
+  .pj-grid { grid-template-columns: minmax(0, 1fr); gap: .8em; }
+  .pj-card { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "ico text" "foot foot"; column-gap: .9em; row-gap: .7em; padding: 1em; }
+  .pj-ico { grid-area: ico; width: 2.6em; height: 2.6em; font-size: 1em; }
+  .pj-text { grid-area: text; }
+  .pj-foot { grid-area: foot; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -233,7 +233,7 @@
      - screenshot windows shrink-wrap the image (title bar + small padding + image)
      - project windows (iframe pages) are ~62% of the screen, centred in the slot
      - everything else (Resume, Portfolio, ...) keeps the full-height slot */
-  const MOBILE_PROJECT_H = 0.5;
+  const MOBILE_PROJECT_H = 0.95;   // project pages get (almost) the whole slot above the dock
   function mobileRect(w, vw, vh, ds, ts) {
     const L = railInset() + 6, top = ts + 30;
     const availW = vw - L - 10, availH = Math.max(240, vh - ds - top - 4);

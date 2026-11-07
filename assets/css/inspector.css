@@ -453,20 +453,6 @@ a.pi-thumb[hidden] { display: none; }
 /* ---------- Scrollbars ---------- */
 .pi * { scrollbar-width: thin; scrollbar-color: var(--pi-line) transparent; }
 
-/* ---------- Small windows / phones ---------- */
-@media (max-width: 760px) {
-  .pi-side { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "actions" "tree"; }
-  .pi-head { padding: 1em 1.1em .3em; }
-  .pi-title { font-size: 1.3em; }
-  .pi-actions { padding: .5em 1.1em .2em; flex-wrap: wrap; }
-  .pi-tree { padding: .4em .8em .7em; }
-  .pi-scroll { padding: 1.2em 1em 2.2em; }
-  .pi-grid { grid-template-columns: repeat(auto-fill, minmax(10em, 1fr)); gap: .9em; }
-  .pi-strip .pi-thumb { flex-basis: 9.4em; }
-  .pi-props { grid-template-columns: minmax(0, 1fr); }
-  .pi-props dt { padding-bottom: 0; border-bottom: 0; }
-}
-
 /*--------------------------------------------------------------
 # Container-driven layout (follows the WINDOW, not the viewport)
 #   wide pane   -> video + scrolling screenshot panel side by side, points underneath
@@ -524,4 +510,101 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
 
 @media (prefers-reduced-motion: reduce) {
   .pi *, .pi *::before, .pi *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/*--------------------------------------------------------------
+# Phones and narrow windows (<= 760px)
+#   top:     compact header (icon + name)
+#   below:   one row of tabs that swipes sideways
+#   middle:  the content, as tall as possible
+#   bottom:  Live Demo / GitHub Repo as a bar within thumb reach
+# Declared last so it wins over the desktop rules above.
+--------------------------------------------------------------*/
+@media (max-width: 760px) {
+  .pi,
+  html.pi-embed .pi,
+  html.wm-embedded .pi {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  }
+  html.wm-embedded .pi.pi { --pi-s: 14px; --pi-main-scale: 1.05; }   /* 1.15vw of a phone is too small */
+  .pi { --pi-s: 14px; --pi-main-scale: 1.05; }
+
+  /* the aside dissolves, its three parts become rows of the page */
+  .pi-side { display: contents; }
+  .pi-titlebar { grid-row: 1; }
+
+  .pi-head {
+    grid-row: 2;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "icon title";
+    column-gap: .8em;
+    padding: .8em 1em .5em;
+    background: var(--pi-card);
+  }
+  .pi-app-icon { width: 2.5em; height: 2.5em; font-size: 1em; }
+  .pi-badge { display: none; }
+  .pi-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 1.1em;
+    line-height: 1.25;
+  }
+
+  .pi-tree {
+    grid-row: 3;
+    gap: .3em;
+    padding: .3em .8em .6em;
+    background: var(--pi-card);
+    border-bottom: 1px solid var(--pi-line);
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* soft fade on the right edge: there are more tabs to swipe to */
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.8em), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 1.8em), transparent);
+  }
+  .pi-tree::-webkit-scrollbar { display: none; }
+  .pi-item { scroll-snap-align: start; padding: .5em .85em; font-size: .95em; }
+  .pi-item i { display: none; }
+  .pi-count { display: none; }
+
+  .pi-content { grid-row: 4; }
+  .pi-scroll { padding: 1.1em 1em 1.8em; }
+
+  .pi-actions {
+    grid-row: 5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6em;
+    padding: .7em 1em calc(.7em + env(safe-area-inset-bottom, 0px));
+    background: var(--pi-card);
+    border-top: 1px solid var(--pi-line);
+  }
+  .pi .pi-actions .btn-live,
+  .pi .pi-actions .btn-github { width: 100%; padding: .7em .5em; font-size: .95em; }
+
+  /* video: full width, centred, 16:9 */
+  .pi .pi-stage { width: 100%; max-width: 100%; margin: 0 auto; }
+  .pi-view:has(> .pi-stage):not([hidden]) { display: block; }
+  .pi-film { margin-top: 1.4em; }
+  .pi-strip { padding: .2em .2em .8em; }
+  .pi-strip .pi-thumb { flex: 0 0 10em; }
+
+  .pi-chapters { margin-top: 1.4em; }
+  .pi-chapters ul { grid-template-columns: minmax(0, 1fr); gap: .7em; }
+
+  .pi-h { font-size: 1.25em; }
+  .pi-doc { max-width: 100%; font-size: 1em; line-height: 1.7; }
+  .pi-features { grid-template-columns: minmax(0, 1fr); gap: .8em; }
+  .pi-feature { padding: 1.1em; }
+  .pi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8em; padding: .1em; }
+  .pi-thumb-cap { padding: .5em .65em; font-size: .8em; }
+  .pi-tools { grid-template-columns: minmax(0, 1fr); gap: .7em; }
+
+  .pi-props { grid-template-columns: minmax(0, 1fr); }
+  .pi-props dt { padding: .8em 1.1em 0; border-bottom: 0; }
+  .pi-props dd { padding: .15em 1.1em .8em; }
 }
