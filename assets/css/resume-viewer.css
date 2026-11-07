@@ -1,37 +1,46 @@
 /*--------------------------------------------------------------
-# Resume viewer (inspector style): sidebar sections + path bar + text views.
+# Resume viewer: same app-window layout as the project inspector.
 # Load AFTER main.css, app.css and desktop.css. Theme variables only.
 # All selectors are prefixed .rv- . Layout reacts to the WINDOW width
 # (container "wm" from app.css), so it works inside the window manager.
 #
-# Sizing follows portfolio-terminal.css: everything is in em from ONE base
-# size (--rv-s) that follows the window width (container "wm") and the
-# viewport height, so the whole app shrinks as a unit. The resume window is
-# ~1.6x wider than the terminal window by default, so it uses 1cqw instead
-# of 1.6cqw: same on-screen text size as the terminal, same growth when resized.
-#   sidebar + path bar = base size   (terminal left pane)
-#   reading content    = base x 1.15 (terminal right pane, --rv-main-scale)
-# At a ~1000px window: about 10px sidebar / 11.5px reading text (terminal: 9.6 / 11).
+# Layout (desktop AND phone, one system):
+#   row 1:  icon + name                      | Download CV, Open in new tab
+#   row 2:  section tabs (swipe on phones)   | Text / PDF toggle
+#   row 3:  content (reading column or PDF page)
+#
+# Markup is unchanged. The aside and main wrappers use display: contents
+# so their children sit directly in the .rv grid and can share rows.
+# Terminal flavour (mono type, "## " headings) only shows in html.dev.
 --------------------------------------------------------------*/
 
+/* ---------- Tokens ---------- */
 .rv {
-  --rv-s: 13px;                                                    /* fallback */
-  --rv-s: clamp(10px, min(1cqw, 1.6vh), 13px);   /* ~9.6px terminal look at a ~1000px window; floor keeps text readable */
-  --rv-main-scale: 1.15;                                           /* 1 = same as sidebar, 1.15 = 15% bigger */
+  --rv-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --rv-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --heading-font: var(--rv-font);
+  --nav-font: var(--rv-font);
+
+  --rv-s: 13px;                                              /* fallback */
+  --rv-s: clamp(12px, min(1.25cqw, 1.9vh), 14.5px);          /* follows the window, never tiny */
+  --rv-main-scale: 1.1;
+
   --rv-line: color-mix(in srgb, var(--default-color), transparent 88%);
   --rv-line-strong: color-mix(in srgb, var(--default-color), transparent 76%);
   --rv-dim: color-mix(in srgb, var(--default-color), transparent 34%);
-  --rv-side-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 16%), transparent 30%);
-  --rv-bar-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 8%), transparent 30%);
+  --rv-head-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 12%), transparent 30%);
   --rv-hl: var(--accent-highlight);
+  --rv-on-hl: var(--contrast-color, var(--background-color));
   --rv-hl-soft: color-mix(in srgb, var(--accent-highlight), transparent 86%);
-  --rv-hl-line: color-mix(in srgb, var(--accent-highlight), transparent 55%);
-  --rv-side-w: 19.4em;               /* 252px at full size */
+  --rv-card-bg: color-mix(in srgb, var(--default-color), transparent 94%);
+  --rv-card-bg-hover: color-mix(in srgb, var(--default-color), transparent 90%);
+  --rv-focus: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 35%);
+  --rv-pill-bg: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+
   font-size: var(--rv-s);
 }
 
-/* Fill the window body */
+/* ---------- Fill the window body ---------- */
 .wm-body:has(> .rv) { display: flex; flex-direction: column; overflow: hidden; scroll-behavior: auto; }
 
 .wm-body > section.rv {            /* beats the generic ".wm-body > section" padding */
@@ -41,148 +50,230 @@
   padding: 0;
 }
 
-/* One row: sidebar + content fill the whole window (no empty row = no blank strip) */
+/* ---------- Grid shell ---------- */
 .rv {
   display: grid;
-  grid-template-columns: var(--rv-side-w) minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr);
   min-height: 0;
   height: 100%;
-  font-family: var(--default-font);
+  font-family: var(--rv-font);
   color: var(--default-color);
-  background: transparent;   /* the window glass shows through */
+  background: transparent;           /* the window glass shows through */
   text-align: left;
 }
 
 .rv *, .rv *::before, .rv *::after { box-sizing: border-box; }
 .rv [hidden] { display: none !important; }
+.rv :is(h2, h3, button) { font-family: inherit; }
 
-/* ---------- Sidebar (base size) ---------- */
-.rv-side { display: flex; flex-direction: column; min-height: 0; background: var(--rv-side-bg); border-right: 1px solid var(--rv-line); }
-.rv-head { padding: 1.4em 1.4em 1.1em; border-bottom: 1px solid var(--rv-line); }
-.rv-head-top { display: flex; align-items: center; gap: .75em; }
+/* the wrappers dissolve: their children become grid items of .rv */
+.rv-side,
+.rv-content,
+.rv-bar { display: contents; }
+
+/* header strip behind rows 1 and 2 */
+.rv::before {
+  content: '';
+  grid-row: 1 / 3;
+  grid-column: 1 / -1;
+  background: var(--rv-head-bg);
+}
+
+/* the old path bar is gone (the tabs already say where you are) */
+.rv-crumb,
+.rv-bar-meta { display: none; }
+
+/* ---------- Row 1: header ---------- */
+.rv-head {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 1em 0 .35em 1.5em;
+}
+.rv-head-top { display: flex; align-items: center; gap: .85em; min-width: 0; }
+.rv-head-top > div { min-width: 0; }
 
 .rv-app-icon {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 2.6em;
-  height: 2.6em;
-  border-radius: .7em;
-  font-size: 1.25em;
-  color: var(--contrast-color);
+  width: 2.7em;
+  height: 2.7em;
+  border-radius: .8em;
+  font-size: 1.1em;
+  color: var(--rv-on-hl);
   background: var(--rv-hl);
 }
 
-.rv-badge { font-family: var(--nav-font); font-size: .92em; font-weight: 600; line-height: 1.3; color: var(--accent-color); }
-.rv-title { margin: 0; font-family: var(--heading-font); font-size: 1.3em; font-weight: 700; line-height: 1.3; color: var(--heading-color); }
+.rv-badge { margin-bottom: .1em; font-size: .85em; font-weight: 500; line-height: 1.3; color: var(--rv-dim); }
+.rv-title {
+  margin: 0;
+  font-size: 1.4em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--heading-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-.rv-tree { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: .9em .75em; }
+/* buttons */
+.rv-actions {
+  grid-row: 1;
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: .6em;
+  padding: 1em 1.5em .35em 1em;
+}
 
-.rv-group { display: flex; align-items: center; gap: .6em; padding: .6em .6em .3em; font-family: var(--rv-mono); font-size: .92em; color: var(--rv-dim); }
-.rv-group i { width: 1.3em; text-align: center; color: var(--accent-color); }
-.rv-items { margin: 0 0 .6em 1.15em; padding-left: .6em; border-left: 1px solid var(--rv-line-strong); }
+.rv .rv-actions .btn-live,
+.rv .rv-actions .btn-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55em;
+  width: auto;
+  padding: .55em 1.1em;
+  border: 1px solid var(--rv-line-strong);
+  border-radius: .6em;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.rv .rv-actions .btn-live { background: var(--rv-hl); border-color: var(--rv-hl); color: var(--rv-on-hl); }
+.rv .rv-actions .btn-github { background: transparent; color: var(--default-color); }
+.rv .rv-actions .btn-live:hover,
+.rv .rv-actions .btn-live:focus-visible { background: var(--rv-hl); color: var(--rv-on-hl); filter: brightness(1.08); }
+.rv .rv-actions .btn-github:hover,
+.rv .rv-actions .btn-github:focus-visible { background: var(--rv-card-bg-hover); color: var(--default-color); }
+.rv .rv-actions a:focus-visible { outline: var(--rv-focus); outline-offset: 1px; }
+
+/* ---------- Row 2: tabs + Text/PDF toggle ---------- */
+.rv-tree {
+  grid-row: 2;
+  grid-column: 1;
+  display: flex;
+  gap: .3em;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: .3em 1.3em .75em;
+  scrollbar-width: none;
+}
+.rv-tree::-webkit-scrollbar { display: none; }
+
+.rv-group { display: none; }
+.rv-items { display: contents; }
 
 .rv-item {
   position: relative;
-  display: flex;
+  flex: 0 0 auto;
+  display: inline-flex;
   align-items: center;
-  gap: .7em;
-  width: 100%;
-  padding: .55em .75em;
+  gap: .55em;
+  width: auto;
+  padding: .5em .95em;
   border: 0;
-  border-radius: .45em;
+  border-radius: .6em;
   background: transparent;
-  font-family: var(--rv-mono);
   font-size: 1em;
+  font-weight: 600;
   line-height: 1.3;
-  text-align: left;
+  color: var(--default-color);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.rv-item i { flex: 0 0 auto; width: auto; font-size: .95em; color: inherit; opacity: .75; }
+.rv-item .rv-name { flex: none; overflow: visible; }
+.rv-count { display: none; }
+
+.rv-item:hover { background: var(--rv-card-bg-hover); color: var(--heading-color); }
+.rv-item[aria-selected="true"] { background: var(--rv-hl); color: var(--rv-on-hl); }
+.rv-item[aria-selected="true"] i { opacity: 1; }
+.rv-item:focus-visible { outline: var(--rv-focus); outline-offset: 1px; }
+
+/* Text | PDF as a small segmented switch */
+.rv-modes {
+  grid-row: 2;
+  grid-column: 2;
+  align-self: center;
+  display: inline-flex;
+  gap: .15em;
+  margin: -.2em 1.5em .4em 0;
+  padding: .2em;
+  border-radius: .75em;
+  background: var(--rv-card-bg);
+}
+
+.rv-mode {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  padding: .35em .85em;
+  border: 0;
+  border-radius: .55em;
+  background: transparent;
+  font-size: .95em;
+  font-weight: 600;
+  line-height: 1.4;
   color: var(--default-color);
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease;
 }
+.rv-mode:hover { color: var(--heading-color); }
+.rv-mode:focus-visible { outline: var(--rv-focus); outline-offset: 1px; }
+.rv-mode[aria-pressed="true"] { background: var(--rv-pill-bg); color: var(--rv-hl); }
 
-.rv-item i { flex: 0 0 auto; width: 1.25em; text-align: center; font-size: 1em; color: var(--rv-dim); }
-.rv-item .rv-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.rv-count {
-  flex: 0 0 auto;
-  min-width: 2em;
-  padding: .1em .55em;
-  border-radius: 999px;
-  font-size: .85em;
-  text-align: center;
-  color: var(--rv-dim);
-  background: color-mix(in srgb, var(--default-color), transparent 90%);
-}
-
-.rv-item:hover { color: var(--heading-color); background: color-mix(in srgb, var(--default-color), transparent 93%); }
-.rv-item[aria-selected="true"] { color: var(--heading-color); background: var(--rv-hl-soft); }
-.rv-item[aria-selected="true"]::before { content: ''; position: absolute; left: -.7em; top: .45em; bottom: .45em; width: 2px; border-radius: 2px; background: var(--rv-hl); }
-.rv-item[aria-selected="true"] i { color: var(--rv-hl); }
-.rv-item:focus-visible { outline: 2px solid var(--rv-hl); outline-offset: -2px; }
-
-/* Pinned: Download CV (reuses the site's .btn-live) */
-.rv-actions { display: flex; flex-direction: column; gap: .6em; padding: 1.1em 1.4em 1.4em; border-top: 1px solid var(--rv-line); }
-
-.rv-actions .btn-live,
-.rv-actions .btn-github {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .6em;
-  width: 100%;
-  padding: .6em 1.1em;
-  font-size: 1.04em;
-  text-align: center;
-}
-
-/* ---------- Main pane ---------- */
-.rv-content { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding-bottom: 0; }
-
-/* path bar: base size, like the terminal status bar */
-.rv-bar {
-  flex: 0 0 3.2em;
-  display: flex;
-  align-items: center;
-  gap: 1.1em;
-  padding: 0 1.9em;
-  background: var(--rv-bar-bg);
-  border-bottom: 1px solid var(--rv-line);
-  font-family: var(--rv-mono);
-  font-size: .96em;
-  color: var(--rv-dim);
-}
-
-.rv-crumb { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rv-crumb b { font-weight: 500; color: var(--heading-color); }
-.rv-bar-meta { flex: 0 0 auto; }
-
-/* reading area: base x --rv-main-scale (terminal right pane) */
+/* ---------- Row 3: reading pane ---------- */
 .rv-scroll,
 .rv-canvas { font-size: calc(1em * var(--rv-main-scale)); }
 
-.rv-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 1.2em 1.4em 2.2em; }
+.rv-scroll {
+  grid-row: 3;
+  grid-column: 1 / -1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.6em 1.8em 2.6em;
+}
 
 .rv-view:not([hidden]) { animation: rv-in .16s ease-out; }
 @keyframes rv-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .rv-view:not([hidden]) { animation: none; } }
 
-.rv-doc { max-width: 78ch; font-size: 1em; line-height: 1.6; }
+/* one centred column, about 70 characters wide */
+.rv-doc { max-width: 46em; margin-inline: auto; line-height: 1.65; }
 .rv-doc p { margin: 0 0 .95em; }
 
-.rv-h { margin: 0 0 .3em; font-family: var(--heading-font); font-size: 1.25em; font-weight: 700; line-height: 1.3; color: var(--heading-color); }
-.rv-h::before { content: '## '; font-family: var(--rv-mono); font-weight: 500; color: var(--accent-color); opacity: .75; }
-.rv-sub { margin: 0 0 1.2em; color: var(--rv-dim); font-size: .97em; }
+.rv-h { margin: 0 0 .3em; font-size: 1.3em; font-weight: 700; line-height: 1.3; color: var(--heading-color); }
+.rv-sub { margin: 0 0 1.4em; color: var(--rv-dim); font-size: .97em; }
 
-/* Profile */
-.rv-profile { display: flex; gap: 1.35em; align-items: flex-start; margin-bottom: 1.2em; }
-.rv-photo { flex: 0 0 auto; width: 7.5em; height: 7.5em; border: 1px solid var(--rv-line-strong); border-radius: .8em; object-fit: cover; object-position: top center; background: var(--rv-side-bg); }
+/* terminal flavour, dev mode only */
+html.dev .rv-item,
+html.dev .rv-mode,
+html.dev .rv-badge,
+html.dev .rv-chips li { font-family: var(--rv-mono); }
+html.dev .rv-h::before { content: '## '; font-family: var(--rv-mono); font-weight: 500; color: var(--accent-color); opacity: .75; }
+
+/* ---------- Profile ---------- */
+.rv-profile { display: flex; gap: 1.4em; align-items: flex-start; margin-bottom: 1.2em; }
 .rv-profile p { margin: 0; }
+.rv-photo { flex: 0 0 auto; width: 7.5em; height: 7.5em; border: 0; border-radius: .9em; object-fit: cover; object-position: top center; background: var(--rv-card-bg); }
 
-.rv-contact { margin: 0; padding: 0; list-style: none; max-width: 35em; border: 1px solid var(--rv-line-strong); border-radius: .55em; background: color-mix(in srgb, var(--surface-color), transparent 40%); overflow: hidden; }
-.rv-contact li { display: flex; align-items: center; padding: .65em 1.05em; border-bottom: 1px solid var(--rv-line); font-size: .97em; overflow-wrap: anywhere; }
-.rv-contact li:last-child { border-bottom: 0; }
+.rv-contact { margin: 0; padding: 0; list-style: none; max-width: 35em; border: 0; border-radius: .9em; background: var(--rv-card-bg); overflow: hidden; }
+.rv-contact li { display: flex; align-items: center; padding: .7em 1.1em; border: 0; font-size: .97em; overflow-wrap: anywhere; }
+.rv-contact li + li { border-top: 1px solid var(--rv-line) !important; }
 .rv-contact i { width: 1.7em; flex: 0 0 auto; margin-right: .4em; color: var(--accent-color); }
 .rv-contact a { color: var(--accent-color); }
 .rv-contact a:hover,
@@ -194,16 +285,53 @@
 .rv .contact-block { position: relative; margin-top: 1.5em; }
 .rv-contact-title { margin: 1.75em 0 .65em; }
 
-/* Experience / education / certifications */
-.rv-job { margin: 0 0 .95em; padding: 1.05em 1.2em; border: 1px solid var(--rv-line); border-left: 2px solid var(--rv-hl); border-radius: 0 .55em .55em 0; background: color-mix(in srgb, var(--surface-color), transparent 35%); }
-.rv-job h3 { margin: 0 0 .25em; font-family: var(--default-font); font-size: 1.05em; font-weight: 600; line-height: 1.4; color: var(--heading-color); }
-.rv-job h3 small { font-size: .82em; font-weight: 400; color: var(--rv-dim); }
-.rv-when { font-family: var(--rv-mono); font-size: .84em; color: var(--accent-color); }
-.rv-meta { display: flex; flex-wrap: wrap; gap: .3em 1.1em; margin: .4em 0 0; font-size: .9em; color: var(--rv-dim); }
+/* ---------- Experience / education / certifications: a timeline ---------- */
+.rv-job { position: relative; margin: 0; padding: 0 0 1.7em 1.75em; border: 0; border-radius: 0; background: none; }
+.rv-job::before {                                   /* dot */
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .45em;
+  width: .7em;
+  height: .7em;
+  border-radius: 50%;
+  background: var(--rv-hl);
+  box-shadow: 0 0 0 .28em var(--rv-hl-soft);
+}
+.rv-job::after {                                    /* rail to the next entry */
+  content: '';
+  position: absolute;
+  left: calc(.35em - 1px);
+  top: 1.6em;
+  bottom: .15em;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--rv-line-strong);
+}
+.rv-job:last-of-type { padding-bottom: .4em; }
+.rv-job:last-of-type::after { display: none; }
+
+.rv-job h3 { margin: 0 0 .25em; font-size: 1.08em; font-weight: 700; line-height: 1.4; color: var(--heading-color); }
+.rv-job h3 small { display: block; margin-top: .1em; font-size: .85em; font-weight: 400; color: var(--rv-dim); }
+
+.rv-when {
+  display: inline-block;
+  margin-top: .2em;
+  padding: .17em .8em;
+  border-radius: 999px;
+  background: var(--rv-pill-bg);
+  color: var(--accent-highlight);
+  font-size: .8em;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.rv-meta { display: flex; flex-wrap: wrap; gap: .3em 1.1em; margin: .55em 0 0; font-size: .9em; color: var(--rv-dim); }
 .rv-meta i { margin-right: .45em; color: var(--accent-color); }
 .rv-meta a { color: var(--accent-color); }
 .rv-meta a:hover { color: var(--rv-hl); }
-.rv-job ul { margin: .65em 0 0; padding-left: 1.2em; font-size: .97em; line-height: 1.6; }
+
+.rv-job ul { margin: .7em 0 0; padding-left: 1.15em; font-size: .97em; line-height: 1.6; }
 .rv-job li { margin-bottom: .3em; }
 .rv-job li::marker { color: var(--rv-hl); }
 
@@ -216,53 +344,36 @@
   align-items: center;
   gap: .5em;
   padding: .35em .9em;
-  border: 1px solid var(--rv-line-strong);
+  border: 0;
   border-radius: 999px;
-  background: transparent;
-  font-family: var(--rv-mono);
-  font-size: .8em;
+  background: var(--rv-card-bg);
+  font-size: .85em;
+  font-weight: 600;
   color: var(--default-color);
   cursor: pointer;
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  transition: background-color .15s ease, color .15s ease;
 }
-
 .rv-link:hover,
-.rv-link:focus-visible { color: var(--heading-color); border-color: var(--rv-hl); background: var(--rv-hl-soft); }
-.rv-link:focus-visible { outline: 2px solid var(--rv-hl); outline-offset: 2px; }
+.rv-link:focus-visible { color: var(--heading-color); background: var(--rv-card-bg-hover); }
+.rv-link:focus-visible { outline: var(--rv-focus); outline-offset: 1px; }
 
-/* Skills */
-.rv-skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .95em; max-width: 60em; }
-.rv-card { padding: 1.05em 1.2em; border: 1px solid var(--rv-line-strong); border-radius: .55em; background: color-mix(in srgb, var(--surface-color), transparent 40%); }
-.rv-card h3 { display: flex; align-items: center; gap: .65em; margin: 0 0 .8em; font-family: var(--default-font); font-size: 1.04em; font-weight: 600; color: var(--heading-color); }
-.rv-card h3 i { display: grid; place-items: center; width: 2.15em; height: 2.15em; border-radius: .57em; font-size: .9em; color: var(--rv-hl); background: var(--rv-hl-soft); }
+/* ---------- Skills ---------- */
+.rv-skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19em), 1fr)); gap: .95em; }
+.rv-card { padding: 1.05em 1.2em; border: 0; border-radius: .9em; background: var(--rv-card-bg); }
+.rv-card h3 { display: flex; align-items: center; gap: .65em; margin: 0 0 .8em; font-size: 1.04em; font-weight: 600; color: var(--heading-color); }
+.rv-card h3 i { display: grid; place-items: center; width: 2.15em; height: 2.15em; border-radius: .6em; font-size: .9em; color: var(--rv-hl); background: var(--rv-hl-soft); }
 .rv-chips { display: flex; flex-wrap: wrap; gap: .4em; margin: 0; padding: 0; list-style: none; }
-.rv-chips li { padding: .25em .85em; border: 1px solid var(--rv-line-strong); border-radius: 999px; font-family: var(--rv-mono); font-size: .8em; line-height: 1.5; }
+.rv-chips li { padding: .25em .8em; border: 0; border-radius: .65em; background: color-mix(in srgb, var(--default-color), transparent 91%); font-size: .85em; line-height: 1.5; }
 
-/* ---------- Text | PDF tabs (same chips as the inspector's gallery filters) ---------- */
-.rv-modes { flex: 0 0 auto; display: flex; gap: .5em; }
-
-.rv-mode {
-  display: inline-flex;
-  align-items: center;
-  gap: .5em;
-  padding: .35em .92em;
-  border: 1px solid var(--rv-line-strong);
-  border-radius: 999px;
-  background: transparent;
-  font-family: var(--rv-mono);
-  font-size: .96em;
-  line-height: 1.4;
-  color: var(--default-color);
-  cursor: pointer;
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+/* ---------- PDF tab: a page on a dark canvas ---------- */
+.rv-pdf {
+  grid-row: 3;
+  grid-column: 1 / -1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
-
-.rv-mode:hover { color: var(--heading-color); border-color: var(--rv-hl-line); }
-.rv-mode:focus-visible { outline: 2px solid var(--rv-hl); outline-offset: 2px; }
-.rv-mode[aria-pressed="true"] { color: var(--heading-color); border-color: var(--rv-hl); background: var(--rv-hl-soft); }
-
-/* ---------- PDF tab: a page on a dark canvas, no tools ---------- */
-.rv-pdf { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
 
 .rv-canvas {
   flex: 1 1 auto;
@@ -285,125 +396,93 @@
   -webkit-user-drag: none;
 }
 
-.rv * {
-  scrollbar-width: thin;
-  scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
-}
+/* the tab row sets its own (hidden) scrollbar, everything else is thin and themed */
+.rv * { scrollbar-width: thin; scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent); }
+.rv .rv-tree { scrollbar-width: none; }
 
-/* ---------- Medium window: slimmer sidebar ---------- */
-@container wm (max-width: 1000px) {
-  .rv { --rv-side-w: 17.2em; }
-  .rv-scroll { padding: 1.2em 1.2em 2.1em; }
-  .rv-bar { padding: 0 1.4em; }
-}
-
-/* ---------- Small window / phone: sidebar becomes a top bar with scrolling tabs ----------
-   (Base size keeps its 10px floor from the top of the file, so text stays readable here.) */
+/*--------------------------------------------------------------
+# Small window / phone (<= 760px window width)
+#   Same three rows, just tighter. Tabs swipe sideways, the Text/PDF
+#   switch shrinks to icons, buttons lose their labels.
+--------------------------------------------------------------*/
 @container wm (max-width: 760px) {
-  .rv {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-  }
+  .rv { --rv-s: 13.5px; --rv-main-scale: 1.08; }   /* the window-width formula is too small here */
 
-  .rv-side { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "head actions" "tree tree"; border-right: 0; border-bottom: 1px solid var(--rv-line); }
-  .rv-head { grid-area: head; display: flex; align-items: center; min-width: 0; padding: .8em .9em .8em 1.1em; border-bottom: 0; }
-  .rv-head-top { margin: 0 .75em 0 0; min-width: 0; }
-  .rv-app-icon { width: 2.3em; height: 2.3em; font-size: 1.08em; border-radius: .6em; }
+  .rv-head { padding: .8em 0 .3em 1em; }
+  .rv-app-icon { width: 2.3em; height: 2.3em; font-size: 1.05em; border-radius: .65em; }
   .rv-badge { display: none; }
-  .rv-title { font-size: 1.12em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rv-title { font-size: 1.15em; }
 
-  .rv-actions { grid-area: actions; flex-direction: row; gap: .45em; padding: .8em 1.1em .8em 0; border-top: 0; }
-  .rv-actions .btn-live,
-  .rv-actions .btn-github { width: auto; padding: .42em .9em; font-size: .92em; border-width: 1px; border-radius: .5em; white-space: nowrap; }
+  .rv-actions { gap: .45em; padding: .8em 1em .3em .6em; }
+  .rv .rv-actions .btn-live,
+  .rv .rv-actions .btn-github { padding: .5em .85em; font-size: .92em; border-radius: .55em; }
 
-  .rv-tree { grid-area: tree; display: flex; gap: .3em; overflow-x: auto; overflow-y: hidden; padding: .45em .75em; border-top: 1px solid var(--rv-line); }
-  .rv-group { display: none; }
-  .rv-items { display: contents; }
-  .rv-item { width: auto; flex: 0 0 auto; padding: .55em .85em; white-space: nowrap; }
-  .rv-item .rv-name { flex: none; }
-  .rv-item .rv-count { display: none; }
-  .rv-item[aria-selected="true"]::before { left: .75em; right: .75em; top: auto; bottom: 0; width: auto; height: 2px; }
+  .rv-tree {
+    padding: .25em .6em .65em 1em;
+    scroll-padding-inline: 1em;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.6em), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 1.6em), transparent);
+  }
+  .rv-item { padding: .5em .85em; font-size: .95em; }
+  .rv-item i { display: none; }
 
-  .rv-bar { padding: 0 1.1em; gap: .8em; }
-  .rv-canvas { padding: .8em .7em 1.2em; }
-  .rv-bar-meta { display: none; }
-  .rv-scroll { padding: 1.1em .95em 1.9em; }
-  .rv-skills { grid-template-columns: minmax(0, 1fr); }
+  /* Text / PDF: own row under the tabs, labelled */
+  .rv { grid-template-rows: auto auto auto minmax(0, 1fr); }
+  .rv::before { grid-row: 1 / 3; }
+  .rv-tree { grid-column: 1 / -1; }
+  .rv-modes { grid-row: 3; grid-column: 1 / -1; justify-self: start; margin: .8em 1em 0; }
+  .rv-mode { min-height: 2.4em; padding: .4em .95em; }
+  .rv-scroll,
+  .rv-pdf { grid-row: 4; }
+
+  .rv-scroll { padding: 1.2em 1em calc(2em + env(safe-area-inset-bottom, 0px)); }
+  .rv-canvas { padding: .8em .7em calc(1.2em + env(safe-area-inset-bottom, 0px)); }
 }
 
 @container wm (max-width: 520px) {
   .rv-actions .rv-btn-label { display: none; }
-  .rv-actions .btn-live,
-  .rv-actions .btn-github { padding: .5em .8em; }
+  .rv .rv-actions .btn-live,
+  .rv .rv-actions .btn-github { padding: .55em .75em; }
   .rv-profile { flex-direction: column; }
-  .rv-job-row { flex-wrap: wrap; }
+  .rv-job-row { flex-direction: column; align-items: flex-start; gap: .7em; }
 }
 
 /*--------------------------------------------------------------
-# Redesign: soft, borderless cards and no divider lines.
-# Kept last so it wins over the earlier rules (including the small-window ones).
+# Copy toast ("Copied to clipboard") + tap targets
+#   The toast used to live inside the scrolling contact block, so it
+#   scrolled away or got clipped. Now it is pinned to the bottom of the
+#   resume window, centred, above the safe area. Positional rules use
+#   !important because the base toast styles live in main.css.
 --------------------------------------------------------------*/
-.rv {
-  --rv-card-bg: color-mix(in srgb, var(--default-color), transparent 94%);
-  --rv-card-bg-hover: color-mix(in srgb, var(--default-color), transparent 90%);
-  --rv-pill-bg: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+.rv { position: relative; }
+.rv .contact-block { position: static; }
+
+.rv .contact-block .copy-toast-container {
+  position: absolute !important;
+  inset: auto 0 0 0 !important;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 1em calc(1em + env(safe-area-inset-bottom, 0px));
+  transform: none !important;
+  pointer-events: none;               /* the empty strip never blocks taps */
 }
 
-/* dividers: sidebar edge, header, tree guide line, action bar, contact rows */
-.rv-side,
-.rv-head,
-.rv-actions,
-.rv-tree,
-.rv-items,
-.rv-contact li {
-  border: 0 !important;
+.rv .contact-block .copy-toast {
+  width: max-content;
+  max-width: min(100%, 22em);
+  margin: 0 !important;
+  pointer-events: auto;
 }
 
-/* cards: experience, education, certifications */
-.rv-job {
-  margin: 0 0 .55em;
-  padding: .9em 1.05em;
-  border: 0;
-  border-radius: .95em;
-  background: var(--rv-card-bg);
-  transition: background-color .15s ease;
+@container wm (max-width: 760px) {
+  /* easier to hit with a thumb */
+  .rv .rv-actions .btn-live,
+  .rv .rv-actions .btn-github { min-height: 2.6em; min-width: 2.6em; }
+  .rv-mode { min-height: 2.4em; }
+  .rv-item { min-height: 2.4em; }
+  .rv-contact li { min-height: 3em; }
+  .rv-contact .contact-info-copy { min-height: 2.4em; width: 100%; }   /* whole row is the tap target */
 }
-.rv-job:hover { background: var(--rv-card-bg-hover); }
-.rv-job h3 { margin-bottom: .4em; }
-
-/* date as a small pill instead of a line of mono text */
-.rv-when {
-  display: inline-block;
-  padding: .17em .8em;
-  border-radius: 999px;
-  background: var(--rv-pill-bg);
-  color: var(--accent-highlight);
-  font-size: .77em;
-  line-height: 1.5;
-}
-
-/* skill cards and contact box */
-.rv-card,
-.rv-contact {
-  border: 0;
-  border-radius: .95em;
-  background: var(--rv-card-bg);
-}
-.rv-chips li {
-  border: 0;
-  border-radius: .65em;
-  background: color-mix(in srgb, var(--default-color), transparent 91%);
-}
-
-/* pills: View, Text / PDF */
-.rv-link,
-.rv-mode {
-  border: 0;
-  background: var(--rv-card-bg);
-}
-.rv-link:hover,
-.rv-link:focus-visible,
-.rv-mode:hover { background: var(--rv-card-bg-hover); }
-.rv-mode[aria-pressed="true"] { background: var(--rv-pill-bg); }
-
-.rv-photo { border: 0; }

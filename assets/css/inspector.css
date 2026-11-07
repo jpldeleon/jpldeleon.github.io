@@ -61,7 +61,6 @@ body.pi-page { margin: 0; padding: 0; overflow: hidden; background: var(--backgr
   align-items: center;
   padding: .55em 1.2em;
   background: var(--pi-card);
-  border-bottom: 1px solid var(--pi-line);
 }
 .pi-titlebar i,
 .pi-titlebar-title { display: none; }
@@ -90,7 +89,6 @@ html.wm-embedded .pi-titlebar { display: none; }
   grid-template-areas: "head actions" "tree tree";
   min-height: 0;
   background: var(--pi-card);
-  border-bottom: 1px solid var(--pi-line);
 }
 
 /* icon on the left, name + short description stacked on the right */
@@ -170,7 +168,7 @@ html.wm-embedded .pi-titlebar { display: none; }
 .pi .pi-actions .btn-live:focus-visible { background: var(--pi-accent); color: var(--pi-on-accent); filter: brightness(1.08); }
 .pi .pi-actions .btn-github:hover,
 .pi .pi-actions .btn-github:focus-visible { background: var(--pi-hover); color: var(--pi-text); }
-.pi .pi-actions a:focus-visible { outline: 2px solid var(--pi-accent); outline-offset: 2px; }
+.pi .pi-actions a:focus-visible { outline: 1px solid color-mix(in srgb, var(--pi-accent), transparent 35%); outline-offset: 1px; }
 
 /* ---------- Tabs ---------- */
 .pi-tree {
@@ -221,7 +219,7 @@ html.wm-embedded .pi-titlebar { display: none; }
 .pi-item:hover { background: var(--pi-hover); color: var(--pi-text); }
 .pi-item[aria-selected="true"] { background: var(--pi-accent); color: var(--pi-on-accent); }
 .pi-item[aria-selected="true"]::before { content: none; }
-.pi-item:focus-visible { outline: 2px solid var(--pi-accent); outline-offset: 2px; }
+.pi-item:focus-visible { outline: 1px solid color-mix(in srgb, var(--pi-accent), transparent 35%); outline-offset: 1px; }
 
 .pi-count {
   min-width: 1.7em;
@@ -336,7 +334,7 @@ a.pi-thumb {
 }
 a.pi-thumb:hover,
 a.pi-thumb:focus-visible { box-shadow: var(--pi-shadow); transform: translateY(-2px); color: var(--pi-text); }
-a.pi-thumb:focus-visible { outline: 2px solid var(--pi-accent); outline-offset: 2px; }
+a.pi-thumb:focus-visible { outline: 1px solid color-mix(in srgb, var(--pi-accent), transparent 35%); outline-offset: 1px; }
 
 .pi-thumb-img { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--pi-bg); }
 .pi-thumb-img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
@@ -384,7 +382,7 @@ a.pi-thumb:focus-visible { outline: 2px solid var(--pi-accent); outline-offset: 
   transition: background-color .15s ease;
 }
 .pi-filter:hover { background: var(--pi-hover); }
-.pi-filter:focus-visible { outline: 2px solid var(--pi-accent); outline-offset: 2px; }
+.pi-filter:focus-visible { outline: 1px solid color-mix(in srgb, var(--pi-accent), transparent 35%); outline-offset: 1px; }
 .pi-filter[aria-pressed="true"] { background: var(--pi-accent); border-color: var(--pi-accent); color: var(--pi-on-accent); }
 
 a.pi-thumb[hidden] { display: none; }
@@ -559,7 +557,6 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
     gap: .3em;
     padding: .3em .8em .6em;
     background: var(--pi-card);
-    border-bottom: 1px solid var(--pi-line);
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -582,7 +579,6 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
     gap: .6em;
     padding: .7em 1em calc(.7em + env(safe-area-inset-bottom, 0px));
     background: var(--pi-card);
-    border-top: 1px solid var(--pi-line);
   }
   .pi .pi-actions .btn-live,
   .pi .pi-actions .btn-github { width: 100%; padding: .7em .5em; font-size: .95em; }
@@ -633,20 +629,17 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-tree { scroll-snap-type: none; scroll-padding-inline: 1em; }
   .pi-item { scroll-snap-align: none; }
 }
-
+/*--------------------------------------------------------------
+# Phone grid fix: the desktop grid-area names must not leak into the
+# phone grid (.pi-side is display: contents there). Without this the
+# header, tabs and buttons land in stray implicit columns and squeeze
+# the content into a thin strip.
+--------------------------------------------------------------*/
 @media (max-width: 760px) {
   .pi-titlebar,
-  .pi-head,
-  .pi-tree,
-  .pi-content,
-  .pi-actions {
-    grid-column: 1 / -1;
-    min-width: 0;
-  }
-
-  .pi-head    { grid-area: auto; grid-row: 2; grid-column: 1 / -1; }
-  .pi-tree    { grid-area: auto; grid-row: 3; grid-column: 1 / -1; }
-  .pi-actions { grid-area: auto; grid-row: 5; grid-column: 1 / -1; }
-
+  .pi-content { grid-column: 1 / -1; min-width: 0; }
+  .pi-head    { grid-area: auto; grid-row: 2; grid-column: 1 / -1; min-width: 0; }
+  .pi-tree    { grid-area: auto; grid-row: 3; grid-column: 1 / -1; min-width: 0; }
+  .pi-actions { grid-area: auto; grid-row: 5; grid-column: 1 / -1; min-width: 0; }
   .pi { grid-auto-columns: minmax(0, 1fr); }
 }
