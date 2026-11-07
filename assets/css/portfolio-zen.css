@@ -1,0 +1,174 @@
+/*--------------------------------------------------------------
+# Portfolio window: Zen-browser look
+# Vertical tabs on the left (Home, projects, certificates), a floating rounded page pane on the right
+# with a compact address bar. Colours come from the active theme variables.
+# Load AFTER portfolio-terminal.css.
+--------------------------------------------------------------*/
+.zn {
+  position: absolute; inset: 0;                /* fill the window body exactly (.wm-body is position: relative) */
+  --zn-gap: 8px;
+  --zn-r: 14px;
+  --zn-side: 15.5rem;
+  --zn-side-compact: 3.6rem;
+  --zn-dim: color-mix(in srgb, var(--default-color), transparent 42%);
+  --zn-hover: color-mix(in srgb, var(--default-color), transparent 92%);
+  --zn-chip: color-mix(in srgb, var(--default-color), transparent 90%);
+  --zn-active: color-mix(in srgb, var(--accent-highlight), transparent 80%);
+  --zn-pane: color-mix(in srgb, var(--surface-color), transparent 6%);
+  container: zn / inline-size;
+  box-sizing: border-box;
+  padding: var(--zn-gap);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--default-color);
+  background: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 16%), transparent 20%);   /* translucent: the window glass shows through */
+  overflow: hidden;
+}
+.wm-body > section.zn { position: absolute; inset: 0; margin: 0 !important; padding: var(--zn-gap); }   /* beats app.css `.wm-body > section` padding / position */
+.zn *, .zn *::before, .zn *::after { box-sizing: border-box; }
+.zn a { text-decoration: none; }
+.zn :focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 2px; border-radius: 8px; }
+
+.zn-shell {
+  display: grid;
+  grid-template-columns: var(--zn-side) minmax(0, 1fr);
+  gap: var(--zn-gap);
+  height: 100%;
+  min-height: 0;
+}
+.zn.is-compact .zn-shell { grid-template-columns: var(--zn-side-compact) minmax(0, 1fr); }
+
+/* ---------- vertical tabs ---------- */
+.zn-side {
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 0; min-height: 0;
+  padding: .15rem;
+  overflow: hidden auto;
+  scrollbar-width: thin;
+}
+.zn-group {
+  margin: .9rem .7rem .25rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--zn-dim); white-space: nowrap;
+}
+.zn-tab {
+  display: flex; align-items: center; gap: .7rem;
+  width: 100%; min-width: 0;
+  padding: .6rem .7rem;
+  border: 0; border-radius: 11px;
+  background: transparent; color: var(--default-color);
+  font: inherit; text-align: left; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.zn-tab:hover { background: var(--zn-hover); }
+.zn-tab[aria-selected="true"] { background: var(--zn-active); color: var(--heading-color); font-weight: 600; }
+.zn-ico { flex: none; width: 1.25rem; text-align: center; color: var(--accent-color); }
+.zn-tab[aria-selected="true"] .zn-ico { color: var(--accent-highlight); }
+.zn-tab-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.zn-tab-cat { display: none; color: var(--zn-dim); font-weight: 400; }
+.zn-tab[aria-selected="true"] .zn-tab-cat { display: inline; }   /* "SEO - NothingTechBlob" */
+
+/* compact sidebar: icons only */
+.zn.is-compact .zn-tab { justify-content: center; padding: .65rem 0; }
+.zn.is-compact .zn-tab-label { display: none; }
+.zn.is-compact .zn-group { height: 1px; margin: .6rem .8rem; padding: 0; overflow: hidden; font-size: 0; background: var(--zn-chip); }
+
+/* ---------- floating page pane ---------- */
+.zn-main {
+  display: flex; flex-direction: column;
+  min-width: 0; min-height: 0;
+  background: var(--zn-pane);
+  border-radius: var(--zn-r);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, .28);
+  overflow: hidden;
+}
+.zn-bar { display: flex; align-items: center; gap: .35rem; padding: .5rem .6rem; flex: none; }
+.zn-iconbtn {
+  flex: none; width: 2.1rem; height: 2.1rem;
+  display: grid; place-items: center;
+  border: 0; border-radius: 9px; background: transparent;
+  color: var(--zn-dim); font-size: .9rem; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.zn-iconbtn:hover:not(:disabled) { background: var(--zn-hover); color: var(--default-color); }
+.zn-iconbtn:disabled { opacity: .35; cursor: default; }
+.zn-iconbtn[aria-pressed="true"] { color: var(--accent-highlight); }
+.zn-url {
+  flex: 1; min-width: 0; height: 2.1rem;
+  display: flex; align-items: center; gap: .55rem;
+  padding: 0 .95rem; border-radius: 999px;
+  background: var(--zn-chip); font-size: .85rem;
+}
+.zn-url > i { flex: none; font-size: .7rem; color: var(--zn-dim); }
+.zn-url-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.zn-url-host { color: var(--zn-dim); }
+.zn-url-path { color: var(--default-color); }
+
+.zn-view { position: relative; flex: 1; min-height: 0; }
+.zn-panel { position: absolute; inset: 0; overflow: auto; scrollbar-width: thin; }
+.zn-panel[hidden] { display: none; }
+
+/* project pages (iframes mounted by WindowManager.embed) */
+.zn-page { overflow: hidden; }
+.zn .zn-page .wm-frame {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border: 0; background: transparent;
+  opacity: 0; transition: opacity .25s ease;
+}
+.zn .zn-page .wm-frame.is-ready { opacity: 1; }
+.zn .zn-page .wm-loading {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 0; pointer-events: none;           /* hide the "loading name" text, show a spinner instead */
+}
+.zn .zn-page .wm-loading::after {
+  width: 22px; height: 22px; margin: 0; border-radius: 50%;
+  background: none; border: 2px solid var(--zn-chip); border-top-color: var(--accent-highlight);
+  animation: zn-spin .8s linear infinite;
+}
+@keyframes zn-spin { to { transform: rotate(360deg); } }
+
+/* certificates */
+.zn-cert { display: grid; place-items: center; padding: 1rem; }
+.zn-cert img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; }
+
+/* ---------- Home (placeholder start page) ---------- */
+.zn-home { display: grid; place-items: center; padding: 1.5rem; }
+.zn-home-inner { width: min(34rem, 100%); text-align: center; }
+.zn-avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; }
+.zn-home h2 { margin: .9rem 0 .15rem; font-size: 1.7rem; color: var(--heading-color); }
+.zn-role { margin: 0 0 1rem; color: var(--accent-highlight); font-weight: 600; }
+.zn-lead { margin: 0 auto 1.4rem; max-width: 30rem; color: var(--default-color); }
+.zn-actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; }
+.zn-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem 1.1rem; border: 0; border-radius: 999px;
+  background: var(--zn-chip); color: var(--default-color);
+  font: inherit; font-weight: 600; cursor: pointer;
+  transition: background .15s, transform .12s;
+}
+.zn-btn:hover { background: var(--zn-active); }
+.zn-btn:active { transform: scale(.97); }
+.zn-btn.is-primary { background: var(--accent-color); color: var(--background-color); }
+.zn-btn.is-primary:hover { background: var(--accent-highlight); }
+.zn-hint { margin: 1.6rem 0 .6rem; color: var(--zn-dim); font-size: .85rem; }
+.zn-links { display: flex; gap: .4rem; justify-content: center; }
+.zn-links a {
+  width: 2.2rem; height: 2.2rem; display: grid; place-items: center;
+  border-radius: 50%; color: var(--zn-dim); transition: background .15s, color .15s;
+}
+.zn-links a:hover { background: var(--zn-hover); color: var(--accent-highlight); }
+
+/* ---------- narrow window: tabs become a strip along the top ---------- */
+@container zn (max-width: 619px) {
+  .zn-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .zn.is-compact .zn-shell { grid-template-columns: minmax(0, 1fr); }
+  .zn-side { flex-direction: row; align-items: center; gap: 4px; overflow: auto hidden; }
+  .zn-group { display: none; }
+  .zn-tab, .zn.is-compact .zn-tab { flex: none; width: auto; justify-content: flex-start; padding: .5rem .85rem; }
+  .zn-tab-label, .zn.is-compact .zn-tab-label { display: block; max-width: 11rem; }
+  .zn-sidebtn { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zn *, .zn *::before, .zn *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

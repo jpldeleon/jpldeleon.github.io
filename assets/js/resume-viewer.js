@@ -36,18 +36,24 @@
     return tabs[0];
   }
 
+  /* Developer mode shows the terminal path (~/cv/profile.md); plain mode shows a readable label. */
+  function isDev() { return document.documentElement.classList.contains('dev'); }
+
   function renderBar() {
-    var t = tabFor(state.view);
+    var t = tabFor(state.view), dev = isDev();
     if (state.mode === 'pdf') {
-      if (crumbDir) crumbDir.textContent = '~/cv/';
-      if (crumbFile) crumbFile.textContent = PDF_NAME;
+      if (crumbDir) crumbDir.textContent = dev ? '~/cv/' : '';
+      if (crumbFile) crumbFile.textContent = dev ? PDF_NAME : 'Resume (PDF)';
       if (meta) meta.textContent = '1 page';
     } else {
-      if (crumbDir) crumbDir.textContent = t.getAttribute('data-dir') || '';
-      if (crumbFile) crumbFile.textContent = t.getAttribute('data-file') || '';
+      if (crumbDir) crumbDir.textContent = dev ? (t.getAttribute('data-dir') || '') : '';
+      if (crumbFile) crumbFile.textContent = dev
+        ? (t.getAttribute('data-file') || '')
+        : (t.getAttribute('data-label') || t.getAttribute('data-file') || '');
       if (meta) meta.textContent = t.getAttribute('data-meta') || '';
     }
   }
+  document.addEventListener('devmode:change', renderBar);
 
   function setMode(mode) {
     if (mode !== 'text' && mode !== 'pdf') return;

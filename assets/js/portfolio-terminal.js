@@ -283,15 +283,22 @@
     var id = a.getAttribute('data-open'), cmd = a.getAttribute('data-cmd'), isCert = id.indexOf('cert:') === 0;
     var title = a.querySelector('.pt-name').textContent;
     out.innerHTML = ''; typed.textContent = ''; run.hidden = false;
+    var dev = document.documentElement.classList.contains('dev');
     try {
-      await typeText(isCert ? 'xdg-open ~/certifications/' + cmd + '.pdf' : './launch ' + cmd + ' --window');
-      await sleep(120);
-      line('<span class="ok"><b>ok</b></span> ' + (isCert ? 'locating certificate' : 'resolving ~/projects/' + esc(cmd)));
-      await sleep(260);
-      line('<span class="ok"><b>ok</b></span> ' + (isCert ? 'starting viewer' : 'allocating window') + '<span class="pt-bar"><i></i></span>');
-      await sleep(700);
-      line((isCert ? '▶ Opening ' : '▶ Launching ') + esc(title) + '…', 'go');
-      await sleep(420);
+      if (dev) {
+        await typeText(isCert ? 'xdg-open ~/certifications/' + cmd + '.pdf' : './launch ' + cmd + ' --window');
+        await sleep(120);
+        line('<span class="ok"><b>ok</b></span> ' + (isCert ? 'locating certificate' : 'resolving ~/projects/' + esc(cmd)));
+        await sleep(260);
+        line('<span class="ok"><b>ok</b></span> ' + (isCert ? 'starting viewer' : 'allocating window') + '<span class="pt-bar"><i></i></span>');
+        await sleep(700);
+        line((isCert ? '▶ Opening ' : '▶ Launching ') + esc(title) + '…', 'go');
+        await sleep(420);
+      } else {
+        /* plain mode: one short, readable line instead of the typed shell command */
+        line((isCert ? 'Opening ' : 'Opening project: ') + esc(title) + '…', 'go');
+        await sleep(450);
+      }
       for (var tries = 0; tries < 20 && !(window.WindowManager && window.WindowManager.open); tries++) await sleep(100);
       if (window.WindowManager && window.WindowManager.open) window.WindowManager.open(id);
       else if (!isCert) window.open(a.getAttribute('href'), '_blank', 'noopener');   // never dump a certificate image into a tab

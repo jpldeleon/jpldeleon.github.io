@@ -22,7 +22,7 @@
     },
     portfolio: {
       title: 'Portfolio', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
-      adopt: '#portfolio', size: [600, 540], center: true
+      adopt: '#portfolio', size: [1000, 640], center: true
     },
     socials: {
       title: 'Socials', icon: 'fa-solid fa-share-nodes', dockClass: 'dock-app',
@@ -370,7 +370,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     cascade = 0;
     window.scrollTo(0, 0);
     flashAbout(false);
-    if (window.Boot && window.Boot.play) await window.Boot.play();
+    if (document.documentElement.classList.contains('dev') && window.Boot && window.Boot.play) await window.Boot.play();   // boot log is developer mode only
     await revealDesktop();
     restarting = false;                              // all windows stay closed after a restart
   }
@@ -1243,9 +1243,9 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     }
     /* Terminal dressing, same language as the About card: window bar + `$ command` prompts */
     if (pop && !pop.querySelector('.cp-bar')) {
-      const prompt = cmd => el('p', { class: 'ab-cmd cp-cmd' }, '<span>$</span>' + cmd);
+      const prompt = cmd => el('p', { class: 'ab-cmd cp-cmd dev-only' }, '<span>$</span>' + cmd);   // `$ command` lines: developer mode only
       pop.prepend(el('div', { class: 'cp-bar', 'aria-hidden': 'true' },
-        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title">jp@portfolio: ~<span class="cp-bar-desk"> \u2014 date &amp; calendar</span><span class="cp-bar-mob"> \u2014 why-hire-me</span></span>'));
+        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title"><span class="dev-only">jp@portfolio: ~<span class="cp-bar-desk"> \u2014 date &amp; calendar</span><span class="cp-bar-mob"> \u2014 why-hire-me</span></span><span class="plain-only">Why hire me &amp; calendar</span></span>'));
       const clockBox = pop.querySelector('.cp-clock'), head = why && why.querySelector('.cp-head'), nav = pop.querySelector('.cp-cal-nav');
       if (clockBox) clockBox.prepend(prompt('date'));
       if (head) head.parentNode.insertBefore(prompt('cat why-hire-me.txt'), head);
@@ -1553,7 +1553,15 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     else startDesktop();
   }
 
-  window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins };
+  /* Embed a project page inside any element (used by the Zen-style Portfolio tabs).
+     Same iframe, embed CSS, theme sync and screenshot handling as a project window. */
+  function embedFrame(container, url, title) {
+    const pseudo = { id: 'embed:' + url, def: { title: title || 'Project' }, body: container, el: container, frame: null };
+    mountFrame(pseudo, url);
+    return pseudo.frame;
+  }
+
+  window.WindowManager = { open: openWindow, close: id => wins.has(id) && closeWindow(wins.get(id)), windows: wins, embed: embedFrame };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
