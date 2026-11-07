@@ -77,7 +77,7 @@
     hr{display:none!important}
     section,.section,header,footer,.section-title,.page-title .container{border-top:0!important;border-bottom:0!important}
     /* generic fallback for pages that use plain .card / *-card markup */
-    [class~="card"],[class*="-card "],[class$="-card"]{border:2px solid var(--default-color,#fff)!important;border-radius:8px!important;box-shadow:4px 4px 0 var(--default-color,#fff)!important;background:var(--surface-color,#222)!important}`;
+    [class~="card"],[class*="-card "],[class$="-card"]{border:1px solid color-mix(in srgb,var(--default-color,#fff) 18%,var(--surface-color,#222))!important;border-radius:12px!important;box-shadow:none!important;background:var(--surface-color,#222)!important}`;
 
   /* =====================================================================
    * 2. HELPERS
