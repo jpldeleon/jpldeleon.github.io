@@ -1,49 +1,44 @@
 /*--------------------------------------------------------------
-# Project Inspector
-# Load AFTER main.css. Uses only the theme variables defined there
-# (--background-color, --surface-color, --default-color, --heading-color,
-#  --accent-color, --accent-highlight), so every theme just works.
-# All selectors are prefixed .pi- so nothing in main.css is overridden.
+# Project pages: soft neo-brutalist web layout
+# Load AFTER main.css. Replaces the old "inspector" (sidebar tree + path bar).
 #
-# Sizing: everything is in em from ONE base size (--pi-s), like
-# portfolio-terminal.css / resume-viewer.css.
-#   sidebar + path bar = base size
-#   reading content    = base x --pi-main-scale (1.15)
-# Standalone page: base = 13px (looks the same as before).
-# Inside a desktop window (html.wm-embedded): base follows the window width,
-# see the last section of this file.
+# Layout:   header (icon, badge, title, buttons)  ->  tab bar  ->  content
+# Colours:  only four theme colours are ever used, never blended:
+#             --background-color  page
+#             --surface-color     cards
+#             --default-color     ink (text, borders, hard shadows)
+#             --accent-highlight  the one pop colour (text on it: --contrast-color)
+#           Every text sits on the surface or page colour it is designed for,
+#           so contrast holds in all themes.
+# Markup:   unchanged. Class names (.pi-*) and data-view attributes are the same,
+#           inspector.js keeps working.
+# Sizing:   everything is in em from --pi-s (standalone 14px, embedded follows window width).
 --------------------------------------------------------------*/
 
 /* ---------- Tokens ---------- */
-/* Fonts: JetBrains Mono everywhere, same as the desktop (desktop.css sets this for the main page,
-   but project pages only load main.css + this file, so they fell back to Roboto / Ubuntu / Nunito). */
 html.wm-embedded,
 body.pi-page,
 .pi {
-  --default-font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --default-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --heading-font: var(--default-font);
   --nav-font: var(--default-font);
 }
 
 .pi {
-  --pi-s: 13px;
-  --pi-main-scale: 1.15;
-  --pi-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --pi-line: color-mix(in srgb, var(--default-color), transparent 88%);
-  --pi-line-strong: color-mix(in srgb, var(--default-color), transparent 76%);
-  --pi-dim: color-mix(in srgb, var(--default-color), transparent 34%);
-  --pi-side-bg: color-mix(in srgb, var(--background-color), #000 16%);
-  --pi-bar-bg: color-mix(in srgb, var(--background-color), #000 8%);
-  --pi-hl: var(--accent-highlight);
-  --pi-hl-soft: color-mix(in srgb, var(--accent-highlight), transparent 86%);
-  --pi-hl-line: color-mix(in srgb, var(--accent-highlight), transparent 55%);
-  --pi-side-w: 19.4em;                          /* 252px at 13px */
-  --pi-chrome: calc(var(--pi-s) * 2.92);        /* height of the standalone title bar (38px) */
-  --pi-bar-h: calc(var(--pi-s) * 3.08);         /* path bar above the content (40px) */
-}
+  --pi-s: 14px;
+  --pi-main-scale: 1.1;
+  --pi-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-html.pi-embed .pi,
-html.wm-embedded .pi { --pi-chrome: 0px; }
+  --nb-bg: var(--background-color);
+  --nb-paper: var(--surface-color);
+  --nb-ink: var(--default-color);
+  --nb-pop: var(--accent-highlight);
+  --nb-on-pop: var(--contrast-color, var(--background-color));
+  --nb-bw: 2px;
+  --nb-r: .5em;
+  --nb-sh: .25em .25em 0 var(--nb-ink);
+  --nb-sh-lg: .4em .4em 0 var(--nb-ink);
+}
 
 /* ---------- Page shell ---------- */
 html, body.pi-page { height: 100%; }
@@ -57,236 +52,233 @@ body.pi-page {
 
 .pi {
   display: grid;
-  grid-template-columns: var(--pi-side-w) minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
   height: 100vh;
   height: 100dvh;
   font-family: var(--default-font);
   font-size: var(--pi-s);
-  color: var(--default-color);
-  background: var(--background-color);
+  color: var(--nb-ink);
+  background: var(--nb-bg);
 }
 
-/* ---------- Standalone title bar (hidden when embedded in a desktop window) ---------- */
+/* ---------- Standalone top strip (just a back button) ---------- */
 .pi-titlebar {
-  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: .96em;
-  height: var(--pi-chrome);
-  padding: 0 1.12em;
-  background: var(--pi-bar-bg);
-  border-bottom: 1px solid var(--pi-line);
-  font-family: var(--pi-mono);
-  font-size: .96em;
-  color: var(--pi-dim);
-  user-select: none;
+  padding: .7em 1.4em;
+  background: var(--nb-bg);
+  border-bottom: 3px solid var(--nb-ink);
 }
-
-.pi-titlebar i { color: var(--pi-hl); }
-.pi-titlebar-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pi-titlebar-title b { font-weight: 500; color: var(--default-color); }
+.pi-titlebar i,
+.pi-titlebar-title { display: none; }
 
 .pi-back {
   display: inline-flex;
   align-items: center;
-  gap: .58em;
-  padding: .33em .83em;
-  border: 1px solid var(--pi-line-strong);
-  border-radius: .5em;
-  color: var(--default-color);
-  font-family: var(--pi-mono);
-  font-size: .96em;
+  gap: .6em;
+  padding: .4em .9em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: .2em .2em 0 var(--nb-ink);
+  transition: transform .1s ease, box-shadow .1s ease;
 }
-
 .pi-back:hover,
-.pi-back:focus-visible { color: var(--pi-hl); border-color: var(--pi-hl-line); background: var(--pi-hl-soft); }
+.pi-back:focus-visible { transform: translate(-.1em, -.1em); box-shadow: .3em .3em 0 var(--nb-ink); color: var(--nb-ink); }
+.pi-back:active { transform: translate(.2em, .2em); box-shadow: none; }
 
 html.pi-embed .pi-titlebar,
 html.wm-embedded .pi-titlebar { display: none; }
 
-/* ---------- Sidebar (base size) ---------- */
+/* ---------- Header: title + buttons, tab bar underneath ---------- */
 .pi-side {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "head actions" "tree tree";
   min-height: 0;
-  background: var(--pi-side-bg);
-  border-right: 1px solid var(--pi-line);
+  background: var(--nb-paper);
+  border-bottom: 3px solid var(--nb-ink);
 }
 
 .pi-head {
-  padding: 1.385em 1.385em 1.077em;
-  border-bottom: 1px solid var(--pi-line);
+  grid-area: head;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .7em;
+  min-width: 0;
+  padding: 1.2em 1.5em 1em;
 }
 
-.pi-head-top {
-  display: flex;
-  align-items: center;
-  gap: .77em;
-  margin-bottom: .92em;
-}
+.pi-head-top { display: flex; align-items: center; gap: .8em; margin: 0; }
 
 .pi-app-icon {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 2.125em;
-  height: 2.125em;
-  border-radius: .5625em;
-  font-size: 1.23em;
-  color: var(--contrast-color);
-  background: var(--pi-hl);
+  width: 2.6em;
+  height: 2.6em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  background: var(--nb-pop);
+  color: var(--nb-on-pop);
+  font-size: 1.1em;
+  box-shadow: .2em .2em 0 var(--nb-ink);
 }
 
 .pi-badge {
+  padding: .3em .75em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  background: var(--nb-bg);
+  color: var(--nb-ink);
   font-family: var(--nav-font);
-  font-size: .923em;
-  font-weight: 600;
+  font-size: .8em;
+  font-weight: 700;
+  letter-spacing: .05em;
   line-height: 1.3;
-  color: var(--accent-color);
+  text-transform: uppercase;
 }
 
 .pi-title {
   margin: 0;
   font-family: var(--heading-font);
-  font-size: 1.308em;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 1.9em;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.12;
   color: var(--heading-color);
 }
 
-/* Tree */
-.pi-tree {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  padding: .923em .77em;
-}
-
-.pi-group {
+/* buttons (Live Demo / GitHub Repo) */
+.pi-actions {
+  grid-area: actions;
   display: flex;
   align-items: center;
-  gap: .667em;
-  padding: .667em .667em .333em;
-  font-family: var(--pi-mono);
-  font-size: .923em;
-  color: var(--pi-dim);
+  gap: .8em;
+  padding: 1.2em 1.5em 1em;
 }
 
-.pi-group i { width: 1.333em; text-align: center; color: var(--accent-color); }
-.pi-group + .pi-items { margin-bottom: .615em; }
-
-.pi-items {
-  margin-left: 1.154em;
-  padding-left: .615em;
-  border-left: 1px solid var(--pi-line-strong);
+.pi .pi-actions .btn-live,
+.pi .pi-actions .btn-github {
+  display: inline-block;
+  width: auto;
+  padding: .6em 1.2em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  font-family: var(--nav-font);
+  font-size: 1em;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: .25em .25em 0 var(--nb-ink);
+  transition: transform .1s ease, box-shadow .1s ease;
 }
+.pi .pi-actions .btn-live { background: var(--nb-pop); color: var(--nb-on-pop); }
+.pi .pi-actions .btn-github { background: var(--nb-bg); color: var(--nb-ink); }
+
+.pi .pi-actions .btn-live:hover,
+.pi .pi-actions .btn-github:hover,
+.pi .pi-actions .btn-live:focus-visible,
+.pi .pi-actions .btn-github:focus-visible { transform: translate(-.1em, -.1em); box-shadow: .35em .35em 0 var(--nb-ink); }
+.pi .pi-actions .btn-live:hover,
+.pi .pi-actions .btn-live:focus-visible { background: var(--nb-pop); color: var(--nb-on-pop); }
+.pi .pi-actions .btn-github:hover,
+.pi .pi-actions .btn-github:focus-visible { background: var(--nb-bg); color: var(--nb-ink); }
+.pi .pi-actions .btn-live:active,
+.pi .pi-actions .btn-github:active { transform: translate(.25em, .25em); box-shadow: none; }
+
+/* ---------- Tab bar ---------- */
+.pi-tree {
+  grid-area: tree;
+  display: flex;
+  gap: .7em;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: .9em 1.5em 1em;
+  background: var(--nb-bg);
+  border-top: 3px solid var(--nb-ink);
+}
+
+.pi-group { display: none; }
+.pi-items { display: contents; }
 
 .pi-item {
   position: relative;
-  display: flex;
+  flex: 0 0 auto;
+  display: inline-flex;
   align-items: center;
-  gap: .692em;
-  width: 100%;
-  padding: .538em .77em;
-  border-radius: .46em;
-  font-family: var(--pi-mono);
+  gap: .6em;
+  width: auto;
+  padding: .5em 1em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  font-family: var(--nav-font);
   font-size: 1em;
+  font-weight: 700;
   line-height: 1.3;
-  color: var(--default-color);
   text-decoration: none;
-  transition: background-color .15s ease, color .15s ease;
+  white-space: nowrap;
+  box-shadow: .2em .2em 0 var(--nb-ink);
+  transition: transform .1s ease, box-shadow .1s ease;
 }
 
-.pi-item i { flex: 0 0 auto; width: 1.23em; text-align: center; font-size: 1em; color: var(--pi-dim); }
-.pi-item .pi-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* file names ("overview.md") are replaced by a plain label from data-view ("Overview") */
+.pi-item .pi-name { display: none; }
+.pi-item::after { content: attr(data-view); order: 1; text-transform: capitalize; }
+.pi-item i { order: 0; width: auto; color: inherit; font-size: 1em; }
+.pi-count { order: 2; }
+
+.pi-item:hover { transform: translate(-.1em, -.1em); box-shadow: .3em .3em 0 var(--nb-ink); color: var(--nb-ink); }
+.pi-item:active { transform: translate(.2em, .2em); box-shadow: none; }
+
+.pi-item[aria-selected="true"] { background: var(--nb-pop); color: var(--nb-on-pop); }
+.pi-item[aria-selected="true"]::before { content: none; }
+.pi-item:focus-visible { outline: 3px solid var(--nb-ink); outline-offset: 3px; }
 
 .pi-count {
   flex: 0 0 auto;
-  min-width: 2em;
-  padding: .09em .545em;
-  border-radius: 999px;
-  font-size: .846em;
+  min-width: 1.8em;
+  padding: .05em .5em;
+  border-radius: .3em;
+  background: var(--nb-ink);
+  color: var(--nb-paper);
+  font-family: var(--pi-mono);
+  font-size: .8em;
+  font-weight: 700;
   text-align: center;
-  color: var(--pi-dim);
-  background: color-mix(in srgb, var(--default-color), transparent 90%);
 }
+.pi-item[aria-selected="true"] .pi-count { background: var(--nb-on-pop); color: var(--nb-pop); }
 
-.pi-item:hover { color: var(--heading-color); background: color-mix(in srgb, var(--default-color), transparent 93%); }
-
-.pi-item[aria-selected="true"] {
-  color: var(--heading-color);
-  background: var(--pi-hl-soft);
-}
-
-.pi-item[aria-selected="true"]::before {
-  content: '';
-  position: absolute;
-  left: -.692em;
-  top: .46em;
-  bottom: .46em;
-  width: 2px;
-  border-radius: 2px;
-  background: var(--pi-hl);
-}
-
-.pi-item[aria-selected="true"] i { color: var(--pi-hl); }
-.pi-item:focus-visible { outline: 2px solid var(--pi-hl); outline-offset: -2px; }
-
-/* Pinned actions */
-.pi-actions {
-  display: flex;
-  flex-direction: column;
-  gap: .615em;
-  padding: 1.077em 1.385em 1.385em;
-  border-top: 1px solid var(--pi-line);
-}
-
-.pi-actions .btn-live,
-.pi-actions .btn-github {
-  display: block;
-  width: 100%;
-  padding: .59em 1.037em;
-  text-align: center;
-  font-size: 1.038em;
-}
-
-/* ---------- Main pane ---------- */
+/* ---------- Content ---------- */
 .pi-content {            /* the <main> element */
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  padding-bottom: 0;     /* beats the dock padding main.css gives <main> */
+  padding-bottom: 0;
 }
-
 html body .pi-content { padding-bottom: 0; }
 
-/* path bar: base size */
-.pi-bar {
-  flex: 0 0 var(--pi-bar-h);
-  display: flex;
-  align-items: center;
-  gap: 1.28em;
-  padding: 0 1.92em;
-  background: var(--pi-bar-bg);
-  border-bottom: 1px solid var(--pi-line);
-  font-family: var(--pi-mono);
-  font-size: .96em;
-  color: var(--pi-dim);
-}
+/* the old terminal-style path bar is gone */
+.pi-bar { display: none; }
 
-.pi-crumb { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pi-crumb b { font-weight: 500; color: var(--heading-color); }
-.pi-bar-meta { flex: 0 0 auto; }
-
-/* reading area: base x --pi-main-scale (same idea as the terminal's right pane) */
 .pi-scroll {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   font-size: calc(1em * var(--pi-main-scale));
-  padding: 1.47em 1.605em 2.675em;
+  padding: 1.6em 1.6em 3em;
+  background: var(--nb-bg);
   scroll-behavior: auto;
   container: pi-main / size;   /* lets .pi-stage size itself from the pane (cqw / cqh) */
 }
@@ -296,39 +288,38 @@ html body .pi-content { padding-bottom: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .pi-view:not([hidden]) { animation: pi-in .16s ease-out; }
 }
-
 @keyframes pi-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* ---------- Section headings inside views ---------- */
+/* ---------- Section headings ---------- */
 .pi-h {
-  margin: 0 0 .3em;
-  font-size: 1.338em;
-  font-weight: 700;
-  line-height: 1.3;
+  display: inline-block;
+  margin: 0 0 .5em;
+  padding-bottom: .1em;
+  border-bottom: .22em solid var(--nb-pop);
+  font-size: 1.45em;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+  color: var(--heading-color);
 }
 
-.pi-sub { margin: 0 0 1.241em; color: var(--pi-dim); font-size: .97em; }
+.pi-sub { margin: 0 0 1.3em; color: var(--nb-ink); font-size: .97em; }
 
-/* ---------- Walkthrough (video + filmstrip) ---------- */
+/* ---------- Walkthrough (video + screenshots) ---------- */
 .pi-stage {
-  /* Fluid player. Sized from the reading PANE (a size container, see .pi-scroll), not from the
-     viewport, so it follows the window while you drag-resize it:
-       - as wide as the pane allows (100%)
-       - but never taller than the pane minus a peek of the filmstrip (16:9 maths on 100cqh)
-       - and never narrower than --pi-stage-floor, so a short, wide window keeps a usable player
-         and the pane just scrolls down to the filmstrip instead of shrinking the video to a postage stamp. */
-  --pi-film-peek: 12.7em;                           /* room kept for the filmstrip header + thumbs */
-  --pi-stage-floor: max(20.1em, 60cqw);             /* smallest the player may get */
-  width: 100%;                                      /* fallback for browsers without container units */
+  /* Fluid player, sized from the reading PANE (size container .pi-scroll), not the viewport. */
+  --pi-film-peek: 12.7em;
+  --pi-stage-floor: max(20.1em, 60cqw);
+  width: 100%;
   max-width: 100%;
-  margin-inline: auto;                              /* centred when height-limited */
+  margin-inline: auto;
   aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--pi-line-strong);
-  border-radius: .669em;
+  border: 3px solid var(--nb-ink);
+  border-radius: var(--nb-r);
   background: #000;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, .35);
+  box-shadow: .45em .45em 0 var(--nb-ink);
 }
 
 @supports (width: 1cqw) {
@@ -337,319 +328,288 @@ html body .pi-content { padding-bottom: 0; }
   }
 }
 
-.pi-stage iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
+.pi-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-.pi-film { margin-top: 1.47em; }
+.pi-film { margin-top: 1.8em; }
 
 .pi-film-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: .96em;
-  margin-bottom: .8em;
-  font-family: var(--pi-mono);
-  font-size: .836em;
-  color: var(--pi-dim);
+  gap: 1em;
+  margin-bottom: .9em;
+  font-size: .9em;
+  font-weight: 700;
 }
-
-.pi-film-head a { color: var(--accent-color); }
-.pi-film-head a:hover { color: var(--pi-hl); }
+.pi-film-head > span { font-size: 0; }                    /* hide "screenshots/" ... */
+.pi-film-head > span::before {                            /* ... and show a plain label */
+  content: "Screenshots";
+  font-size: calc(var(--pi-s) * 1.05);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--heading-color);
+}
+.pi-film-head a {
+  color: var(--nb-ink);
+  text-decoration: underline;
+  text-decoration-thickness: .15em;
+  text-decoration-color: var(--nb-pop);
+  text-underline-offset: .2em;
+}
+.pi-film-head a:hover { text-decoration-color: var(--nb-ink); }
 
 .pi-strip {
   display: flex;
-  gap: .8em;
+  gap: 1em;
   overflow-x: auto;
-  padding-bottom: .8em;
+  padding: .3em .6em 1em .3em;
   scroll-snap-type: x proximity;
 }
+.pi-strip .pi-thumb { flex: 0 0 11.5em; scroll-snap-align: start; }
 
-.pi-strip .pi-thumb { flex: 0 0 11.24em; scroll-snap-align: start; }
-
-/* Shared screenshot tile (filmstrip + gallery grid) */
+/* Shared screenshot tile (strip + gallery grid) */
 a.pi-thumb {
   display: block;
   min-width: 0;
-  border: 1px solid var(--pi-line-strong);
-  border-radius: .535em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: var(--nb-r);
   overflow: hidden;
-  background: var(--surface-color);
-  color: var(--default-color);
+  background: var(--nb-paper);
+  color: var(--nb-ink);
   cursor: zoom-in;
-  transition: border-color .15s ease, transform .15s ease;
+  box-shadow: .25em .25em 0 var(--nb-ink);
+  transition: transform .1s ease, box-shadow .1s ease;
 }
-
 a.pi-thumb:hover,
-a.pi-thumb:focus-visible { border-color: var(--pi-hl); color: var(--heading-color); }
-a.pi-thumb:focus-visible { outline: 2px solid var(--pi-hl); outline-offset: 2px; }
+a.pi-thumb:focus-visible { transform: translate(-.15em, -.15em); box-shadow: .4em .4em 0 var(--nb-ink); color: var(--nb-ink); }
+a.pi-thumb:active { transform: translate(.2em, .2em); box-shadow: none; }
+a.pi-thumb:focus-visible { outline: 3px solid var(--nb-ink); outline-offset: 3px; }
 
 .pi-thumb-img {
   display: block;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: var(--pi-side-bg);
+  border-bottom: var(--nb-bw) solid var(--nb-ink);
+  background: var(--nb-bg);
 }
-
-.pi-thumb-img img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  transition: transform .3s ease;
-}
-
-a.pi-thumb:hover .pi-thumb-img img { transform: scale(1.03); }
+.pi-thumb-img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 
 .pi-thumb-cap {
   display: flex;
   justify-content: space-between;
-  gap: .64em;
-  padding: .56em .8em;
-  border-top: 1px solid var(--pi-line);
-  font-size: .836em;
+  gap: .6em;
+  padding: .55em .8em;
+  font-size: .85em;
+  font-weight: 600;
   line-height: 1.35;
 }
-
 .pi-thumb-cap span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pi-thumb-cap span:last-child { flex: 0 0 auto; font-family: var(--pi-mono); font-size: .92em; color: var(--pi-dim); }
+.pi-thumb-cap span:last-child { flex: 0 0 auto; font-family: var(--pi-mono); font-size: .92em; }
 
 /* Chapters under the video */
-.pi-chapters { margin-top: 1.74em; max-width: 65.5em; }
+.pi-chapters { margin-top: 2em; }
 
 .pi-chapters ul {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: .8em;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20em), 1fr));
+  gap: 1em;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .pi-chapters li {
-  padding: .857em 1em;
-  border: 1px solid var(--pi-line);
-  border-left: 2px solid var(--pi-hl);
-  border-radius: 0 .57em .57em 0;
-  background: color-mix(in srgb, var(--surface-color), transparent 35%);
-  font-size: .936em;
+  padding: .9em 1.1em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-left: .5em solid var(--nb-pop);
+  border-radius: var(--nb-r);
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  box-shadow: .25em .25em 0 var(--nb-ink);
+  font-size: .94em;
   line-height: 1.6;
 }
+.pi-chapters li strong { display: block; margin-bottom: .15em; font-weight: 800; color: var(--heading-color); }
 
-.pi-chapters li strong { display: block; margin-bottom: .14em; font-weight: 600; color: var(--heading-color); }
-
-/* ---------- Gallery grid ---------- */
+/* ---------- Gallery ---------- */
 .pi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(16em, 1fr));
-  gap: 1.07em;
+  gap: 1.3em;
+  padding: .2em .4em .6em .2em;
 }
 
-/* ---------- Gallery filters (Badlands Ink, NothingTechBlob) ---------- */
-.pi-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .535em;
-  margin: 0 0 1.07em;
-}
+.pi-filters { display: flex; flex-wrap: wrap; gap: .7em; margin: 0 0 1.3em; }
 
 .pi-filter {
-  padding: .417em 1em;
-  border: 1px solid var(--pi-line-strong);
-  border-radius: 999px;
-  background: transparent;
-  font-family: var(--pi-mono);
-  font-size: .8em;
-  line-height: 1.4;
-  color: var(--default-color);
+  padding: .45em 1em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  font-family: var(--nav-font);
+  font-size: .85em;
+  font-weight: 700;
+  line-height: 1.3;
   cursor: pointer;
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  box-shadow: .2em .2em 0 var(--nb-ink);
+  transition: transform .1s ease, box-shadow .1s ease;
 }
-
-.pi-filter:hover { color: var(--heading-color); border-color: var(--pi-hl-line); }
-.pi-filter:focus-visible { outline: 2px solid var(--pi-hl); outline-offset: 2px; }
-
-.pi-filter[aria-pressed="true"] {
-  color: var(--heading-color);
-  border-color: var(--pi-hl);
-  background: var(--pi-hl-soft);
-}
+.pi-filter:hover { transform: translate(-.1em, -.1em); box-shadow: .3em .3em 0 var(--nb-ink); }
+.pi-filter:focus-visible { outline: 3px solid var(--nb-ink); outline-offset: 3px; }
+.pi-filter[aria-pressed="true"] { background: var(--nb-pop); color: var(--nb-on-pop); }
 
 a.pi-thumb[hidden] { display: none; }
 
-/* ---------- Document views ---------- */
-.pi-doc { max-width: 74ch; font-size: 1.037em; line-height: 1.75; }
-.pi-doc p { margin: 0 0 1.03em; }
-.pi-doc .pi-h { font-size: 1.29em; }
-.pi-doc .pi-h:not(:first-child) { margin-top: 1.5em; }
-
-.pi-doc .pi-h::before {
-  content: '## ';
-  font-family: var(--pi-mono);
-  font-weight: 500;
-  color: var(--accent-color);
-  opacity: .75;
+/* ---------- Text pages: one card ---------- */
+.pi-doc {
+  max-width: min(100%, 90ch);
+  padding: 1.6em 1.8em 1.2em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: var(--nb-r);
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  box-shadow: var(--nb-sh-lg);
+  font-size: 1.02em;
+  line-height: 1.75;
 }
+.pi-doc p { margin: 0 0 1.1em; }
+.pi-doc .pi-h { font-size: 1.3em; }
+.pi-doc .pi-h:not(:first-child) { margin-top: .8em; }
 
-/* Features */
+/* ---------- Features ---------- */
 .pi-features {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: .94em;
-  max-width: 60.2em;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19em), 1fr));
+  gap: 1.3em;
+  padding: .2em .4em .6em .2em;
 }
 
 .pi-feature {
-  padding: 1.2em 1.2em 1.07em;
-  border: 1px solid var(--pi-line-strong);
-  border-radius: .535em;
-  background: var(--surface-color);
+  padding: 1.2em 1.3em 1.1em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: var(--nb-r);
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  box-shadow: var(--nb-sh);
 }
 
 .pi-feature i {
   display: grid;
   place-items: center;
-  width: 2.25em;
-  height: 2.25em;
-  margin-bottom: .75em;
-  border-radius: .5em;
-  font-size: 1.07em;
-  color: var(--pi-hl);
-  background: var(--pi-hl-soft);
+  width: 2.6em;
+  height: 2.6em;
+  margin-bottom: .9em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: .4em;
+  background: var(--nb-pop);
+  color: var(--nb-on-pop);
+  font-size: 1.05em;
+  box-shadow: .15em .15em 0 var(--nb-ink);
 }
 
-.pi-feature h3 { margin: 0 0 .36em; font-size: 1.104em; font-weight: 600; }
-.pi-feature p { margin: 0; font-size: .97em; line-height: 1.65; }
+.pi-feature h3 { margin: 0 0 .4em; font-size: 1.12em; font-weight: 800; color: var(--heading-color); }
+.pi-feature p { margin: 0; font-size: .95em; line-height: 1.65; }
 
-/* Stack / properties */
+/* ---------- Stack / properties ---------- */
 .pi-props {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  max-width: 54.8em;
-  margin: 0 0 .535em;
-  border: 1px solid var(--pi-line-strong);
-  border-radius: .535em;
+  max-width: min(100%, 72em);
+  margin: 0 .4em .6em 0;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: var(--nb-r);
   overflow: hidden;
-  background: var(--surface-color);
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  box-shadow: var(--nb-sh);
 }
 
 .pi-props dt,
-.pi-props dd { margin: 0; padding: .76em 1.1em; border-bottom: 1px solid var(--pi-line); font-size: .97em; line-height: 1.55; }
-.pi-props dt { padding: .88em 1.28em; font-family: var(--pi-mono); font-size: .836em; font-weight: 500; color: var(--heading-color); border-right: 1px solid var(--pi-line); }
+.pi-props dd {
+  margin: 0;
+  padding: .85em 1.2em;
+  border-bottom: var(--nb-bw) solid var(--nb-ink);
+  font-size: .97em;
+  line-height: 1.55;
+}
+.pi-props dt {
+  border-right: var(--nb-bw) solid var(--nb-ink);
+  background: var(--nb-pop);
+  color: var(--nb-on-pop);
+  font-weight: 800;
+}
 .pi-props dt:nth-last-of-type(1),
 .pi-props dd:last-of-type { border-bottom: 0; }
 
 .pi-h + .pi-props,
-.pi-h + .pi-tools { margin-top: .94em; }
+.pi-h + .pi-tools { margin-top: .9em; }
 
-.pi-tools { max-width: 54.8em; margin: 0; padding: 0; list-style: none; }
-
+.pi-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17em), 1fr));
+  gap: 1em;
+  margin: 0;
+  padding: .2em .4em .6em .2em;
+  list-style: none;
+}
 .pi-tools li {
-  padding: .69em 0;
-  border-bottom: 1px solid var(--pi-line);
-  font-size: .97em;
+  padding: .8em 1.1em;
+  border: var(--nb-bw) solid var(--nb-ink);
+  border-radius: var(--nb-r);
+  background: var(--nb-paper);
+  color: var(--nb-ink);
+  box-shadow: .2em .2em 0 var(--nb-ink);
+  font-size: .95em;
   line-height: 1.6;
 }
+.pi-tools strong { display: block; margin-bottom: .1em; font-weight: 800; color: var(--heading-color); }
 
-.pi-tools li:last-child { border-bottom: 0; }
-.pi-tools strong { font-weight: 600; color: var(--heading-color); }
-
-/* ---------- Scrollbars (same as the old page override) ---------- */
+/* ---------- Scrollbars ---------- */
 .pi * {
   scrollbar-width: thin;
-  scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
+  scrollbar-color: var(--nb-ink) var(--nb-bg);
 }
 
-/* ---------- Medium: slimmer sidebar ---------- */
-@media (max-width: 1000px) {
-  .pi { --pi-side-w: 17.2em; }
-  .pi-scroll { padding: 1.2em 1.2em 2.14em; }
-  .pi-bar { padding: 0 1.44em; }
-}
-
-/* ---------- Small: sidebar becomes a top bar with scrolling tabs ---------- */
+/* ---------- Small windows / phones ---------- */
 @media (max-width: 760px) {
-  .pi {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto minmax(0, 1fr);
-  }
-
   .pi-side {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "head actions" "tree tree";
-    border-right: 0;
-    border-bottom: 1px solid var(--pi-line);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "actions" "tree";
   }
-
-  .pi-head { grid-area: head; display: flex; align-items: center; min-width: 0; padding: .77em .92em .77em 1.077em; border-bottom: 0; }
-  .pi-head-top { margin: 0 .77em 0 0; }
-  .pi-app-icon { width: 2.14em; height: 2.14em; font-size: 1.077em; border-radius: .57em; }
-  .pi-badge { display: none; }
-  .pi-title { font-size: 1.115em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-  .pi-actions { grid-area: actions; flex-direction: row; gap: .46em; padding: .77em 1.077em .77em 0; border-top: 0; }
-  .pi-actions .btn-live,
-  .pi-actions .btn-github { width: auto; padding: .417em .917em; font-size: .923em; border-width: 1px; border-radius: .5em; white-space: nowrap; }
-
-  .pi-tree {
-    grid-area: tree;
-    display: flex;
-    gap: .31em;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: .46em .77em;
-    border-top: 1px solid var(--pi-line);
-  }
-
-  .pi-group { display: none; }
-  .pi-items { display: contents; }
-  .pi-item { width: auto; flex: 0 0 auto; padding: .538em .846em; white-space: nowrap; }
-  .pi-item .pi-name { flex: none; }
-  .pi-item[aria-selected="true"]::before { left: .77em; right: .77em; top: auto; bottom: 0; width: auto; height: 2px; }
-
-  .pi-bar-meta { display: none; }
-  .pi-bar { padding: 0 1.12em; }
-  .pi-scroll { padding: 1.07em .94em 1.87em; }
-
-  .pi-chapters ul,
-  .pi-features { grid-template-columns: minmax(0, 1fr); }
-
-  .pi-grid { grid-template-columns: repeat(auto-fill, minmax(10em, 1fr)); gap: .67em; }
+  .pi-head { padding: 1em 1.1em .6em; }
+  .pi-title { font-size: 1.5em; }
+  .pi-actions { padding: .2em 1.1em 1em; flex-wrap: wrap; }
+  .pi-tree { padding: .8em 1.1em .9em; }
+  .pi-scroll { padding: 1.2em 1em 2.2em; }
+  .pi-grid { grid-template-columns: repeat(auto-fill, minmax(10em, 1fr)); gap: 1em; }
   .pi-strip .pi-thumb { flex-basis: 9.4em; }
 
   .pi-props { grid-template-columns: minmax(0, 1fr); }
-  .pi-props dt { border-right: 0; border-bottom: 0; padding-bottom: 0; }
+  .pi-props dt { border-right: 0; }
+  .pi-props dd:not(:last-of-type) { border-bottom: var(--nb-bw) solid var(--nb-ink); }
 }
+
 /*--------------------------------------------------------------
-# Container-driven layout
-# .pi-scroll is a size container (cqw / cqh / @container pi-main), so
-# everything below follows the WINDOW, not the video and not the viewport.
-#   wide pane   -> walkthrough = video + scrolling screenshot panel side
-#                  by side, chapters straight underneath (nothing hidden
-#                  below the fold because of the video)
-#   narrow pane -> the stacked layout above
-#   text pages  -> use the full pane width; 2 columns when very wide
+# Container-driven layout (follows the WINDOW, not the viewport)
+#   wide pane   -> walkthrough = video + scrolling screenshot panel side by side,
+#                  chapters straight underneath
+#   narrow pane -> stacked
 --------------------------------------------------------------*/
 @container pi-main (min-width: 40em) {
 
-  /* walkthrough: [ video | screenshots ] / chapters */
   .pi-view:has(> .pi-stage):not([hidden]) {
-    --pi-gap: 1.2em;
-    --pi-side: clamp(13em, 24cqw, 19em);                 /* min width of the screenshot panel */
+    --pi-gap: 1.4em;
+    --pi-side: clamp(13em, 24cqw, 19em);
     --pi-vid-w: min(
-      100cqw - var(--pi-side) - var(--pi-gap),           /* leave the panel its space */
-      (100cqh - 3em) * 16 / 9                            /* and never taller than the pane */
+      100cqw - var(--pi-side) - var(--pi-gap),
+      (100cqh - 3em) * 16 / 9
     );
     display: grid;
     grid-template-columns: max(var(--pi-vid-w), 50cqw - var(--pi-gap)) minmax(0, 1fr);
     grid-template-areas: "stage film" "chapters chapters";
-    gap: 1.5em var(--pi-gap);
+    gap: 1.6em var(--pi-gap);
     align-items: start;
   }
 
@@ -657,16 +617,16 @@ a.pi-thumb[hidden] { display: none; }
 
   /* screenshot panel: same height as the video, scrolls inside */
   .pi-view:has(> .pi-stage) .pi-film { grid-area: film; position: relative; align-self: stretch; margin: 0; min-width: 0; }
-  .pi-view:has(> .pi-stage) .pi-film-head { height: 1.7em; margin: 0; align-items: center; }
+  .pi-view:has(> .pi-stage) .pi-film-head { height: 1.8em; margin: 0; }
   .pi-view:has(> .pi-stage) .pi-strip {
     position: absolute;
-    inset: 2.2em 0 0 0;
+    inset: 2.4em 0 0 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
-    grid-auto-rows: max-content;                        /* keep thumbs at their natural height */
+    grid-auto-rows: max-content;
     align-content: start;
-    gap: .8em;
-    padding: 0 .3em .3em 0;
+    gap: .9em;
+    padding: .3em .6em .6em .3em;
     overflow-x: hidden;
     overflow-y: auto;
     scroll-snap-type: none;
@@ -676,84 +636,20 @@ a.pi-thumb[hidden] { display: none; }
   .pi-view:has(> .pi-stage) .pi-chapters { grid-area: chapters; max-width: none; margin: 0; }
 }
 
-/* chapters, features, tools: as many columns as fit */
-.pi-chapters ul { grid-template-columns: repeat(auto-fill, minmax(min(100%, 20em), 1fr)); }
-.pi-features    { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19em), 1fr)); max-width: none; }
-.pi-props       { max-width: min(100%, 72em); }
-.pi-tools       { max-width: none; }
-
-@media (max-width: 760px) {
-  .pi-props { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* text pages: fill the pane instead of a narrow 74ch strip */
-.pi-doc { max-width: min(100%, 100ch); }
-
 @container pi-main (min-width: 72em) {
-  .pi-doc { max-width: none; columns: 2; column-gap: 3.4em; column-rule: 1px solid var(--pi-line); }
+  .pi-doc { max-width: none; columns: 2; column-gap: 3em; }
   .pi-doc .pi-h { break-after: avoid; }
   .pi-doc p { orphans: 3; widows: 3; }
   .pi-doc .pi-h:first-child { margin-top: 0; }
 }
 
-/* ---------- Embedded in a desktop window: the title bar is hidden ----------
-   The grid above reserves a first row for the title bar. With that bar gone, the
-   sidebar and content land in that first (auto) row and the 1fr row below stays empty,
-   which leaves a blank strip under both panes and floats the sidebar buttons up.
-   Drop the title-bar row so the panes fill the whole window. */
+/* ---------- Embedded in a desktop window (html.wm-embedded, set by app.js) ---------- */
 html.pi-embed .pi,
-html.wm-embedded .pi { grid-template-rows: minmax(0, 1fr); }
+html.wm-embedded .pi { grid-template-rows: auto minmax(0, 1fr); }
 
-@media (max-width: 760px) {
-  html.pi-embed .pi,
-  html.wm-embedded .pi { grid-template-rows: auto minmax(0, 1fr); }
-}
+/* base size follows the WINDOW width (inside the frame, 1vw is 1% of the window) */
+html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
 
-/*--------------------------------------------------------------
-# Embedded in a desktop window (html.wm-embedded, set by app.js)
-# 1) The base size follows the WINDOW width, like the terminal
-#    (inside the frame, 1vw is 1% of the window width).
-#    ~1000px window = 11px sidebar / 12.7px text; floor 10.5px, cap 14px.
-# 2) The card rules app.js injects (EMBED_CSS) use px. These selectors are
-#    one class more specific, so the same shapes now scale with the base.
-#    (.pi.pi = extra specificity, no !important needed.)
---------------------------------------------------------------*/
-html.wm-embedded .pi.pi {
-  --pi-s: clamp(10.5px, 1.1vw, 14px);
-  --pc-r: calc(var(--pi-s) * 1.08);        /* 14px at 13px */
-  --pc-r-in: calc(var(--pi-s) * .77);      /* 10px at 13px */
-}
-
-html.wm-embedded .pi.pi .pi-items { margin-left: .92em; padding-left: 0; }
-
-/* feature cards: icon tile left, title + text right */
-html.wm-embedded .pi.pi .pi-feature { grid-template-columns: 2.68em minmax(0, 1fr); column-gap: .94em; padding: 1.07em 1.2em; }
-html.wm-embedded .pi.pi .pi-feature i { width: 2.5em; height: 2.5em; border-radius: .69em; }
-html.wm-embedded .pi.pi .pi-feature h3 { margin: .12em 0 .24em; font-size: 1.07em; }
-html.wm-embedded .pi.pi .pi-feature p { font-size: .936em; }
-
-/* screenshots */
-html.wm-embedded .pi.pi a.pi-thumb { padding: .4em; }
-html.wm-embedded .pi.pi .pi-thumb-cap { padding: .72em .48em .32em; }
-
-/* walkthrough chapters */
-html.wm-embedded .pi.pi .pi-chapters li { padding: 1em 1.286em; }
-
-/* gallery filters */
-html.wm-embedded .pi.pi .pi-filter { padding: .5em 1.167em; }
-
-/* stack: label | value rows */
-html.wm-embedded .pi.pi .pi-props { gap: .4em 0; }
-html.wm-embedded .pi.pi .pi-props dd { padding: .83em 1.1em; }
-html.wm-embedded .pi.pi .pi-props dt { padding: .96em 1.76em .96em 1.28em; }
-
-/* tools: one small card per entry */
-html.wm-embedded .pi.pi .pi-tools { grid-template-columns: repeat(auto-fill, minmax(min(16.7em, 100%), 1fr)); gap: .67em; }
-html.wm-embedded .pi.pi .pi-tools li { padding: .83em 1.1em; }
-
-@media (max-width: 760px) {
-  html.wm-embedded .pi.pi .pi-props { gap: 0; }
-  html.wm-embedded .pi.pi .pi-props dt { padding: .96em 1.28em 0; }
-  html.wm-embedded .pi.pi .pi-props dd { padding: .14em 1.1em .83em; }
-  html.wm-embedded .pi.pi .pi-props dt:not(:first-of-type) { margin-top: .4em; }
+@media (prefers-reduced-motion: reduce) {
+  .pi *, .pi *::before, .pi *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
