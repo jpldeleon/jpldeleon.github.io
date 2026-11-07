@@ -208,7 +208,8 @@ html.wm-embedded .pi-titlebar { display: none; }
 /* plain labels instead of file names (the file names stay in the HTML, but are not shown) */
 .pi-item .pi-name { display: none; }
 .pi-item i { order: 0; width: auto; color: inherit; font-size: .95em; }
-.pi-item::after { order: 1; content: attr(data-view); text-transform: capitalize; }
+.pi-item::after { order: 1; content: attr(data-view); }
+.pi-item:not([data-view="walkthrough"], [data-view="gallery"], [data-view="overview"], [data-view="implementation"], [data-view="features"], [data-view="stack"])::after { text-transform: capitalize; }
 .pi-item[data-view="walkthrough"]::after { content: "Video demo"; }
 .pi-item[data-view="gallery"]::after { content: "Screenshots"; }
 .pi-item[data-view="overview"]::after { content: "Overview"; }
@@ -607,4 +608,28 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-props { grid-template-columns: minmax(0, 1fr); }
   .pi-props dt { padding: .8em 1.1em 0; border-bottom: 0; }
   .pi-props dd { padding: .15em 1.1em .8em; }
+}
+
+/*--------------------------------------------------------------
+# Phone fixes: content width + tab row
+#   - the reading pane must always take the full width (it had collapsed to a thin strip)
+#   - the tab row no longer snaps, so the selected tab is never cut off at the edge
+--------------------------------------------------------------*/
+@media (max-width: 760px) {
+  .pi-content { width: 100%; min-width: 0; }
+
+  .pi-scroll {
+    width: 100%;
+    min-width: 0;
+    align-self: stretch;
+    overflow-x: hidden;
+    container: pi-main / inline-size;   /* width only: no size containment on a phone */
+  }
+
+  .pi-view,
+  .pi-view:not(:has(> .pi-stage)) { width: 100%; max-width: 100%; min-width: 0; margin-inline: 0; }
+  .pi-view > * { max-width: 100%; }
+
+  .pi-tree { scroll-snap-type: none; scroll-padding-inline: 1em; }
+  .pi-item { scroll-snap-align: none; }
 }
