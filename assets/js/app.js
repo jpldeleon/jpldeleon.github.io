@@ -77,76 +77,107 @@
     hr{display:none!important}
     section,.section,header,footer,.section-title,.page-title .container{border-top:0!important;border-bottom:0!important}
     /* generic fallback for pages that use plain .card / *-card markup */
-    [class~="card"],[class*="-card "],[class$="-card"]{border:0!important;border-radius:14px!important;box-shadow:none!important;background:color-mix(in srgb,var(--default-color,#fff) 6%,transparent)!important}
+    [class~="card"],[class*="-card "],[class$="-card"]{border:2px solid color-mix(in srgb,var(--default-color,#fff) 78%,var(--background-color,#000))!important;border-radius:8px!important;box-shadow:3px 3px 0 color-mix(in srgb,var(--default-color,#fff) 50%,var(--background-color,#000))!important;background:color-mix(in srgb,var(--accent-highlight,#888) 7%,var(--surface-color,#222))!important}
 
-    /* ===== Project inspector pages (.pi-*): soft borderless cards, no divider lines =====
-       Same flat, translucent, accent-tinted fill the Resume and hero panes use; every colour
-       comes from theme variables, so all five themes follow. Prefixed html.wm-embedded so it
-       beats inspector.css without !important. */
+    /* ===== Neo-brutalist (soft) project pages =====
+       Thick ink borders, hard offset shadows, small radius. Structure is fixed; every colour comes
+       from theme variables, so all five themes follow. Prefixed html.wm-embedded so it beats
+       inspector.css without !important. */
     html.wm-embedded .pi{
-      --pc-fill:color-mix(in srgb,color-mix(in srgb,var(--accent-highlight) 5%,var(--surface-color)),transparent 45%);
-      --pc-fill-hover:color-mix(in srgb,color-mix(in srgb,var(--accent-highlight) 16%,var(--surface-color)),transparent 45%);
-      --pc-tile:color-mix(in srgb,var(--accent-highlight) 20%,transparent);
-      --pc-on:color-mix(in srgb,var(--accent-highlight) 28%,transparent);
-      --pc-r:14px;--pc-r-in:10px}
+      --nb-ink:color-mix(in srgb,var(--default-color) 78%,var(--background-color));
+      --nb-shade:color-mix(in srgb,var(--default-color) 50%,var(--background-color));
+      --nb-bw:2px;--nb-r:8px;--nb-r-in:5px;
+      --nb-card:color-mix(in srgb,var(--accent-highlight) 7%,var(--surface-color));
+      --nb-card-hover:color-mix(in srgb,var(--accent-highlight) 20%,var(--surface-color));
+      --nb-tile:color-mix(in srgb,var(--accent-highlight) 45%,var(--surface-color));
+      --nb-on:color-mix(in srgb,var(--accent-highlight) 40%,var(--surface-color));
+      --nb-sh:3px 3px 0 var(--nb-shade);
+      --nb-sh-lg:5px 5px 0 var(--nb-shade)}
 
-    /* dividers: sidebar edge, header / actions lines, tree guide line, path bar line.
-       The tonal difference between the panes does the separating. */
-    html.wm-embedded .pi-side,
+    /* structure: the pane edges become real lines */
+    html.wm-embedded .pi-side{border:0;border-inline-end:var(--nb-bw) solid var(--nb-ink)}
     html.wm-embedded .pi-head,
     html.wm-embedded .pi-actions,
+    html.wm-embedded .pi-bar{border:0;border-bottom:var(--nb-bw) solid var(--nb-ink)}
     html.wm-embedded .pi-tree,
-    html.wm-embedded .pi-items,
-    html.wm-embedded .pi-bar{border:0}
+    html.wm-embedded .pi-items{border:0}
     html.wm-embedded .pi-items{margin-left:12px;padding-left:0}
-    html.wm-embedded .pi-item{border-radius:var(--pc-r-in)}
-    html.wm-embedded .pi-item[aria-selected="true"]::before{content:none}   /* the accent tick sat on the guide line */
+    html.wm-embedded .pi h1,html.wm-embedded .pi h2,html.wm-embedded .pi h3{font-weight:800;letter-spacing:-.01em}
 
-    /* feature cards: icon tile left, title + text right */
+    /* sidebar items: flat until hovered, selected one is a raised block */
+    html.wm-embedded .pi-item{
+      border:var(--nb-bw) solid transparent;border-radius:var(--nb-r-in);
+      transition:transform .1s ease,box-shadow .1s ease,background-color .1s ease}
+    html.wm-embedded .pi-item:hover{border-color:var(--nb-ink);background:var(--nb-card-hover)}
+    html.wm-embedded .pi-item[aria-selected="true"]{
+      border-color:var(--nb-ink);background:var(--nb-on);color:var(--heading-color);font-weight:700;box-shadow:var(--nb-sh)}
+    html.wm-embedded .pi-item[aria-selected="true"]::before{content:none}
+
+    /* feature cards: icon block left, title + text right */
     html.wm-embedded .pi-feature{
-      display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:14px;align-items:start;align-content:start;
-      padding:16px 18px;border:0;border-radius:var(--pc-r);background:var(--pc-fill)}
-    html.wm-embedded .pi-feature i{grid-row:1 / span 2;width:40px;height:40px;margin:0;border-radius:11px;background:var(--pc-tile)}
+      display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:14px;align-items:start;align-content:start;
+      padding:16px 18px;border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r);
+      background:var(--nb-card);box-shadow:var(--nb-sh)}
+    html.wm-embedded .pi-feature i{
+      grid-row:1 / span 2;display:grid;place-items:center;width:44px;height:44px;margin:0;
+      border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r-in);background:var(--nb-tile);color:var(--heading-color)}
     html.wm-embedded .pi-feature h3{margin:2px 0 4px;font-size:16px}
     html.wm-embedded .pi-feature p{grid-column:2;font-size:14px;line-height:1.6}
 
-    /* screenshots: image set into the card like a mat, caption underneath, no border or zoom */
+    /* screenshots: framed print that lifts on hover */
     html.wm-embedded a.pi-thumb{
-      padding:6px;border:0;border-radius:var(--pc-r);background:var(--pc-fill);
-      transition:background-color .12s ease}
+      padding:6px;border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r);
+      background:var(--nb-card);box-shadow:var(--nb-sh);
+      transition:transform .1s ease,box-shadow .1s ease,background-color .1s ease}
     html.wm-embedded a.pi-thumb:hover,
-    html.wm-embedded a.pi-thumb:focus-visible{background:var(--pc-fill-hover);color:var(--heading-color)}
-    html.wm-embedded .pi-thumb-img{border-radius:var(--pc-r-in)}
+    html.wm-embedded a.pi-thumb:focus-visible{
+      background:var(--nb-card-hover);color:var(--heading-color);transform:translate(-2px,-2px);box-shadow:var(--nb-sh-lg)}
+    html.wm-embedded a.pi-thumb:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--nb-shade)}
+    html.wm-embedded .pi-thumb-img{border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r-in);overflow:hidden}
     html.wm-embedded a.pi-thumb:hover .pi-thumb-img img{transform:none}
-    html.wm-embedded .pi-thumb-cap{padding:9px 6px 4px;border:0}
+    html.wm-embedded .pi-thumb-cap{padding:9px 6px 4px;border:0;font-weight:600}
 
     /* walkthrough: video and chapter cards */
-    html.wm-embedded .pi-stage{border:0;border-radius:var(--pc-r);box-shadow:none}
-    html.wm-embedded .pi-chapters li{padding:14px 18px;border:0;border-radius:var(--pc-r);background:var(--pc-fill)}
+    html.wm-embedded .pi-stage{border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r);box-shadow:var(--nb-sh-lg);overflow:hidden}
+    html.wm-embedded .pi-chapters li{
+      padding:14px 18px;border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r);
+      background:var(--nb-card);box-shadow:var(--nb-sh)}
 
-    /* gallery filters */
-    html.wm-embedded .pi-filter{padding:6px 14px;border:0;background:var(--pc-fill)}
-    html.wm-embedded .pi-filter:hover{background:var(--pc-fill-hover);color:var(--heading-color)}
-    html.wm-embedded .pi-filter[aria-pressed="true"]{background:var(--pc-on);color:var(--heading-color)}
+    /* gallery filters: chunky chips, pressed one is solid accent */
+    html.wm-embedded .pi-filter{
+      padding:6px 14px;border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r-in);
+      background:var(--nb-card);color:var(--default-color);font-weight:600;box-shadow:2px 2px 0 var(--nb-shade);
+      transition:transform .1s ease,box-shadow .1s ease,background-color .1s ease}
+    html.wm-embedded .pi-filter:hover{background:var(--nb-card-hover);color:var(--heading-color);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--nb-shade)}
+    html.wm-embedded .pi-filter[aria-pressed="true"]{
+      background:var(--accent-highlight);color:var(--background-color);transform:translate(2px,2px);box-shadow:0 0 0 var(--nb-shade)}
 
-    /* stack: every property is its own soft row (label | value), no table lines */
-    html.wm-embedded .pi-props{gap:6px 0;border:0;border-radius:0;overflow:visible;background:none}
+    /* stack: label | value rows, joined into one bordered table block */
+    html.wm-embedded .pi-props{
+      gap:0;border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r);overflow:hidden;
+      background:var(--nb-card);box-shadow:var(--nb-sh)}
     html.wm-embedded .pi-props dt,
-    html.wm-embedded .pi-props dd{padding:12px 16px;border:0;background:var(--pc-fill)}
-    html.wm-embedded .pi-props dt{padding-right:22px;border-radius:var(--pc-r) 0 0 var(--pc-r)}
-    html.wm-embedded .pi-props dd{border-radius:0 var(--pc-r) var(--pc-r) 0}
+    html.wm-embedded .pi-props dd{padding:12px 16px;border:0;border-top:var(--nb-bw) solid var(--nb-ink);background:transparent;border-radius:0}
+    html.wm-embedded .pi-props dt{padding-right:22px;border-inline-end:var(--nb-bw) solid var(--nb-ink);background:var(--nb-tile);color:var(--heading-color);font-weight:700}
+    html.wm-embedded .pi-props dt:first-of-type,
+    html.wm-embedded .pi-props dt:first-of-type + dd{border-top:0}
 
-    /* tools: one small card per entry, name above its value */
-    html.wm-embedded .pi-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:10px}
-    html.wm-embedded .pi-tools li{padding:12px 16px;border:0;border-radius:var(--pc-r);background:var(--pc-fill)}
+    /* tools: one block per entry, name above its value */
+    html.wm-embedded .pi-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:14px}
+    html.wm-embedded .pi-tools li{
+      padding:12px 16px;border:var(--nb-bw) solid var(--nb-ink);border-radius:var(--nb-r);
+      background:var(--nb-card);box-shadow:var(--nb-sh)}
     html.wm-embedded .pi-tools strong{display:block;margin-bottom:2px}
 
-    /* narrow window: the label sits on top of its value inside one card */
+    /* narrow window: label sits on top of its value inside the same block */
     @media (max-width:760px){
-      html.wm-embedded .pi-props{gap:0}
-      html.wm-embedded .pi-props dt{padding:12px 16px 0;border-radius:var(--pc-r) var(--pc-r) 0 0}
-      html.wm-embedded .pi-props dd{padding:2px 16px 12px;border-radius:0 0 var(--pc-r) var(--pc-r)}
-      html.wm-embedded .pi-props dt:not(:first-of-type){margin-top:6px}
+      html.wm-embedded .pi-side{border-inline-end:0;border-bottom:var(--nb-bw) solid var(--nb-ink)}
+      html.wm-embedded .pi-props dt{border-inline-end:0;border-bottom:0}
+      html.wm-embedded .pi-props dd{border-top:0}
+      html.wm-embedded .pi-props dt:not(:first-of-type){border-top:var(--nb-bw) solid var(--nb-ink)}
+    }
+    @media (prefers-reduced-motion:reduce){
+      html.wm-embedded .pi *{transition-duration:.01ms!important}
     }`;
 
   /* =====================================================================
