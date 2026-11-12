@@ -2145,6 +2145,14 @@ html.desk-pre #wm-layer {
 html.desk-pre .cky-bar > i,
 html.desk-pre .skl-dot { animation-play-state: paused; }
 
+/* Resume / Projects / Socials are plain sections inside <main> until app.js parks them in their windows
+   (it runs after every script above it has downloaded). html.desk-pre is set before first paint, so hide
+   those raw originals meanwhile: a slow connection never shows the Projects page unstyled ahead of the boot
+   screen. Once parked they are no longer children of <main>, so this stops matching by itself. */
+html.desk-pre main.main > #resume,
+html.desk-pre main.main > #portfolio,
+html.desk-pre main.main > #socials { display: none !important; }
+
 @keyframes desk-in { from { opacity: 0; translate: 0 14px; } }
 html.desk-reveal .conky      { animation: desk-in .7s var(--lx-ease, ease) .40s backwards; }
 html.desk-reveal .desk-right { animation: desk-in .7s var(--lx-ease, ease) .60s backwards; }
