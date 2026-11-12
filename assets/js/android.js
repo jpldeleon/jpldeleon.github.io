@@ -35,12 +35,14 @@
     </nav>
     <form class="adr-search" data-ask role="search" action="#" autocomplete="off">
       <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-      <input type="text" placeholder="Ask Jampol" aria-label="Ask Jampol" autocomplete="off" spellcheck="false">
+      <input type="text" placeholder="Ask Jampol or type help" aria-label="Ask Jampol" autocomplete="off" spellcheck="false">
+      <button class="adr-send" type="submit" aria-label="Send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
     </form>`;
 
   const top = document.createElement('div');
   top.id = 'adr-top'; top.className = 'adr-layer';
   top.innerHTML = `
+    <div class="adr-scrim" id="adr-scrim"></div>
     <div class="adr-heads adr-glass adr-n" id="adr-heads"></div>
     <section class="adr-shade" id="adr-shade" inert aria-label="Notifications and quick settings">
       <div class="adr-sh-head"><div class="adr-sh-time"></div><div class="adr-sh-date"></div></div>
@@ -59,7 +61,7 @@
 
   document.body.append(home, top);
 
-  const shade = $('#adr-shade'), list = $('.adr-list', shade), heads = $('#adr-heads'), scroller = $('#adr-home');
+  const scrim = $('#adr-scrim', top), shade = $('#adr-shade'), list = $('.adr-list', shade), heads = $('#adr-heads'), scroller = $('#adr-home');
 
   /* ───────── home (read from the page, so it stays in sync with it) ───────── */
   let aboutCollapsed = false;
@@ -197,7 +199,7 @@
   /* ───────── shade: swipe DOWN from the status bar to open, swipe UP inside the shade to close ───────── */
   function setShade(open) {
     shadeOpen = open; shade.classList.remove('drag'); shade.style.transform = '';
-    shade.classList.toggle('open', open); shade.inert = !open;
+    shade.classList.toggle('open', open); shade.inert = !open; scrim.classList.toggle('show', open);
     if (open) { heads.classList.remove('show'); render(); }
     else { info.hire = info.hobbies = false; render(); }   // tile cards go away with the shade; events are kept
   }
@@ -245,6 +247,7 @@
   };
   shade.addEventListener('touchend', endTouch);
   shade.addEventListener('touchcancel', endTouch);
+  scrim.addEventListener('click', () => setShade(false));
   $('.adr-grab', shade).addEventListener('click', () => setShade(false));
   $('.adr-grab', shade).addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') setShade(false); });
 
@@ -264,6 +267,10 @@
     if (ev.target.closest('[data-app]')) setShade(false);       // Resume / Projects buttons: the window opens, the shade closes
   });
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && shadeOpen) setShade(false); });
+
+  /* send button: lit up only when there is text */
+  const askForm = $('.adr-search', home), askInput = $('input', askForm);
+  askInput.addEventListener('input', () => askForm.classList.toggle('has-text', !!askInput.value.trim()));
 
   /* ───────── clock + start-up ───────── */
   const tick = () => {

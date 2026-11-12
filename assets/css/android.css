@@ -19,12 +19,12 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 
 /* ---- home: a vertical scroller that starts BELOW the status bar ---- */
 .adr-layer#adr{position:fixed;inset:0;z-index:20;pointer-events:none}
-.adr-home{position:absolute;left:0;right:0;top:44px;bottom:122px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;padding:6px 12px 16px;display:flex;flex-direction:column;gap:16px;scrollbar-width:none}
+.adr-home{position:absolute;left:0;right:0;top:44px;bottom:122px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;pointer-events:auto;padding:6px 12px 30px;display:flex;flex-direction:column;gap:16px;scrollbar-width:none}
 .adr-home::-webkit-scrollbar{display:none}
 .adr-home>*{flex:0 0 auto}
 
 /* hero applet: same card as the desktop */
-.adr-hero{border-radius:18px;padding:24px 20px 14px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 14px 40px rgba(0,0,0,.38)}
+.adr-hero{border-radius:18px;padding:24px 20px 14px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.28)}
 .adr-avatar{width:132px;height:132px;border-radius:50%;object-fit:cover;border:4px solid var(--a);flex:none;display:block}
 .adr-hero h1{margin:0;font:700 24px/1.15 var(--mono);letter-spacing:-.02em;white-space:nowrap;color:var(--f)}
 .adr-hero h1 span{color:var(--a)}
@@ -41,7 +41,7 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-actions a:active,.adr-actions button:active{background:color-mix(in srgb,var(--a),transparent 82%)}
 
 /* about me applet */
-.adr-about{border-radius:18px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.38)}
+.adr-about{padding:0;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.28)}
 .adr-about-bar{width:100%;display:flex;align-items:center;gap:10px;min-height:46px;padding:0 16px;border:0;background:color-mix(in srgb,color-mix(in srgb,var(--a) 16%,var(--surface-color,var(--bg))),transparent 45%);color:var(--f);font:700 13px var(--mono);text-align:left;cursor:pointer}
 .adr-about-bar i{color:var(--a);transition:transform .2s ease}
 .adr-about.is-collapsed .adr-about-bar i{transform:rotate(-90deg)}
@@ -55,7 +55,7 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 
 /* experience + skills: the desktop conky widgets, stacked, bare text */
 .adr-conky{display:flex;flex-direction:column;gap:16px}
-.adr-conky .cky-widget{width:100%;font-size:12px;padding:18px 18px 6px;border-radius:18px;background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.38)}
+.adr-conky .cky-widget{width:100%;font-size:12px;padding:18px 18px 6px;border-radius:18px;background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.28)}
 .adr-conky .cky-sub-row{flex-wrap:wrap;gap:2px 10px}
 .adr-conky .cky-sub-row .cky-ell{flex:1 1 100%}
 .adr-conky .cky-sub-row>span:last-child{margin-left:auto}
@@ -70,13 +70,17 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-dock .adr-sep{flex:0 0 1px;width:1px;height:22px;background:var(--line)}
 .adr-search{pointer-events:auto;position:absolute;left:12px;right:12px;bottom:8px;height:46px;border-radius:999px;display:flex;align-items:center;gap:10px;padding:0 18px;background:none;border:1px solid var(--line)}
 .adr-search i{opacity:.7}
+.adr-send{flex:none;width:34px;height:34px;margin-right:-10px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--a);color:var(--bg);font-size:14px;cursor:pointer;opacity:.45;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.adr-search.has-text .adr-send{opacity:1}
 .adr-search input{flex:1;min-width:0;height:100%;background:none;border:0;outline:0;color:var(--f);font:inherit;font-size:16px}
 .adr-search input::placeholder{color:var(--dim)}
 
 /* ---- notification shade ---- */
-.adr-shade{position:fixed;inset:0;display:flex;flex-direction:column;padding:38px 14px 6px;background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);transform:translateY(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);pointer-events:auto;z-index:2;color:var(--f);touch-action:pan-y}
+.adr-shade{position:fixed;top:0;left:0;right:0;bottom:auto;max-height:72vh;max-height:72dvh;display:flex;flex-direction:column;padding:38px 14px 6px;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border-radius:0 0 24px 24px;box-shadow:0 12px 32px rgba(0,0,0,.45);transform:translateY(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);pointer-events:auto;z-index:2;color:var(--f);touch-action:pan-y}
 .adr-shade.open{transform:none}
 .adr-shade.drag{transition:none}
+.adr-scrim{position:fixed;inset:0;z-index:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .28s ease}
+.adr-scrim.show{opacity:1;pointer-events:auto}
 .adr-sh-head{padding:2px 4px 12px}
 .adr-sh-time{font:700 34px/1 var(--mono)}
 .adr-sh-date{font-size:12px;color:var(--dim);margin-top:4px}
@@ -88,7 +92,7 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-tile small{font-size:10px;color:var(--dim);margin-top:-4px;white-space:nowrap}
 .adr-nhead{display:flex;justify-content:space-between;align-items:center;padding:6px 4px}
 .adr-clear{background:none;border:1px solid var(--line);color:var(--f);border-radius:999px;font:700 10px var(--mono);letter-spacing:.08em;padding:6px 12px;cursor:pointer}
-.adr-list{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0;touch-action:pan-y;overscroll-behavior:contain}
+.adr-list{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0;touch-action:pan-y;overscroll-behavior:contain}
 .adr-empty{margin:auto;color:var(--dim);font-size:13px}
 .adr-n{border-radius:20px;padding:12px 14px;background:color-mix(in srgb,var(--f) 10%,transparent);border:1px solid var(--line);position:relative}
 .adr-n .t{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--dim);margin-bottom:6px}
@@ -124,4 +128,12 @@ html.desk-pre #adr{opacity:0!important;visibility:hidden!important;pointer-event
 html.desk-reveal #adr .adr-home{animation:desk-in .7s var(--lx-ease,ease) .1s backwards}
 html.desk-reveal #adr .adr-dock,html.desk-reveal #adr .adr-search{animation:desk-in .7s var(--lx-ease,ease) .5s backwards}
 @media (prefers-reduced-motion:reduce){html.desk-reveal #adr .adr-home,html.desk-reveal #adr .adr-dock,html.desk-reveal #adr .adr-search{animation:none}}
+
+/* Projects window: two columns on phones */
+.wm-body .pj-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+.wm-body .pj-card{min-width:0;padding:12px!important}
+.wm-body .pj-name,.wm-body .pj-sub{overflow-wrap:anywhere}
+.wm-body .pj-sub{font-size:11px!important;line-height:1.4}
+.wm-body .pj-foot{flex-wrap:wrap;gap:6px!important}
+.wm-body .pj-open{font-size:11px!important}
 }
