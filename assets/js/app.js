@@ -1,7 +1,7 @@
 /**
  * Window Manager
  * One reusable system for every app window (Resume, Portfolio, each project).
- * Vanilla JS, no dependencies. Load AFTER main.js (needs the existing dock/theme).
+ * Vanilla JS, no dependencies. Load AFTER main.js (needs the existing taskbar/theme).
  */
 (function () {
   'use strict';
@@ -17,17 +17,16 @@
      `url` = optional iframe fallback if that section isn't on the page. */
   const APPS = {
     resume: {
-      title: 'Resume', icon: 'fa-solid fa-timeline', dockClass: 'dock-resume',
+      title: 'Resume', icon: 'fa-solid fa-timeline',
       adopt: '#resume', size: [800, 600]
     },
     portfolio: {
-      title: 'Projects', icon: 'fa-solid fa-flask', dockClass: 'dock-projects',
+      title: 'Projects', icon: 'fa-solid fa-flask',
       adopt: '#portfolio', size: [1000, 640], center: true
     },
     socials: {
-      title: 'Socials', icon: 'fa-solid fa-share-nodes', dockClass: 'dock-app',
-      adopt: '#socials', size: [540, 360], center: true, static: true,
-      permanent: false   // dock icon appears while open and is removed on close
+      title: 'Socials', icon: 'fa-solid fa-share-nodes',
+      adopt: '#socials', size: [540, 360], center: true, static: true
     }
   };
 
@@ -52,7 +51,7 @@
   ];
 
   /* Certificates: each opens in the SAME window system as the projects
-     (drag, resize, minimize, close, dock icon). `image` is the full certificate. */
+     (drag, resize, minimize, close, taskbar button). `image` is the full certificate. */
   const CERTS = [
     { id: 'fullstack', title: 'Full Stack Certificate',
       sub: 'The Complete Full-Stack Web Development Bootcamp',
@@ -119,124 +118,101 @@
   const store = el('div', { id: 'wm-store', 'aria-hidden': 'true' });
   const wins = new Map();      // id -> window record
   const defs = new Map();      // id -> app definition
-  const dockBtns = new Map();  // id -> dock <button>
+  const taskbarBtns = new Map();  // id -> taskbar <button>
   const frames = new Set();    // live iframes (for theme sync)
   let zTop = 1, focused = null, cascade = 0;
-  let dock, dockApps, dockDivider;
+  let panel, taskbarApps;
 
-  Object.entries(APPS).forEach(([id, d]) => defs.set(id, Object.assign({ id, permanent: true }, d)));
+  Object.entries(APPS).forEach(([id, d]) => defs.set(id, Object.assign({ id }, d)));
   CERTS.forEach(c => defs.set('cert:' + c.id, Object.assign({}, c, {
-    id: 'cert:' + c.id, icon: 'fa-solid fa-file-pdf', permanent: false,
-    size: [940, 680], dockClass: 'dock-app dock-cert'
+    id: 'cert:' + c.id, icon: 'fa-solid fa-file-pdf',
+    size: [940, 680]
   })));
   PROJECTS.forEach(p => defs.set('project:' + p.id, Object.assign({}, p, {
-    id: 'project:' + p.id, permanent: false, size: [1000, 720], dockClass: 'dock-app'
+    id: 'project:' + p.id, size: [1000, 720]
   })));
 
-  /* ---------- Dock ---------- */
-  function makeDockBtn(def) {
+  /* ---------- Taskbar (the bottom panel) ----------
+     One button per open window, inside #taskbar-apps. The active window's button is highlighted,
+     minimized windows are dimmed. Nothing is pinned: the Menu button launches apps. */
+  const TOP_INSET = 0;   // nothing sits along the top edge any more, windows may use the full height
+
+  function makeTaskbarBtn(def) {
     const b = el('button', {
-      type: 'button', class: 'dock-item ' + (def.dockClass || 'dock-app'),
-      'data-app': def.id, 'aria-label': def.title
+      type: 'button', class: 'taskbar-item',
+      'data-app': def.id, 'aria-label': def.title, title: def.title
     });
-    b.innerHTML = '<i class="' + def.icon + '"></i><span class="dock-tooltip"></span>';
-    b.querySelector('.dock-tooltip').textContent = def.title;
+    b.innerHTML = '<i aria-hidden="true" class="' + def.icon + '"></i><span class="taskbar-label"></span>';
+    b.querySelector('.taskbar-label').textContent = def.title;
     return b;
   }
 
-  function buildDock() {
-    dock = document.querySelector('.linux-dock');
-    if (!dock) {
-      dock = el('nav', { class: 'linux-dock', 'aria-label': 'Applications' });
-      document.body.appendChild(dock);
+  function buildTaskbar() {
+    panel = document.getElementById('top-panel');
+    if (!panel) return;
+    taskbarApps = document.getElementById('taskbar-apps');
+    if (!taskbarApps) {
+      taskbarApps = el('div', { class: 'taskbar-apps', id: 'taskbar-apps', role: 'toolbar', 'aria-label': 'Open applications' });
+      (panel.querySelector('.panel-center') || panel).appendChild(taskbarApps);
     }
-    const menuBtn = dock.querySelector('#dock-menu-btn');
-    Array.from(dock.children).forEach(c => { if (c !== menuBtn) c.remove(); });
-
-    ['resume', 'portfolio'].forEach(id => {   // always in the dock (also reachable from the Ubuntu menu)
-      const b = makeDockBtn(defs.get(id));
-      dockBtns.set(id, b);
-      dock.appendChild(b);
-    });
-    dockDivider = el('span', { class: 'wm-dock-divider', role: 'separator', hidden: '' });
-    dockApps = el('div', { class: 'wm-dock-apps' });
-    dock.append(dockDivider, dockApps);
-    placeDockApps();
   }
 
-  /* Active apps always live inside the bottom dock (after the divider).
-     On phones the strip swipes sideways; there is no separate side dock. */
-  function placeDockApps() {
-    if (!dock || !dockApps) return;
-    if (dockApps.parentNode !== dock) dock.append(dockDivider, dockApps);
+  /* Tell the CSS how much space the taskbar takes at the bottom */
+  function syncTaskbarVar() {
+    document.documentElement.style.setProperty('--taskbar-space', taskbarSpace() + 'px');
   }
 
-  /* Left inset for full-screen windows (no side dock any more) */
-  function railInset() { return 6; }
-
-  /* Tell the CSS how much space the bottom dock takes (project dock stops above it) */
-  function syncDockVar() {
-    document.documentElement.style.setProperty('--dock-space', dockSpace() + 'px');
-  }
-
-  /* Scroll the swipeable strip so the given app's icon is fully visible */
-  function revealDockBtn(btn) {
-    if (!btn || !dockApps || btn.parentNode !== dockApps) return;
-    if (dockApps.scrollWidth <= dockApps.clientWidth) return;
+  /* Scroll the taskbar strip so the given app's button is fully visible */
+  function revealTaskbarBtn(btn) {
+    if (!btn || !taskbarApps || btn.parentNode !== taskbarApps) return;
+    if (taskbarApps.scrollWidth <= taskbarApps.clientWidth) return;
     const l = btn.offsetLeft, r = l + btn.offsetWidth;
-    if (l < dockApps.scrollLeft) dockApps.scrollTo({ left: l - 4, behavior: 'smooth' });
-    else if (r > dockApps.scrollLeft + dockApps.clientWidth) dockApps.scrollTo({ left: r - dockApps.clientWidth + 4, behavior: 'smooth' });
+    if (l < taskbarApps.scrollLeft) taskbarApps.scrollTo({ left: l - 4, behavior: 'smooth' });
+    else if (r > taskbarApps.scrollLeft + taskbarApps.clientWidth) taskbarApps.scrollTo({ left: r - taskbarApps.clientWidth + 4, behavior: 'smooth' });
   }
 
-  function refreshDock() {
-    dockBtns.forEach((btn, id) => {
+  function refreshTaskbar() {
+    taskbarBtns.forEach((btn, id) => {
       const w = wins.get(id);
-      btn.classList.toggle('wm-open', !!w);
-      btn.classList.toggle('wm-minimized', !!w && w.state === 'min');
-      btn.classList.toggle('wm-focused', !!w && w === focused);
-      btn.setAttribute('aria-pressed', String(!!w && w === focused));
+      const active = !!w && w === focused && w.state !== 'min';
+      btn.classList.toggle('is-active', active);
+      btn.classList.toggle('is-minimized', !!w && w.state === 'min');
+      btn.setAttribute('aria-pressed', String(active));
     });
-    dockDivider.hidden = dockApps.children.length === 0;
-    syncDockVar();
-    if (focused && focused.dockBtn) revealDockBtn(focused.dockBtn);
-    const pt = document.getElementById('panel-title');
-    if (pt) pt.textContent = (focused && focused.state !== 'min') ? focused.def.title : 'Desktop';
+    syncTaskbarVar();
+    if (focused && focused.taskbarBtn) revealTaskbarBtn(focused.taskbarBtn);
     const anyVisible = Array.from(wins.values()).some(w => w.state !== 'min');
     document.body.classList.toggle('wm-has-window', anyVisible);
   }
 
-  /* Vertical space to keep clear for the dock */
-  function dockSpace() {
-    if (!dock) return 96;
-    const r = dock.getBoundingClientRect();
-    return Math.max(72, window.innerHeight - r.top + 12);
-  }
-
-  /* Height of the top panel: windows must never slide under it */
-  function topSpace() {
-    const p = document.getElementById('top-panel');
-    return p ? Math.round(p.getBoundingClientRect().bottom) : 0;   // floating pill: include its top gap
+  /* Vertical space to keep clear along the bottom edge for the taskbar */
+  function taskbarSpace() {
+    if (isMobile()) return 122;   // phones: keep the floating icon dock + search bar (android.js) clear
+    if (!panel) return 56;
+    const r = panel.getBoundingClientRect();
+    if (!r.height) return 56;
+    return Math.max(0, Math.round(window.innerHeight - r.top)) + 8;
   }
 
   /* =====================================================================
    * 4. GEOMETRY
    * ===================================================================== */
   function targetRect(w) {
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = taskbarSpace(), ts = TOP_INSET;
     /* phones: a floating window with a visible margin, never edge-to-edge */
     if (isMobile()) return mobileRect(w, vw, vh, ds, ts);
     if (w.state === 'max') return { x: 0, y: ts, w: vw, h: vh - ds - ts };
     return w.rect;
   }
 
-  /* Phones. Every window sits in the same slot between the top panel and the dock:
+  /* Phones. Every window sits in the same slot above the taskbar:
      - screenshot windows shrink-wrap the image (title bar + small padding + image)
      - project windows (iframe pages) are ~62% of the screen, centred in the slot
      - everything else (Resume, Portfolio, ...) keeps the full-height slot */
-  const MOBILE_PROJECT_H = 0.95;   // project pages get (almost) the whole slot above the dock
+  const MOBILE_PROJECT_H = 0.95;   // project pages get (almost) the whole slot above the taskbar
   function mobileRect(w, vw, vh, ds, ts) {
-    const L = railInset() + 6, top = ts + 30;
-    const availW = vw - L - 10, availH = Math.max(240, vh - ds - top - 4);
+    const L = 8, top = 44;   // phones: start below the status bar
+    const availW = vw - L * 2, availH = Math.max(240, vh - ds - top - 4);
 
     if (w.def.lite) {
       const nat = w.def.natural, cert = w.body && w.body.querySelector('.wm-cert');
@@ -258,7 +234,7 @@
       return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     }
 
-    const h = Math.round(availH * 0.8);   // 0.8 = 80% of the free space
+    const h = availH;   // phones: use the whole slot between the status bar and the dock
 return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
@@ -275,7 +251,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* Space taken by the desktop icons on the left (desktop only) */
   function iconsW() { return 0; }     // desktop icons were removed
 
-  /* Wallpaper first: hero, Conky, right column and the Portfolio window are hidden (html.desk-pre) until the
+  /* Wallpaper first: hero, right column and the Portfolio window are hidden (html.desk-pre) until the
      wallpaper has been on screen for a moment; then they fade in one after another. */
   const WALLPAPER_MS = 1400, PORTFOLIO_AFTER_MS = 900;
   function revealDesktop() {
@@ -290,23 +266,60 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     }, WALLPAPER_MS));
   }
 
-  /* Restart: close every window, reset the About card, replay the boot sequence, then reveal the desktop again */
+  /* Restart: close every window, reset the About card, then reveal the desktop again */
   let restarting = false;
+  /* Boot screen shown on Restart: LineageOS-style on phones, Linux Mint-style on desktop.
+     Colours come from the theme variables (see "Boot sequence" in desktop.css). */
+  const BOOT_LINEAGE = '<svg class="boot-logo" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path d="M21.64526 12.05735a2.40391 2.40391 0 0 0-1.80293.7993l-.13823-.0541a17.80096 17.80096 0 0 0-2.86666-.8594 4.80782 4.80782 0 0 0-9.61565 0h-.13221a17.74687 17.74687 0 0 0-2.7645.83537l-.13822.05409a2.40391 2.40391 0 1 0 .5589 1.06974 16.599 16.599 0 0 1 2.5782-.77526 4.80782 4.80782 0 0 0 9.35722 0 16.55693 16.55693 0 0 1 2.5782.76925 2.40391 2.40391 0 1 0 2.38588-1.839zM2.41397 15.6632a1.20196 1.20196 0 1 1 1.20196-1.20195 1.20196 1.20196 0 0 1-1.20196 1.20195zm9.61565 0a3.60587 3.60587 0 1 1 3.60586-3.60586 3.60587 3.60587 0 0 1-3.60586 3.60586zm9.61564 0a1.20196 1.20196 0 1 1 1.20196-1.20195 1.20196 1.20196 0 0 1-1.20196 1.20195zm-7.81271-3.60586a1.80293 1.80293 0 1 1-1.80293-1.80294 1.80293 1.80293 0 0 1 1.80293 1.80294z"/>' +
+    '</svg>';
+  const BOOT_MINT = '<svg class="boot-logo" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875"/>' +
+    '</svg><div class="boot-bar"><i></i></div>';
+
+  function bootSequence() {
+    const mobile = isMobile(), still = reduceMotion();
+    const ms = still ? 1200 : (mobile ? 3600 : 3400);
+    const box = document.createElement('div');
+    box.id = 'boot-screen';
+    box.className = 'boot-screen ' + (mobile ? 'boot-lineage' : 'boot-mint');
+    box.setAttribute('role', 'status');
+    box.setAttribute('aria-label', 'Restarting');
+    box.style.setProperty('--boot-ms', ms + 'ms');
+    box.innerHTML = mobile ? BOOT_LINEAGE : BOOT_MINT;
+    document.body.appendChild(box);
+    void box.offsetWidth;
+    box.classList.add('is-on');
+    const wait = t => new Promise(r => setTimeout(r, t));
+    return {
+      covered: wait(still ? 0 : 350),                          // fully faded in
+      done: async () => {
+        await wait(ms);
+        box.classList.remove('is-on');
+        await wait(still ? 0 : 450);
+        box.remove();
+      }
+    };
+  }
+
   async function restartDesktop() {
     if (restarting) return;
     restarting = true;
-    document.documentElement.classList.add('desk-pre');      // hide the desktop behind the boot screen
+    const boot = bootSequence();
+    await boot.covered;
+    document.documentElement.classList.add('desk-pre');      // hide the desktop until it is revealed again
     await Promise.all(Array.from(wins.values()).map(w => closeWindow(w, true)));
     cascade = 0;
     window.scrollTo(0, 0);
     flashAbout(false);
-    if (document.documentElement.classList.contains('dev') && window.Boot && window.Boot.play) await window.Boot.play();   // boot log is developer mode only
+    await boot.done();                               // boot animation plays out, then fades to the wallpaper
     await revealDesktop();
+    document.dispatchEvent(new CustomEvent('desktop:booted'));   // every widget is up: the chatbot may load now
     restarting = false;                              // all windows stay closed after a restart
   }
 
   function initialRect(def) {
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = taskbarSpace(), ts = TOP_INSET;
     const left = iconsW(), right = sidebarW();   // centre in the free area between icons and panel
     const w = Math.min(def.size[0], vw - left - right - 24);
     const h = Math.min(def.size[1], vh - ds - ts - 20);
@@ -324,16 +337,16 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
      the buttons on its right must always stay reachable. */
   function keepInView(w) {
     if (isMobile() || w.state === 'max') return;
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = taskbarSpace(), ts = TOP_INSET;
     w.rect.x = clamp(w.rect.x, 150 - w.rect.w, vw - 100);
     w.rect.y = clamp(w.rect.y, ts, vh - ds);
   }
 
   /* When the browser is resized: shrink a window that no longer fits and pull
-     it fully back on screen (above the dock) so content is never cut off. */
+     it fully back on screen (above the taskbar) so content is never cut off. */
   function fitToViewport(w) {
     if (isMobile() || w.state === 'max') return;
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = taskbarSpace(), ts = TOP_INSET;
     const r = w.rect;
     r.w = clamp(r.w, Math.min(MIN_W, vw), vw);
     r.h = clamp(r.h, Math.min(MIN_H, vh - ds - ts), vh - ds - ts);
@@ -344,8 +357,8 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* =====================================================================
    * 5. ANIMATION  (Web Animations API, like main.js)
    * ===================================================================== */
-  function dockDelta(w) {
-    const btn = w.dockBtn;
+  function taskbarDelta(w) {
+    const btn = w.taskbarBtn;
     const d = btn.getBoundingClientRect();
     const r = w.el.getBoundingClientRect();
     return {
@@ -354,10 +367,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     };
   }
 
-  /* Grow out of the dock icon (open / restore) */
+  /* Grow out of the taskbar button (open / restore) */
   function flyIn(w) {
     if (reduceMotion()) return Promise.resolve();
-    const { dx, dy } = dockDelta(w);
+    const { dx, dy } = taskbarDelta(w);
     const a = w.el.animate([
       { transform: `translate(${dx}px, ${dy}px) scale(.05)`, opacity: 0 },
       { transform: `translate(${dx * 0.25}px, ${dy * 0.25}px) scale(.7)`, opacity: 0.9, offset: 0.55 },
@@ -366,11 +379,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     return a.finished.catch(() => {});
   }
 
-  /* Shrink into the dock icon (minimize). Returns the animation so the caller
+  /* Shrink into the taskbar button (minimize). Returns the animation so the caller
      can commit the hidden state first, then cancel it (no flash). */
   function flyOut(w) {
     if (reduceMotion()) return Promise.resolve(null);
-    const { dx, dy } = dockDelta(w);
+    const { dx, dy } = taskbarDelta(w);
     const a = w.el.animate([
       { transform: 'translate(0, 0) scale(1)', opacity: 1, offset: 0 },
       { transform: `translate(${dx * 0.18}px, ${dy * 0.14}px) scale(.86, .9)`, opacity: 1, offset: 0.3 },
@@ -414,7 +427,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
 
     const w = {
       id: def.id, def, el: root, body: root.querySelector('.wm-body'),
-      state: 'normal', rect: initialRect(def), busy: false, dockBtn: null, adopted: null
+      state: 'normal', rect: initialRect(def), busy: false, taskbarBtn: null, adopted: null
     };
 
     /* Controls */
@@ -597,13 +610,13 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   /* --- Open / focus / close --------------------------------------------- */
-  function ensureDockBtn(w) {
-    if (dockBtns.has(w.id)) { w.dockBtn = dockBtns.get(w.id); return; }
-    const b = makeDockBtn(w.def);
-    b.classList.add('wm-new');
-    dockApps.appendChild(b);
-    dockBtns.set(w.id, b);
-    w.dockBtn = b;
+  function ensureTaskbarBtn(w) {
+    if (!taskbarApps) return;
+    if (taskbarBtns.has(w.id)) { w.taskbarBtn = taskbarBtns.get(w.id); return; }
+    const b = makeTaskbarBtn(w.def);
+    taskbarApps.appendChild(b);
+    taskbarBtns.set(w.id, b);
+    w.taskbarBtn = b;
   }
 
   /* Portfolio: shrink the window to its longest line of text (title, category, description, filter chip),
@@ -655,10 +668,9 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (rect) w.rect = rect;
     wins.set(def.id, w);
     layer.appendChild(w.el);
-    if (!def.lite) ensureDockBtn(w);            // lite windows have no dock icon
+    if (!def.lite) ensureTaskbarBtn(w);         // lite windows have no taskbar button
     applyRect(w);
     if (def.id === 'portfolio' && !rect) fitPortfolioWidth(w);
-    if (isMobile()) wins.forEach(applyRect);   // project dock may have just appeared: shift the others
     focusWindow(w);
     if (def.adopt && !def.static) { refreshLayout(w); watchLayout(w); }
     if (def.lite) { fitLite(w); popIn(w, origin); } else flyIn(w);
@@ -671,7 +683,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     w.el.style.zIndex = ++zTop;
     w.el.classList.add('is-focused');
     focused = w;
-    refreshDock();
+    refreshTaskbar();
     if (!w.el.contains(document.activeElement)) w.el.focus({ preventScroll: true });
   }
 
@@ -681,7 +693,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       if (w.state !== 'min' && (!next || +w.el.style.zIndex > +next.el.style.zIndex)) next = w;
     });
     focused = null;
-    if (next) focusWindow(next); else refreshDock();
+    if (next) focusWindow(next); else refreshTaskbar();
   }
 
   async function minimize(w) {
@@ -695,8 +707,8 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     w.el.classList.remove('is-focused');
     if (anim) anim.cancel();
     w.busy = false;
-    if (focused === w) focusNext(); else refreshDock();
-    bounce(w.dockBtn);
+    if (focused === w) focusNext(); else refreshTaskbar();
+    pulse(w.taskbarBtn);
   }
 
   function restore(w) {
@@ -719,21 +731,15 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     w.el.remove();
     if (anim) anim.cancel();
     wins.delete(w.id);
-    if (!w.def.permanent) {                        // dynamic dock item goes away
-      dockBtns.delete(w.id);
-      if (w.dockBtn) w.dockBtn.remove();
-      if (isMobile()) wins.forEach(applyRect);   // project dock may have just disappeared
-    }
-    if (focused === w) { focused = null; focusNext(); } else refreshDock();
+    taskbarBtns.delete(w.id);                      // the taskbar button goes away with the window
+    if (w.taskbarBtn) w.taskbarBtn.remove();
+    if (focused === w) { focused = null; focusNext(); } else refreshTaskbar();
   }
 
-  function bounce(btn) {
+  /* Small press pulse on the taskbar button (after a minimize) */
+  function pulse(btn) {
     if (!btn || reduceMotion()) return;
-    /* `translate` (not `transform`): main.css locks dock-item transform with !important */
-    btn.animate([
-      { translate: '0 0' }, { translate: '0 -10px' },
-      { translate: '0 0' }, { translate: '0 -4px' }, { translate: '0 0' }
-    ], { duration: 520, easing: 'ease-out' });
+    btn.animate([{ scale: '1' }, { scale: '.88' }, { scale: '1' }], { duration: 260, easing: 'ease-out' });
   }
 
   function syncMaxUI(w) {
@@ -805,7 +811,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
         layer.classList.add('wm-dragging');
 
         const move = ev => {
-          const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace();
+          const vw = window.innerWidth, vh = window.innerHeight, ds = taskbarSpace();
           const minW = Math.min(MIN_W, vw), minH = Math.min(MIN_H, vh - ds);
           const dx = ev.clientX - sx, dy = ev.clientY - sy;
           const r = Object.assign({}, s);
@@ -818,7 +824,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
           }
           if (dir.includes('n')) {
             const bottom = s.y + s.h;
-            r.y = clamp(s.y + dy, topSpace(), bottom - minH);
+            r.y = clamp(s.y + dy, TOP_INSET, bottom - minH);
             r.h = bottom - r.y;
           }
           w.rect = r;
@@ -846,22 +852,21 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (d === desktopMode) return;
     desktopMode = d;
     if (!d) window.scrollTo(0, 0);
-    refreshDock();
+    refreshTaskbar();
   }
 
   window.matchMedia('(min-width: 992px)').addEventListener('change', () => syncMode());
   window.addEventListener('load', () => { syncMode(); });
 
   window.matchMedia('(max-width: 768px)').addEventListener('change', () => {
-    placeDockApps();
-    refreshDock();
+    refreshTaskbar();
     wins.forEach(w => { fitToViewport(w); applyRect(w); if (w.def.adopt) setTimeout(() => relayout(w), 60); });
   });
 
   window.addEventListener('resize', e => {
     if (e && e.isTrusted === false) return;   // ignore the synthetic event from refreshLayout()
     syncMode();
-    syncDockVar();
+    syncTaskbarVar();
     wins.forEach(w => { fitToViewport(w); applyRect(w); });
   });
 
@@ -873,7 +878,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
    *     A screenshot opens as a certificate-style window in THIS page (above the
    *     project window) instead of a GLightbox inside the small iframe. Same
    *     title bar + fitted image as the certificates, but close-only: no
-   *     minimize / maximize, not draggable, not resizable, no dock icon.
+   *     minimize / maximize, not draggable, not resizable, no taskbar button.
    * ===================================================================== */
   const LITE_CSS = `
     .wm-window.is-lite .wm-titlebar{cursor:default}
@@ -908,7 +913,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (!bw || !bh) return;
     const r = w.el.getBoundingClientRect();
     const extraW = r.width - bw, extraH = r.height - bh;          // title bar, borders, padding
-    const vw = window.innerWidth, vh = window.innerHeight, ds = dockSpace(), ts = topSpace();
+    const vw = window.innerWidth, vh = window.innerHeight, ds = taskbarSpace(), ts = TOP_INSET;
     const left = iconsW(), right = sidebarW();
     const maxW = vw - left - right - 24, maxH = vh - ds - ts - 20;
     const k = Math.min(1, (maxW - extraW) / nat.w, (maxH - extraH) / nat.h);
@@ -948,8 +953,8 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
 
     const def = {
       id, title: (owner ? owner.def.title + ' \u00b7 ' : '') + name, sub: name,
-      icon: 'fa-solid fa-image', image: href, lite: true, permanent: false,
-      size: [940, 680], dockClass: 'dock-app', natural: null
+      icon: 'fa-solid fa-image', image: href, lite: true,
+      size: [940, 680], natural: null
     };
     /* Preload so the window can open at the image's own proportions */
     const probe = new Image();
@@ -995,9 +1000,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   });
 
   /* =====================================================================
-   * 8. WIRING: dock, links, deep links
+   * 8. WIRING: taskbar, links, deep links
    * ===================================================================== */
-  function dockActivate(id) {
+  /* Taskbar button: open, restore, focus, or minimize the active one */
+  function taskbarActivate(id) {
     const w = wins.get(id);
     if (!w) { openWindow(id); return; }
     if (w.state === 'min') restore(w);
@@ -1019,15 +1025,15 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   document.addEventListener('click', e => {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
-    /* 1) Anything with data-app="..." (dock buttons, hero/about buttons, cards) */
+    /* 1) Anything with data-app="..." (taskbar buttons, hero/about buttons, cards) */
     const appEl = e.target.closest('[data-app]');
     if (appEl) {
       const id = appEl.getAttribute('data-app');
       if (!defs.has(id) && !wins.has(id)) return;
       e.preventDefault();
-      if (appEl.closest('.linux-dock')) dockActivate(id); else openWindow(id);
-      /* launcher menu (dock Menu button) closes after picking an app */
-      const launcher = document.getElementById('app-menu'), mb = document.getElementById('dock-menu-btn');
+      if (appEl.closest('.taskbar-apps')) taskbarActivate(id); else openWindow(id);
+      /* launcher menu (taskbar Menu button) closes after picking an app */
+      const launcher = document.getElementById('app-menu'), mb = document.getElementById('taskbar-menu-btn');
       if (launcher && mb && appEl.closest('#app-menu') && launcher.classList.contains('open')) mb.click();
       return;
     }
@@ -1066,14 +1072,14 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       e.preventDefault();
       openWindow({
         id: 'project:' + path, title: titleFromLink(a), icon: 'fa-solid fa-window-maximize',
-        url: a.pathname + a.search, permanent: false, size: [1000, 720], dockClass: 'dock-app'
+        url: a.pathname + a.search, size: [1000, 720]
       });
     }
   });
 
   /* =====================================================================
-   * 8b. TOP PANEL: dropdowns (My Work, theme) and the clock.
-   *     The focused-window title is updated in refreshDock().
+   * 8b. BOTTOM PANEL: dropdowns (theme, applets) and the clock.
+   *     The open-window buttons are kept in sync by refreshTaskbar().
    * ===================================================================== */
   function initPanel() {
     const panel = document.getElementById('top-panel');
@@ -1171,15 +1177,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       timeEl.setAttribute('datetime', now.toISOString());
       dateLine.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
     }
-    /* Terminal dressing, same language as the About card: window bar + `$ command` prompts */
+    /* Window bar, same language as the About card */
     if (pop && !pop.querySelector('.cp-bar')) {
-      const prompt = cmd => el('p', { class: 'ab-cmd cp-cmd dev-only' }, '<span>$</span>' + cmd);   // `$ command` lines: developer mode only
       pop.prepend(el('div', { class: 'cp-bar', 'aria-hidden': 'true' },
-        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title"><span class="dev-only">jp@portfolio: ~<span class="cp-bar-desk"> \u2014 date &amp; calendar</span><span class="cp-bar-mob"> \u2014 why-hire-me</span></span><span class="plain-only">Why hire me &amp; calendar</span></span>'));
-      const clockBox = pop.querySelector('.cp-clock'), head = why && why.querySelector('.cp-head'), nav = pop.querySelector('.cp-cal-nav');
-      if (clockBox) clockBox.prepend(prompt('date'));
-      if (head) head.parentNode.insertBefore(prompt('cat why-hire-me.txt'), head);
-      if (nav) nav.parentNode.insertBefore(prompt('cal'), nav);
+        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title">Why hire me &amp; calendar</span>'));
     }
 
     tickClock();
@@ -1214,28 +1215,22 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const bar = el('div', { class: 'hero-bar', 'aria-hidden': 'true' },
       '<span class="ab-dots"><i></i><i></i><i></i></span><span class="hero-bar-title">profile \u2014 John Paul De Leon</span>');
     const body = el('div', { class: 'hero-body' });
+    const card = el('div', { class: 'hero-card' });
     inner.classList.add('hero-main');
     about.classList.add('hero-inspector');
-    body.append(inner, about);                 // About may have been nested in the hero: it becomes the right pane
+    body.append(inner);
+    card.append(bar, body);                    // the profile applet: headerbar + body
     hero.classList.add('hero-applet');
-    hero.append(bar, body);
+    hero.append(card, about);                  // About is its own applet, beside the profile (stacked on phones)
   }
 
-  /* Conky is static in the bottom-left corner (pure CSS, nothing animates). This only measures it so the
-     hero panel stops above it, and hides it on screens too short to hold both. */
-  function initConkyStatic() {
-    const cky = document.getElementById('conky');
-    if (!cky) return;
-    const root = document.documentElement;
+  /* Keep the hero panel clear of the taskbar along the bottom edge. */
+  function initHeroReserve() {
     const fit = () => {
-      if (window.innerWidth < 992) { root.style.removeProperty('--hero-reserve'); cky.classList.remove('is-clipped'); return; }
-      const need = cky.offsetHeight + 16 + 14;                          // conky + its bottom gap + a gap above it
-      const heroRoom = window.innerHeight - (document.getElementById('top-panel')?.getBoundingClientRect().bottom || 0) - 8 - need;
-      const fits = heroRoom >= 300;                                      // the hero needs at least ~300px
-      cky.classList.toggle('is-clipped', !fits);
-      root.style.setProperty('--hero-reserve', (fits ? need : 120) + 'px');
+      const root = document.documentElement;
+      if (window.innerWidth < 992) { root.style.removeProperty('--hero-reserve'); return; }
+      root.style.setProperty('--hero-reserve', taskbarSpace() + 'px');
     };
-    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cky);
     window.addEventListener('resize', fit);
     window.addEventListener('load', fit);
     fit();
@@ -1307,117 +1302,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   });
 
   /* =====================================================================
-   * 8d. CONKY: decorative system monitor with fake, gently fluctuating data.
-   *     Bars glide (CSS), line graphs scroll one step per second (WAAPI).
-   * ===================================================================== */
-  function initConky() {
-    const root = document.getElementById('conky');
-    if (!root) return;
-    const NS = 'http://www.w3.org/2000/svg';
-    const N = 40, VW = 200, VH = 36, STEP = VW / (N - 1);
-    const rnd = (a, b) => a + Math.random() * (b - a);
-    const walk = (v, target, k, sigma, lo, hi) => clamp(v + (target - v) * k + rnd(-sigma, sigma), lo, hi);
-    const pad = n => String(Math.floor(n)).padStart(2, '0');
-    const out = k => root.querySelector('[data-cky="' + k + '"]');
-    const setBar = (bar, p) => { if (bar) bar.style.setProperty('--p', clamp(p, 0, 1).toFixed(3)); };
-
-    /* ----- line graphs ----- */
-    function makeGraph(key, nSeries) {
-      const svg = root.querySelector('[data-cky-graph="' + key + '"]');
-      if (!svg) return null;
-      const g = document.createElementNS(NS, 'g');
-      const series = [];
-      for (let i = 0; i < nSeries; i++) {
-        const area = i === 0 ? document.createElementNS(NS, 'path') : null;
-        const line = document.createElementNS(NS, 'path');
-        line.setAttribute('class', 'ln' + (i ? ' s' + (i + 1) : ''));
-        if (area) { area.setAttribute('class', 'ar'); g.appendChild(area); }
-        g.appendChild(line);
-        series.push({ vals: new Array(N + 1).fill(0), line, area });
-      }
-      svg.appendChild(g);
-      return { g, series };
-    }
-    const yOf = (v, max) => (VH - 2 - clamp(v / max, 0, 1) * (VH - 5)).toFixed(1);
-    function draw(graph, max) {
-      graph.series.forEach(s => {
-        let d = '';
-        s.vals.forEach((v, i) => { d += (i ? 'L' : 'M') + ((i - 1) * STEP).toFixed(1) + ' ' + yOf(v, max) + ' '; });
-        s.line.setAttribute('d', d);
-        if (s.area) s.area.setAttribute('d', d + 'L' + ((N - 1) * STEP).toFixed(1) + ' ' + VH + ' L' + (-STEP).toFixed(1) + ' ' + VH + ' Z');
-      });
-    }
-    function push(graph, values, max, animate) {
-      graph.series.forEach((s, i) => { s.vals.shift(); s.vals.push(values[i]); });
-      draw(graph, max);
-      if (animate && !reduceMotion() && graph.g.animate) {
-        graph.g.animate([{ transform: 'translateX(' + STEP + 'px)' }, { transform: 'translateX(0)' }],
-          { duration: 1000, easing: 'linear' });
-      }
-    }
-
-    const gCpu = makeGraph('cpu', 1), gNet = makeGraph('net', 2);
-    const bars = root.querySelectorAll('.cky-bar');
-    const coreBars = root.querySelectorAll('.cky-cores .cky-bar');
-    const ramBar = bars[coreBars.length], diskBar = bars[coreBars.length + 1], procBar = bars[coreBars.length + 2];
-
-    /* ----- simulated machine ----- */
-    const st = {
-      cpu: 14, cpuT: 16, cores: [12, 15, 10, 18],
-      ram: 6.1, disk: 318.4, dr: 4, dw: 2,
-      down: 420, up: 60, downT: 400, upT: 60,
-      procs: 187, running: 2,
-      up0: 12 * 86400 + 4 * 3600 + 31 * 60 + 9, t0: Date.now()
-    };
-    const RAM_TOTAL = 16, DISK_TOTAL = 512, PROC_MAX = 400;
-
-    const rate = kb => kb >= 1024 ? (kb / 1024).toFixed(1) + ' MB/s' : Math.round(kb) + ' KB/s';
-
-    function step() {
-      if (Math.random() < 0.07) st.cpuT = rnd(24, 58); else if (Math.random() < 0.2) st.cpuT = rnd(9, 22);
-      st.cpu = walk(st.cpu, st.cpuT, 0.22, 2.2, 3, 92);
-      st.cores = st.cores.map(c => walk(c, st.cpu, 0.35, 5, 1, 99));
-      st.ram = walk(st.ram, 6.1, 0.01, 0.05, 4.6, 8.2);
-      st.disk = clamp(st.disk + rnd(0, 0.004), 0, DISK_TOTAL);
-      st.dr = Math.random() < 0.08 ? rnd(25, 70) : walk(st.dr, 3, 0.3, 1.2, 0, 90);
-      st.dw = Math.random() < 0.06 ? rnd(12, 40) : walk(st.dw, 1.5, 0.3, 0.8, 0, 60);
-      if (Math.random() < 0.08) st.downT = rnd(900, 4200); else if (Math.random() < 0.2) st.downT = rnd(120, 600);
-      if (Math.random() < 0.08) st.upT = rnd(150, 700); else if (Math.random() < 0.2) st.upT = rnd(20, 120);
-      st.down = walk(st.down, st.downT, 0.25, 60, 8, 6000);
-      st.up = walk(st.up, st.upT, 0.25, 14, 2, 1200);
-      st.procs = Math.round(walk(st.procs, 187, 0.05, 2.2, 168, 224));
-      st.running = Math.random() < 0.25 ? Math.floor(rnd(1, 5)) : st.running;
-    }
-
-    function render(animate) {
-      out('cpu').textContent = Math.round(st.cpu) + '%';
-      coreBars.forEach((b, i) => setBar(b, st.cores[i] / 100));
-      out('ram').textContent = st.ram.toFixed(1) + ' / ' + RAM_TOTAL + ' GiB';
-      setBar(ramBar, st.ram / RAM_TOTAL);
-      out('disk').textContent = Math.round(st.disk) + ' / ' + DISK_TOTAL + ' GiB';
-      setBar(diskBar, st.disk / DISK_TOTAL);
-      out('dr').textContent = st.dr.toFixed(1) + ' MB/s';
-      out('dw').textContent = st.dw.toFixed(1) + ' MB/s';
-      out('down').textContent = '\u2193 ' + rate(st.down);
-      out('up').textContent = '\u2191 ' + rate(st.up);
-      out('procs').textContent = st.procs + ' total';
-      setBar(procBar, st.procs / PROC_MAX);
-      out('running').textContent = st.running;
-      const u = st.up0 + (Date.now() - st.t0) / 1000;
-      out('uptime').textContent = Math.floor(u / 86400) + 'd ' + pad((u % 86400) / 3600) + ':' + pad((u % 3600) / 60) + ':' + pad(u % 60);
-      const netMax = Math.max(400, ...gNet.series[0].vals, ...gNet.series[1].vals, st.down) * 1.15;
-      if (gCpu) push(gCpu, [st.cpu], 100, animate);
-      if (gNet) push(gNet, [st.down, st.up], netMax, animate);
-    }
-
-    /* pre-fill the history so the graphs are not empty on load */
-    for (let i = 0; i < N; i++) { step(); render(false); }
-    render(false);
-    setInterval(() => { if (document.hidden || !root.getClientRects().length) return; step(); render(true); }, 1000);
-  }
-
-  /* =====================================================================
-   * 8e. RIGHT COLUMN: live month count for the current role, and scale the
+   * 8d. RIGHT COLUMN: live month count for the current role, and scale the
    *     Experience + Skills column to fit the screen height (nothing is cut).
    * ===================================================================== */
   function initRightColumn() {
@@ -1435,7 +1320,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     const fit = () => {
       col.style.transform = '';
       if (!isDesk()) return;
-      const avail = window.innerHeight - col.getBoundingClientRect().top - 16;
+      const avail = window.innerHeight - col.getBoundingClientRect().top - taskbarSpace();
       const k = clamp(avail / col.offsetHeight, 0.6, 1);
       if (k < 1) col.style.transform = 'scale(' + k.toFixed(3) + ')';
     };
@@ -1446,12 +1331,12 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
   /* =====================================================================
-   * 9. BOOT
+   * 9. START
    * ===================================================================== */
   function boot() {
     clearTimeout(window.__deskFailsafe);
     document.body.append(layer, store);
-    buildDock();
+    buildTaskbar();
     initPanel();
 
     /* Park Resume/Portfolio off-page; nothing opens on first load.
@@ -1461,11 +1346,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       if (node) store.appendChild(node);
     });
 
-    refreshDock();
+    refreshTaskbar();
     initHeroApplet();
     initAbout();
-    initConky();
-    initConkyStatic();
+    initHeroReserve();
     showHeroOnFirstLoad();
     initRightColumn();
     desktopMode = window.innerWidth >= 992;
@@ -1474,13 +1358,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
 
     /* First load: wallpaper alone for a moment, then hero + widgets fade in (no window opens by itself).
        A deep-linked window keeps the focus. */
-    const startDesktop = async () => {
+    (async () => {
       if (document.readyState !== 'complete') await new Promise(r => window.addEventListener('load', r, { once: true }));
-      await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the dock
-    };
-    /* boot.js plays the GRUB / login sequence first (once per session) and fires "boot:done" */
-    if (document.documentElement.classList.contains('boot-on')) window.addEventListener('boot:done', startDesktop, { once: true });
-    else startDesktop();
+      await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the Menu
+    })();
   }
 
   /* Embed a project page inside any element (used by the Zen-style Portfolio tabs).

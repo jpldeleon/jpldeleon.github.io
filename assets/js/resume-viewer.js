@@ -28,6 +28,12 @@
   var tree = root.querySelector('.rv-tree');
   if (!tabs.length || !views.length || !textPane || !pdfPane) return;
 
+  /* icon-only tabs on phones still need a name (screen readers + long-press tooltip) */
+  tabs.forEach(function (t) {
+    var n = t.getAttribute('data-label') || (t.querySelector('.rv-name') || {}).textContent || '';
+    if (n && !t.getAttribute('aria-label')) { t.setAttribute('aria-label', n); t.title = n; }
+  });
+
   var PDF_NAME = 'JohnPaulDeLeon.pdf';
   var state = { view: tabs[0].getAttribute('data-view'), mode: 'text' };
 

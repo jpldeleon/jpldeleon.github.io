@@ -1,0 +1,143 @@
+/*--------------------------------------------------------------
+# Taskbar: the former top panel, now along the bottom edge.
+# Load LAST (after panel-applets.css). Same look as before: this file
+# only moves the bar, flips its popovers upward, and styles the
+# open-app buttons. Colours come from the theme variables, so every
+# theme follows automatically.
+--------------------------------------------------------------*/
+
+/* ----- the bar: same panel, pinned to the bottom instead of the top ----- */
+.top-panel.taskbar {
+  top: auto !important;
+  bottom: 8px !important;
+}
+
+@supports (padding: max(0px)) {
+  .top-panel.taskbar { bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important; }
+}
+
+/* ----- popovers open upward, with the same 8px gap the downward ones had ----- */
+.top-panel.taskbar .panel-popover,
+.top-panel.taskbar .panel-dropdown {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform-origin: bottom right;
+}
+
+html body .top-panel.taskbar .panel-popover[hidden] {
+  transform: translateY(22px);
+}
+
+/* the typed "Theme: ..." notice used to sit under the theme popover; now above it */
+.top-panel.taskbar .panel-notice {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+/* ----- Menu button (left end): same look as the other panel buttons ----- */
+.taskbar-menu.active,
+.taskbar-menu[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+}
+
+/* ----- open apps (center) ----- */
+.top-panel.taskbar .panel-center {
+  display: flex !important;
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
+}
+
+.taskbar-apps {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.taskbar-apps::-webkit-scrollbar { display: none; }
+
+.taskbar-item {
+  position: relative;
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 34px;
+  max-width: 170px;
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--default-color);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.7;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.taskbar-item i { flex: none; color: var(--accent-highlight); pointer-events: none; }
+
+.taskbar-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.taskbar-item:hover,
+.taskbar-item:focus-visible {
+  opacity: 1;
+  background: color-mix(in srgb, var(--default-color), transparent 90%);
+  outline: none;
+}
+
+/* minimized: dimmer than an open window that is just not in front */
+.taskbar-item.is-minimized { opacity: 0.45; }
+.taskbar-item.is-minimized:hover,
+.taskbar-item.is-minimized:focus-visible { opacity: 0.8; }
+
+/* active (the window in front): same highlight as an open applet button, plus an underline */
+.taskbar-item.is-active {
+  opacity: 1;
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+  font-weight: 600;
+}
+.taskbar-item.is-active::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-highlight);
+}
+
+/* ----- phones: icons only, the strip scrolls sideways ----- */
+@media (max-width: 768px) {
+  .taskbar-item { padding: 0 9px; }
+  .taskbar-label { display: none; }
+  .taskbar-item.is-active::after { left: 8px; right: 8px; }
+  /* room for Menu + apps + applets + clock: the social links live in the Socials app and the Menu */
+  .top-panel.taskbar .panel-connect { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taskbar-item { transition: none; }
+}
+
+/* Compatibility alias: app.css may still read --dock-space until its dock rules are deleted */
+:root { --dock-space: var(--taskbar-space, 56px); }

@@ -180,37 +180,6 @@
   });
 
   /**
-   * Dock Scrollspy - keep one active section indicator in sync with the page.
-   */
-  const dockLinks = document.querySelectorAll('.linux-dock a.dock-item[href]');
-  /* Only in-page hash links (#about, #resume...) are sections. Full URLs such as
-     https://site/ are not valid selectors and used to throw here, which aborted the
-     rest of main.js (including the lightbox close handlers) on project pages. */
-  const dockSections = Array.from(dockLinks)
-    .map(link => {
-      const href = link.getAttribute('href') || '';
-      if (href.length < 2 || href.charAt(0) !== '#') return null;
-      try { return document.querySelector(href); } catch (err) { return null; }
-    })
-    .filter(Boolean);
-
-  function dockScrollspy() {
-    if (!dockSections.length) return;
-    const marker = window.scrollY + Math.min(220, window.innerHeight * 0.28);
-    let activeSection = dockSections[0];
-    dockSections.forEach(section => {
-      if (section.offsetTop <= marker) activeSection = section;
-    });
-    dockLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + activeSection.id);
-    });
-  }
-
-  window.addEventListener('load', dockScrollspy);
-  document.addEventListener('scroll', dockScrollspy, { passive: true });
-  window.addEventListener('resize', dockScrollspy);
-
-  /**
    * Theme Dots + typed theme notification.
    */
   const themeDots = document.querySelectorAll('.theme-dot');
@@ -330,19 +299,19 @@
   });
 
   /**
-   * Linux App Menu (Menu dock icon -> popup launcher)
+   * Linux App Menu (taskbar Menu button -> popup launcher)
    */
-  const dockMenuBtn = document.getElementById('dock-menu-btn');
+  const taskbarMenuBtn = document.getElementById('taskbar-menu-btn');
   const appMenu = document.getElementById('app-menu');
 
   function positionAppMenu() {
-    if (!dockMenuBtn || !appMenu) return;
-    const btnRect = dockMenuBtn.getBoundingClientRect();
+    if (!taskbarMenuBtn || !appMenu) return;
+    const btnRect = taskbarMenuBtn.getBoundingClientRect();
     const gap = 12;
     const menuRect = appMenu.getBoundingClientRect();
     const margin = 14;
 
-    let left = btnRect.left + (btnRect.width / 2) - (menuRect.width / 2);
+    let left = btnRect.left + btnRect.width / 2 - menuRect.width / 2;   // the Menu button sits in the middle of the taskbar: open centred over it
     const maxLeft = window.innerWidth - menuRect.width - margin;
     if (left < margin) left = margin;
     if (left > maxLeft) left = Math.max(margin, maxLeft);
@@ -355,8 +324,8 @@
     if (!appMenu) return;
     appMenu.classList.add('open');
     appMenu.setAttribute('aria-hidden', 'false');
-    dockMenuBtn.setAttribute('aria-expanded', 'true');
-    dockMenuBtn.classList.add('active');
+    taskbarMenuBtn.setAttribute('aria-expanded', 'true');
+    taskbarMenuBtn.classList.add('active');
     positionAppMenu();
   }
 
@@ -364,22 +333,22 @@
     if (!appMenu) return;
     appMenu.classList.remove('open');
     appMenu.setAttribute('aria-hidden', 'true');
-    dockMenuBtn.setAttribute('aria-expanded', 'false');
-    dockMenuBtn.classList.remove('active');
+    taskbarMenuBtn.setAttribute('aria-expanded', 'false');
+    taskbarMenuBtn.classList.remove('active');
   }
 
   function isAppMenuOpen() {
     return appMenu && appMenu.classList.contains('open');
   }
 
-  if (dockMenuBtn && appMenu) {
-    dockMenuBtn.addEventListener('click', (e) => {
+  if (taskbarMenuBtn && appMenu) {
+    taskbarMenuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       isAppMenuOpen() ? closeAppMenu() : openAppMenu();
     });
 
     document.addEventListener('click', (e) => {
-      if (isAppMenuOpen() && !appMenu.contains(e.target) && e.target !== dockMenuBtn) {
+      if (isAppMenuOpen() && !appMenu.contains(e.target) && e.target !== taskbarMenuBtn) {
         closeAppMenu();
       }
     });
@@ -403,28 +372,22 @@
   const MOTION_EASE = 'cubic-bezier(.4, 0, .2, 1)';
   const MOTION_POP = 'cubic-bezier(.2, .8, .2, 1)';
 
-  function getDockTarget(kind) {
-    const dock = document.querySelector('.linux-dock');
-    if (!dock) return null;
-    if (kind === 'projects') return dock.querySelector('.dock-projects') || dock.querySelector('.dock-item');
-    return dock.querySelector('#dock-menu-btn') || dock.querySelector('.dock-item');
+  function getTaskbarTarget() {
+    return document.getElementById('taskbar-menu-btn') || document.querySelector('.taskbar-item');
   }
 
-  function bounceDockItem(el) {
-    if (!el) return;
-    el.classList.remove('dock-bounce');
-    void el.offsetWidth;
-    el.classList.add('dock-bounce');
-    window.setTimeout(() => el.classList.remove('dock-bounce'), 700);
+  function pulseTaskbarItem(el) {
+    if (!el || reduceMotion()) return;
+    el.animate([{ scale: '1' }, { scale: '.88' }, { scale: '1' }], { duration: 260, easing: 'ease-out' });
   }
 
-  function shrinkIntoDock(win, dockEl, backdrop) {
+  function shrinkIntoTaskbar(win, targetEl, backdrop) {
     return new Promise(resolve => {
-      if (!win || !dockEl || reduceMotion()) { resolve([]); return; }
+      if (!win || !targetEl || reduceMotion()) { resolve([]); return; }
       const prevOrigin = win.style.transformOrigin;
       win.style.transformOrigin = '50% 50%';
       const w = win.getBoundingClientRect();
-      const d = dockEl.getBoundingClientRect();
+      const d = targetEl.getBoundingClientRect();
       const dx = (d.left + d.width / 2) - (w.left + w.width / 2);
       const dy = (d.top + d.height / 2) - (w.top + w.height / 2);
       const duration = 440;
@@ -668,11 +631,11 @@
     if (!overlay || !overlay.classList.contains('open') || overlay.dataset.animating) return;
     overlay.dataset.animating = '1';
     activeTypingToken++;
-    const dockEl = getDockTarget('menu');
+    const targetEl = getTaskbarTarget();
     const win = overlay.querySelector('.terminal-window');
-    shrinkIntoDock(win, dockEl, overlay).then(anims => {
+    shrinkIntoTaskbar(win, targetEl, overlay).then(anims => {
       settleTerminal(overlay, anims);
-      bounceDockItem(dockEl);
+      pulseTaskbarItem(targetEl);
     });
   }
 

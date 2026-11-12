@@ -25,6 +25,14 @@
 
   var DEFAULT_VIEW = tabs[0].getAttribute('data-view');
 
+  /* icon-only tabs on phones still need a name (screen readers + long-press tooltip) */
+  var LABELS = { walkthrough: 'Video demo', gallery: 'Screenshots', overview: 'Overview', implementation: 'How it\u2019s built', features: 'Features', stack: 'Details' };
+  tabs.forEach(function (t) {
+    var v = t.getAttribute('data-view') || '';
+    var n = LABELS[v] || (v.charAt(0).toUpperCase() + v.slice(1));
+    if (!t.getAttribute('aria-label')) { t.setAttribute('aria-label', n); t.title = n; }
+  });
+
   /* Old anchors from the previous layout keep working as deep links */
   var ALIAS = {
     'video': 'walkthrough',

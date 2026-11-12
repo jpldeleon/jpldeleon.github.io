@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------
-# Hobbies & Interests: dotfiles applet (popover under the top-panel icon)
+# Hobbies & Interests: dotfiles applet (popover above the taskbar icon)
 # Load AFTER desktop.css. Colours come from the theme variables,
 # so every theme (Everforest, Aurora, Gruvbox, Monokai, Dracula)
 # follows automatically. Plain terminal look: monospace, a prompt,
@@ -8,9 +8,9 @@
 --------------------------------------------------------------*/
 
 /* ----- popover shell: placed exactly like the clock applet -----
-   desktop.css anchors the clock popover to the top panel itself (position: static on
-   its .panel-menu), so "top: calc(100% + 8px)" is measured from the bottom edge of the
-   panel bar, not from the small button. Same here, so the gap under the bar matches. */
+   desktop.css anchors the clock popover to the panel itself (position: static on
+   its .panel-menu), so "bottom: calc(100% + 8px)" is measured from the top edge of the
+   taskbar, not from the small button. Same here, so the gap above the bar matches. */
 .panel-dotfiles-menu,
 .panel-menu:has(> .df-popover) { position: static; }
 
@@ -19,21 +19,23 @@
   box-sizing: border-box;
   width: min(480px, calc(100vw - 16px));
   height: auto;
-  max-height: calc(100dvh - var(--panel-h) - 24px);
+  top: auto;
+  bottom: calc(100% + 8px);
+  max-height: calc(100dvh - var(--taskbar-space, 56px) - 16px);
   padding: 0;
   border: 0;
   outline: 0;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 14px 40px rgba(0, 0, 0, .42);
-  transform-origin: top right;
+  transform-origin: bottom right;
   transition: transform 0.28s var(--lx-ease, ease), opacity 0.2s ease, visibility 0s linear 0s;
 }
 
-/* same open/close motion as the clock: slide down + fade in, slide up + fade out */
+/* same open/close motion as the clock: slide up + fade in, slide down + fade out */
 .top-panel .panel-popover.df-popover[hidden] {
   display: block;
-  transform: translateY(-22px);
+  transform: translateY(22px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -69,7 +71,7 @@
   display: grid;
   grid-template-columns: 148px minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;      /* content, then the John Off the Wall link */
-  height: min(290px, calc(100dvh - var(--panel-h) - 24px));   /* fixed size: every tab is the same height, long ones scroll */
+  height: min(290px, calc(100dvh - var(--taskbar-space, 56px) - 16px));   /* fixed size: every tab is the same height, long ones scroll */
 }
 
 /* ----- left: file names ----- */

@@ -12,15 +12,6 @@
     })();
   </script>
   <script>
-    /* Developer mode (terminal look + boot log) is opt-in. Off by default; open /?dev to switch it on. */
-    var devOn = false;
-    try {
-      if (/[?&]dev(=1|&|$)/.test(location.search)) localStorage.setItem('dev-mode', '1');
-      devOn = localStorage.getItem('dev-mode') === '1';
-    } catch (e) { }
-    if (devOn) document.documentElement.classList.add('dev');
-    /* boot sequence plays once per session, developer mode only */
-    try { if (devOn && !sessionStorage.getItem('boot-seen')) document.documentElement.classList.add('boot-on'); } catch (e) { }
     /* wallpaper first: hero, widgets and the Portfolio window stay hidden until app.js reveals them.
        The timer is only a failsafe (app.js cancels it as soon as it starts). */
     document.documentElement.classList.add('desk-pre');
@@ -76,16 +67,431 @@
   <link href="assets/css/portfolio-terminal.css" rel="stylesheet" />
   <!-- Projects window -->
   <link href="assets/css/portfolio.css" rel="stylesheet" />
-  <link href="assets/css/boot.css" rel="stylesheet" />
   <!-- Ambient space scene (astronaut, orbs, stars) -->
   <link href="assets/css/space-scene.css" rel="stylesheet" />
   <!-- Shared position for every top-panel applet (load last) -->
   <link href="assets/css/panel-applets.css" rel="stylesheet" />
+  <!-- Bottom taskbar: anchors the panel to the bottom and styles the open-app buttons (load last) -->
+  <link href="assets/css/taskbar.css" rel="stylesheet" />
+  <!-- Hero + About: one translucent card, anchored above the bottom taskbar (inline so it always loads last) -->
+  <style id="hero-applet-css">
+/*--------------------------------------------------------------
+# Hero applet: ONE translucent card, anchored above the bottom taskbar.
+#   >= 1360px: hero on the LEFT, About me beside it on the RIGHT (two panes, one card).
+#   992-1359px: not enough width, so About sits under the hero inside the same card.
+#   < 992px: the stacked page layout is untouched.
+# About me has a toggle on its left edge: it hides the pane to the left, leaving a slim rail.
+# Bell toggle: the card rises out of the bar (open) and sinks back into it (close).
+--------------------------------------------------------------*/
+
+/* ---------- all sizes ---------- */
+.hero-sidebar .sidebar-summary {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--default-color), transparent 15%);
+}
+
+/* the typed role-code is aria-hidden, so this is the text screen readers get */
+.hero-sidebar .sidebar-role {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 991px) {
+  .hero-sidebar .sidebar-summary { max-width: 460px; margin-inline: auto; text-align: center; }
+}
+
+/* ---------- desktop ---------- */
+@media (min-width: 992px) {
+
+  :root {
+    --hero-card-w: 340px;
+    --about-w: 320px;
+    --notif-w: 340px;                 /* Conky / Experience / windows follow the card's width */
+    --sidebar-w: 358px;
+    /* bar bottom offset + bar height + the shared popover gap */
+    --hero-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--panel-bar-h) + var(--panel-pop-gap, 8px));
+    --hero-h: calc(100dvh - var(--hero-bottom) - 18px);
+    --hero-hairline: color-mix(in srgb, var(--default-color), transparent 88%);
+  }
+
+  /* Conky stays in the middle column, beside the card */
+  .conky {
+    left: calc(var(--notif-w) + 44px);
+    top: calc(var(--panel-h) + 18px);
+    bottom: auto;
+  }
+
+  /* ----- the card (the wrapper is the card; hero and About are sections inside it) ----- */
+  .hero-sidebar.hero-applet {
+    top: auto;
+    bottom: var(--hero-bottom);
+    left: var(--panel-edge, 12px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    width: var(--hero-card-w);
+    max-height: var(--hero-h);
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
+    border: 1px solid var(--hero-hairline);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface-color), transparent 42%);     /* translucent */
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow: var(--panel-pop-shadow, 0 14px 40px rgba(0, 0, 0, .4));
+    transform-origin: bottom left;
+    transition: transform .32s var(--lx-ease, ease), opacity .22s ease, visibility 0s linear 0s;
+  }
+
+  /* closed (and the first paint before the desktop reveal): tucked below the screen, behind the bar.
+     Removing it makes the card rise out of the bar; adding it sinks it back down. */
+  body.sidebar-collapsed .hero-sidebar.hero-applet,
+  html.desk-pre .hero-sidebar.hero-applet {
+    transform: translateY(calc(100% + var(--hero-bottom) + 16px));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform .26s ease, opacity .2s ease, visibility 0s linear .26s;
+  }
+
+  .sidebar-noanim .hero-sidebar.hero-applet { transition: none !important; }
+
+  .hero-sidebar.hero-applet .hero-card,
+  .hero-sidebar.hero-applet .hero-inspector {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: none;
+    margin: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .hero-sidebar.hero-applet .hero-bar { display: none; }
+
+  .hero-sidebar.hero-applet .hero-body {
+    flex: 0 0 auto;
+    overflow: visible;
+    padding: 30px 24px 22px;          /* top room so the avatar's hover rings are never clipped */
+  }
+
+  /* ----- hero: centred profile ----- */
+  .hero-sidebar.hero-applet .hero-sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .hero-sidebar.hero-applet .sidebar-avatar { --avatar: 148px; margin: 0 auto 4px; }   /* hover rings: desktop.css */
+  .hero-sidebar.hero-applet .orbit-sys { display: none; }
+
+  .hero-sidebar.hero-applet .sidebar-header-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .hero-sidebar.hero-applet h1 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  /* title + typed subtitle: the original box, sized to sit inside the card */
+  .hero-sidebar.hero-applet .role-code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin: 8px 0 0;
+    padding: 10px 8px;
+    overflow: hidden;
+  }
+  .hero-sidebar.hero-applet .role-code .role-string {
+    max-width: 100%;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+  .hero-sidebar.hero-applet .role-code .role-comment,
+  .hero-sidebar.hero-applet .role-code .role-comment .typed,
+  .hero-sidebar.hero-applet .role-code .role-comment .typed-cursor { font-size: 13px; }
+  .hero-sidebar.hero-applet .role-code .role-comment { min-height: 1.4em; max-width: 100%; }   /* no jump while typing */
+
+  .hero-sidebar.hero-applet .sidebar-summary {
+    max-width: none;
+    margin: 2px 0 0;
+    text-align: left;
+  }
+
+  .hero-sidebar.hero-applet .sidebar-contact {
+    position: relative;               /* the copy toast covers this row */
+    gap: 2px;
+    margin-top: 2px;
+    padding-top: 12px;
+    border-top: 1px solid var(--hero-hairline);
+  }
+  .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item,
+  .hero-sidebar.hero-applet .sidebar-contact .sidebar-cta { height: 48px; }
+
+  /* ----- About me ----- */
+  .hero-sidebar.hero-applet .hero-inspector { border-top: 1px solid var(--hero-hairline); }
+
+  .hero-sidebar.hero-applet .hero-inspector .ab-term-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-height: 46px;
+    padding: 0 18px 0 14px;
+    border: 0;
+    background: none;
+  }
+  .hero-sidebar.hero-applet .hero-inspector .ab-dots { display: none; }
+
+  .hero-sidebar.hero-applet .hero-inspector .ab-toggle {
+    order: -1;                        /* left side */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: color-mix(in srgb, var(--default-color), transparent 30%);
+  }
+  .hero-sidebar.hero-applet .hero-inspector .ab-toggle::after {     /* the whole row is the click target */
+    content: '';
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+  .hero-sidebar.hero-applet .hero-inspector .ab-term-bar:hover .ab-toggle {
+    background: color-mix(in srgb, var(--default-color), transparent 90%);
+    color: var(--heading-color);
+  }
+  .hero-sidebar.hero-applet .hero-inspector .ab-toggle i { transform: none; }
+  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-toggle i { transform: rotate(-90deg); }
+
+  .hero-sidebar.hero-applet .hero-inspector .ab-term-title {
+    flex: 1 1 auto;
+    font-family: inherit;
+    font-size: var(--fs-base);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--heading-color);
+  }
+
+  .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
+    max-height: none;
+    overflow: visible;
+    padding: 0 24px 22px;
+  }
+  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-body { display: none; }
+
+  .hero-sidebar.hero-applet .ab-term-body h2 {
+    margin: 0 0 8px;
+    font-size: var(--fs-read);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--heading-color);
+  }
+  .hero-sidebar.hero-applet .ab-term-body > p:not(.ab-cmd) {
+    margin: 0 0 10px;
+    font-size: var(--fs-sm);
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--default-color), transparent 15%);
+  }
+  .hero-sidebar.hero-applet .ab-term-body > p.ab-plain-label {
+    margin: 14px 0 8px;
+    font-size: var(--fs-xs);
+    color: color-mix(in srgb, var(--default-color), transparent 40%);
+  }
+  .hero-sidebar.hero-applet .ab-tags { gap: 6px; margin: 0; }
+  .hero-sidebar.hero-applet .ab-tags li {
+    padding: 4px 10px;
+    border: 1px solid var(--hero-hairline);
+    border-radius: 999px;
+    background: transparent;
+    font-size: var(--fs-xs);
+    line-height: 1.2;
+    color: var(--default-color);
+  }
+}
+
+/* ---------- wide: hero LEFT, About me RIGHT, one card ---------- */
+@media (min-width: 1360px) {
+  :root { --notif-w: 660px; --sidebar-w: 678px; }      /* hero 340 + About 320 */
+
+  .hero-sidebar.hero-applet {
+    flex-direction: row;
+    align-items: stretch;
+    width: auto;
+    overflow: hidden;                 /* each pane scrolls on its own */
+  }
+
+  .hero-sidebar.hero-applet .hero-card {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 var(--hero-card-w);
+    width: var(--hero-card-w);
+    min-height: 0;
+  }
+  .hero-sidebar.hero-applet .hero-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
+  }
+
+  .hero-sidebar.hero-applet .hero-inspector {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 var(--about-w);
+    width: var(--about-w);
+    min-height: 0;
+    border-top: 0;
+    border-left: 1px solid var(--hero-hairline);
+  }
+  .hero-sidebar.hero-applet .hero-inspector .ab-term-bar { flex: 0 0 auto; }
+  .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
+  }
+
+  /* the toggle hides About to the left (arrow points left); hidden = slim rail, arrow points right */
+  .hero-sidebar.hero-applet .hero-inspector .ab-toggle i { transform: rotate(90deg); }
+  .hero-sidebar.hero-applet .hero-inspector.is-collapsed { flex-basis: 48px; width: 48px; }
+  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-toggle i { transform: rotate(-90deg); }
+  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-bar { justify-content: center; padding: 0; }
+  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-title { display: none; }
+}
+
+@media (min-width: 992px) and (prefers-reduced-motion: reduce) {
+  .hero-sidebar.hero-applet,
+  body.sidebar-collapsed .hero-sidebar.hero-applet,
+  html.desk-pre .hero-sidebar.hero-applet { transition: opacity .15s ease, visibility 0s linear .15s; }
+  body.sidebar-collapsed .hero-sidebar.hero-applet,
+  html.desk-pre .hero-sidebar.hero-applet { transform: none; }
+}
+  </style>
+  <style id="taskbar-tweaks-css">
+/*--------------------------------------------------------------
+# Taskbar tweaks (load last)
+# 1) Menu button sits in the middle, right before the open apps.
+# 2) Open apps are icons only (the name stays for screen readers).
+# 3) Theme (and volume) popovers open UPWARD again. panel-applets.css placed
+#    them with an ID selector, which beat taskbar.css, so they opened below
+#    the bar, off the screen.
+--------------------------------------------------------------*/
+.top-panel.taskbar .panel-center {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 60vw;
+  overflow: visible;
+}
+.top-panel.taskbar .panel-center .taskbar-menu { flex: 0 0 auto; }
+.top-panel.taskbar .taskbar-apps { flex: 0 1 auto; }
+
+.top-panel.taskbar .taskbar-item {
+  width: 34px;
+  min-width: 34px;
+  max-width: 34px;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+}
+.top-panel.taskbar .taskbar-item i { font-size: 16px; }
+.top-panel.taskbar .taskbar-item .taskbar-label {
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.top-panel.taskbar .taskbar-item.is-active::after { left: 10px; right: 10px; }
+
+/* theme + volume popovers: same line as the other applets, above the bar */
+.top-panel.taskbar #panel-theme-pop.panel-popover,
+.top-panel.taskbar .volume-popover.panel-popover {
+  top: auto;
+  bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px));
+}
+/* the typed "Theme: ..." notice goes above the popover */
+.top-panel.taskbar .panel-menu:has(> #panel-theme-pop) > .panel-notice {
+  top: auto;
+  bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px) + 74px);
+}
+@media (max-width: 340px) {
+  .top-panel.taskbar #panel-theme-pop.panel-popover,
+  .top-panel.taskbar .volume-popover.panel-popover {
+    top: auto;
+    bottom: calc(100% + var(--panel-pop-gap, 8px));
+  }
+  .top-panel.taskbar .panel-menu:has(> #panel-theme-pop) > .panel-notice {
+    top: auto;
+    bottom: calc(100% + var(--panel-pop-gap, 8px) + 74px);
+  }
+}
+  </style>
+  <!-- Android-style phone layout (<= 768px): status bar, notification shade, widgets, bottom search (load last) -->
+  <link href="assets/css/android.css" rel="stylesheet" />
 </head>
 
 <body class="index-page">
-  <!-- Boot sequence (GRUB / Arch log / login), once per session -->
-  <div aria-hidden="true" class="boot" id="boot"><div class="bt-screen" id="bt-screen"></div></div>
   <!-- Flat desktop-style background -->
   <div aria-hidden="true" class="desktop-background"></div>
   <!-- Ambient space scene: sits directly above the background, below all UI -->
@@ -107,13 +513,13 @@
   </div>
   <!-- Scroll Top -->
   <a class="scroll-top d-flex align-items-center justify-content-center" href="#" id="scroll-top"><i
-      class="fa-brands fa-arch-linux dev-only"></i><i class="fa-solid fa-angle-up plain-only"></i></a>
-  <!-- Top Panel -->
-  <header class="top-panel" id="top-panel">
+      class="fa-solid fa-angle-up"></i></a>
+  <!-- Bottom panel: the taskbar (Menu, open apps, applets, clock) -->
+  <header class="top-panel taskbar" id="top-panel">
     <div class="panel-left">
       <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
         class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
-          aria-hidden="true" class="fa-solid fa-angle-up"></i></button>
+          aria-hidden="true" class="fa-solid fa-angle-down"></i></button>
       <span aria-hidden="true" class="panel-sep"></span>
       <nav aria-label="Connect" class="panel-connect">
         <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
@@ -126,10 +532,12 @@
           target="_blank" title="GoLance"><i class="fa-solid fa-circle-nodes"></i></a>
       </nav>
     </div>
-    <div class="panel-center"><span id="panel-title">Desktop</span></div>
+    <div class="panel-center">
+      <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" aria-label="Menu"
+        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><i
+          aria-hidden="true" class="fa-brands fa-ubuntu"></i></button>
+      <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div></div>
     <div class="panel-right">
-      <button aria-label="Developer mode" aria-pressed="false" class="panel-btn panel-btn-icon" id="dev-mode-btn"
-        title="Developer mode: off" type="button"><i aria-hidden="true" class="fa-solid fa-terminal"></i></button>
       <div class="panel-menu">
         <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true" aria-label="Switch color theme"
           class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme" type="button"><i
@@ -354,18 +762,12 @@
       </div>
     </div>
   </header>
-  <!-- Linux-style Floating Dock -->
-  <nav aria-label="Desktop dock" class="linux-dock">
-    <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" class="dock-item dock-menu"
-      id="dock-menu-btn" title="Menu" type="button"><i class="fa-brands fa-ubuntu"></i><span
-        class="dock-tooltip">Menu</span></button>
-    <a class="dock-item dock-resume" href="#resume" title="Resume"><i class="fa-solid fa-timeline"></i><span
-        class="dock-tooltip">Resume</span></a>
-    <a class="dock-item dock-projects" href="#portfolio" title="Projects"><i
-        class="fa-solid fa-flask"></i><span class="dock-tooltip">Projects</span></a>
-  </nav>
-  <!-- App Menu (launcher: apps, projects, socials, restart) -->
+  <!-- App Menu (opened from the taskbar Menu button: apps, projects, socials, restart) -->
   <div aria-hidden="true" class="app-menu" id="app-menu" role="menu">
+    <form action="#" aria-label="Ask Jampol" autocomplete="off" class="app-menu-ask" data-ask id="app-menu-ask" role="search">
+      <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
+      <input aria-label="Ask Jampol" autocomplete="off" id="app-menu-ask-input" placeholder="Ask Jampol" spellcheck="false" type="text" />
+    </form>
     <div class="app-menu-header">Apps</div>
     <ul>
       <li><button data-app="resume" role="menuitem" type="button"><i
@@ -397,8 +799,9 @@
           <span class="role-comment">// <span class="typed"
               data-typed-items="seoSpecialist,wordpressDeveloper,webDeveloper"></span></span>
         </div>
-        <span class="visually-hidden">Technical SEO Specialist</span>
+        <p class="sidebar-role">Technical SEO Specialist</p>
       </div>
+      <p class="sidebar-summary">With a foundation in web development, working toward becoming a full-stack SEO generalist. Skilled in reading and diagnosing website architecture to resolve crawlability, indexation, and performance issues. Leverages technical site analysis and AI-assisted workflows to conduct deep audits and deliver actionable optimizations.</p>
       <div class="sidebar-contact contact-block">
         <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email" title="Copy email"
           data-copy-value="jpleonard.deleon@gmail.com" type="button">
@@ -433,63 +836,22 @@
             type="button"><i aria-hidden="true" class="fa-solid fa-chevron-down"></i></button>
         </div>
         <div class="ab-term-body" id="about-body">
-          <p class="ab-cmd dev-only"><span>$</span> cat about_me.md</p>
-          <h2>Building things with SEO in mind</h2>
-          <p>I started in link prospecting, got curious about the numbers behind the worksheets, and followed that
-            curiosity into research-driven SEO, Technical SEO and web development.</p>
-          <p>A full-stack bootcamp on top of HTML, CSS and JavaScript lets me diagnose a problem and fix it in code. I
-            troubleshoot instead of guessing, and I'm exploring AI-assisted workflows to speed up audits, research and builds.</p>
-          <p class="ab-cmd dev-only"><span>$</span> ls focus/</p>
-          <p class="plain-only ab-plain-label">What I focus on</p>
+          <h2>Connecting search strategy with technical execution</h2>
+          <p>I started in link prospecting, got curious about the data behind the worksheets, and turned that curiosity into research-driven SEO, Technical SEO, and web development.</p>
+          <p>My foundation in web development allows me to read and diagnose site architecture issues directly in code. Rather than guessing, I focus on root-cause troubleshooting and leverage AI-assisted workflows to accelerate audits, research, and technical builds.</p>
+          <p class="ab-plain-label">What I focus on</p>
           <ul aria-label="Focus areas" class="ab-tags">
-            <li><span class="dev-only">research</span><span class="plain-only">Research</span></li><li><span class="dev-only">seo</span><span class="plain-only">SEO</span></li><li><span class="dev-only">technical-seo</span><span class="plain-only">Technical SEO</span></li><li><span class="dev-only">web-dev</span><span class="plain-only">Web development</span></li><li><span class="dev-only">ai-workflows</span><span class="plain-only">AI workflows</span></li>
+            <li><span>SEO</span></li><li><span>Technical SEO</span></li><li><span>Web Development</span></li><li><span>AI Workflows</span></li>
           </ul>
         </div>
       </section><!-- /About card -->
     </div>
   </aside><!-- /Hero Sidebar -->
   <main class="main">
-    <!-- Conky system monitor (decorative, fake live data, no background/card) -->
-    <div aria-hidden="true" class="conky dev-only" id="conky">
-      <div class="cky-head"><span class="cky-host">jp@portfolio</span><span class="cky-sub">arch linux</span></div>
-
-      <div class="cky-block">
-        <div class="cky-row"><span class="cky-label">CPU</span><span class="cky-val" data-cky="cpu">0%</span></div>
-        <svg class="cky-graph" data-cky-graph="cpu" preserveAspectRatio="none" viewBox="0 0 200 36"></svg>
-        <div class="cky-cores"><span class="cky-bar"><i></i></span><span class="cky-bar"><i></i></span><span class="cky-bar"><i></i></span><span class="cky-bar"><i></i></span></div>
-      </div>
-
-      <div class="cky-block">
-        <div class="cky-row"><span class="cky-label">RAM</span><span class="cky-val" data-cky="ram">0 / 16 GiB</span></div>
-        <span class="cky-bar"><i></i></span>
-      </div>
-
-      <div class="cky-block">
-        <div class="cky-row"><span class="cky-label">DISK</span><span class="cky-val" data-cky="disk">0 / 512 GiB</span></div>
-        <span class="cky-bar"><i></i></span>
-        <div class="cky-row cky-sub-row"><span>r <em data-cky="dr">0</em></span><span>w <em data-cky="dw">0</em></span></div>
-      </div>
-
-      <div class="cky-block">
-        <div class="cky-row"><span class="cky-label">NET</span><span class="cky-val"><span class="cky-down" data-cky="down">0</span> <span class="cky-up" data-cky="up">0</span></span></div>
-        <svg class="cky-graph" data-cky-graph="net" preserveAspectRatio="none" viewBox="0 0 200 36"></svg>
-      </div>
-
-      <div class="cky-block">
-        <div class="cky-row"><span class="cky-label">UPTIME</span><span class="cky-val" data-cky="uptime">0d 00:00:00</span></div>
-      </div>
-
-      <div class="cky-block">
-        <div class="cky-row"><span class="cky-label">PROCESSES</span><span class="cky-val" data-cky="procs">0</span></div>
-        <span class="cky-bar"><i></i></span>
-        <div class="cky-row cky-sub-row"><span>running <em data-cky="running">0</em></span></div>
-      </div>
-    </div><!-- /Conky -->
-
     <!-- Right column: Professional Experience, then Skills (Conky style, purely visual) -->
     <div class="desk-right" id="desk-right">
       <aside aria-label="Professional experience" class="cky-widget exp-widget" id="exp-widget">
-        <div class="cky-head"><span class="cky-host">Professional Experience</span><span class="cky-sub"><span class="dev-only">~/career</span><span class="plain-only">Work history</span></span></div>
+        <div class="cky-head"><span class="cky-host">Professional Experience</span><span class="cky-sub"><span>Work history</span></span></div>
         <div class="cky-block" data-since="2025-05">
           <div class="cky-row"><span class="cky-label">Self-Directed Learning &amp; Upskilling</span><span class="cky-val" data-months>18 mos</span></div>
           <span class="cky-bar" style="--p:0.286"><i></i></span>
@@ -523,7 +885,7 @@
       </aside><!-- /Professional Experience -->
 
       <aside aria-label="Skills" class="cky-widget skl-widget" id="skills">
-        <div class="cky-head"><span class="cky-host">Skills</span><span class="cky-sub"><span class="dev-only">~/stack</span><span class="plain-only">What I use</span></span></div>
+        <div class="cky-head"><span class="cky-host">Skills</span><span class="cky-sub"><span>What I use</span></span></div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Core Specializations</span><span class="cky-val">03</span></div>
           <ul class="skl-list">
@@ -566,13 +928,13 @@
           <div class="rv-head-top">
             <span aria-hidden="true" class="rv-app-icon"><i class="fa-solid fa-timeline"></i></span>
             <div>
-              <div class="rv-badge"><span class="dev-only">~/resume</span><span class="plain-only">Resume</span></div>
+              <div class="rv-badge"><span>Resume</span></div>
               <h2 class="rv-title">John Paul De Leon</h2>
             </div>
           </div>
         </div>
         <nav aria-label="Resume sections" aria-orientation="vertical" class="rv-tree" role="tablist">
-          <div aria-hidden="true" class="rv-group"><i class="fa-regular fa-folder-open"></i> <span class="dev-only">cv/</span><span class="plain-only">Sections</span></div>
+          <div aria-hidden="true" class="rv-group"><i class="fa-regular fa-folder-open"></i> <span>Sections</span></div>
           <div class="rv-items">
             <button aria-controls="rv-view-profile" aria-selected="true" class="rv-item" data-dir="~/cv/"
               data-file="profile.md" data-label="Profile" data-meta="summary · contact" data-view="profile" role="tab"
@@ -972,8 +1334,7 @@
     </section><!-- /Projects window -->
     <!-- Socials Section (terminal style). Rendered inside the Socials window by app.js. -->
     <section aria-label="Socials" class="pt pt-socials" id="socials">
-      <div class="pt-line dev-only"><span class="pt-ps1">jp@portfolio</span>:<span class="pt-path">~/socials</span>$ <span class="pt-typed">cat socials.txt</span></div>
-      <div class="pt-line plain-only pt-title">Connect with me</div>
+      <div class="pt-line pt-title">Connect with me</div>
       <ul class="pt-list">
         <li class="pt-item" style="--i:0"><a class="pt-link" href="https://github.com/jpldeleon" rel="noopener" target="_blank"><span class="pt-idx" data-n="01" aria-hidden="true"></span><span class="pt-name">GitHub</span><span class="pt-sub">github.com/jpldeleon</span></a></li>
         <li class="pt-item" style="--i:1"><a class="pt-link" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"><span class="pt-idx" data-n="02" aria-hidden="true"></span><span class="pt-name">LinkedIn</span><span class="pt-sub">linkedin.com/in/jpldl</span></a></li>
@@ -1007,7 +1368,6 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <!-- Main JS File -->
-  <script src="assets/js/boot.js"></script>
   <script src="assets/js/main.js"></script>
   <!-- Window manager JS (must load after main.js) -->
   <script src="assets/js/app.js"></script>
@@ -1032,7 +1392,7 @@
           btn.setAttribute('aria-expanded', String(!c));
           btn.title = c ? 'Show notifications' : 'Hide notifications';
           var ic = btn.querySelector('i');
-          if (ic) { ic.classList.toggle('fa-angle-up', !c); ic.classList.toggle('fa-angle-down', c); }
+          if (ic) { ic.classList.toggle('fa-angle-down', !c); ic.classList.toggle('fa-angle-up', c);   /* panel opens upward: open = arrow down (hide), closed = arrow up (show) */ }
         }
         if (persist) save(c);
       }
@@ -1044,7 +1404,7 @@
       
       document.addEventListener('click', function (e) {
         if (!e.target.closest('[data-power="restart"]')) return;
-        var launcher = document.getElementById('app-menu'), mb = document.getElementById('dock-menu-btn');
+        var launcher = document.getElementById('app-menu'), mb = document.getElementById('taskbar-menu-btn');
         if (launcher && mb && launcher.classList.contains('open')) mb.click();
         save(null);
         setCollapsed(false, false);
@@ -1053,25 +1413,7 @@
       });
     })();
   </script>
-  <!-- Developer mode toggle (terminal look is opt-in; state lives in localStorage 'dev-mode') -->
-  <script>
-    (function () {
-      var root = document.documentElement, btn = document.getElementById('dev-mode-btn');
-      if (!btn) return;
-      function paint() {
-        var on = root.classList.contains('dev');
-        btn.setAttribute('aria-pressed', String(on));
-        btn.title = on ? 'Developer mode: on' : 'Developer mode: off';
-      }
-      btn.addEventListener('click', function () {
-        var on = root.classList.toggle('dev');
-        try { localStorage.setItem('dev-mode', on ? '1' : '0'); } catch (e) { }
-        paint();
-        document.dispatchEvent(new CustomEvent('devmode:change', { detail: { on: on } }));
-      });
-      paint();
-    })();
-  </script>
+  <script src="assets/js/android.js" defer></script>
   <script src="assets/js/jpt-chat.js" defer></script>
 </body>
 

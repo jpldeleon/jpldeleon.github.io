@@ -188,94 +188,14 @@ h6 {
 
 
 /*--------------------------------------------------------------
-# Linux-style Floating Dock
+# Bottom clearance (the taskbar sits along the bottom edge)
 --------------------------------------------------------------*/
 main,
 #footer {
   padding-bottom: 120px;
 }
 
-.linux-dock {
-  position: fixed;
-  left: 50%;
-  bottom: 22px;
-  transform: translateX(-50%);
-  z-index: 997;
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  padding: 8px 10px;
-  background: color-mix(in srgb, var(--surface-color), transparent 22%);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 70%);
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-}
-
-.linux-dock .dock-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--default-color), transparent 94%);
-  color: var(--default-color);
-  font-size: 20px;
-  transition: transform 0.18s ease, background-color 0.2s ease;
-  cursor: pointer;
-  border: none;
-}
-
-.linux-dock .dock-item i {
-  pointer-events: none;
-}
-
-.linux-dock .dock-item:hover,
-.linux-dock .dock-item:focus-visible,
-.linux-dock .dock-item.active {
-  transform: translateY(-6px);
-  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
-  color: var(--accent-highlight);
-}
-
-.linux-dock .dock-item .dock-tooltip {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-  white-space: nowrap;
-  background: var(--surface-color);
-  color: var(--default-color);
-  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 70%);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-family: var(--nav-font);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-.linux-dock .dock-item:hover .dock-tooltip,
-.linux-dock .dock-item:focus-visible .dock-tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.linux-dock .dock-item.dock-menu {
-  color: var(--heading-color);
-}
-
-.linux-dock .dock-item.dock-about i { color: var(--accent-color); }
-.linux-dock .dock-item.dock-resume i { color: var(--quote-color); }
-.linux-dock .dock-item.dock-projects i { color: var(--accent-highlight); }
-
-/* Theme Dots - circular theme switchers above the dock */
+/* Theme Dots - circular theme switchers (inside the theme popover) */
 .theme-dots {
   position: fixed;
   left: 50%;
@@ -317,17 +237,6 @@ main,
 .theme-dots .theme-dot.dot-draculapro { background: #7359f8; }
 
 @media (max-width: 480px) {
-  .linux-dock {
-    gap: 4px;
-    padding: 6px 8px;
-  }
-
-  .linux-dock .dock-item {
-    width: 42px;
-    height: 42px;
-    font-size: 17px;
-  }
-
   .theme-dots {
     bottom: 76px;
   }
@@ -3780,7 +3689,7 @@ Map to active/hover color .typed,
   font-family: 'JetBrains Mono', monospace;
 }
 /*--------------------------------------------------------------
-# Linux Application Menu (launched from the Menu dock icon)
+# Linux Application Menu (launched from the taskbar Menu button)
 --------------------------------------------------------------*/
 .app-menu {
   position: fixed;
@@ -4042,64 +3951,7 @@ Map to active/hover color .typed,
   text-shadow: 0 2px 10px rgba(0,0,0,.35);
 }
 
-/* Minimal Linux dock: icons have no visual wrappers. */
-.linux-dock {
-  gap: 18px;
-  padding: 7px 12px 10px;
-  background: color-mix(in srgb, var(--surface-color), transparent 18%);
-  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 52%);
-  border-radius: 14px;
-  box-shadow: 0 8px 28px rgba(0,0,0,.28), 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 88%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.linux-dock .dock-item {
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  background: transparent !important;
-  border: 0;
-  border-radius: 0;
-  color: var(--default-color);
-  font-size: 20px;
-  transform: none !important;
-}
-
-.linux-dock .dock-item:hover,
-.linux-dock .dock-item:focus-visible,
-.linux-dock .dock-item.active {
-  background: transparent !important;
-  color: var(--accent-highlight);
-}
-
-.linux-dock .dock-item::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -5px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent-highlight);
-  transform: translateX(-50%) scale(0);
-  opacity: 0;
-  transition: transform .22s ease, opacity .22s ease;
-}
-
-.linux-dock .dock-item.active::after {
-  transform: translateX(-50%) scale(1);
-  opacity: 1;
-}
-
-.linux-dock .dock-menu.active::after { opacity: 0; }
-.linux-dock .dock-item .dock-tooltip {
-  bottom: calc(100% + 12px);
-}
-
 @media (max-width: 480px) {
-  .linux-dock { gap: 12px; padding-bottom: 8px; }
-  .linux-dock .dock-item { width: 34px; height: 34px; font-size: 17px; }
   .theme-controls { bottom: 76px; }
 }
 
@@ -4501,7 +4353,7 @@ Map to active/hover color .typed,
    Terminal window refinement — project/certificate windows
    ========================================================= */
 
-/* Close must fade only. Minimize keeps the shrink-to-dock motion. */
+/* Close must fade only. Minimize keeps the shrink-to-taskbar motion. */
 .portfolio-window-overlay.is-closing {
   opacity: 0;
   visibility: visible;
@@ -4838,7 +4690,7 @@ Map to active/hover color .typed,
   border-radius: 0 !important;
 }
 
-/* Close = fade only. Minimize = shrink toward the dock. */
+/* Close = fade only. Minimize = shrink toward the taskbar. */
 .glightbox-container.is-terminal-minimizing .gslide-image {
   transform: translateY(42vh) scale(.08) !important;
   opacity: .15 !important;
@@ -5841,18 +5693,8 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
 
 
 /* =========================================================================
-   WINDOW MOTION — dock bounce after a window is minimized into it.
-   (Shrink / grow / fade themselves are driven by main.js.)
+   WINDOW MOTION — shrink / grow / fade are driven by main.js.
    ========================================================================= */
-@keyframes dockBounce {
-  0%   { translate: 0 0; }
-  30%  { translate: 0 -14px; }
-  55%  { translate: 0 0; }
-  75%  { translate: 0 -5px; }
-  100% { translate: 0 0; }
-}
-.linux-dock .dock-item.dock-bounce { animation: dockBounce .6s ease; }
-
 /* Old class-based minimize/close motion is replaced by JS; make sure a stray
    class can never leave the lightbox window squashed or faded. */
 .glightbox-container.is-terminal-minimizing .gslide-image,
@@ -5863,9 +5705,6 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
 }
 .terminal-overlay.is-minimizing { transition: opacity .2s ease; }
 
-@media (prefers-reduced-motion: reduce) {
-  .linux-dock .dock-item.dock-bounce { animation: none; }
-}
 
 
 /* Theme notice ("Theme: Gruvbox") now matches the hero sidebar's typed-text
@@ -5942,7 +5781,7 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
 /* =========================================================================
    FIXES (keep LAST)
    1) Terminal close: no flicker (fade, pop, fade).
-   2) Mobile: dock + window command buttons (lightbox, CV terminal, cards).
+   2) Mobile: window command buttons (lightbox, CV terminal, cards).
    ========================================================================= */
 
 /* 1) main.js adds this for one frame while it swaps the JS fade for the final
@@ -5956,33 +5795,9 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
   visibility: hidden !important;
 }
 
-/* 2a) Dock */
-.linux-dock {
-  max-width: calc(100vw - 16px);
-  -webkit-tap-highlight-color: transparent;
-}
-.linux-dock .dock-item { touch-action: manipulation; }
-
+/* 2a) Mobile theme notice clearance */
 @media (max-width: 768px) {
-  .linux-dock {
-    gap: 10px;
-    padding: 6px 10px 8px;
-    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  }
-  .linux-dock .dock-item {
-    width: 44px;              /* 44px = comfortable touch target */
-    height: 44px;
-    font-size: 20px;
-  }
   .theme-controls { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
-}
-@media (max-width: 340px) {
-  .linux-dock { gap: 6px; padding: 6px 8px 8px; }
-  .linux-dock .dock-item { width: 40px; height: 40px; }
-}
-/* Tooltips are hover-only; on touch they just stick after a tap. */
-@media (hover: none) {
-  .linux-dock .dock-item .dock-tooltip { display: none; }
 }
 
 /* 2b) Lightbox title bar + command buttons */
@@ -6062,8 +5877,8 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
 
 /* =========================================================================
    FIXES ROUND 2 (keep LAST)
-   A) Dock off-center on mobile: the page was wider than the screen, so the
-      fixed dock centered on the wider page. `overflow: clip` (used on
+   A) Page wider than the screen on mobile: the
+      fixed bottom bar was centered on the wider page. `overflow: clip` (used on
       #about) is ignored by older mobile browsers, so AOS fade-left/right
       elements (parked 100px to the right) widened the page. It only looked
       fine with GLightbox open because that locks html/body overflow.
@@ -6088,15 +5903,6 @@ body { overflow-x: clip; max-width: 100%; }
     transform: translate3d(0, 24px, 0) !important;
   }
 }
-/* Dock: always centered on the visible screen, never wider than it */
-.linux-dock {
-  left: 50%;
-  right: auto;
-  width: max-content;
-  max-width: calc(100% - 16px);
-  box-sizing: border-box;
-}
-
 /* B) Video lightbox: size by BOTH width and height so the title bar and its
       buttons always stay on screen (16:9 video + 44px title bar). */
 html body .glightbox-container .gslide.current .gslide-video {
