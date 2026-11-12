@@ -807,7 +807,7 @@
 .jpt-back{position:absolute;inset:0;background:rgba(0,0,0,.22)}
 
 /* the chat box: centered horizontally, just above the taskbar, translucent, frosted */
-.jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:min(540px,100%);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}
+.jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:auto;max-height:min(540px,100%);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}
 @keyframes jpt-in{from{opacity:0}to{opacity:1}}
 
 /* header: the astronaut, static (no animation, no hover effect) */
@@ -822,7 +822,7 @@
 .jpt-x:hover,.jpt-x:focus-visible{color:var(--r)}
 
 /* conversation: chat bubbles */
-.jpt-out{flex:1;min-height:0;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
+.jpt-out{flex:0 1 auto;min-height:0;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
 .jpt-out::-webkit-scrollbar{width:4px}.jpt-out::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--fg) 25%,transparent);border-radius:2px}
 .jpt-ln{margin:0;padding:8px 13px;max-width:90%;overflow-wrap:anywhere;border-radius:14px;background:color-mix(in srgb,var(--fg) 9%,transparent);align-self:flex-start;border-bottom-left-radius:4px}
 .jpt-ln.u{align-self:flex-end;background:color-mix(in srgb,var(--g) 28%,transparent);border-bottom-left-radius:14px;border-bottom-right-radius:4px}

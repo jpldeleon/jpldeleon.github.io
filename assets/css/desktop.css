@@ -980,7 +980,7 @@ body.sidebar-collapsed {
   .desk-right {
     position: fixed;
     right: 28px;
-    top: calc(var(--panel-h) + 18px);
+    top: 18px;   /* no top bar on desktop: don't reserve --panel-h */
     width: min(350px, calc(100vw - var(--notif-w) - 290px - 120px));
     transform-origin: top right;
     z-index: 12;

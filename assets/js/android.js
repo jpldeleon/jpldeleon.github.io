@@ -52,6 +52,12 @@
         <button class="adr-tile" data-tile="restart" type="button"><span class="ic"><i class="fa-solid fa-rotate-right"></i></span><b>Restart</b></button>
         <button class="adr-tile" data-tile="hobbies" type="button"><span class="ic"><i class="fa-solid fa-guitar"></i></span><b>Hobbies &amp; Interests</b></button>
       </div>
+      <div class="adr-tiles adr-social" aria-label="Social links">
+        <a class="adr-tile" href="https://www.linkedin.com/in/jpldl/" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-linkedin-in"></i></span><b>LinkedIn</b></a>
+        <a class="adr-tile" href="https://github.com/jpldeleon" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-github"></i></span><b>GitHub</b></a>
+        <a class="adr-tile" href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-upwork"></i></span><b>Upwork</b></a>
+        <a class="adr-tile" href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" rel="noopener"><span class="ic"><i class="fa-solid fa-circle-nodes"></i></span><b>GoLance</b></a>
+      </div>
       <div class="adr-nhead"><span class="adr-lab">Notifications</span><button class="adr-clear" type="button">CLEAR ALL</button></div>
       <div class="adr-list" role="log" aria-live="polite"></div>
       <div class="adr-grab" tabindex="0" role="button" aria-label="Close notification shade"><i></i></div>
@@ -96,7 +102,7 @@
     const about = aboutBody ? aboutBody.innerHTML.replace(/\sid="[^"]*"/g, '') : '';
     scroller.innerHTML = `
       <section class="adr-hero adr-glass" aria-label="Profile">
-        ${photo ? `<img class="adr-avatar" src="${esc(photo.getAttribute('src'))}" alt="John Paul De Leon">` : ''}
+        ${clone('#hero .sidebar-avatar')}
         <h1>John Paul <span>De Leon</span></h1>
         <div class="code-container role-code" aria-hidden="true">
           <span class="role-string"><span class="brace">{</span><span class="quote">"</span>technicalSeoSpecialist<span class="quote">"</span><span class="brace">}</span></span>
@@ -123,6 +129,7 @@
   }
 
   scroller.addEventListener('click', ev => {
+    if (ev.target.closest('.sidebar-avatar a')) { ev.preventDefault(); return; }
     const c = ev.target.closest('[data-copy]');          // reuses the page's own copy buttons, so the toast + notification flow is unchanged
     if (c) { const b = $(`#hero .js-copy-trigger[data-copy-type="${c.dataset.copy}"]`); if (b) b.click(); return; }
     const t = ev.target.closest('[data-about-toggle]');
@@ -252,7 +259,7 @@
   $('.adr-grab', shade).addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') setShade(false); });
 
   shade.addEventListener('click', ev => {
-    const t = ev.target.closest('.adr-tile');
+    const t = ev.target.closest('.adr-tile[data-tile]');
     if (t) {
       const k = t.dataset.tile;
       if (k === 'theme') { const i = THEMES.findIndex(x => x[0] === theme()); const n = $(`[data-theme-choice="${THEMES[(i + 1) % THEMES.length][0]}"]`); if (n) n.click(); }

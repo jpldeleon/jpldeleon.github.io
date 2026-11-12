@@ -277,14 +277,14 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     '<path d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875"/>' +
     '</svg><div class="boot-bar"><i></i></div>';
 
-  function bootSequence() {
+  function bootSequence(label) {
     const mobile = isMobile(), still = reduceMotion();
     const ms = still ? 1200 : (mobile ? 3600 : 3400);
     const box = document.createElement('div');
     box.id = 'boot-screen';
     box.className = 'boot-screen ' + (mobile ? 'boot-lineage' : 'boot-mint');
     box.setAttribute('role', 'status');
-    box.setAttribute('aria-label', 'Restarting');
+    box.setAttribute('aria-label', label || 'Restarting');
     box.style.setProperty('--boot-ms', ms + 'ms');
     box.innerHTML = mobile ? BOOT_LINEAGE : BOOT_MINT;
     document.body.appendChild(box);
@@ -1359,8 +1359,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     /* First load: wallpaper alone for a moment, then hero + widgets fade in (no window opens by itself).
        A deep-linked window keeps the focus. */
     (async () => {
-      if (document.readyState !== 'complete') await new Promise(r => window.addEventListener('load', r, { once: true }));
+      const bootScr = bootSequence('Starting');    // same boot animation as Restart: LineageOS on phones, Linux Mint on desktop
+      const loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise(r => window.addEventListener('load', r, { once: true }));
+      await Promise.all([bootScr.done(), loaded]);
       await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the Menu
+      document.dispatchEvent(new CustomEvent('desktop:booted'));
     })();
   }
 
