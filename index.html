@@ -49,7 +49,7 @@
     rel="stylesheet" />
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 
 
   <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
@@ -75,7 +75,7 @@
   <link href="assets/css/taskbar.css" rel="stylesheet" />
   <!-- Hero + About: one translucent card, anchored above the bottom taskbar (inline so it always loads last) -->
   <style id="hero-applet-css">
-/*--------------------------------------------------------------
+    /*--------------------------------------------------------------
 # Hero applet: ONE translucent card, anchored above the bottom taskbar.
 #   >= 1360px: hero on the LEFT, About me beside it on the RIGHT (two panes, one card).
 #   992-1359px: not enough width, so About sits under the hero inside the same card.
@@ -84,346 +84,436 @@
 # Bell toggle: the card rises out of the bar (open) and sinks back into it (close).
 --------------------------------------------------------------*/
 
-/* ---------- all sizes ---------- */
-.hero-sidebar .sidebar-summary {
-  margin: 0;
-  font-size: var(--fs-sm);
-  line-height: 1.65;
-  color: color-mix(in srgb, var(--default-color), transparent 15%);
-}
+    /* ---------- all sizes ---------- */
+    .hero-sidebar .sidebar-summary {
+      margin: 0;
+      font-size: var(--fs-sm);
+      line-height: 1.65;
+      color: color-mix(in srgb, var(--default-color), transparent 15%);
+    }
 
-/* the typed role-code is aria-hidden, so this is the text screen readers get */
-.hero-sidebar .sidebar-role {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+    /* the typed role-code is aria-hidden, so this is the text screen readers get */
+    .hero-sidebar .sidebar-role {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
-@media (max-width: 991px) {
-  .hero-sidebar .sidebar-summary { max-width: 460px; margin-inline: auto; text-align: center; }
-}
+    @media (max-width: 991px) {
+      .hero-sidebar .sidebar-summary {
+        max-width: 460px;
+        margin-inline: auto;
+        text-align: center;
+      }
+    }
 
-/* ---------- desktop ---------- */
-@media (min-width: 992px) {
+    /* ---------- desktop ---------- */
+    @media (min-width: 992px) {
 
-  :root {
-    --hero-card-w: 340px;
-    --about-w: 320px;
-    --notif-w: 340px;                 /* Conky / Experience / windows follow the card's width */
-    --sidebar-w: 358px;
-    /* bar bottom offset + bar height + the shared popover gap */
-    --hero-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--panel-bar-h) + var(--panel-pop-gap, 8px));
-    --hero-h: calc(100dvh - var(--hero-bottom) - 18px);
-    --hero-hairline: color-mix(in srgb, var(--default-color), transparent 88%);
-  }
+      :root {
+        --hero-card-w: 340px;
+        --about-w: 320px;
+        --notif-w: 340px;
+        /* Conky / Experience / windows follow the card's width */
+        --sidebar-w: 358px;
+        /* bar bottom offset + bar height + the shared popover gap */
+        --hero-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--panel-bar-h) + var(--panel-pop-gap, 8px));
+        --hero-h: calc(100dvh - var(--hero-bottom) - 18px);
+        --hero-hairline: color-mix(in srgb, var(--default-color), transparent 88%);
+      }
 
-  /* Conky stays in the middle column, beside the card */
-  .conky {
-    left: calc(var(--notif-w) + 44px);
-    top: calc(var(--panel-h) + 18px);
-    bottom: auto;
-  }
+      /* Conky stays in the middle column, beside the card */
+      .conky {
+        left: calc(var(--notif-w) + 44px);
+        top: calc(var(--panel-h) + 18px);
+        bottom: auto;
+      }
 
-  /* ----- the card (the wrapper is the card; hero and About are sections inside it) ----- */
-  .hero-sidebar.hero-applet {
-    top: auto;
-    bottom: var(--hero-bottom);
-    left: var(--panel-edge, 12px);
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 0;
-    width: var(--hero-card-w);
-    max-height: var(--hero-h);
-    padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
-    border: 1px solid var(--hero-hairline);
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--surface-color), transparent 42%);     /* translucent */
-    -webkit-backdrop-filter: blur(18px) saturate(1.3);
-    backdrop-filter: blur(18px) saturate(1.3);
-    box-shadow: var(--panel-pop-shadow, 0 14px 40px rgba(0, 0, 0, .4));
-    transform-origin: bottom left;
-    transition: transform .32s var(--lx-ease, ease), opacity .22s ease, visibility 0s linear 0s;
-  }
+      /* ----- the card (the wrapper is the card; hero and About are sections inside it) ----- */
+      .hero-sidebar.hero-applet {
+        top: auto;
+        bottom: var(--hero-bottom);
+        left: var(--panel-edge, 12px);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        width: var(--hero-card-w);
+        max-height: var(--hero-h);
+        padding: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
+        border: 1px solid var(--hero-hairline);
+        border-radius: 18px;
+        background: color-mix(in srgb, var(--surface-color), transparent 42%);
+        /* translucent */
+        -webkit-backdrop-filter: blur(18px) saturate(1.3);
+        backdrop-filter: blur(18px) saturate(1.3);
+        box-shadow: var(--panel-pop-shadow, 0 14px 40px rgba(0, 0, 0, .4));
+        transform-origin: bottom left;
+        transition: transform .32s var(--lx-ease, ease), opacity .22s ease, visibility 0s linear 0s;
+      }
 
-  /* closed (and the first paint before the desktop reveal): tucked below the screen, behind the bar.
+      /* closed (and the first paint before the desktop reveal): tucked below the screen, behind the bar.
      Removing it makes the card rise out of the bar; adding it sinks it back down. */
-  body.sidebar-collapsed .hero-sidebar.hero-applet,
-  html.desk-pre .hero-sidebar.hero-applet {
-    transform: translateY(calc(100% + var(--hero-bottom) + 16px));
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: transform .26s ease, opacity .2s ease, visibility 0s linear .26s;
-  }
+      body.sidebar-collapsed .hero-sidebar.hero-applet,
+      html.desk-pre .hero-sidebar.hero-applet {
+        transform: translateY(calc(100% + var(--hero-bottom) + 16px));
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform .26s ease, opacity .2s ease, visibility 0s linear .26s;
+      }
 
-  .sidebar-noanim .hero-sidebar.hero-applet { transition: none !important; }
+      .sidebar-noanim .hero-sidebar.hero-applet {
+        transition: none !important;
+      }
 
-  .hero-sidebar.hero-applet .hero-card,
-  .hero-sidebar.hero-applet .hero-inspector {
-    flex: 0 0 auto;
-    width: 100%;
-    max-height: none;
-    margin: 0;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    box-shadow: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
+      .hero-sidebar.hero-applet .hero-card,
+      .hero-sidebar.hero-applet .hero-inspector {
+        flex: 0 0 auto;
+        width: 100%;
+        max-height: none;
+        margin: 0;
+        overflow: visible;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+      }
 
-  .hero-sidebar.hero-applet .hero-bar { display: none; }
+      .hero-sidebar.hero-applet .hero-bar {
+        display: none;
+      }
 
-  .hero-sidebar.hero-applet .hero-body {
-    flex: 0 0 auto;
-    overflow: visible;
-    padding: 30px 24px 22px;          /* top room so the avatar's hover rings are never clipped */
-  }
+      .hero-sidebar.hero-applet .hero-body {
+        flex: 0 0 auto;
+        overflow: visible;
+        padding: 30px 24px 22px;
+        /* top room so the avatar's hover rings are never clipped */
+      }
 
-  /* ----- hero: centred profile ----- */
-  .hero-sidebar.hero-applet .hero-sidebar-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
+      /* ----- hero: centred profile ----- */
+      .hero-sidebar.hero-applet .hero-sidebar-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
 
-  .hero-sidebar.hero-applet .sidebar-avatar { --avatar: 148px; margin: 0 auto 4px; }   /* hover rings: desktop.css */
-  .hero-sidebar.hero-applet .orbit-sys { display: none; }
+      .hero-sidebar.hero-applet .sidebar-avatar {
+        --avatar: 148px;
+        margin: 0 auto 4px;
+      }
 
-  .hero-sidebar.hero-applet .sidebar-header-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
+      /* hover rings: desktop.css */
+      .hero-sidebar.hero-applet .orbit-sys {
+        display: none;
+      }
 
-  .hero-sidebar.hero-applet h1 {
-    margin: 0;
-    font-size: 26px;
-    line-height: 1.15;
-    letter-spacing: -.02em;
-    white-space: normal;
-    text-wrap: balance;
-  }
+      .hero-sidebar.hero-applet .sidebar-header-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
 
-  /* title + typed subtitle: the original box, sized to sit inside the card */
-  .hero-sidebar.hero-applet .role-code {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-    margin: 8px 0 0;
-    padding: 10px 8px;
-    overflow: hidden;
-  }
-  .hero-sidebar.hero-applet .role-code .role-string {
-    max-width: 100%;
-    font-size: 16px;
-    white-space: nowrap;
-  }
-  .hero-sidebar.hero-applet .role-code .role-comment,
-  .hero-sidebar.hero-applet .role-code .role-comment .typed,
-  .hero-sidebar.hero-applet .role-code .role-comment .typed-cursor { font-size: 13px; }
-  .hero-sidebar.hero-applet .role-code .role-comment { min-height: 1.4em; max-width: 100%; }   /* no jump while typing */
+      .hero-sidebar.hero-applet h1 {
+        margin: 0;
+        font-size: 26px;
+        line-height: 1.15;
+        letter-spacing: -.02em;
+        white-space: normal;
+        text-wrap: balance;
+      }
 
-  .hero-sidebar.hero-applet .sidebar-summary {
-    max-width: none;
-    margin: 2px 0 0;
-    text-align: left;
-  }
+      /* title + typed subtitle: the original box, sized to sit inside the card */
+      .hero-sidebar.hero-applet .role-code {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        margin: 8px 0 0;
+        padding: 10px 8px;
+        overflow: hidden;
+      }
 
-  .hero-sidebar.hero-applet .sidebar-contact {
-    position: relative;               /* the copy toast covers this row */
-    gap: 2px;
-    margin-top: 2px;
-    padding-top: 12px;
-    border-top: 1px solid var(--hero-hairline);
-  }
-  .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item,
-  .hero-sidebar.hero-applet .sidebar-contact .sidebar-cta { height: 48px; }
+      .hero-sidebar.hero-applet .role-code .role-string {
+        max-width: 100%;
+        font-size: 16px;
+        white-space: nowrap;
+      }
 
-  /* ----- About me ----- */
-  .hero-sidebar.hero-applet .hero-inspector { border-top: 1px solid var(--hero-hairline); }
+      .hero-sidebar.hero-applet .role-code .role-comment,
+      .hero-sidebar.hero-applet .role-code .role-comment .typed,
+      .hero-sidebar.hero-applet .role-code .role-comment .typed-cursor {
+        font-size: 13px;
+      }
 
-  .hero-sidebar.hero-applet .hero-inspector .ab-term-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    min-height: 46px;
-    padding: 0 18px 0 14px;
-    border: 0;
-    background: none;
-  }
-  .hero-sidebar.hero-applet .hero-inspector .ab-dots { display: none; }
+      .hero-sidebar.hero-applet .role-code .role-comment {
+        min-height: 1.4em;
+        max-width: 100%;
+      }
 
-  .hero-sidebar.hero-applet .hero-inspector .ab-toggle {
-    order: -1;                        /* left side */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: color-mix(in srgb, var(--default-color), transparent 30%);
-  }
-  .hero-sidebar.hero-applet .hero-inspector .ab-toggle::after {     /* the whole row is the click target */
-    content: '';
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-  }
-  .hero-sidebar.hero-applet .hero-inspector .ab-term-bar:hover .ab-toggle {
-    background: color-mix(in srgb, var(--default-color), transparent 90%);
-    color: var(--heading-color);
-  }
-  .hero-sidebar.hero-applet .hero-inspector .ab-toggle i { transform: none; }
-  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-toggle i { transform: rotate(-90deg); }
+      /* no jump while typing */
 
-  .hero-sidebar.hero-applet .hero-inspector .ab-term-title {
-    flex: 1 1 auto;
-    font-family: inherit;
-    font-size: var(--fs-base);
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0;
-    text-transform: none;
-    color: var(--heading-color);
-  }
+      .hero-sidebar.hero-applet .sidebar-summary {
+        max-width: none;
+        margin: 2px 0 0;
+        text-align: left;
+      }
 
-  .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
-    max-height: none;
-    overflow: visible;
-    padding: 0 24px 22px;
-  }
-  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-body { display: none; }
+      .hero-sidebar.hero-applet .sidebar-contact {
+        position: relative;
+        /* the copy toast covers this row */
+        gap: 2px;
+        margin-top: 2px;
+        padding-top: 12px;
+        border-top: 1px solid var(--hero-hairline);
+      }
 
-  .hero-sidebar.hero-applet .ab-term-body h2 {
-    margin: 0 0 8px;
-    font-size: var(--fs-read);
-    font-weight: 600;
-    line-height: 1.35;
-    color: var(--heading-color);
-  }
-  .hero-sidebar.hero-applet .ab-term-body > p:not(.ab-cmd) {
-    margin: 0 0 10px;
-    font-size: var(--fs-sm);
-    line-height: 1.65;
-    color: color-mix(in srgb, var(--default-color), transparent 15%);
-  }
-  .hero-sidebar.hero-applet .ab-term-body > p.ab-plain-label {
-    margin: 14px 0 8px;
-    font-size: var(--fs-xs);
-    color: color-mix(in srgb, var(--default-color), transparent 40%);
-  }
-  .hero-sidebar.hero-applet .ab-tags { gap: 6px; margin: 0; }
-  .hero-sidebar.hero-applet .ab-tags li {
-    padding: 4px 10px;
-    border: 1px solid var(--hero-hairline);
-    border-radius: 999px;
-    background: transparent;
-    font-size: var(--fs-xs);
-    line-height: 1.2;
-    color: var(--default-color);
-  }
-}
+      .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item,
+      .hero-sidebar.hero-applet .sidebar-contact .sidebar-cta {
+        height: 48px;
+      }
 
-/* ---------- wide: hero LEFT, About me RIGHT, one card ---------- */
-@media (min-width: 1360px) {
-  :root { --notif-w: 660px; --sidebar-w: 678px; }      /* hero 340 + About 320 */
+      /* ----- About me ----- */
+      .hero-sidebar.hero-applet .hero-inspector {
+        border-top: 1px solid var(--hero-hairline);
+      }
 
-  .hero-sidebar.hero-applet {
-    flex-direction: row;
-    align-items: stretch;
-    width: auto;
-    overflow: hidden;                 /* each pane scrolls on its own */
-  }
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-bar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 18px 0 14px;
+        border: 0;
+        background: none;
+      }
 
-  .hero-sidebar.hero-applet .hero-card {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 var(--hero-card-w);
-    width: var(--hero-card-w);
-    min-height: 0;
-  }
-  .hero-sidebar.hero-applet .hero-body {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
-  }
+      .hero-sidebar.hero-applet .hero-inspector .ab-dots {
+        display: none;
+      }
 
-  .hero-sidebar.hero-applet .hero-inspector {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 var(--about-w);
-    width: var(--about-w);
-    min-height: 0;
-    border-top: 0;
-    border-left: 1px solid var(--hero-hairline);
-  }
-  .hero-sidebar.hero-applet .hero-inspector .ab-term-bar { flex: 0 0 auto; }
-  .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
-  }
+      .hero-sidebar.hero-applet .hero-inspector .ab-toggle {
+        order: -1;
+        /* left side */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+      }
 
-  /* the toggle hides About to the left (arrow points left); hidden = slim rail, arrow points right */
-  .hero-sidebar.hero-applet .hero-inspector .ab-toggle i { transform: rotate(90deg); }
-  .hero-sidebar.hero-applet .hero-inspector.is-collapsed { flex-basis: 48px; width: 48px; }
-  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-toggle i { transform: rotate(-90deg); }
-  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-bar { justify-content: center; padding: 0; }
-  .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-title { display: none; }
-}
+      .hero-sidebar.hero-applet .hero-inspector .ab-toggle::after {
+        /* the whole row is the click target */
+        content: '';
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+      }
 
-@media (min-width: 992px) and (prefers-reduced-motion: reduce) {
-  .hero-sidebar.hero-applet,
-  body.sidebar-collapsed .hero-sidebar.hero-applet,
-  html.desk-pre .hero-sidebar.hero-applet { transition: opacity .15s ease, visibility 0s linear .15s; }
-  body.sidebar-collapsed .hero-sidebar.hero-applet,
-  html.desk-pre .hero-sidebar.hero-applet { transform: none; }
-}
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-bar:hover .ab-toggle {
+        background: color-mix(in srgb, var(--default-color), transparent 90%);
+        color: var(--heading-color);
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-toggle i {
+        transform: none;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-toggle i {
+        transform: rotate(-90deg);
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-title {
+        flex: 1 1 auto;
+        font-family: inherit;
+        font-size: var(--fs-base);
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--heading-color);
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
+        max-height: none;
+        overflow: visible;
+        padding: 0 24px 22px;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-body {
+        display: none;
+      }
+
+      .hero-sidebar.hero-applet .ab-term-body h2 {
+        margin: 0 0 8px;
+        font-size: var(--fs-read);
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--heading-color);
+      }
+
+      .hero-sidebar.hero-applet .ab-term-body>p:not(.ab-cmd) {
+        margin: 0 0 10px;
+        font-size: var(--fs-sm);
+        line-height: 1.65;
+        color: color-mix(in srgb, var(--default-color), transparent 15%);
+      }
+
+      .hero-sidebar.hero-applet .ab-term-body>p.ab-plain-label {
+        margin: 14px 0 8px;
+        font-size: var(--fs-xs);
+        color: color-mix(in srgb, var(--default-color), transparent 40%);
+      }
+
+      .hero-sidebar.hero-applet .ab-tags {
+        gap: 6px;
+        margin: 0;
+      }
+
+      .hero-sidebar.hero-applet .ab-tags li {
+        padding: 4px 10px;
+        border: 1px solid var(--hero-hairline);
+        border-radius: 999px;
+        background: transparent;
+        font-size: var(--fs-xs);
+        line-height: 1.2;
+        color: var(--default-color);
+      }
+    }
+
+    /* ---------- wide: hero LEFT, About me RIGHT, one card ---------- */
+    @media (min-width: 1360px) {
+      :root {
+        --notif-w: 660px;
+        --sidebar-w: 678px;
+      }
+
+      /* hero 340 + About 320 */
+
+      .hero-sidebar.hero-applet {
+        flex-direction: row;
+        align-items: stretch;
+        width: auto;
+        overflow: hidden;
+        /* each pane scrolls on its own */
+      }
+
+      .hero-sidebar.hero-applet .hero-card {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 var(--hero-card-w);
+        width: var(--hero-card-w);
+        min-height: 0;
+      }
+
+      .hero-sidebar.hero-applet .hero-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 var(--about-w);
+        width: var(--about-w);
+        min-height: 0;
+        border-top: 0;
+        border-left: 1px solid var(--hero-hairline);
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-bar {
+        flex: 0 0 auto;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
+      }
+
+      /* the toggle hides About to the left (arrow points left); hidden = slim rail, arrow points right */
+      .hero-sidebar.hero-applet .hero-inspector .ab-toggle i {
+        transform: rotate(90deg);
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector.is-collapsed {
+        flex-basis: 48px;
+        width: 48px;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-toggle i {
+        transform: rotate(-90deg);
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-bar {
+        justify-content: center;
+        padding: 0;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-title {
+        display: none;
+      }
+    }
+
+    @media (min-width: 992px) and (prefers-reduced-motion: reduce) {
+
+      .hero-sidebar.hero-applet,
+      body.sidebar-collapsed .hero-sidebar.hero-applet,
+      html.desk-pre .hero-sidebar.hero-applet {
+        transition: opacity .15s ease, visibility 0s linear .15s;
+      }
+
+      body.sidebar-collapsed .hero-sidebar.hero-applet,
+      html.desk-pre .hero-sidebar.hero-applet {
+        transform: none;
+      }
+    }
   </style>
   <style id="taskbar-tweaks-css">
-/*--------------------------------------------------------------
+    /*--------------------------------------------------------------
 # Taskbar tweaks (load last)
 # 1) Menu button sits in the middle, right before the open apps.
 # 2) Open apps are icons only (the name stays for screen readers).
@@ -431,61 +521,79 @@
 #    them with an ID selector, which beat taskbar.css, so they opened below
 #    the bar, off the screen.
 --------------------------------------------------------------*/
-.top-panel.taskbar .panel-center {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  max-width: 60vw;
-  overflow: visible;
-}
-.top-panel.taskbar .panel-center .taskbar-menu { flex: 0 0 auto; }
-.top-panel.taskbar .taskbar-apps { flex: 0 1 auto; }
+    .top-panel.taskbar .panel-center {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      max-width: 60vw;
+      overflow: visible;
+    }
 
-.top-panel.taskbar .taskbar-item {
-  width: 34px;
-  min-width: 34px;
-  max-width: 34px;
-  padding: 0;
-  gap: 0;
-  justify-content: center;
-}
-.top-panel.taskbar .taskbar-item i { font-size: 16px; }
-.top-panel.taskbar .taskbar-item .taskbar-label {
-  display: block;
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-}
-.top-panel.taskbar .taskbar-item.is-active::after { left: 10px; right: 10px; }
+    .top-panel.taskbar .panel-center .taskbar-menu {
+      flex: 0 0 auto;
+    }
 
-/* theme + volume popovers: same line as the other applets, above the bar */
-.top-panel.taskbar #panel-theme-pop.panel-popover,
-.top-panel.taskbar .volume-popover.panel-popover {
-  top: auto;
-  bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px));
-}
-/* the typed "Theme: ..." notice goes above the popover */
-.top-panel.taskbar .panel-menu:has(> #panel-theme-pop) > .panel-notice {
-  top: auto;
-  bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px) + 74px);
-}
-@media (max-width: 340px) {
-  .top-panel.taskbar #panel-theme-pop.panel-popover,
-  .top-panel.taskbar .volume-popover.panel-popover {
-    top: auto;
-    bottom: calc(100% + var(--panel-pop-gap, 8px));
-  }
-  .top-panel.taskbar .panel-menu:has(> #panel-theme-pop) > .panel-notice {
-    top: auto;
-    bottom: calc(100% + var(--panel-pop-gap, 8px) + 74px);
-  }
-}
+    .top-panel.taskbar .taskbar-apps {
+      flex: 0 1 auto;
+    }
+
+    .top-panel.taskbar .taskbar-item {
+      width: 34px;
+      min-width: 34px;
+      max-width: 34px;
+      padding: 0;
+      gap: 0;
+      justify-content: center;
+    }
+
+    .top-panel.taskbar .taskbar-item i {
+      font-size: 16px;
+    }
+
+    .top-panel.taskbar .taskbar-item .taskbar-label {
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .top-panel.taskbar .taskbar-item.is-active::after {
+      left: 10px;
+      right: 10px;
+    }
+
+    /* theme + volume popovers: same line as the other applets, above the bar */
+    .top-panel.taskbar #panel-theme-pop.panel-popover,
+    .top-panel.taskbar .volume-popover.panel-popover {
+      top: auto;
+      bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px));
+    }
+
+    /* the typed "Theme: ..." notice goes above the popover */
+    .top-panel.taskbar .panel-menu:has(> #panel-theme-pop)>.panel-notice {
+      top: auto;
+      bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px) + 74px);
+    }
+
+    @media (max-width: 340px) {
+
+      .top-panel.taskbar #panel-theme-pop.panel-popover,
+      .top-panel.taskbar .volume-popover.panel-popover {
+        top: auto;
+        bottom: calc(100% + var(--panel-pop-gap, 8px));
+      }
+
+      .top-panel.taskbar .panel-menu:has(> #panel-theme-pop)>.panel-notice {
+        top: auto;
+        bottom: calc(100% + var(--panel-pop-gap, 8px) + 74px);
+      }
+    }
   </style>
   <!-- Android-style phone layout (<= 768px): status bar, notification shade, widgets, bottom search (load last) -->
   <link href="assets/css/android.css" rel="stylesheet" />
@@ -506,7 +614,8 @@
         <feFlood flood-color="#83c092" id="space-tint-flood" result="flood" />
         <feBlend in="flood" in2="SourceGraphic" mode="color" result="blend" />
         <feComposite in="blend" in2="SourceGraphic" operator="in" result="clip" />
-        <feComposite id="space-tint-mix" in="clip" in2="SourceGraphic" k1="0" k2="0.6" k3="0.4" k4="0" operator="arithmetic" />
+        <feComposite id="space-tint-mix" in="clip" in2="SourceGraphic" k1="0" k2="0.6" k3="0.4" k4="0"
+          operator="arithmetic" />
       </filter>
     </svg>
     <canvas class="space-layer" id="space-front"></canvas>
@@ -524,8 +633,8 @@
       <nav aria-label="Connect" class="panel-connect">
         <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
           title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a aria-label="GitHub" href="https://github.com/jpldeleon" rel="noopener" target="_blank"
-          title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a aria-label="GitHub" href="https://github.com/jpldeleon" rel="noopener" target="_blank" title="GitHub"><i
+            class="fa-brands fa-github"></i></a>
         <a aria-label="Upwork" href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener"
           target="_blank" title="Upwork"><i class="fa-brands fa-upwork"></i></a>
         <a aria-label="GoLance" href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener"
@@ -536,12 +645,13 @@
       <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" aria-label="Menu"
         class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><i
           aria-hidden="true" class="fa-brands fa-ubuntu"></i></button>
-      <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div></div>
+      <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div>
+    </div>
     <div class="panel-right">
       <div class="panel-menu">
-        <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true" aria-label="Switch color theme"
-          class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme" type="button"><i
-            class="fa-solid fa-palette"></i></button>
+        <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true"
+          aria-label="Switch color theme" class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme"
+          type="button"><i class="fa-solid fa-palette"></i></button>
         <div class="panel-popover" hidden id="panel-theme-pop">
           <div class="panel-popover-label">Theme</div>
           <div aria-label="Switch color theme" class="theme-dots" role="group">
@@ -560,169 +670,192 @@
         <!-- typed "Theme: ..." notice: sits right under the theme popover -->
         <div aria-atomic="true" aria-live="polite" class="panel-notice" id="themeNotice"></div>
       </div>
-      <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart"
-        id="panel-restart-btn" title="Restart" type="button"><i aria-hidden="true"
-          class="fa-solid fa-rotate-right"></i></button>
+      <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart" id="panel-restart-btn"
+        title="Restart" type="button"><i aria-hidden="true" class="fa-solid fa-rotate-right"></i></button>
       <!-- Hobbies & Interests applet: small popover next to the bell (assets/js/dotfiles.js) -->
       <div class="panel-menu panel-dotfiles-menu">
         <button aria-controls="df-pop" aria-expanded="false" aria-haspopup="dialog" aria-label="Hobbies and interests"
           class="panel-btn panel-btn-icon" id="panel-dotfiles-btn" title="Hobbies &amp; Interests" type="button"><i
             aria-hidden="true" class="fa-solid fa-code-branch"></i></button>
         <div aria-label="Hobbies and interests" class="panel-popover df-popover" hidden id="df-pop" role="dialog">
-    <!-- Hobbies & Interests (dotfiles repository). Lives inside the dotfiles applet popover in the top panel. -->
-    <section aria-label="Hobbies and interests" class="dotfiles" id="dotfiles">
-      <div class="df-wrap">
-        <div aria-label="Categories" aria-orientation="vertical" class="df-files" role="tablist">
-          <button aria-controls="df-pane-tech" aria-selected="true" class="df-file" id="df-tab-tech" role="tab" tabindex="0" type="button">Tech</button>
-          <button aria-controls="df-pane-creative" aria-selected="false" class="df-file" id="df-tab-creative" role="tab" tabindex="-1" type="button">Creative</button>
-          <button aria-controls="df-pane-adventures" aria-selected="false" class="df-file" id="df-tab-adventures" role="tab" tabindex="-1" type="button">Adventures</button>
-          <button aria-controls="df-pane-gaming" aria-selected="false" class="df-file" id="df-tab-gaming" role="tab" tabindex="-1" type="button">Gaming</button>
-          <button aria-controls="df-pane-music" aria-selected="false" class="df-file" id="df-tab-music" role="tab" tabindex="-1" type="button">Music</button>
-          <button aria-controls="df-pane-dogs" aria-selected="false" class="df-file" id="df-tab-dogs" role="tab" tabindex="-1" type="button">Dogs</button>
-          <button aria-controls="df-pane-watchlist" aria-selected="false" class="df-file" id="df-tab-watchlist" role="tab" tabindex="-1" type="button">Watchlist</button>
-          <button aria-controls="df-pane-bucketlist" aria-selected="false" class="df-file" id="df-tab-bucketlist" role="tab" tabindex="-1" type="button">Bucket list</button>
-          <button aria-controls="df-pane-career" aria-selected="false" class="df-file" id="df-tab-career" role="tab" tabindex="-1" type="button">Career</button>
-          <button aria-controls="df-pane-personal" aria-selected="false" class="df-file" id="df-tab-personal" role="tab" tabindex="-1" type="button">Personal</button>
-        </div>
-        <div class="df-view">
-        <div aria-labelledby="df-tab-tech" class="df-pane" id="df-pane-tech" role="tabpanel" tabindex="0">
-          <p class="df-desc">Technology, from Linux and open source to mobile, AI, and the web.</p>
-          <ul class="df-list">
-            <li>Linux &amp; desktop customization</li>
-            <li>Android &amp; mobile technology</li>
-            <li>Custom ROMs &amp; firmware</li>
-            <li>PC hardware &amp; troubleshooting</li>
-            <li>FOSS &amp; open-source software</li>
-            <li>Local LLMs &amp; AI tools</li>
-            <li>Web building &amp; experimentation</li>
-            <li>Coding &amp; learning</li>
-            <li>Tech news &amp; emerging technology</li>
-            <li>UI/UX design</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-creative" class="df-pane" hidden id="df-pane-creative" role="tabpanel" tabindex="0">
-          <p class="df-desc">Visual work: photography, editing, video, and graphic design.</p>
-          <ul class="df-list">
-            <li>Photoshop</li>
-            <li>Lightroom</li>
-            <li>DaVinci Resolve</li>
-            <li>Graphic design</li>
-            <li>Photography</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-adventures" class="df-pane" hidden id="df-pane-adventures" role="tabpanel" tabindex="0">
-          <p class="df-desc">New places, scenic routes, and the outdoors.</p>
-          <ul class="df-list">
-            <li>Travel and exploring places</li>
-            <li>Motorcycles</li>
-            <li>Cars and driving</li>
-            <li>Cycling</li>
-            <li>Hiking and nature</li>
-            <li>Food trips and local cuisine</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-gaming" class="df-pane" hidden id="df-pane-gaming" role="tabpanel" tabindex="0">
-          <p class="df-desc">Nostalgic classics, competitive shooters, strategy, sports, and racing.</p>
-          <ul class="df-list">
-            <li>Dota 1</li>
-            <li>NBA 2K</li>
-            <li>MAT Online</li>
-            <li>Counter-Strike</li>
-            <li>Red Alert</li>
-            <li>Battle Realms</li>
-            <li>Call of Duty</li>
-            <li>PUBG</li>
-            <li>Left 4 Dead</li>
-            <li>Need for Speed</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-music" class="df-pane" hidden id="df-pane-music" role="tabpanel" tabindex="0">
-          <p class="df-desc">Alternative, nu metal, emo, punk, and metal.</p>
-          <ul class="df-list">
-            <li>Linkin Park</li>
-            <li>Metallica</li>
-            <li>Saosin</li>
-            <li>blink-182</li>
-            <li>My Chemical Romance</li>
-            <li>Silverstein</li>
-            <li>Yellowcard</li>
-            <li>Guns N&#x27; Roses</li>
-            <li>The Used</li>
-            <li>Green Day</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-dogs" class="df-pane" hidden id="df-pane-dogs" role="tabpanel" tabindex="0">
-          <p class="df-desc">Life is better with dogs around. Bucky and Loki bring the chaos and the company.</p>
-        </div>
-        <div aria-labelledby="df-tab-watchlist" class="df-pane" hidden id="df-pane-watchlist" role="tabpanel" tabindex="0">
-          <p class="df-desc">Rewatchable sitcoms, superheroes, Ghibli, and comedy. Life of Pi is my favorite movie.</p>
-          <ul class="df-list">
-            <li>The Office</li>
-            <li>The Big Bang Theory</li>
-            <li>How I Met Your Mother</li>
-            <li>Brooklyn Nine-Nine</li>
-            <li>Friends</li>
-            <li>Modern Family</li>
-            <li>Young Sheldon</li>
-            <li>Marvel movies and series</li>
-            <li>Studio Ghibli movies</li>
-            <li>Life of Pi (all-time favorite)</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-bucketlist" class="df-pane" hidden id="df-pane-bucketlist" role="tabpanel" tabindex="0">
-          <p class="df-desc">Adventure, the outdoors, and the world beyond the beaten path.</p>
-          <ul class="df-list">
-            <li>Solo camping</li>
-            <li>Bikepacking</li>
-            <li>Skydiving</li>
-            <li>Skiing</li>
-            <li>Snowboarding</li>
-            <li>Downhill longboarding</li>
-            <li>Wingsuit flying</li>
-            <li>Hang gliding</li>
-            <li>Paragliding</li>
-            <li>Surfing</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-career" class="df-pane" hidden id="df-pane-career" role="tabpanel" tabindex="0">
-          <p class="df-desc">Working toward a future in search, development, data, and artificial intelligence.</p>
-          <ul class="df-list">
-            <li>SEO Specialist</li>
-            <li>Web Developer</li>
-            <li>Software Developer</li>
-            <li>Data Scientist</li>
-            <li>AI Engineer</li>
-          </ul>
-        </div>
-        <div aria-labelledby="df-tab-personal" class="df-pane" hidden id="df-pane-personal" role="tabpanel" tabindex="0">
-          <p class="df-desc">Building a life around freedom, nature, and the things I enjoy.</p>
-          <ul class="df-list">
-            <li>A home by the sea, lake, river, or surrounded by nature</li>
-            <li>Off-grid living</li>
-            <li>Dream cars</li>
-            <li>Dream motorcycles</li>
-          </ul>
-        </div>
-        </div>
-        <a class="df-cta" href="https://johnoffthewall.github.io/" rel="noopener noreferrer" target="_blank">
-          <span class="df-cta-name">John Off the Wall</span>
-          <span class="df-cta-desc">Me, off the wall.</span>
-        </a>
-      </div>
-    </section><!-- /Dotfiles Section -->
+          <!-- Hobbies & Interests (dotfiles repository). Lives inside the dotfiles applet popover in the top panel. -->
+          <section aria-label="Hobbies and interests" class="dotfiles" id="dotfiles">
+            <div class="df-wrap">
+              <div aria-label="Categories" aria-orientation="vertical" class="df-files" role="tablist">
+                <button aria-controls="df-pane-tech" aria-selected="true" class="df-file" id="df-tab-tech" role="tab"
+                  tabindex="0" type="button">Tech</button>
+                <button aria-controls="df-pane-creative" aria-selected="false" class="df-file" id="df-tab-creative"
+                  role="tab" tabindex="-1" type="button">Creative</button>
+                <button aria-controls="df-pane-adventures" aria-selected="false" class="df-file" id="df-tab-adventures"
+                  role="tab" tabindex="-1" type="button">Adventures</button>
+                <button aria-controls="df-pane-gaming" aria-selected="false" class="df-file" id="df-tab-gaming"
+                  role="tab" tabindex="-1" type="button">Gaming</button>
+                <button aria-controls="df-pane-music" aria-selected="false" class="df-file" id="df-tab-music" role="tab"
+                  tabindex="-1" type="button">Music</button>
+                <button aria-controls="df-pane-dogs" aria-selected="false" class="df-file" id="df-tab-dogs" role="tab"
+                  tabindex="-1" type="button">Dogs</button>
+                <button aria-controls="df-pane-watchlist" aria-selected="false" class="df-file" id="df-tab-watchlist"
+                  role="tab" tabindex="-1" type="button">Watchlist</button>
+                <button aria-controls="df-pane-bucketlist" aria-selected="false" class="df-file" id="df-tab-bucketlist"
+                  role="tab" tabindex="-1" type="button">Bucket list</button>
+                <button aria-controls="df-pane-career" aria-selected="false" class="df-file" id="df-tab-career"
+                  role="tab" tabindex="-1" type="button">Career</button>
+                <button aria-controls="df-pane-personal" aria-selected="false" class="df-file" id="df-tab-personal"
+                  role="tab" tabindex="-1" type="button">Personal</button>
+              </div>
+              <div class="df-view">
+                <div aria-labelledby="df-tab-tech" class="df-pane" id="df-pane-tech" role="tabpanel" tabindex="0">
+                  <p class="df-desc">Technology, from Linux and open source to mobile, AI, and the web.</p>
+                  <ul class="df-list">
+                    <li>Linux &amp; desktop customization</li>
+                    <li>Android &amp; mobile technology</li>
+                    <li>Custom ROMs &amp; firmware</li>
+                    <li>PC hardware &amp; troubleshooting</li>
+                    <li>FOSS &amp; open-source software</li>
+                    <li>Local LLMs &amp; AI tools</li>
+                    <li>Web building &amp; experimentation</li>
+                    <li>Coding &amp; learning</li>
+                    <li>Tech news &amp; emerging technology</li>
+                    <li>UI/UX design</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-creative" class="df-pane" hidden id="df-pane-creative" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Visual work: photography, editing, video, and graphic design.</p>
+                  <ul class="df-list">
+                    <li>Photoshop</li>
+                    <li>Lightroom</li>
+                    <li>DaVinci Resolve</li>
+                    <li>Graphic design</li>
+                    <li>Photography</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-adventures" class="df-pane" hidden id="df-pane-adventures" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">New places, scenic routes, and the outdoors.</p>
+                  <ul class="df-list">
+                    <li>Travel and exploring places</li>
+                    <li>Motorcycles</li>
+                    <li>Cars and driving</li>
+                    <li>Cycling</li>
+                    <li>Hiking and nature</li>
+                    <li>Food trips and local cuisine</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-gaming" class="df-pane" hidden id="df-pane-gaming" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Nostalgic classics, competitive shooters, strategy, sports, and racing.</p>
+                  <ul class="df-list">
+                    <li>Dota 1</li>
+                    <li>NBA 2K</li>
+                    <li>MAT Online</li>
+                    <li>Counter-Strike</li>
+                    <li>Red Alert</li>
+                    <li>Battle Realms</li>
+                    <li>Call of Duty</li>
+                    <li>PUBG</li>
+                    <li>Left 4 Dead</li>
+                    <li>Need for Speed</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-music" class="df-pane" hidden id="df-pane-music" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Alternative, nu metal, emo, punk, and metal.</p>
+                  <ul class="df-list">
+                    <li>Linkin Park</li>
+                    <li>Metallica</li>
+                    <li>Saosin</li>
+                    <li>blink-182</li>
+                    <li>My Chemical Romance</li>
+                    <li>Silverstein</li>
+                    <li>Yellowcard</li>
+                    <li>Guns N&#x27; Roses</li>
+                    <li>The Used</li>
+                    <li>Green Day</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-dogs" class="df-pane" hidden id="df-pane-dogs" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Life is better with dogs around. Bucky and Loki bring the chaos and the company.
+                  </p>
+                </div>
+                <div aria-labelledby="df-tab-watchlist" class="df-pane" hidden id="df-pane-watchlist" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Rewatchable sitcoms, superheroes, Ghibli, and comedy. Life of Pi is my favorite
+                    movie.</p>
+                  <ul class="df-list">
+                    <li>The Office</li>
+                    <li>The Big Bang Theory</li>
+                    <li>How I Met Your Mother</li>
+                    <li>Brooklyn Nine-Nine</li>
+                    <li>Friends</li>
+                    <li>Modern Family</li>
+                    <li>Young Sheldon</li>
+                    <li>Marvel movies and series</li>
+                    <li>Studio Ghibli movies</li>
+                    <li>Life of Pi (all-time favorite)</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-bucketlist" class="df-pane" hidden id="df-pane-bucketlist" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Adventure, the outdoors, and the world beyond the beaten path.</p>
+                  <ul class="df-list">
+                    <li>Solo camping</li>
+                    <li>Bikepacking</li>
+                    <li>Skydiving</li>
+                    <li>Skiing</li>
+                    <li>Snowboarding</li>
+                    <li>Downhill longboarding</li>
+                    <li>Wingsuit flying</li>
+                    <li>Hang gliding</li>
+                    <li>Paragliding</li>
+                    <li>Surfing</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-career" class="df-pane" hidden id="df-pane-career" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Working toward a future in search, development, data, and artificial intelligence.
+                  </p>
+                  <ul class="df-list">
+                    <li>SEO Specialist</li>
+                    <li>Web Developer</li>
+                    <li>Software Developer</li>
+                    <li>Data Scientist</li>
+                    <li>AI Engineer</li>
+                  </ul>
+                </div>
+                <div aria-labelledby="df-tab-personal" class="df-pane" hidden id="df-pane-personal" role="tabpanel"
+                  tabindex="0">
+                  <p class="df-desc">Building a life around freedom, nature, and the things I enjoy.</p>
+                  <ul class="df-list">
+                    <li>A home by the sea, lake, river, or surrounded by nature</li>
+                    <li>Off-grid living</li>
+                    <li>Dream cars</li>
+                    <li>Dream motorcycles</li>
+                  </ul>
+                </div>
+              </div>
+              <a class="df-cta" href="https://johnoffthewall.github.io/" rel="noopener noreferrer" target="_blank">
+                <span class="df-cta-name">John Off the Wall</span>
+                <span class="df-cta-desc">Me, off the wall.</span>
+              </a>
+            </div>
+          </section><!-- /Dotfiles Section -->
         </div>
       </div>
       <!-- Notification center: bell + dropdown feed (assets/js/notifications.js) -->
       <div class="panel-menu panel-notif-menu">
         <button aria-controls="notif-pop" aria-expanded="false" aria-haspopup="true" aria-label="Notifications"
-          class="panel-btn panel-btn-icon" id="panel-bell-btn" title="Notifications" type="button"><i
-            aria-hidden="true" class="fa-solid fa-bell"></i><span class="notif-badge" hidden></span></button>
+          class="panel-btn panel-btn-icon" id="panel-bell-btn" title="Notifications" type="button"><i aria-hidden="true"
+            class="fa-solid fa-bell"></i><span class="notif-badge" hidden></span></button>
         <div aria-label="Notifications" class="panel-popover notif-popover" hidden id="notif-pop" role="dialog">
           <div class="notif-head">
             <h3 class="notif-title">Notifications</h3>
             <div class="notif-head-actions">
-              <button aria-label="Mark all as read" class="notif-act" data-act="read-all" title="Mark all as read" type="button"><i aria-hidden="true" class="fa-solid fa-check-double"></i></button>
-              <button aria-label="Clear all" class="notif-act" data-act="clear-all" title="Clear all" type="button"><i aria-hidden="true" class="fa-solid fa-trash-can"></i></button>
+              <button aria-label="Mark all as read" class="notif-act" data-act="read-all" title="Mark all as read"
+                type="button"><i aria-hidden="true" class="fa-solid fa-check-double"></i></button>
+              <button aria-label="Clear all" class="notif-act" data-act="clear-all" title="Clear all" type="button"><i
+                  aria-hidden="true" class="fa-solid fa-trash-can"></i></button>
             </div>
           </div>
           <ul class="notif-list" hidden></ul>
@@ -733,29 +866,48 @@
       <div class="panel-menu panel-clock-menu">
         <button aria-controls="clock-popover" aria-expanded="false" aria-haspopup="dialog" class="panel-btn panel-clock"
           id="panel-clock" title="Calendar" type="button"></button>
-        <div aria-label="Why hire me now, and calendar" class="panel-popover clock-popover" hidden id="clock-popover" role="dialog">
+        <div aria-label="Why hire me now, and calendar" class="panel-popover clock-popover" hidden id="clock-popover"
+          role="dialog">
           <section aria-label="Why hire me now" class="cp-why">
             <h3 class="cp-head">Why hire me now?</h3>
             <p class="cp-sub">Early-career, research-driven, and already building.</p>
             <ul class="cp-list">
-              <li><i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i><div><b>Research first</b><span>Five years of link prospecting built the habit of digging into the data before acting.</span></div></li>
-              <li><i aria-hidden="true" class="fa-solid fa-gears"></i><div><b>SEO that reads code</b><span>Technical SEO plus a full-stack bootcamp: I can diagnose an issue and ship the fix.</span></div></li>
-              <li><i aria-hidden="true" class="fa-solid fa-folder-open"></i><div><b>Work you can review</b><span>Seven projects and two certifications are ready to open, not just listed.</span></div></li>
-              <li><i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i><div><b>AI-assisted, human-checked</b><span>Faster audits, research and builds, with judgement kept in the loop.</span></div></li>
+              <li><i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
+                <div><b>Research first</b><span>Five years of link prospecting built the habit of digging into the data
+                    before acting.</span></div>
+              </li>
+              <li><i aria-hidden="true" class="fa-solid fa-gears"></i>
+                <div><b>SEO that reads code</b><span>Technical SEO plus a full-stack bootcamp: I can diagnose an issue
+                    and ship the fix.</span></div>
+              </li>
+              <li><i aria-hidden="true" class="fa-solid fa-folder-open"></i>
+                <div><b>Work you can review</b><span>Seven projects and two certifications are ready to open, not just
+                    listed.</span></div>
+              </li>
+              <li><i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i>
+                <div><b>AI-assisted, human-checked</b><span>Faster audits, research and builds, with judgement kept in
+                    the loop.</span></div>
+              </li>
             </ul>
             <div class="cp-actions">
-              <button class="cp-btn is-primary" data-app="resume" type="button"><i aria-hidden="true" class="fa-solid fa-timeline"></i>Resume</button>
-              <button class="cp-btn" data-app="portfolio" type="button"><i aria-hidden="true" class="fa-solid fa-flask"></i>Projects</button>
+              <button class="cp-btn is-primary" data-app="resume" type="button"><i aria-hidden="true"
+                  class="fa-solid fa-timeline"></i>Resume</button>
+              <button class="cp-btn" data-app="portfolio" type="button"><i aria-hidden="true"
+                  class="fa-solid fa-flask"></i>Projects</button>
             </div>
           </section>
           <section aria-label="Calendar" class="cp-cal">
             <p class="cp-date" id="cal-date"></p>
             <div class="cp-cal-nav">
-              <button aria-label="Previous month" class="cp-nav" id="cal-prev" type="button"><i aria-hidden="true" class="fa-solid fa-chevron-left"></i></button>
-              <button class="cp-month" id="cal-today" title="Jump to today" type="button"><span id="cal-title"></span></button>
-              <button aria-label="Next month" class="cp-nav" id="cal-next" type="button"><i aria-hidden="true" class="fa-solid fa-chevron-right"></i></button>
+              <button aria-label="Previous month" class="cp-nav" id="cal-prev" type="button"><i aria-hidden="true"
+                  class="fa-solid fa-chevron-left"></i></button>
+              <button class="cp-month" id="cal-today" title="Jump to today" type="button"><span
+                  id="cal-title"></span></button>
+              <button aria-label="Next month" class="cp-nav" id="cal-next" type="button"><i aria-hidden="true"
+                  class="fa-solid fa-chevron-right"></i></button>
             </div>
-            <div aria-hidden="true" class="cp-dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+            <div aria-hidden="true" class="cp-dow">
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
             <div class="cp-grid" id="cal-grid" role="grid" aria-label="Month"></div>
           </section>
         </div>
@@ -764,16 +916,18 @@
   </header>
   <!-- App Menu (opened from the taskbar Menu button: apps, projects, socials, restart) -->
   <div aria-hidden="true" class="app-menu" id="app-menu" role="menu">
-    <form action="#" aria-label="Ask Jampol" autocomplete="off" class="app-menu-ask" data-ask id="app-menu-ask" role="search">
+    <form action="#" aria-label="Ask Jampol" autocomplete="off" class="app-menu-ask" data-ask id="app-menu-ask"
+      role="search">
       <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
-      <input aria-label="Ask Jampol" autocomplete="off" id="app-menu-ask-input" placeholder="Ask Jampol" spellcheck="false" type="text" />
+      <input aria-label="Ask Jampol" autocomplete="off" id="app-menu-ask-input" placeholder="Ask Jampol"
+        spellcheck="false" type="text" />
     </form>
     <div class="app-menu-header">Apps</div>
     <ul>
-      <li><button data-app="resume" role="menuitem" type="button"><i
-            class="fa-solid fa-timeline"></i>Resume</button></li>
-      <li><button data-app="portfolio" role="menuitem" type="button"><i
-            class="fa-solid fa-flask"></i>Projects</button></li>
+      <li><button data-app="resume" role="menuitem" type="button"><i class="fa-solid fa-timeline"></i>Resume</button>
+      </li>
+      <li><button data-app="portfolio" role="menuitem" type="button"><i class="fa-solid fa-flask"></i>Projects</button>
+      </li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-app="socials" role="menuitem" type="button"><i
             class="fa-solid fa-share-nodes"></i>Socials</button></li>
@@ -790,32 +944,42 @@
           <img alt="John Paul De Leon" class="photo-original" fetchpriority="high"
             src="assets/img/profile/jp_profile_1.webp" />
         </a>
-        <span aria-hidden="true" class="orbit-sys"><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span></span>
+        <span aria-hidden="true" class="orbit-sys"><span class="orb"></span><span class="orb"></span><span
+            class="orb"></span><span class="orb"></span><span class="orb"></span><span class="tw"></span><span
+            class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span
+            class="tw"></span><span class="tw"></span><span class="tw"></span><span class="tw"></span><span
+            class="tw"></span><span class="tw"></span><span class="tw"></span></span>
       </div>
       <div class="sidebar-header-block">
         <h1>John Paul <span class="accent-text">De Leon</span></h1>
         <div aria-hidden="true" class="code-container role-code">
-          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>technicalSeoSpecialist<span class="quote">"</span><span class="brace">}</span></span>
+          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>technicalSeoSpecialist<span
+              class="quote">"</span><span class="brace">}</span></span>
           <span class="role-comment">// <span class="typed"
               data-typed-items="seoSpecialist,wordpressDeveloper,webDeveloper"></span></span>
         </div>
         <p class="sidebar-role">Technical SEO Specialist</p>
       </div>
-      <p class="sidebar-summary">With a foundation in web development, working toward becoming a full-stack SEO generalist. Skilled in reading and diagnosing website architecture to resolve crawlability, indexation, and performance issues. Leverages technical site analysis and AI-assisted workflows to conduct deep audits and deliver actionable optimizations.</p>
+      <p class="sidebar-summary">With a foundation in web development, working toward becoming a full-stack SEO
+        generalist. Skilled in reading and diagnosing website architecture to resolve crawlability, indexation, and
+        performance issues. Leverages technical site analysis and AI-assisted workflows to conduct deep audits and
+        deliver actionable optimizations.</p>
       <div class="sidebar-contact contact-block">
-        <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email" title="Copy email"
-          data-copy-value="jpleonard.deleon@gmail.com" type="button">
+        <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
+          title="Copy email" data-copy-value="jpleonard.deleon@gmail.com" type="button">
           <i class="fa-solid fa-envelope"></i><span class="sidebar-link-label">Email</span>
         </button>
-        <button aria-label="Copy phone number" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone" title="Copy phone number" data-copy-value="+639760109942"
-          type="button">
+        <button aria-label="Copy phone number" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone"
+          title="Copy phone number" data-copy-value="+639760109942" type="button">
           <i class="fa-solid fa-phone"></i><span class="sidebar-link-label">Phone</span>
         </button>
         <a aria-label="GitHub profile" class="sidebar-contact-item" href="https://github.com/jpldeleon" rel="noopener"
-          target="_blank" title="GitHub"><i class="fa-brands fa-github"></i><span class="sidebar-link-label">GitHub</span></a>
+          target="_blank" title="GitHub"><i class="fa-brands fa-github"></i><span
+            class="sidebar-link-label">GitHub</span></a>
         <!-- TODO: set the real resume path -->
-        <a aria-label="Download resume" class="sidebar-cta" download="" href="assets/johnpauldeleon_resume.pdf" title="Download Resume"><i
-            class="fa-solid fa-download"></i><span class="sidebar-quick-label">Resume</span></a>
+        <a aria-label="Download resume" class="sidebar-cta" download="" href="assets/johnpauldeleon_resume.pdf"
+          title="Download Resume"><i class="fa-solid fa-download"></i><span
+            class="sidebar-quick-label">Resume</span></a>
         <!-- Copy Toast (Email / Phone) -->
         <div class="copy-toast-container">
           <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToast" role="status">
@@ -837,11 +1001,17 @@
         </div>
         <div class="ab-term-body" id="about-body">
           <h2>Connecting search strategy with technical execution</h2>
-          <p>I started in link prospecting, got curious about the data behind the worksheets, and turned that curiosity into research-driven SEO, Technical SEO, and web development.</p>
-          <p>My foundation in web development allows me to read and diagnose site architecture issues directly in code. Rather than guessing, I focus on root-cause troubleshooting and leverage AI-assisted workflows to accelerate audits, research, and technical builds.</p>
+          <p>I started in link prospecting, got curious about the data behind the worksheets, and turned that curiosity
+            into research-driven SEO, Technical SEO, and web development.</p>
+          <p>My foundation in web development allows me to read and diagnose site architecture issues directly in code.
+            Rather than guessing, I focus on root-cause troubleshooting and leverage AI-assisted workflows to accelerate
+            audits, research, and technical builds.</p>
           <p class="ab-plain-label">What I focus on</p>
           <ul aria-label="Focus areas" class="ab-tags">
-            <li><span>SEO</span></li><li><span>Technical SEO</span></li><li><span>Web Development</span></li><li><span>AI Workflows</span></li>
+            <li><span>SEO</span></li>
+            <li><span>Technical SEO</span></li>
+            <li><span>Web Development</span></li>
+            <li><span>AI Workflows</span></li>
           </ul>
         </div>
       </section><!-- /About card -->
@@ -851,73 +1021,95 @@
     <!-- Right column: Professional Experience, then Skills (Conky style, purely visual) -->
     <div class="desk-right" id="desk-right">
       <aside aria-label="Professional experience" class="cky-widget exp-widget" id="exp-widget">
-        <div class="cky-head"><span class="cky-host">Professional Experience</span><span class="cky-sub"><span>Work history</span></span></div>
+        <div class="cky-head"><span class="cky-host">Professional Experience</span><span class="cky-sub"><span>Work
+              history</span></span></div>
         <div class="cky-block" data-since="2025-05">
-          <div class="cky-row"><span class="cky-label">Self-Directed Learning &amp; Upskilling</span><span class="cky-val" data-months>18 mos</span></div>
+          <div class="cky-row"><span class="cky-label">Self-Directed Learning &amp; Upskilling</span><span
+              class="cky-val" data-months>18 mos</span></div>
           <span class="cky-bar" style="--p:0.286"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Full-Stack Bootcamp · Technical SEO Sprint · AI Workflows</span><span>May 2025 – Present</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Full-Stack Bootcamp · Technical SEO Sprint · AI
+              Workflows</span><span>May 2025 – Present</span></div>
         </div>
         <div class="cky-block">
-          <div class="cky-row"><span class="cky-label">SEO Outreach Specialist</span><span class="cky-val">5 mos</span></div>
+          <div class="cky-row"><span class="cky-label">SEO Outreach Specialist</span><span class="cky-val">5 mos</span>
+          </div>
           <span class="cky-bar" style="--p:0.079"><i></i></span>
           <div class="cky-row cky-sub-row"><span class="cky-ell">Awisee</span><span>Jan 2025 – May 2025</span></div>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Research Analyst</span><span class="cky-val">47 mos</span></div>
           <span class="cky-bar" style="--p:0.746"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Link Prospecting</span><span>Nov 2020 – Sep 2024</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Link
+              Prospecting</span><span>Nov 2020 – Sep 2024</span></div>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Contact Finder</span><span class="cky-val">7 mos</span></div>
           <span class="cky-bar" style="--p:0.111"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Contact Research</span><span>May 2020 – Nov 2020</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Contact
+              Research</span><span>May 2020 – Nov 2020</span></div>
         </div>
         <div class="cky-block">
-          <div class="cky-row"><span class="cky-label">Freelance Research Consultant</span><span class="cky-val">17 mos</span></div>
+          <div class="cky-row"><span class="cky-label">Freelance Research Consultant</span><span class="cky-val">17
+              mos</span></div>
           <span class="cky-bar" style="--p:0.270"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Independent / Referral-based</span><span>Jan 2019 – May 2020</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Independent / Referral-based</span><span>Jan 2019 – May
+              2020</span></div>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Research Analyst</span><span class="cky-val">63 mos</span></div>
           <span class="cky-bar" style="--p:1.000"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Straive · Web Researcher</span><span>Sep 2013 – Nov 2018</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Straive · Web Researcher</span><span>Sep 2013 – Nov
+              2018</span></div>
         </div>
       </aside><!-- /Professional Experience -->
 
       <aside aria-label="Skills" class="cky-widget skl-widget" id="skills">
-        <div class="cky-head"><span class="cky-host">Skills</span><span class="cky-sub"><span>What I use</span></span></div>
+        <div class="cky-head"><span class="cky-host">Skills</span><span class="cky-sub"><span>What I use</span></span>
+        </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Core Specializations</span><span class="cky-val">03</span></div>
           <ul class="skl-list">
-            <li><span class="skl-dot"></span><span class="skl-name">Technical SEO</span><span class="skl-desc">Learned through certification course and hands-on projects</span></li>
-            <li><span class="skl-dot"></span><span class="skl-name">WordPress Development</span><span class="skl-desc">Built and practiced multiple projects on LocalWP</span></li>
-            <li><span class="skl-dot"></span><span class="skl-name">E-Commerce / WooCommerce</span><span class="skl-desc">Badlands Ink project with product catalog, payments, and optimization</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Technical SEO</span><span class="skl-desc">Learned
+                through certification course and hands-on projects</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">WordPress Development</span><span
+                class="skl-desc">Built and practiced multiple projects on LocalWP</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">E-Commerce / WooCommerce</span><span
+                class="skl-desc">Badlands Ink project with product catalog, payments, and optimization</span></li>
           </ul>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Expertise Areas</span><span class="cky-val">03</span></div>
           <ul class="skl-list">
-            <li><span class="skl-dot"></span><span class="skl-name">On-Page SEO</span><span class="skl-desc">Practical experience optimizing WordPress projects</span></li>
-            <li><span class="skl-dot"></span><span class="skl-name">Off-Page SEO</span><span class="skl-desc">5+ years link research, prospecting, qualification, and vetting</span></li>
-            <li><span class="skl-dot"></span><span class="skl-name">Performance &amp; Core Web Vitals</span><span class="skl-desc">Site speed optimization and performance analysis</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">On-Page SEO</span><span class="skl-desc">Practical
+                experience optimizing WordPress projects</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Off-Page SEO</span><span class="skl-desc">5+ years
+                link research, prospecting, qualification, and vetting</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Performance &amp; Core Web Vitals</span><span
+                class="skl-desc">Site speed optimization and performance analysis</span></li>
           </ul>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Technical Stack</span><span class="cky-val">03</span></div>
           <ul class="skl-list">
-            <li><span class="skl-dot"></span><span class="skl-name">Frontend Development</span><span class="skl-desc">HTML, CSS, JavaScript, Bootstrap, responsive design</span></li>
-            <li><span class="skl-dot"></span><span class="skl-name">Backend &amp; Scripting</span><span class="skl-desc">Node.js, Express.js, automation scripts</span></li>
-            <li><span class="skl-dot"></span><span class="skl-name">Tools &amp; Platforms</span><span class="skl-desc">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Frontend Development</span><span
+                class="skl-desc">HTML, CSS, JavaScript, Bootstrap, responsive design</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Backend &amp; Scripting</span><span
+                class="skl-desc">Node.js, Express.js, automation scripts</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Tools &amp; Platforms</span><span
+                class="skl-desc">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</span></li>
           </ul>
         </div>
         <div class="cky-block">
-  <div class="cky-row"><span class="cky-label">AI &amp; Automation</span><span class="cky-val">03</span></div>
-  <ul class="skl-list">
-    <li><span class="skl-dot"></span><span class="skl-name">Prompt &amp; Context Engineering</span><span class="skl-desc">Structuring prompts and context to get reliable, usable LLM output</span></li>
-    <li><span class="skl-dot"></span><span class="skl-name">AI-Assisted Development</span><span class="skl-desc">Using AI tools to build, debug, and refine portfolio projects</span></li>
-    <li><span class="skl-dot"></span><span class="skl-name">AI-Assisted SEO &amp; Research</span><span class="skl-desc">Using LLMs to speed up research, analysis, and data cleanup</span></li>
-  </ul>
-</div>
+          <div class="cky-row"><span class="cky-label">AI &amp; Automation</span><span class="cky-val">03</span></div>
+          <ul class="skl-list">
+            <li><span class="skl-dot"></span><span class="skl-name">Prompt &amp; Context Engineering</span><span
+                class="skl-desc">Structuring prompts and context to get reliable, usable LLM output</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">AI-Assisted Development</span><span
+                class="skl-desc">Using AI tools to build, debug, and refine portfolio projects</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">AI-Assisted SEO &amp; Research</span><span
+                class="skl-desc">Using LLMs to speed up research, analysis, and data cleanup</span></li>
+          </ul>
+        </div>
       </aside><!-- /Skills -->
     </div><!-- /Right column -->
     <!-- Resume Section: Hybrid Resume Viewer (sidebar + Text / PDF tabs). Rendered inside the Resume window by app.js. -->
@@ -941,28 +1133,28 @@
               type="button"><i class="fa-solid fa-user"></i><span class="rv-name">Profile</span></button>
             <button aria-controls="rv-view-experience" aria-selected="false" class="rv-item" data-dir="~/cv/"
               data-file="experience.md" data-label="Experience" data-meta="6 roles" data-view="experience" role="tab"
-              tabindex="-1" type="button"><i class="fa-solid fa-briefcase"></i><span class="rv-name">Experience</span><span
-                class="rv-count">6</span></button>
+              tabindex="-1" type="button"><i class="fa-solid fa-briefcase"></i><span
+                class="rv-name">Experience</span><span class="rv-count">6</span></button>
             <button aria-controls="rv-view-skills" aria-selected="false" class="rv-item" data-dir="~/cv/"
-              data-file="skills.md" data-label="Skills" data-meta="4 categories" data-view="skills" role="tab" tabindex="-1"
-              type="button"><i class="fa-solid fa-code"></i><span class="rv-name">Skills</span><span
+              data-file="skills.md" data-label="Skills" data-meta="4 categories" data-view="skills" role="tab"
+              tabindex="-1" type="button"><i class="fa-solid fa-code"></i><span class="rv-name">Skills</span><span
                 class="rv-count">5</span></button>
             <button aria-controls="rv-view-education" aria-selected="false" class="rv-item" data-dir="~/cv/"
               data-file="education.md" data-label="Education" data-meta="2 entries" data-view="education" role="tab"
-              tabindex="-1" type="button"><i class="fa-solid fa-graduation-cap"></i><span class="rv-name">Education</span><span
-                class="rv-count">2</span></button>
+              tabindex="-1" type="button"><i class="fa-solid fa-graduation-cap"></i><span
+                class="rv-name">Education</span><span class="rv-count">2</span></button>
             <button aria-controls="rv-view-certifications" aria-selected="false" class="rv-item" data-dir="~/cv/"
-              data-file="certifications.md" data-label="Certifications" data-meta="2 certificates" data-view="certifications"
-              role="tab" tabindex="-1" type="button"><i class="fa-solid fa-award"></i><span class="rv-name">Certifications</span><span
-                class="rv-count">2</span></button>
+              data-file="certifications.md" data-label="Certifications" data-meta="2 certificates"
+              data-view="certifications" role="tab" tabindex="-1" type="button"><i class="fa-solid fa-award"></i><span
+                class="rv-name">Certifications</span><span class="rv-count">2</span></button>
           </div>
         </nav>
         <div class="rv-actions">
-          <a aria-label="Download resume" class="btn-live" download="" href="assets/johnpauldeleon_resume.pdf" title="Download CV"><i
-              class="fa-solid fa-download"></i><span class="rv-btn-label">Download CV</span></a>
-          <a aria-label="Open resume in a new tab" class="btn-github" href="assets/johnpauldeleon_resume.pdf" rel="noopener"
-            target="_blank" title="Open in new tab"><i class="fa-solid fa-arrow-up-right-from-square"></i><span
-              class="rv-btn-label">Open in new tab</span></a>
+          <a aria-label="Download resume" class="btn-live" download="" href="assets/johnpauldeleon_resume.pdf"
+            title="Download CV"><i class="fa-solid fa-download"></i><span class="rv-btn-label">Download CV</span></a>
+          <a aria-label="Open resume in a new tab" class="btn-github" href="assets/johnpauldeleon_resume.pdf"
+            rel="noopener" target="_blank" title="Open in new tab"><i
+              class="fa-solid fa-arrow-up-right-from-square"></i><span class="rv-btn-label">Open in new tab</span></a>
         </div>
       </aside>
 
@@ -988,11 +1180,11 @@
                 width="112" />
               <div>
                 <h3 class="rv-h">Professional Summary</h3>
-                <p>SEO Specialist with 5 years of experience focused on link prospecting, backlink research, and
-                  outreach across Intelligent.com LLC and Awisee. Recently expanded into technical SEO through hands-on
-                  web development training and certification, bringing a growing ability to understand and improve
-                  websites from the code level, not just around it. Detail-focused and research-driven, with a genuine
-                  commitment to SEO as a long-term career.</p>
+                <p>Technical SEO Specialist with a foundation in web development, working toward becoming a full-stack
+                  SEO generalist. Skilled in reading and diagnosing website architecture to resolve crawlability,
+                  indexation, and performance issues. Leverages technical site analysis and AI-assisted workflows to
+                  conduct deep audits and deliver actionable optimizations.
+                </p>
               </div>
             </div>
             <h3 class="rv-h rv-contact-title">Contact Information</h3>
@@ -1019,8 +1211,7 @@
                   <div class="toast-body d-flex align-items-center gap-2">
                     <i class="fa-solid fa-circle-check"></i>
                     <span id="copyToastResumeBody">Copied to clipboard.</span>
-                    <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast"
-                      type="button"></button>
+                    <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast" type="button"></button>
                   </div>
                 </div>
               </div>
@@ -1036,13 +1227,14 @@
               <h3>Self-Directed Learning &amp; Upskilling</h3>
               <div class="rv-when">May 2025 - Present</div>
               <ul>
-  <li>Completed the Complete Full-Stack Web Development Bootcamp</li>
-  <li>Completed Technical SEO and SEO Sprint certification</li>
-  <li>Practiced technical SEO and WordPress development through hands-on projects</li>
-  <li>Built web apps and capstone projects with Node.js, Express.js, and PostgreSQL</li>
-  <li>Used AI-assisted workflows (prompt and context engineering) for development, SEO research, and analysis</li>
-  <li>Exploring LLM API integration and local models with Ollama</li>
-</ul>
+                <li>Completed the Complete Full-Stack Web Development Bootcamp</li>
+                <li>Completed Technical SEO and SEO Sprint certification</li>
+                <li>Practiced technical SEO and WordPress development through hands-on projects</li>
+                <li>Built web apps and capstone projects with Node.js, Express.js, and PostgreSQL</li>
+                <li>Used AI-assisted workflows (prompt and context engineering) for development, SEO research, and
+                  analysis</li>
+                <li>Exploring LLM API integration and local models with Ollama</li>
+              </ul>
             </article>
 
             <article class="rv-job">
@@ -1199,15 +1391,15 @@
                 </ul>
               </section>
               <section class="rv-card">
-  <h3><i class="fa-solid fa-robot"></i> AI &amp; Automation</h3>
-  <ul class="rv-chips">
-    <li>Prompt &amp; Context Engineering</li>
-    <li>AI-Assisted Development</li>
-    <li>AI-Assisted SEO &amp; Research</li>
-    <li>LLM API Integration</li>
-    <li>Local Models (Ollama)</li>
-  </ul>
-</section>
+                <h3><i class="fa-solid fa-robot"></i> AI &amp; Automation</h3>
+                <ul class="rv-chips">
+                  <li>Prompt &amp; Context Engineering</li>
+                  <li>AI-Assisted Development</li>
+                  <li>AI-Assisted SEO &amp; Research</li>
+                  <li>LLM API Integration</li>
+                  <li>Local Models (Ollama)</li>
+                </ul>
+              </section>
             </div>
           </div>
 
@@ -1261,7 +1453,8 @@
         <!-- PDF tab: a look-alike of a PDF viewer (page on a dark canvas, no tools) -->
         <div class="rv-pdf" hidden>
           <div class="rv-canvas">
-            <img alt="Curriculum vitae of John Paul De Leon: professional summary, core skills, professional experience, education and certifications."
+            <img
+              alt="Curriculum vitae of John Paul De Leon: professional summary, core skills, professional experience, education and certifications."
               class="rv-page" height="1870" src="assets/johnpauldeleon_resume.webp" width="1445" />
           </div>
         </div>
@@ -1273,79 +1466,112 @@
       <header class="pj-head">
         <div>
           <h2 class="pj-title">Projects</h2>
-          <p class="pj-lead">Websites and tools I’ve built, plus my certificates. Pick one to see what it does and how I built it.</p>
+          <p class="pj-lead">Websites and tools I’ve built, plus my certificates. Pick one to see what it does and how I
+            built it.</p>
         </div>
         <button class="pj-btn" data-app="resume" type="button">View resume</button>
       </header>
       <div aria-label="Filter projects" class="pj-filters" role="group">
-          <button aria-pressed="true" class="pj-chip" data-filter="all" type="button">All <span>9</span></button>
-          <button aria-pressed="false" class="pj-chip" data-filter="seo" type="button">SEO <span>2</span></button>
-          <button aria-pressed="false" class="pj-chip" data-filter="wordpress" type="button">WordPress <span>2</span></button>
-          <button aria-pressed="false" class="pj-chip" data-filter="webdev" type="button">Web Dev <span>5</span></button>
-          <button aria-pressed="false" class="pj-chip" data-filter="cert" type="button">Certificates <span>2</span></button>
+        <button aria-pressed="true" class="pj-chip" data-filter="all" type="button">All <span>9</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="seo" type="button">SEO <span>2</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="wordpress" type="button">WordPress
+          <span>2</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="webdev" type="button">Web Dev <span>5</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="cert" type="button">Certificates
+          <span>2</span></button>
       </div>
       <div class="pj-grid">
-          <a class="pj-card" data-app="project:auditkit" data-cats="webdev" href="auditkit/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-magnifying-glass-chart"></i></span>
-            <span class="pj-text"><strong class="pj-name">AuditKit</strong><span class="pj-sub">A simple tool that checks a website’s technical SEO</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="project:nothingtechblob" data-cats="seo wordpress" href="nothingtechblob/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-mobile-screen"></i></span>
-            <span class="pj-text"><strong class="pj-name">NothingTechBlob</strong><span class="pj-sub">Technical and on-page SEO with WordPress development</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="project:badlands-ink" data-cats="seo wordpress" href="badlands-ink/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-pen-nib"></i></span>
-            <span class="pj-text"><strong class="pj-name">Badlands Ink</strong><span class="pj-sub">Technical, local and e-commerce SEO with WordPress development</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="project:johnoffthewall" data-cats="webdev" href="johnoffthewall/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-fire-flame-curved"></i></span>
-            <span class="pj-text"><strong class="pj-name">John Off the Wall</strong><span class="pj-sub">HTML and CSS capstone project</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="project:pixellog" data-cats="webdev" href="pixellog/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-brands fa-mintbit"></i></span>
-            <span class="pj-text"><strong class="pj-name">PixelLog</strong><span class="pj-sub">Node.js, Express and EJS capstone project</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="project:jamporudex" data-cats="webdev" href="jamporudex/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-brands fa-leanpub"></i></span>
-            <span class="pj-text"><strong class="pj-name">JamporuDEX</strong><span class="pj-sub">Node.js, Express, PostgreSQL and EJS capstone project</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="project:route196" data-cats="webdev" href="route196/">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-shield"></i></span>
-            <span class="pj-text"><strong class="pj-name">Route 196</strong><span class="pj-sub">Node.js, Express and EJS capstone project</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open project</span></span>
-          </a>
-          <a class="pj-card" data-app="cert:fullstack" data-cats="cert" href="assets/img/certifications/cert-fullstack-bootcamp_F.webp">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-award"></i></span>
-            <span class="pj-text"><strong class="pj-name">Full Stack Certificate</strong><span class="pj-sub">The Complete Full-Stack Web Development Bootcamp</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View certificate</span></span>
-          </a>
-          <a class="pj-card" data-app="cert:techseo" data-cats="cert" href="assets/img/certifications/cert_techseosprint_F.webp">
-            <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-award"></i></span>
-            <span class="pj-text"><strong class="pj-name">Technical SEO Certificate</strong><span class="pj-sub">Technical SEO and SEO Sprint</span></span>
-            <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View certificate</span></span>
-          </a>
+        <a class="pj-card" data-app="project:auditkit" data-cats="webdev" href="auditkit/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-magnifying-glass-chart"></i></span>
+          <span class="pj-text"><strong class="pj-name">AuditKit</strong><span class="pj-sub">A simple tool that checks
+              a website’s technical SEO</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open
+              project</span></span>
+        </a>
+        <a class="pj-card" data-app="project:nothingtechblob" data-cats="seo wordpress" href="nothingtechblob/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-mobile-screen"></i></span>
+          <span class="pj-text"><strong class="pj-name">NothingTechBlob</strong><span class="pj-sub">Technical and
+              on-page SEO with WordPress development</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span
+              class="pj-open">Open project</span></span>
+        </a>
+        <a class="pj-card" data-app="project:badlands-ink" data-cats="seo wordpress" href="badlands-ink/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-pen-nib"></i></span>
+          <span class="pj-text"><strong class="pj-name">Badlands Ink</strong><span class="pj-sub">Technical, local and
+              e-commerce SEO with WordPress development</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span
+              class="pj-open">Open project</span></span>
+        </a>
+        <a class="pj-card" data-app="project:johnoffthewall" data-cats="webdev" href="johnoffthewall/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-fire-flame-curved"></i></span>
+          <span class="pj-text"><strong class="pj-name">John Off the Wall</strong><span class="pj-sub">HTML and CSS
+              capstone project</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open
+              project</span></span>
+        </a>
+        <a class="pj-card" data-app="project:pixellog" data-cats="webdev" href="pixellog/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-brands fa-mintbit"></i></span>
+          <span class="pj-text"><strong class="pj-name">PixelLog</strong><span class="pj-sub">Node.js, Express and EJS
+              capstone project</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open
+              project</span></span>
+        </a>
+        <a class="pj-card" data-app="project:jamporudex" data-cats="webdev" href="jamporudex/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-brands fa-leanpub"></i></span>
+          <span class="pj-text"><strong class="pj-name">JamporuDEX</strong><span class="pj-sub">Node.js, Express,
+              PostgreSQL and EJS capstone project</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open
+              project</span></span>
+        </a>
+        <a class="pj-card" data-app="project:route196" data-cats="webdev" href="route196/">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-shield"></i></span>
+          <span class="pj-text"><strong class="pj-name">Route 196</strong><span class="pj-sub">Node.js, Express and EJS
+              capstone project</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Web Dev</span></span><span class="pj-open">Open
+              project</span></span>
+        </a>
+        <a class="pj-card" data-app="cert:fullstack" data-cats="cert"
+          href="assets/img/certifications/cert-fullstack-bootcamp_F.webp">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-award"></i></span>
+          <span class="pj-text"><strong class="pj-name">Full Stack Certificate</strong><span class="pj-sub">The Complete
+              Full-Stack Web Development Bootcamp</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View
+              certificate</span></span>
+        </a>
+        <a class="pj-card" data-app="cert:techseo" data-cats="cert"
+          href="assets/img/certifications/cert_techseosprint_F.webp">
+          <span class="pj-ico"><i aria-hidden="true" class="fa-solid fa-award"></i></span>
+          <span class="pj-text"><strong class="pj-name">Technical SEO Certificate</strong><span class="pj-sub">Technical
+              SEO and SEO Sprint</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View
+              certificate</span></span>
+        </a>
       </div>
     </section><!-- /Projects window -->
     <!-- Socials Section (terminal style). Rendered inside the Socials window by app.js. -->
     <section aria-label="Socials" class="pt pt-socials" id="socials">
       <div class="pt-line pt-title">Connect with me</div>
       <ul class="pt-list">
-        <li class="pt-item" style="--i:0"><a class="pt-link" href="https://github.com/jpldeleon" rel="noopener" target="_blank"><span class="pt-idx" data-n="01" aria-hidden="true"></span><span class="pt-name">GitHub</span><span class="pt-sub">github.com/jpldeleon</span></a></li>
-        <li class="pt-item" style="--i:1"><a class="pt-link" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"><span class="pt-idx" data-n="02" aria-hidden="true"></span><span class="pt-name">LinkedIn</span><span class="pt-sub">linkedin.com/in/jpldl</span></a></li>
-        <li class="pt-item" style="--i:2"><a class="pt-link" href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener" target="_blank"><span class="pt-idx" data-n="03" aria-hidden="true"></span><span class="pt-name">Upwork</span><span class="pt-sub">upwork.com/freelancers/~01562764cad5d47331</span></a></li>
-        <li class="pt-item" style="--i:3"><a class="pt-link" href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener" target="_blank"><span class="pt-idx" data-n="04" aria-hidden="true"></span><span class="pt-name">GoLance</span><span class="pt-sub">golance.com/freelancer/john.paul.leonard.de.leon</span></a></li>
+        <li class="pt-item" style="--i:0"><a class="pt-link" href="https://github.com/jpldeleon" rel="noopener"
+            target="_blank"><span class="pt-idx" data-n="01" aria-hidden="true"></span><span
+              class="pt-name">GitHub</span><span class="pt-sub">github.com/jpldeleon</span></a></li>
+        <li class="pt-item" style="--i:1"><a class="pt-link" href="https://www.linkedin.com/in/jpldl/" rel="noopener"
+            target="_blank"><span class="pt-idx" data-n="02" aria-hidden="true"></span><span
+              class="pt-name">LinkedIn</span><span class="pt-sub">linkedin.com/in/jpldl</span></a></li>
+        <li class="pt-item" style="--i:2"><a class="pt-link"
+            href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener" target="_blank"><span
+              class="pt-idx" data-n="03" aria-hidden="true"></span><span class="pt-name">Upwork</span><span
+              class="pt-sub">upwork.com/freelancers/~01562764cad5d47331</span></a></li>
+        <li class="pt-item" style="--i:3"><a class="pt-link"
+            href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener" target="_blank"><span
+              class="pt-idx" data-n="04" aria-hidden="true"></span><span class="pt-name">GoLance</span><span
+              class="pt-sub">golance.com/freelancer/john.paul.leonard.de.leon</span></a></li>
       </ul>
       <p class="pt-hint"><span>click a link to open it in a new tab</span></p>
     </section><!-- /Socials Section -->
   </main>
   <footer class="footer position-relative" id="footer">
-    
+
   </footer>
   <!-- CV Terminal Lightboxes -->
   <!-- Preloader -->
@@ -1401,7 +1627,7 @@
       requestAnimationFrame(function () { requestAnimationFrame(function () { body.classList.remove('sidebar-noanim'); }); });
       if (btn) btn.addEventListener('click', function () { setCollapsed(!body.classList.contains('sidebar-collapsed'), true); });
 
-      
+
       document.addEventListener('click', function (e) {
         if (!e.target.closest('[data-power="restart"]')) return;
         var launcher = document.getElementById('app-menu'), mb = document.getElementById('taskbar-menu-btn');
