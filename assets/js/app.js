@@ -271,9 +271,11 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   /* Boot screen shown on Restart: LineageOS-style on phones, Linux Mint-style on desktop.
      Colours come from the theme variables (see "Boot sequence" in desktop.css). */
   const BOOT_LINEAGE = '<svg class="boot-logo" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<defs><linearGradient id="boot-glow" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="24" y2="0" gradientTransform="translate(-24 0)"><stop offset="0" class="bg-a"/><stop offset=".4" class="bg-a"/><stop offset=".5" class="bg-b"/><stop offset=".6" class="bg-a"/><stop offset="1" class="bg-a"/><animateTransform attributeName="gradientTransform" type="translate" from="-24 0" to="24 0" dur="2.2s" repeatCount="indefinite"/></linearGradient></defs>' +
     '<path d="M21.64526 12.05735a2.40391 2.40391 0 0 0-1.80293.7993l-.13823-.0541a17.80096 17.80096 0 0 0-2.86666-.8594 4.80782 4.80782 0 0 0-9.61565 0h-.13221a17.74687 17.74687 0 0 0-2.7645.83537l-.13822.05409a2.40391 2.40391 0 1 0 .5589 1.06974 16.599 16.599 0 0 1 2.5782-.77526 4.80782 4.80782 0 0 0 9.35722 0 16.55693 16.55693 0 0 1 2.5782.76925 2.40391 2.40391 0 1 0 2.38588-1.839zM2.41397 15.6632a1.20196 1.20196 0 1 1 1.20196-1.20195 1.20196 1.20196 0 0 1-1.20196 1.20195zm9.61565 0a3.60587 3.60587 0 1 1 3.60586-3.60586 3.60587 3.60587 0 0 1-3.60586 3.60586zm9.61564 0a1.20196 1.20196 0 1 1 1.20196-1.20195 1.20196 1.20196 0 0 1-1.20196 1.20195zm-7.81271-3.60586a1.80293 1.80293 0 1 1-1.80293-1.80294 1.80293 1.80293 0 0 1 1.80293 1.80294z"/>' +
     '</svg>';
   const BOOT_MINT = '<svg class="boot-logo" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<defs><linearGradient id="boot-glow" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="24" y2="0" gradientTransform="translate(-24 0)"><stop offset="0" class="bg-a"/><stop offset=".4" class="bg-a"/><stop offset=".5" class="bg-b"/><stop offset=".6" class="bg-a"/><stop offset="1" class="bg-a"/><animateTransform attributeName="gradientTransform" type="translate" from="-24 0" to="24 0" dur="2.2s" repeatCount="indefinite"/></linearGradient></defs>' +
     '<path d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875"/>' +
     '</svg><div class="boot-bar"><i></i></div>';
 
@@ -287,14 +289,15 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     box.setAttribute('aria-label', label || 'Restarting');
     box.style.setProperty('--boot-ms', ms + 'ms');
     box.innerHTML = mobile ? BOOT_LINEAGE : BOOT_MINT;
+    if (still) box.querySelectorAll('animateTransform').forEach(a => a.remove());   // no sweep for reduced motion
     document.body.appendChild(box);
     void box.offsetWidth;
     box.classList.add('is-on');
     const wait = t => new Promise(r => setTimeout(r, t));
     return {
       covered: wait(still ? 0 : 350),                          // fully faded in
-      done: async () => {
-        await wait(ms);
+      done: async (hold) => {
+        await Promise.all([wait(ms), hold]);                    // at least the boot time, and not before the page has loaded
         box.classList.remove('is-on');
         await wait(still ? 0 : 450);
         box.remove();
@@ -870,7 +873,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     wins.forEach(w => { fitToViewport(w); applyRect(w); });
   });
 
-  /* Restart (panel + Ubuntu menu) */
+  /* Restart (panel + Mint menu) */
   document.addEventListener('desktop:restart', e => { e.preventDefault(); restartDesktop(); });
 
   /* =====================================================================
@@ -1361,7 +1364,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     (async () => {
       const bootScr = bootSequence('Starting');    // same boot animation as Restart: LineageOS on phones, Linux Mint on desktop
       const loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise(r => window.addEventListener('load', r, { once: true }));
-      await Promise.all([bootScr.done(), loaded]);
+      await bootScr.done(loaded);
       await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the Menu
       document.dispatchEvent(new CustomEvent('desktop:booted'));
     })();

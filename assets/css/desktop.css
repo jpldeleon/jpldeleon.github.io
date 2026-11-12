@@ -92,6 +92,15 @@
   font-size: 13px;
 }
 
+/* Linux Mint logo on the taskbar Menu button (same artwork as the boot screen) */
+.panel-btn .mint-ico {
+  display: block;
+  flex: none;
+  width: 17px;
+  height: 17px;
+  fill: var(--accent-color);
+}
+
 .panel-btn:hover,
 .panel-btn:focus-visible,
 .panel-btn[aria-expanded="true"] {
@@ -820,7 +829,7 @@ html body .lightbox-window-panel .win-btn:focus-visible {
   .panel-dropdown button { padding: 12px 10px; }   /* bigger tap rows */
 
   /* ----- Bottom dock: hugs the 3 static icons, grows as apps open -----
-     ubuntu | resume | projects | divider | active apps...
+     mint | resume | projects | divider | active apps...
      The three static icons never shrink or scroll. Only the active-apps strip
      (.wm-dock-apps) swipes sideways once the dock reaches the screen edge. */
   .linux-dock {
@@ -1290,7 +1299,7 @@ body.sidebar-collapsed {
   .skl-dot { animation: none; }
 }
 
-/* Ubuntu menu: sub-heading between Apps and Summary */
+/* Mint menu: sub-heading between Apps and Summary */
 .app-menu .app-menu-label {
   margin: 6px 0 2px;
   padding: 6px 12px 4px;
@@ -2556,10 +2565,11 @@ textarea {
 .boot-logo {
   width: min(30vw, 130px);
   height: auto;
-  fill: var(--accent-highlight);
+  fill: url(#boot-glow);   /* accent colour with a highlight sweeping left to right (gradient lives in the svg, see app.js) */
   filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent-highlight), transparent 55%));
-  animation: boot-pulse 2s ease-in-out infinite;
 }
+.boot-logo .bg-a { stop-color: var(--accent-highlight); }
+.boot-logo .bg-b { stop-color: color-mix(in srgb, var(--accent-highlight), #fff 70%); }
 .boot-mint .boot-logo { width: min(26vw, 120px); }
 .boot-bar {
   width: min(240px, 50vw);
@@ -2577,7 +2587,6 @@ textarea {
   animation: boot-fill var(--boot-ms, 3.4s) cubic-bezier(.4, 0, .2, 1) forwards;
 }
 
-@keyframes boot-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.92); opacity: .65; } }
 @keyframes boot-fill  { to { width: 100%; } }
 
 @media (prefers-reduced-motion: reduce) {

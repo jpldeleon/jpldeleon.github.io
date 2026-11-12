@@ -371,6 +371,26 @@
         padding: 0 24px 22px;
       }
 
+      /* About me: content block is centred vertically in the pane (equal space above and below).
+         Auto margins on the first/last child, not justify-content, so a long text still scrolls from the top. */
+      .hero-sidebar.hero-applet .hero-inspector:not(.is-collapsed) .ab-term-body:not([hidden]) {
+        display: flex;
+        flex-direction: column;
+        padding: 16px 24px;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-body>* {
+        flex: 0 0 auto;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-body> :first-child {
+        margin-top: auto;
+      }
+
+      .hero-sidebar.hero-applet .hero-inspector .ab-term-body> :last-child {
+        margin-bottom: auto;
+      }
+
       .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-body {
         display: none;
       }
@@ -638,8 +658,7 @@
     </div>
     <div class="panel-center">
       <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" aria-label="Menu"
-        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><i
-          aria-hidden="true" class="fa-brands fa-ubuntu"></i></button>
+        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><svg aria-hidden="true" class="mint-ico" focusable="false" viewBox="0 0 24 24"><path d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875"/></svg></button>
       <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div>
     </div>
     <div class="panel-right">
@@ -706,7 +725,7 @@
                     <li>Android &amp; mobile technology</li>
                     <li>Custom ROMs &amp; firmware</li>
                     <li>PC hardware &amp; troubleshooting</li>
-                    <li>FOSS &amp; open-source software</li>
+                    <li>Free &amp; open-source software</li>
                     <li>Local LLMs &amp; AI tools</li>
                     <li>Web building &amp; experimentation</li>
                     <li>Coding &amp; learning</li>
@@ -914,7 +933,7 @@
     <form action="#" aria-label="Ask Jampol" autocomplete="off" class="app-menu-ask" data-ask id="app-menu-ask"
       role="search">
       <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
-      <input aria-label="Ask Jampol" autocomplete="off" id="app-menu-ask-input" placeholder="Ask Jampol"
+      <input aria-label="Ask Jampol" autocomplete="off" id="app-menu-ask-input" placeholder="Ask Jampol or type help"
         spellcheck="false" type="text" />
     </form>
     <div class="app-menu-header">Apps</div>
@@ -1569,15 +1588,6 @@
 
   </footer>
   <!-- CV Terminal Lightboxes -->
-  <!-- Preloader -->
-  <div id="preloader">
-    <div aria-hidden="true" class="preloader-balls">
-      <span class="preloader-ball"></span>
-      <span class="preloader-ball"></span>
-      <span class="preloader-ball"></span>
-      <span class="preloader-ball"></span>
-    </div>
-  </div>
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>

@@ -39,7 +39,7 @@
 
   function render() {
     var silent = muted || volume === 0 || failed;
-    var cls = 'fa-solid ' + ((muted || volume === 0) ? 'fa-volume-xmark' : volume < 0.4 ? 'fa-volume-low' : 'fa-volume-high');
+    var cls = 'fa-solid ' + ((muted || volume === 0) ? 'fa-volume-xmark' : volume < 0.1 ? 'fa-volume-low' : 'fa-volume-high');
     tIcon.className = cls; mIcon.className = cls;
     trigger.classList.toggle('is-muted', silent);
     trigger.setAttribute('aria-label', 'Sound');
