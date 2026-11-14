@@ -3596,20 +3596,38 @@ textarea {
   opacity: 0;
   pointer-events: all;
   cursor: wait;
-  transition: opacity .35s ease;
+  transition: opacity .35s cubic-bezier(.4, 0, .2, 1);
 }
 
 .boot-screen.is-on {
   opacity: 1;
 }
 
+/* Logo: solid theme accent (the old left-to-right sweep gradient is no longer referenced),
+   stationary, with a slow breathing glow. Colours derive from --accent-highlight,
+   so each theme and its light/dark variant picks its own. */
 .boot-logo {
+  --glow-lo: color-mix(in srgb, var(--accent-highlight) 34%, transparent);
+  --glow-hi: color-mix(in srgb, var(--accent-highlight) 60%, transparent);
   width: min(30vw, 130px);
   height: auto;
-  fill: url(#boot-glow);
-  /* accent colour with a highlight sweeping left to right (gradient lives in the svg, see app.js) */
-  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent-highlight), transparent 55%));
+  fill: var(--accent-highlight);
+  filter: drop-shadow(0 0 12px var(--glow-lo));
+  animation: boot-breathe 3.6s ease-in-out infinite;
 }
+
+@keyframes boot-breathe {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px var(--glow-lo));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 20px var(--glow-hi));
+  }
+}
+
 
 .boot-logo .bg-a {
   stop-color: var(--accent-highlight);
@@ -3623,6 +3641,16 @@ textarea {
   width: min(26vw, 120px);
 }
 
+/* Linux Mint: the logo just pulses, no progress bar. The bar is taken out of the layout and made
+   invisible rather than display:none, so its animation still runs if app.js waits on it to finish. */
+.boot-mint .boot-bar {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
 .boot-bar {
   width: min(240px, 50vw);
   height: 5px;

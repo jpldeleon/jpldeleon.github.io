@@ -254,14 +254,15 @@
     return scope.querySelector('.copy-toast');
   }
 
-  function showCopyToast(toastEl, type, success) {
+  function showCopyToast(toastEl, type, success, customLabel) {
     if (!toastEl) return;
     const bodyEl = toastEl.querySelector('.toast-body span');
     if (!bodyEl) return;
-    const label = type === 'phone' ? 'Phone' : 'Email';
+    // data-copy-label (e.g. "GitHub link") overrides the default Email / Phone wording
+    const label = customLabel || (type === 'phone' ? 'Phone' : 'Email');
     bodyEl.textContent = success
       ? label + ' copied!'
-      : 'Could not copy ' + label.toLowerCase() + '.';
+      : 'Could not copy ' + (customLabel ? label : label.toLowerCase()) + '.';
 
     if (window.bootstrap) {
       let instance = toastInstances.get(toastEl);
@@ -278,13 +279,14 @@
       e.preventDefault();
       const value = btn.getAttribute('data-copy-value');
       const type = btn.getAttribute('data-copy-type');
+      const customLabel = btn.getAttribute('data-copy-label');
       const toastEl = getToastEl(btn);
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(value)
-          .then(() => showCopyToast(toastEl, type, true))
-          .catch(() => showCopyToast(toastEl, type, false));
+          .then(() => showCopyToast(toastEl, type, true, customLabel))
+          .catch(() => showCopyToast(toastEl, type, false, customLabel));
       } else {
-        showCopyToast(toastEl, type, false);
+        showCopyToast(toastEl, type, false, customLabel);
       }
     });
   });

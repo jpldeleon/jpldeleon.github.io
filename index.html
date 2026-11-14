@@ -103,6 +103,8 @@
   <link href="assets/css/portfolio-terminal.css" rel="stylesheet" />
   <!-- Projects window -->
   <link href="assets/css/portfolio.css" rel="stylesheet" />
+  <!-- Contact & Socials window -->
+  <link href="assets/css/socials.css" rel="stylesheet" />
   <!-- Ambient space scene (astronaut, orbs, stars) -->
   <link href="assets/css/space-scene.css" rel="stylesheet" />
   <!-- Shared position for every top-panel applet (load last) -->
@@ -1012,7 +1014,7 @@
       </li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-app="socials" role="menuitem" type="button"><i
-            class="fa-solid fa-share-nodes"></i>Socials</button></li>
+            class="fa-solid fa-share-nodes"></i>Contact &amp; Socials</button></li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-power="restart" role="menuitem" type="button"><i
             class="fa-solid fa-rotate-right"></i>Restart</button></li>
@@ -1629,27 +1631,95 @@
         </a>
       </div>
     </section><!-- /Projects window -->
-    <!-- Socials Section (terminal style). Rendered inside the Socials window by app.js. -->
-    <section aria-label="Socials" class="pt pt-socials" id="socials">
-      <div class="pt-line pt-title">Connect with me</div>
-      <ul class="pt-list">
-        <li class="pt-item" style="--i:0"><a class="pt-link" href="https://github.com/jpldeleon" rel="noopener"
-            target="_blank"><span class="pt-idx" data-n="01" aria-hidden="true"></span><span
-              class="pt-name">GitHub</span><span class="pt-sub">github.com/jpldeleon</span></a></li>
-        <li class="pt-item" style="--i:1"><a class="pt-link" href="https://www.linkedin.com/in/jpldl/" rel="noopener"
-            target="_blank"><span class="pt-idx" data-n="02" aria-hidden="true"></span><span
-              class="pt-name">LinkedIn</span><span class="pt-sub">linkedin.com/in/jpldl</span></a></li>
-        <li class="pt-item" style="--i:2"><a class="pt-link"
-            href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener" target="_blank"><span
-              class="pt-idx" data-n="03" aria-hidden="true"></span><span class="pt-name">Upwork</span><span
-              class="pt-sub">upwork.com/freelancers/~01562764cad5d47331</span></a></li>
-        <li class="pt-item" style="--i:3"><a class="pt-link"
-            href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener" target="_blank"><span
-              class="pt-idx" data-n="04" aria-hidden="true"></span><span class="pt-name">GoLance</span><span
-              class="pt-sub">golance.com/freelancer/john.paul.leonard.de.leon</span></a></li>
-      </ul>
-      <p class="pt-hint"><span>click a link to open it in a new tab</span></p>
-    </section><!-- /Socials Section -->
+    <!-- Contact & Socials: GNOME Contacts style. Rendered inside the Contact & Socials window by app.js.
+         Styles: assets/css/socials.css. Copy + toast: the existing .js-copy-trigger / .copy-toast system in main.js.
+         Only platform names and usernames are shown; full URLs live in href / data-copy-value. -->
+    <section aria-label="Contact &amp; Socials" class="sc contact-block" id="socials">
+      <header class="sc-head">
+        <img alt="" class="sc-avatar" height="56" src="assets/img/profile/jp-profile-3.webp" width="56" />
+        <div class="sc-id">
+          <h2 class="sc-name">John Paul De Leon</h2>
+          <p class="sc-role">Technical SEO Specialist</p>
+        </div>
+      </header>
+
+      <div class="sc-scroll">
+        <div class="sc-wrap">
+          <h3 class="sc-group" id="sc-g-contact">Direct Contact</h3>
+          <ul aria-labelledby="sc-g-contact" class="sc-list">
+            <li class="sc-row">
+              <button aria-label="Copy email address" class="sc-main sc-main-copy js-copy-trigger" data-copy-type="email"
+                data-copy-value="jpleonard.deleon@gmail.com" title="Copy email address" type="button">
+                <span aria-hidden="true" class="sc-ico"><i class="fa-solid fa-envelope"></i></span>
+                <span class="sc-txt"><span class="sc-label">Email</span><span class="sc-value">••••••deleon@gmail.com</span></span>
+                <span aria-hidden="true" class="sc-copy-ico"><i class="fa-regular fa-copy"></i></span>
+              </button>
+            </li>
+            <li class="sc-row">
+              <button aria-label="Copy phone number" class="sc-main sc-main-copy js-copy-trigger" data-copy-type="phone"
+                data-copy-value="+639760109942" title="Copy phone number" type="button">
+                <span aria-hidden="true" class="sc-ico"><i class="fa-solid fa-phone"></i></span>
+                <span class="sc-txt"><span class="sc-label">Phone</span><span class="sc-value">+63 9•• ••• ••2</span></span>
+                <span aria-hidden="true" class="sc-copy-ico"><i class="fa-regular fa-copy"></i></span>
+              </button>
+            </li>
+          </ul>
+
+          <h3 class="sc-group" id="sc-g-social">Social Profiles</h3>
+          <ul aria-labelledby="sc-g-social" class="sc-list">
+            <li class="sc-row">
+              <a class="sc-main" href="https://github.com/jpldeleon" rel="noopener" target="_blank">
+                <span aria-hidden="true" class="sc-ico sc-ico-github"><i class="fa-brands fa-github"></i></span>
+                <span class="sc-txt"><span class="sc-label">GitHub</span></span>
+              </a>
+              <button aria-label="Copy GitHub profile link" class="sc-copy js-copy-trigger" data-copy-label="GitHub link" data-copy-type="link"
+                data-copy-value="https://github.com/jpldeleon" title="Copy profile link" type="button"><i
+                  aria-hidden="true" class="fa-regular fa-copy"></i></button>
+            </li>
+            <li class="sc-row">
+              <a class="sc-main" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank">
+                <span aria-hidden="true" class="sc-ico sc-ico-linkedin"><i class="fa-brands fa-linkedin"></i></span>
+                <span class="sc-txt"><span class="sc-label">LinkedIn</span></span>
+              </a>
+              <button aria-label="Copy LinkedIn profile link" class="sc-copy js-copy-trigger" data-copy-label="LinkedIn link" data-copy-type="link"
+                data-copy-value="https://www.linkedin.com/in/jpldl/" title="Copy profile link" type="button"><i
+                  aria-hidden="true" class="fa-regular fa-copy"></i></button>
+            </li>
+            <li class="sc-row">
+              <a class="sc-main" href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener"
+                target="_blank">
+                <span aria-hidden="true" class="sc-ico sc-ico-upwork"><i class="fa-brands fa-upwork"></i></span>
+                <span class="sc-txt"><span class="sc-label">Upwork</span></span>
+              </a>
+              <button aria-label="Copy Upwork profile link" class="sc-copy js-copy-trigger" data-copy-label="Upwork link" data-copy-type="link"
+                data-copy-value="https://www.upwork.com/freelancers/~01562764cad5d47331" title="Copy profile link"
+                type="button"><i aria-hidden="true" class="fa-regular fa-copy"></i></button>
+            </li>
+            <li class="sc-row">
+              <a class="sc-main" href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener"
+                target="_blank">
+                <span class="sc-ico sc-ico-golance"><i class="fa-solid fa-circle-nodes" aria-hidden="true"></i></span>
+                <span class="sc-txt"><span class="sc-label">GoLance</span></span>
+              </a>
+              <button aria-label="Copy GoLance profile link" class="sc-copy js-copy-trigger" data-copy-label="GoLance link" data-copy-type="link"
+                data-copy-value="https://golance.com/freelancer/john.paul.leonard.de.leon" title="Copy profile link"
+                type="button"><i aria-hidden="true" class="fa-regular fa-copy"></i></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Copy Toast: the existing .copy-toast (Bootstrap toast, driven by main.js) -->
+      <div class="copy-toast-container">
+        <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToastContact" role="status">
+          <div class="toast-body d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="copyToastContactBody">Copied to clipboard.</span>
+            <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Contact & Socials -->
   </main>
   <footer class="footer position-relative" id="footer">
 
@@ -1668,6 +1738,8 @@
   <script src="assets/js/resume-viewer.js"></script>
   <!-- Projects window filters -->
   <script src="assets/js/portfolio.js"></script>
+  <!-- Contact & Socials: copy buttons, toast, window rename -->
+  <script src="assets/js/socials.js"></script>
   <!-- Ambient space scene -->
   <script src="assets/js/space-scene.js"></script>
   <!-- Notification panel (bell) + Restart -->
