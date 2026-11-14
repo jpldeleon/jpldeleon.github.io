@@ -1,8 +1,7 @@
 (function () {
   'use strict';
   var SRC = 'assets/audio/gymnopedie-no1.mp3';
-  var KEY_V = 'site-volume', KEY_M = 'site-muted', DEFAULT_V = 0.35, FADE_MS = 2500, WHEEL_STEP = 0.05;
-
+var KEY_V = 'site-volume', KEY_M = 'site-muted', DEFAULT_V = 0.12, FADE_MS = 2500, WHEEL_STEP = 0.05, MAX_V = 0.5;
   var anchor = document.getElementById('panel-restart-btn');
   if (!anchor) return;
 
@@ -49,7 +48,7 @@
     range.value = p;
     range.style.setProperty('--pv', p + '%');
     audio.muted = muted;
-    if (!fadeTimer) audio.volume = volume;
+    if (!fadeTimer) audio.volume = volume * MAX_V;
   }
 
   /* ---- playback ---- */
@@ -68,8 +67,8 @@
     audio.volume = 0;
     fadeTimer = setInterval(function () {
       var k = Math.min(1, (Date.now() - t0) / FADE_MS);
-      audio.volume = volume * k;
-      if (k >= 1) { clearInterval(fadeTimer); fadeTimer = 0; audio.volume = volume; }
+      audio.volume = volume * k * MAX_V;
+      if (k >= 1) { clearInterval(fadeTimer); fadeTimer = 0; audio.volume = volume * MAX_V; }
     }, 60);
   }
 
