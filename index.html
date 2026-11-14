@@ -19,8 +19,10 @@
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<title>John Paul De Leon | Technical SEO &amp; WordPress Developer</title>
-  <meta content="Technical SEO specialist who builds in WordPress. Site audits, on-page SEO and hands-on WordPress and WooCommerce projects." name="description" />
+  <title>John Paul De Leon | Technical SEO &amp; WordPress Developer</title>
+  <meta
+    content="Technical SEO specialist who builds in WordPress. Site audits, on-page SEO and hands-on WordPress and WooCommerce projects."
+    name="description" />
   <!-- Universal Open Graph Tags -->
   <meta content="website" property="og:type" />
   <meta content="John Paul De Leon | Technical SEO &amp; WordPress Developer" property="og:title" />
@@ -89,6 +91,32 @@
       font-size: var(--fs-sm);
       line-height: 1.65;
       color: color-mix(in srgb, var(--default-color), transparent 15%);
+    }
+
+    /* availability line */
+    .hero-sidebar .sidebar-open {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--accent-highlight);
+    }
+
+    .hero-sidebar .sidebar-open .open-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 3px color-mix(in srgb, currentColor, transparent 80%);
+    }
+
+    @media (max-width: 991px) {
+      .hero-sidebar .sidebar-open {
+        justify-content: center;
+        width: 100%;
+      }
     }
 
     /* the typed role-code is aria-hidden, so this is the text screen readers get */
@@ -436,6 +464,7 @@
       :root {
         --notif-w: 660px;
         --sidebar-w: 678px;
+        overflow-x: hidden;
       }
 
       /* hero 340 + About 320 */
@@ -459,6 +488,7 @@
       .hero-sidebar.hero-applet .hero-body {
         flex: 1 1 auto;
         min-height: 0;
+        overflow-x: hidden;
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-width: thin;
@@ -583,8 +613,7 @@
     }
 
     /* theme + volume popovers: same line as the other applets, above the bar */
-    .top-panel.taskbar #panel-theme-pop.panel-popover,
-    .top-panel.taskbar .volume-popover.panel-popover {
+    .top-panel.taskbar #panel-theme-pop.panel-popover {
       top: auto;
       bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px));
     }
@@ -597,8 +626,7 @@
 
     @media (max-width: 340px) {
 
-      .top-panel.taskbar #panel-theme-pop.panel-popover,
-      .top-panel.taskbar .volume-popover.panel-popover {
+      .top-panel.taskbar #panel-theme-pop.panel-popover {
         top: auto;
         bottom: calc(100% + var(--panel-pop-gap, 8px));
       }
@@ -657,7 +685,11 @@
     </div>
     <div class="panel-center">
       <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" aria-label="Menu"
-        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><svg aria-hidden="true" class="mint-ico" focusable="false" viewBox="0 0 24 24"><path d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875"/></svg></button>
+        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><svg
+          aria-hidden="true" class="mint-ico" focusable="false" viewBox="0 0 24 24">
+          <path
+            d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875" />
+        </svg></button>
       <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div>
     </div>
     <div class="panel-right">
@@ -890,11 +922,14 @@
                     before acting.</span></div>
               </li>
               <li><i aria-hidden="true" class="fa-solid fa-gears"></i>
-                <div><b>SEO that reads code</b><span>Technical SEO plus hands-on WordPress projects: I can diagnose an issue
-    and ship the fix.</span></div>
+                <div><b>SEO that reads code</b><span>Technical SEO plus hands-on WordPress projects: I can diagnose an
+                    issue
+                    and ship the fix.</span></div>
               </li>
               <li><i aria-hidden="true" class="fa-solid fa-folder-open"></i>
-<div><b>Work you can review</b><span>WordPress builds on LocalWP and bootcamp capstones. Open any one to see what I built and how.</span></div>              </li>
+                <div><b>Work you can review</b><span>WordPress builds on LocalWP and bootcamp capstones. Open any one to
+                    see what I built and how.</span></div>
+              </li>
               <li><i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i>
                 <div><b>AI-assisted, human-checked</b><span>Faster audits, research and builds, with judgement kept in
                     the loop.</span></div>
@@ -918,7 +953,8 @@
                   class="fa-solid fa-chevron-right"></i></button>
             </div>
             <div aria-hidden="true" class="cp-dow">
-              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
             <div class="cp-grid" id="cal-grid" role="grid" aria-label="Month"></div>
           </section>
         </div>
@@ -971,7 +1007,10 @@
         </div>
         <p class="sidebar-role">Technical SEO Specialist</p>
       </div>
-<p>Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation and speed issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects, backed by a research-heavy SEO background.</p>
+      <p class="sidebar-summary">Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation
+        and speed issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects,
+        backed by a research-heavy SEO background.</p>
+      <p class="sidebar-open"><span aria-hidden="true" class="open-dot"></span>Open to agency and remote work</p>
       <div class="sidebar-contact contact-block">
         <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
           title="Copy email" data-copy-value="jpleonard.deleon@gmail.com" type="button">
@@ -1189,7 +1228,9 @@
                 width="112" />
               <div>
                 <h3 class="rv-h">Professional Summary</h3>
-                <p>Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation and speed issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects, backed by a research-heavy SEO background.</p>
+                <p>Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation and speed
+                  issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects,
+                  backed by a research-heavy SEO background.</p>
               </div>
             </div>
             <h3 class="rv-h rv-contact-title">Contact Information</h3>
@@ -1595,8 +1636,6 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/notifications.js"></script>
   <script src="assets/js/dotfiles.js"></script>
-  <!-- Background music + volume control (Satie, Gymnopedie No. 1) -->
-  <script src="assets/js/music.js"></script>
   <script src="assets/js/resume-viewer.js"></script>
   <!-- Projects window filters -->
   <script src="assets/js/portfolio.js"></script>

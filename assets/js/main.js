@@ -71,7 +71,7 @@
     slideEffect: 'fade',
     zoomable: false,
     draggable: false
-  }) : { on() {}, close() {}, settings: {} };
+  }) : { on() { }, close() { }, settings: {} };
   if (typeof GLightbox !== 'function') console.warn('GLightbox failed to load: lightbox disabled.');
 
   /* Mount the terminal chrome INSIDE each GLightbox image frame. */
@@ -257,10 +257,10 @@
     if (!toastEl) return;
     const bodyEl = toastEl.querySelector('.toast-body span');
     if (!bodyEl) return;
-    const label = type === 'phone' ? 'Phone number' : 'Email';
+    const label = type === 'phone' ? 'Phone' : 'Email';
     bodyEl.textContent = success
-      ? label + ' copied to clipboard!'
-      : 'Could not copy ' + label.toLowerCase() + ' automatically.';
+      ? label + ' copied!'
+      : 'Could not copy ' + label.toLowerCase() + '.';
 
     if (window.bootstrap) {
       let instance = toastInstances.get(toastEl);
@@ -783,7 +783,7 @@
     for (const b of btns) {
       const r = b.getBoundingClientRect();
       if (r.width && r.height && e.clientX >= r.left && e.clientX <= r.right &&
-          e.clientY >= r.top && e.clientY <= r.bottom) return b;
+        e.clientY >= r.top && e.clientY <= r.bottom) return b;
     }
     return null;
   }
@@ -800,35 +800,35 @@
   });
 
   function onLightboxCommand(e) {
-  if (e.type === 'pointerup' && e.button !== 0) return;
-  const container = document.querySelector('.glightbox-container');
-  if (!container) return;
-  const minimizeBtn = lightboxCommandFor(e, 'data-glightbox-minimize');
-  const closeBtn = minimizeBtn ? null : lightboxCommandFor(e, 'data-glightbox-close');
-  if (!minimizeBtn && !closeBtn) return;
-  e.preventDefault();
-  e.stopPropagation();
-  if (lightboxClosing) return;
-  lightboxClosing = true;
+    if (e.type === 'pointerup' && e.button !== 0) return;
+    const container = document.querySelector('.glightbox-container');
+    if (!container) return;
+    const minimizeBtn = lightboxCommandFor(e, 'data-glightbox-minimize');
+    const closeBtn = minimizeBtn ? null : lightboxCommandFor(e, 'data-glightbox-close');
+    if (!minimizeBtn && !closeBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (lightboxClosing) return;
+    lightboxClosing = true;
 
-  const finish = () => {
-    try { closeLightboxNoEffect(); } catch (err) { /* ignore */ }
-    window.setTimeout(() => {
-      if (document.querySelector('.glightbox-container')) {
-        forceRemoveLightbox();
-      }
-      lightboxClosing = false;
-    }, 300);
-  };
+    const finish = () => {
+      try { closeLightboxNoEffect(); } catch (err) { /* ignore */ }
+      window.setTimeout(() => {
+        if (document.querySelector('.glightbox-container')) {
+          forceRemoveLightbox();
+        }
+        lightboxClosing = false;
+      }, 300);
+    };
 
-  if (closeBtn) {
-    fadeOut(container, 220).then(finish).catch(finish);
-  } else if (e.key === 'Escape') {
-    fadeOut(container, 220).then(finish).catch(finish);
+    if (closeBtn) {
+      fadeOut(container, 220).then(finish).catch(finish);
+    } else if (e.key === 'Escape') {
+      fadeOut(container, 220).then(finish).catch(finish);
+    }
   }
-}
-window.addEventListener('pointerup', onLightboxCommand, true);
-window.addEventListener('click', onLightboxCommand, true);
+  window.addEventListener('pointerup', onLightboxCommand, true);
+  window.addEventListener('click', onLightboxCommand, true);
 
 
 })();

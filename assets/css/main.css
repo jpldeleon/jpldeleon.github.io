@@ -230,11 +230,25 @@ main,
   transform: scale(1.1);
 }
 
-.theme-dots .theme-dot.dot-aurora { background: #BF616A; }
-.theme-dots .theme-dot.dot-gruvbox { background: #d65d0e; }
-.theme-dots .theme-dot.dot-everforest { background: #A7C080; }
-.theme-dots .theme-dot.dot-monokai { background: #ffed72; }
-.theme-dots .theme-dot.dot-draculapro { background: #7359f8; }
+.theme-dots .theme-dot.dot-aurora {
+  background: #BF616A;
+}
+
+.theme-dots .theme-dot.dot-gruvbox {
+  background: #d65d0e;
+}
+
+.theme-dots .theme-dot.dot-everforest {
+  background: #A7C080;
+}
+
+.theme-dots .theme-dot.dot-monokai {
+  background: #ffed72;
+}
+
+.theme-dots .theme-dot.dot-draculapro {
+  background: #7359f8;
+}
 
 @media (max-width: 480px) {
   .theme-dots {
@@ -725,7 +739,8 @@ section,
   width: 250px;
   height: 250px;
   border-radius: 50%;
-  overflow: hidden;            /* circular mask is kept on hover */
+  overflow: hidden;
+  /* circular mask is kept on hover */
   z-index: 2;
   border: 4px solid var(--accent-highlight-rgb);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-highlight), transparent 70%);
@@ -787,8 +802,10 @@ section,
    NOTE: this wrapper must not create a stacking context (no z-index / opacity /
    transform / perspective) so each orb can layer against the image directly. */
 .orbit-sys {
-  --os: 1;           /* orb size multiplier */
-  --persp: 800;      /* perspective distance (unitless px) */
+  --os: 1;
+  /* orb size multiplier */
+  --persp: 800;
+  /* perspective distance (unitless px) */
   position: absolute;
   left: 50%;
   top: var(--cy, 50%);
@@ -802,8 +819,10 @@ section,
   /* orbit geometry: radius, elevation (tilt toward viewer), roll (in-plane rotation) */
   --sa: sin(var(--orbit-a));
   --ca: cos(var(--orbit-a));
-  --z: calc(var(--R) * var(--sa) * cos(var(--e)));          /* depth, + = toward viewer */
-  --k: calc(var(--persp) / (var(--persp) - var(--z)));       /* perspective scale */
+  --z: calc(var(--R) * var(--sa) * cos(var(--e)));
+  /* depth, + = toward viewer */
+  --k: calc(var(--persp) / (var(--persp) - var(--z)));
+  /* perspective scale */
   --x0: calc(var(--R) * var(--ca));
   --y0: calc(var(--R) * var(--sa) * sin(var(--e)));
   --X: calc(var(--x0) * cos(var(--roll)) - var(--y0) * sin(var(--roll)));
@@ -817,11 +836,8 @@ section,
   opacity: 0;
   transition: opacity 0.5s ease;
   transform:
-    translate(
-      calc(-50% + var(--X) * var(--k) * 1px),
-      calc(-50% + var(--Y) * var(--k) * 1px)
-    )
-    scale(var(--k));
+    translate(calc(-50% + var(--X) * var(--k) * 1px),
+      calc(-50% + var(--Y) * var(--k) * 1px)) scale(var(--k));
   animation:
     orb-orbit var(--dur) linear infinite var(--dir, normal),
     orb-depth var(--dur) linear infinite var(--dir, normal);
@@ -842,7 +858,7 @@ section,
   opacity: calc(0.55 + 0.45 * (var(--sa) + 1) / 2);
 }
 
-:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible) + .orbit-sys .orb {
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible)+.orbit-sys .orb {
   opacity: 1;
   animation-play-state: running;
 }
@@ -855,26 +871,86 @@ section,
 }
 
 /* size / colour / radius / elevation / roll / period / start phase / direction */
-.orbit-sys .orb:nth-child(1) { --s: 8px;  --c: var(--accent-color);     --R: 142; --e: 36deg; --roll: -16deg; --dur: 26s; --phase: 0;     }
-.orbit-sys .orb:nth-child(2) { --s: 11px; --c: var(--accent-highlight); --R: 148; --e: 42deg; --roll: 14deg;  --dur: 32s; --phase: -0.35; --dir: reverse; }
-.orbit-sys .orb:nth-child(3) { --s: 9px;  --c: var(--quote-color);      --R: 145; --e: 30deg; --roll: -4deg;  --dur: 38s; --phase: -0.6;  }
-.orbit-sys .orb:nth-child(4) { --s: 9px;  --c: var(--typed-color);      --R: 150; --e: 46deg; --roll: 24deg;  --dur: 44s; --phase: -0.2;  --dir: reverse; }
-.orbit-sys .orb:nth-child(5) { --s: 6px;  --c: var(--heading-color);    --R: 140; --e: 34deg; --roll: -26deg; --dur: 22s; --phase: -0.8;  }
+.orbit-sys .orb:nth-child(1) {
+  --s: 8px;
+  --c: var(--accent-color);
+  --R: 142;
+  --e: 36deg;
+  --roll: -16deg;
+  --dur: 26s;
+  --phase: 0;
+}
+
+.orbit-sys .orb:nth-child(2) {
+  --s: 11px;
+  --c: var(--accent-highlight);
+  --R: 148;
+  --e: 42deg;
+  --roll: 14deg;
+  --dur: 32s;
+  --phase: -0.35;
+  --dir: reverse;
+}
+
+.orbit-sys .orb:nth-child(3) {
+  --s: 9px;
+  --c: var(--quote-color);
+  --R: 145;
+  --e: 30deg;
+  --roll: -4deg;
+  --dur: 38s;
+  --phase: -0.6;
+}
+
+.orbit-sys .orb:nth-child(4) {
+  --s: 9px;
+  --c: var(--typed-color);
+  --R: 150;
+  --e: 46deg;
+  --roll: 24deg;
+  --dur: 44s;
+  --phase: -0.2;
+  --dir: reverse;
+}
+
+.orbit-sys .orb:nth-child(5) {
+  --s: 6px;
+  --c: var(--heading-color);
+  --R: 140;
+  --e: 34deg;
+  --roll: -26deg;
+  --dur: 22s;
+  --phase: -0.8;
+}
 
 @keyframes orb-orbit {
-  from { --orbit-a: 0deg; }
-  to   { --orbit-a: 360deg; }
+  from {
+    --orbit-a: 0deg;
+  }
+
+  to {
+    --orbit-a: 360deg;
+  }
 }
 
 /* near half of the path (0-180deg) sits above the image (z 2), far half below it */
 @keyframes orb-depth {
-  0%, 49.9% { z-index: 3; }
-  50%, 100% { z-index: 1; }
+
+  0%,
+  49.9% {
+    z-index: 3;
+  }
+
+  50%,
+  100% {
+    z-index: 1;
+  }
 }
 
 /* Twinkling stars and dots: fixed spots just outside the orbit, always behind the image */
 .orbit-sys .tw {
-  --rk: 1;           /* radius multiplier (smaller for image 3) */
+  --rk: 1;
+  /* radius multiplier (smaller for image 3) */
   position: absolute;
   top: 0;
   left: 0;
@@ -882,10 +958,8 @@ section,
   height: var(--s);
   opacity: 0;
   transition: opacity 0.5s ease;
-  transform: translate(
-    calc(-50% + cos(var(--ang)) * var(--rad) * var(--rk) * 1px),
-    calc(-50% + sin(var(--ang)) * var(--rad) * var(--rk) * 1px)
-  );
+  transform: translate(calc(-50% + cos(var(--ang)) * var(--rad) * var(--rk) * 1px),
+      calc(-50% + sin(var(--ang)) * var(--rad) * var(--rk) * 1px));
 }
 
 .orbit-sys .tw::before {
@@ -911,33 +985,138 @@ section,
   clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
 }
 
-:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible) + .orbit-sys .tw {
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible)+.orbit-sys .tw {
   opacity: 1;
 }
 
-:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible) + .orbit-sys .tw::before {
+:is(.sidebar-avatar .profile-image, .resume .resume-side .profile-img a):is(:hover, :focus-visible)+.orbit-sys .tw::before {
   animation-play-state: running;
 }
 
-.orbit-sys .tw:nth-child(6) { --ang: 8deg; --rad: 158; --s: 3px; --c: var(--default-color); --td: 3.6s; --tdl: -0.0s; }
-.orbit-sys .tw:nth-child(7) { --ang: 26deg; --rad: 164; --s: 8px; --c: var(--heading-color); --td: 4.8s; --tdl: -1.2s; }
-.orbit-sys .tw:nth-child(8) { --ang: 64deg; --rad: 160; --s: 4px; --c: var(--accent-highlight); --td: 4.2s; --tdl: -2.1s; }
-.orbit-sys .tw:nth-child(9) { --ang: 98deg; --rad: 166; --s: 3px; --c: var(--default-color); --td: 3.2s; --tdl: -0.6s; }
-.orbit-sys .tw:nth-child(10) { --ang: 118deg; --rad: 162; --s: 7px; --c: var(--accent-color); --td: 5.2s; --tdl: -2.8s; }
-.orbit-sys .tw:nth-child(11) { --ang: 152deg; --rad: 158; --s: 4px; --c: var(--quote-color); --td: 4.0s; --tdl: -1.7s; }
-.orbit-sys .tw:nth-child(12) { --ang: 174deg; --rad: 165; --s: 3px; --c: var(--default-color); --td: 3.8s; --tdl: -3.1s; }
-.orbit-sys .tw:nth-child(13) { --ang: 202deg; --rad: 160; --s: 9px; --c: var(--accent-highlight); --td: 5.6s; --tdl: -0.4s; }
-.orbit-sys .tw:nth-child(14) { --ang: 244deg; --rad: 164; --s: 3px; --c: var(--typed-color); --td: 3.4s; --tdl: -2.4s; }
-.orbit-sys .tw:nth-child(15) { --ang: 272deg; --rad: 158; --s: 7px; --c: var(--quote-color); --td: 4.6s; --tdl: -1.0s; }
-.orbit-sys .tw:nth-child(16) { --ang: 296deg; --rad: 166; --s: 4px; --c: var(--default-color); --td: 4.4s; --tdl: -3.5s; }
-.orbit-sys .tw:nth-child(17) { --ang: 338deg; --rad: 160; --s: 8px; --c: var(--typed-color); --td: 5.0s; --tdl: -1.9s; }
+.orbit-sys .tw:nth-child(6) {
+  --ang: 8deg;
+  --rad: 158;
+  --s: 3px;
+  --c: var(--default-color);
+  --td: 3.6s;
+  --tdl: -0.0s;
+}
+
+.orbit-sys .tw:nth-child(7) {
+  --ang: 26deg;
+  --rad: 164;
+  --s: 8px;
+  --c: var(--heading-color);
+  --td: 4.8s;
+  --tdl: -1.2s;
+}
+
+.orbit-sys .tw:nth-child(8) {
+  --ang: 64deg;
+  --rad: 160;
+  --s: 4px;
+  --c: var(--accent-highlight);
+  --td: 4.2s;
+  --tdl: -2.1s;
+}
+
+.orbit-sys .tw:nth-child(9) {
+  --ang: 98deg;
+  --rad: 166;
+  --s: 3px;
+  --c: var(--default-color);
+  --td: 3.2s;
+  --tdl: -0.6s;
+}
+
+.orbit-sys .tw:nth-child(10) {
+  --ang: 118deg;
+  --rad: 162;
+  --s: 7px;
+  --c: var(--accent-color);
+  --td: 5.2s;
+  --tdl: -2.8s;
+}
+
+.orbit-sys .tw:nth-child(11) {
+  --ang: 152deg;
+  --rad: 158;
+  --s: 4px;
+  --c: var(--quote-color);
+  --td: 4.0s;
+  --tdl: -1.7s;
+}
+
+.orbit-sys .tw:nth-child(12) {
+  --ang: 174deg;
+  --rad: 165;
+  --s: 3px;
+  --c: var(--default-color);
+  --td: 3.8s;
+  --tdl: -3.1s;
+}
+
+.orbit-sys .tw:nth-child(13) {
+  --ang: 202deg;
+  --rad: 160;
+  --s: 9px;
+  --c: var(--accent-highlight);
+  --td: 5.6s;
+  --tdl: -0.4s;
+}
+
+.orbit-sys .tw:nth-child(14) {
+  --ang: 244deg;
+  --rad: 164;
+  --s: 3px;
+  --c: var(--typed-color);
+  --td: 3.4s;
+  --tdl: -2.4s;
+}
+
+.orbit-sys .tw:nth-child(15) {
+  --ang: 272deg;
+  --rad: 158;
+  --s: 7px;
+  --c: var(--quote-color);
+  --td: 4.6s;
+  --tdl: -1.0s;
+}
+
+.orbit-sys .tw:nth-child(16) {
+  --ang: 296deg;
+  --rad: 166;
+  --s: 4px;
+  --c: var(--default-color);
+  --td: 4.4s;
+  --tdl: -3.5s;
+}
+
+.orbit-sys .tw:nth-child(17) {
+  --ang: 338deg;
+  --rad: 160;
+  --s: 8px;
+  --c: var(--typed-color);
+  --td: 5.0s;
+  --tdl: -1.9s;
+}
 
 @keyframes tw-twinkle {
-  0%, 100% { opacity: 0.15; scale: 0.6; }
-  50%      { opacity: 0.9;  scale: 1; }
+
+  0%,
+  100% {
+    opacity: 0.15;
+    scale: 0.6;
+  }
+
+  50% {
+    opacity: 0.9;
+    scale: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .orbit-sys .orb,
   .orbit-sys .tw {
     display: none;
@@ -2545,12 +2724,29 @@ section,
   --os: 0.85;
 }
 
-.orbit-sys-resume .orb:nth-child(1) { --R: 122; }
-.orbit-sys-resume .orb:nth-child(2) { --R: 127; }
-.orbit-sys-resume .orb:nth-child(3) { --R: 124; }
-.orbit-sys-resume .orb:nth-child(4) { --R: 130; }
-.orbit-sys-resume .orb:nth-child(5) { --R: 120; }
-.orbit-sys-resume .tw { --rk: 0.84; }
+.orbit-sys-resume .orb:nth-child(1) {
+  --R: 122;
+}
+
+.orbit-sys-resume .orb:nth-child(2) {
+  --R: 127;
+}
+
+.orbit-sys-resume .orb:nth-child(3) {
+  --R: 124;
+}
+
+.orbit-sys-resume .orb:nth-child(4) {
+  --R: 130;
+}
+
+.orbit-sys-resume .orb:nth-child(5) {
+  --R: 120;
+}
+
+.orbit-sys-resume .tw {
+  --rk: 0.84;
+}
 
 .profile-smoke-resume {
   top: 0;
@@ -3634,6 +3830,7 @@ Map to active/hover color .typed,
   color: var(--default-color);
   font-family: 'JetBrains Mono', monospace;
 }
+
 /*--------------------------------------------------------------
 # Linux Application Menu (launched from the taskbar Menu button)
 --------------------------------------------------------------*/
@@ -3681,7 +3878,7 @@ Map to active/hover color .typed,
   padding: 0;
 }
 
-.app-menu li + li {
+.app-menu li+li {
   margin-top: 2px;
 }
 
@@ -3775,9 +3972,17 @@ Map to active/hover color .typed,
   display: inline-block;
 }
 
-.terminal-titlebar .terminal-dots span:nth-child(1) { background: #f28b82; }
-.terminal-titlebar .terminal-dots span:nth-child(2) { background: #fdd663; }
-.terminal-titlebar .terminal-dots span:nth-child(3) { background: #81c995; }
+.terminal-titlebar .terminal-dots span:nth-child(1) {
+  background: #f28b82;
+}
+
+.terminal-titlebar .terminal-dots span:nth-child(2) {
+  background: #fdd663;
+}
+
+.terminal-titlebar .terminal-dots span:nth-child(3) {
+  background: #81c995;
+}
 
 .terminal-titlebar .terminal-title {
   font-family: 'JetBrains Mono', monospace;
@@ -3798,12 +4003,32 @@ Map to active/hover color .typed,
   word-break: break-word;
 }
 
-.terminal-body .t-prompt { color: var(--accent-color); }
-.terminal-body .t-heading { color: var(--heading-color); font-weight: 700; }
-.terminal-body .t-entry-title { color: var(--accent-highlight); font-weight: 600; }
-.terminal-body .t-entry-company { color: var(--quote-color); font-weight: 600; }
-.terminal-body .t-dim { opacity: 0.75; }
-.terminal-body a { color: var(--quote-color); }
+.terminal-body .t-prompt {
+  color: var(--accent-color);
+}
+
+.terminal-body .t-heading {
+  color: var(--heading-color);
+  font-weight: 700;
+}
+
+.terminal-body .t-entry-title {
+  color: var(--accent-highlight);
+  font-weight: 600;
+}
+
+.terminal-body .t-entry-company {
+  color: var(--quote-color);
+  font-weight: 600;
+}
+
+.terminal-body .t-dim {
+  opacity: 0.75;
+}
+
+.terminal-body a {
+  color: var(--quote-color);
+}
 
 .terminal-cursor {
   display: inline-block;
@@ -3816,7 +4041,9 @@ Map to active/hover color .typed,
 }
 
 @keyframes terminal-blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 .terminal-footer {
@@ -3858,6 +4085,7 @@ Map to active/hover color .typed,
     min-width: 200px;
   }
 }
+
 /* ==============================================================
    Portfolio desktop/terminal interaction refinement
    ==============================================================
@@ -3894,11 +4122,13 @@ Map to active/hover color .typed,
   line-height: 1.25;
   letter-spacing: .02em;
   white-space: nowrap;
-  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .35);
 }
 
 @media (max-width: 480px) {
-  .theme-controls { bottom: 76px; }
+  .theme-controls {
+    bottom: 76px;
+  }
 }
 
 /* Main CV terminals */
@@ -3907,11 +4137,18 @@ Map to active/hover color .typed,
   max-height: 80vh;
   position: relative;
   transform-origin: 50% 100%;
-  transition: transform .38s cubic-bezier(.2,.75,.25,1), max-width .38s ease, max-height .38s ease;
+  transition: transform .38s cubic-bezier(.2, .75, .25, 1), max-width .38s ease, max-height .38s ease;
 }
 
-.terminal-overlay.open .terminal-window { transform: translateY(0) scale(1); }
-.terminal-overlay.is-minimizing { opacity: 0; transition: opacity .34s ease; }
+.terminal-overlay.open .terminal-window {
+  transform: translateY(0) scale(1);
+}
+
+.terminal-overlay.is-minimizing {
+  opacity: 0;
+  transition: opacity .34s ease;
+}
+
 .terminal-overlay.is-minimizing .terminal-window {
   transform: translate(0, 42vh) scale(.08);
   opacity: .15;
@@ -3970,44 +4207,66 @@ Map to active/hover color .typed,
 
 .terminal-command-btn i,
 .portfolio-command-btn i,
-.lightbox-window-panel .win-btn i { pointer-events: none; }
+.lightbox-window-panel .win-btn i {
+  pointer-events: none;
+}
 
 .terminal-command-btn.terminal-close,
 .lightbox-window-panel .win-btn-close {
   background: color-mix(in srgb, #f28b82, var(--accent-highlight) 28%);
   color: color-mix(in srgb, #321c1b, var(--background-color) 28%);
 }
+
 .terminal-command-btn.terminal-minimize,
 .lightbox-window-panel .win-btn-minimize {
   background: color-mix(in srgb, #fdd663, var(--accent-highlight) 28%);
   color: color-mix(in srgb, #332b13, var(--background-color) 28%);
 }
+
 .terminal-command-btn.terminal-maximize,
 .portfolio-command-btn.portfolio-maximize {
   background: color-mix(in srgb, #81c995, var(--accent-highlight) 28%);
   color: color-mix(in srgb, #17321e, var(--background-color) 28%);
 }
+
 .portfolio-command-btn {
   background: color-mix(in srgb, var(--surface-color), var(--accent-highlight) 8%);
   color: var(--default-color);
 }
-.portfolio-command-btn:not(.portfolio-maximize) { border-color: color-mix(in srgb, var(--accent-highlight), transparent 35%); }
+
+.portfolio-command-btn:not(.portfolio-maximize) {
+  border-color: color-mix(in srgb, var(--accent-highlight), transparent 35%);
+}
+
 .portfolio-command-btn.is-disabled,
-.lightbox-window-panel .is-disabled { opacity: .45; cursor: not-allowed; filter: grayscale(.3); }
+.lightbox-window-panel .is-disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  filter: grayscale(.3);
+}
+
 .portfolio-command-btn.is-disabled:hover,
-.lightbox-window-panel .is-disabled:hover { transform: none; box-shadow: none; }
+.lightbox-window-panel .is-disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
 
 /* Small project cards become terminal windows. */
 .portfolio .portfolio-wrap {
   border-radius: 10px;
   background: var(--surface-color);
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 62%);
-  box-shadow: 0 10px 30px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45), 0 2px 8px rgba(0, 0, 0, .3);
   isolation: isolate;
 }
 
-.portfolio .portfolio-wrap:hover { transform: translateY(-4px); }
-.portfolio .portfolio-wrap:hover img { transform: none; }
+.portfolio .portfolio-wrap:hover {
+  transform: translateY(-4px);
+}
+
+.portfolio .portfolio-wrap:hover img {
+  transform: none;
+}
 
 .portfolio-terminal-bar {
   position: absolute;
@@ -4040,7 +4299,12 @@ Map to active/hover color .typed,
   flex-shrink: 0;
 }
 
-.portfolio-command-btn { width: 27px; height: 27px; min-width: 27px; font-size: 10px; }
+.portfolio-command-btn {
+  width: 27px;
+  height: 27px;
+  min-width: 27px;
+  font-size: 10px;
+}
 
 .portfolio-image-link {
   position: absolute;
@@ -4049,12 +4313,25 @@ Map to active/hover color .typed,
   display: block;
   cursor: zoom-in;
 }
-.portfolio-image-link .visually-hidden { display: none; }
-.portfolio .portfolio-wrap > img { position: relative; z-index: 1; }
+
+.portfolio-image-link .visually-hidden {
+  display: none;
+}
+
+.portfolio .portfolio-wrap>img {
+  position: relative;
+  z-index: 1;
+}
 
 /* Keep the existing hover information useful without competing with the chrome. */
-.portfolio .portfolio-wrap .portfolio-info { z-index: 6; pointer-events: none; }
-.portfolio .portfolio-wrap .portfolio-info .content { pointer-events: none; }
+.portfolio .portfolio-wrap .portfolio-info {
+  z-index: 6;
+  pointer-events: none;
+}
+
+.portfolio .portfolio-wrap .portfolio-info .content {
+  pointer-events: none;
+}
 
 /* Maximized project thumbnail window created by JS. */
 .portfolio-window-overlay {
@@ -4065,14 +4342,24 @@ Map to active/hover color .typed,
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(10,10,14,.62);
+  background: rgba(10, 10, 14, .62);
   opacity: 0;
   visibility: hidden;
   transition: opacity .34s ease, visibility .34s ease;
 }
-.portfolio-window-overlay.open { opacity: 1; visibility: visible; }
-.portfolio-window-overlay.is-closing { opacity: 0; }
-.portfolio-window-overlay.is-minimizing { opacity: 0; }
+
+.portfolio-window-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.portfolio-window-overlay.is-closing {
+  opacity: 0;
+}
+
+.portfolio-window-overlay.is-minimizing {
+  opacity: 0;
+}
 
 .portfolio-window {
   width: 80vw;
@@ -4085,16 +4372,21 @@ Map to active/hover color .typed,
   background: var(--surface-color);
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
   border-radius: 10px;
-  box-shadow: 0 24px 70px rgba(0,0,0,.5);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .5);
   transform: translateY(12px) scale(.96);
-  transition: transform .38s cubic-bezier(.2,.75,.25,1), opacity .34s ease;
+  transition: transform .38s cubic-bezier(.2, .75, .25, 1), opacity .34s ease;
 }
-.portfolio-window-overlay.open .portfolio-window { transform: translateY(0) scale(1); }
+
+.portfolio-window-overlay.open .portfolio-window {
+  transform: translateY(0) scale(1);
+}
+
 .portfolio-window-overlay.is-minimizing .portfolio-window,
 .portfolio-window-overlay.is-closing .portfolio-window {
   transform: translateY(42vh) scale(.08);
   opacity: .15;
 }
+
 .portfolio-window-titlebar {
   min-height: 46px;
   display: flex;
@@ -4105,14 +4397,25 @@ Map to active/hover color .typed,
   background: color-mix(in srgb, var(--background-color), transparent 8%);
   border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 65%);
 }
+
 .portfolio-window-title {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--default-color);
   opacity: .8;
 }
-.portfolio-window-controls { display: flex; gap: 7px; }
-.portfolio-window-controls .portfolio-command-btn { width: 31px; height: 31px; min-width: 31px; }
+
+.portfolio-window-controls {
+  display: flex;
+  gap: 7px;
+}
+
+.portfolio-window-controls .portfolio-command-btn {
+  width: 31px;
+  height: 31px;
+  min-width: 31px;
+}
+
 .portfolio-window-media {
   flex: 1;
   min-height: 0;
@@ -4122,6 +4425,7 @@ Map to active/hover color .typed,
   padding: 14px;
   overflow: hidden;
 }
+
 .portfolio-window-media img {
   width: 100%;
   height: 100%;
@@ -4130,7 +4434,12 @@ Map to active/hover color .typed,
 }
 
 /* GLightbox: contained terminal window rather than full-screen image. */
-.goverlay { background: rgba(10,10,14,.60) !important; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.goverlay {
+  background: rgba(10, 10, 14, .60) !important;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
 .glightbox-clean .gslide-description.description-bottom {
   position: absolute !important;
   top: 0;
@@ -4144,6 +4453,7 @@ Map to active/hover color .typed,
   pointer-events: none;
   z-index: 20;
 }
+
 .lightbox-window-panel {
   justify-content: flex-end;
   align-items: center;
@@ -4151,11 +4461,32 @@ Map to active/hover color .typed,
   padding: 0;
   pointer-events: none;
 }
-.lightbox-window-panel .win-btn { pointer-events: auto; background: var(--surface-color); color: var(--default-color); }
-.lightbox-window-panel .win-btn-demo { background: #81c995; color: #17321e; }
-.lightbox-window-panel .win-btn-portfolio { background: var(--accent-highlight); color: var(--contrast-color); }
-.lightbox-window-panel .win-btn-close { background: #f28b82; color: #321c1b; }
-.lightbox-window-panel .win-btn-minimize { background: #fdd663; color: #332b13; }
+
+.lightbox-window-panel .win-btn {
+  pointer-events: auto;
+  background: var(--surface-color);
+  color: var(--default-color);
+}
+
+.lightbox-window-panel .win-btn-demo {
+  background: #81c995;
+  color: #17321e;
+}
+
+.lightbox-window-panel .win-btn-portfolio {
+  background: var(--accent-highlight);
+  color: var(--contrast-color);
+}
+
+.lightbox-window-panel .win-btn-close {
+  background: #f28b82;
+  color: #321c1b;
+}
+
+.lightbox-window-panel .win-btn-minimize {
+  background: #fdd663;
+  color: #332b13;
+}
 
 .glightbox-clean .gslide-image {
   width: min(80vw, 1100px) !important;
@@ -4166,9 +4497,10 @@ Map to active/hover color .typed,
   background: var(--surface-color);
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%);
   border-radius: 10px;
-  box-shadow: 0 24px 70px rgba(0,0,0,.5);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .5);
   overflow: hidden;
 }
+
 .glightbox-clean .gslide-image img {
   width: 100% !important;
   height: 100% !important;
@@ -4177,28 +4509,59 @@ Map to active/hover color .typed,
   border-radius: 0;
   box-shadow: none;
 }
-.glightbox-clean .gslide { align-items: center; }
+
+.glightbox-clean .gslide {
+  align-items: center;
+}
+
 .glightbox-clean .gprev,
-.glightbox-clean .gnext { display: none; }
+.glightbox-clean .gnext {
+  display: none;
+}
 
 .glightbox-container.is-terminal-minimizing .gslide-image,
 .glightbox-container.is-terminal-closing .gslide-image {
   transform: translateY(42vh) scale(.08);
   opacity: .15;
 }
+
 .glightbox-container.is-terminal-minimizing .gslide-image,
 .glightbox-container.is-terminal-closing .gslide-image {
-  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease;
+  transition: transform .36s cubic-bezier(.2, .75, .25, 1), opacity .3s ease;
 }
-.glightbox-container.is-terminal-closing { opacity: 0; transition: opacity .3s ease; }
+
+.glightbox-container.is-terminal-closing {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
 
 @media (max-width: 768px) {
-  .terminal-overlay { padding: 12px; }
+  .terminal-overlay {
+    padding: 12px;
+  }
+
   .terminal-overlay.is-maximized .terminal-window,
-  .portfolio-window { width: 92vw; max-width: 92vw; height: 82vh; max-height: 82vh; }
-  .portfolio-terminal-title { max-width: 110px; }
-  .portfolio-window-overlay { padding: 12px; }
-  .glightbox-clean .gslide-image { width: 92vw !important; max-width: 92vw !important; height: 78vh !important; max-height: 78vh !important; }
+  .portfolio-window {
+    width: 92vw;
+    max-width: 92vw;
+    height: 82vh;
+    max-height: 82vh;
+  }
+
+  .portfolio-terminal-title {
+    max-width: 110px;
+  }
+
+  .portfolio-window-overlay {
+    padding: 12px;
+  }
+
+  .glightbox-clean .gslide-image {
+    width: 92vw !important;
+    max-width: 92vw !important;
+    height: 78vh !important;
+    max-height: 78vh !important;
+  }
 }
 
 /* Certificate GLightbox visibility fix */
@@ -4209,24 +4572,32 @@ Map to active/hover color .typed,
   justify-content: center;
   visibility: visible;
 }
-.glightbox-clean .gslide-image img { display: block !important; visibility: visible !important; }
+
+.glightbox-clean .gslide-image img {
+  display: block !important;
+  visibility: visible !important;
+}
 
 
 /* Certificate cards use the same terminal chrome as project cards, with only Maximize. */
 .portfolio-item.filter-certifications .portfolio-terminal-bar {
   display: flex;
 }
+
 .portfolio-item.filter-certifications .portfolio-terminal-controls {
   margin-left: auto;
 }
-.portfolio-item.filter-certifications .portfolio-wrap > img {
+
+.portfolio-item.filter-certifications .portfolio-wrap>img {
   position: relative;
   z-index: 1;
 }
+
 .portfolio-item.filter-certifications .portfolio-image-link,
-.portfolio-item.filter-certifications .portfolio-wrap > .portfolio-info {
+.portfolio-item.filter-certifications .portfolio-wrap>.portfolio-info {
   z-index: 6;
 }
+
 /* Certificate lightbox keeps the same contained terminal-style frame, but has no command panel. */
 .glightbox-clean .gslide-image {
   background: var(--surface-color);
@@ -4236,24 +4607,28 @@ Map to active/hover color .typed,
 /* Command color correction: portfolio thumbnail actions should remain visually distinct. */
 .portfolio-terminal-controls .portfolio-command-btn:not(.portfolio-maximize) {
   color: #ffffff !important;
-  border-color: rgba(255,255,255,.22) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
 }
+
 .portfolio-terminal-controls .portfolio-command-btn[href*="onrender.com"],
 .portfolio-terminal-controls .portfolio-command-btn[aria-label="Open live demo"] {
   background: #81c995 !important;
   color: #17321e !important;
   border-color: #81c995 !important;
 }
+
 .portfolio-terminal-controls .portfolio-command-btn[href]:not([aria-label="Open live demo"]) {
   background: var(--accent-highlight) !important;
   color: #ffffff !important;
   border-color: var(--accent-highlight) !important;
 }
+
 .portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize {
   background: #81c995 !important;
   color: #17321e !important;
   border-color: #81c995 !important;
 }
+
 .portfolio-terminal-controls .portfolio-command-btn.is-disabled {
   background: color-mix(in srgb, var(--surface-color), var(--default-color) 10%) !important;
   color: color-mix(in srgb, var(--default-color), transparent 25%) !important;
@@ -4265,30 +4640,36 @@ Map to active/hover color .typed,
   z-index: 100 !important;
   pointer-events: none !important;
 }
+
 .glightbox-clean .gslide-description.description-bottom .lightbox-window-panel {
   position: relative;
   z-index: 101;
 }
+
 .glightbox-clean .lightbox-window-panel .win-btn {
-  border: 1px solid rgba(255,255,255,.28) !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,.45);
-  text-shadow: 0 1px 1px rgba(0,0,0,.18);
+  border: 1px solid rgba(255, 255, 255, .28) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .45);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .18);
 }
+
 .glightbox-clean .lightbox-window-panel .win-btn-close {
   background: #e05252 !important;
   color: #ffffff !important;
   border-color: #ff8a8a !important;
 }
+
 .glightbox-clean .lightbox-window-panel .win-btn-minimize {
   background: #e5b93f !important;
   color: #211b08 !important;
   border-color: #ffe28a !important;
 }
+
 .glightbox-clean .lightbox-window-panel .win-btn-demo {
   background: #55a86d !important;
   color: #102416 !important;
   border-color: #9be0ad !important;
 }
+
 .glightbox-clean .lightbox-window-panel .win-btn-portfolio {
   background: var(--accent-highlight) !important;
   color: #ffffff !important;
@@ -4305,6 +4686,7 @@ Map to active/hover color .typed,
   visibility: visible;
   transition: opacity .24s ease;
 }
+
 .portfolio-window-overlay.is-closing .portfolio-window {
   transform: translateY(0) scale(1);
   opacity: 1;
@@ -4319,12 +4701,14 @@ Map to active/hover color .typed,
   max-width: 80vw;
   max-height: 80vh;
 }
+
 .portfolio-window-titlebar {
   flex: 0 0 46px;
   min-height: 46px;
   box-sizing: border-box;
   padding: 7px 12px 7px 16px;
 }
+
 .portfolio-window-media {
   flex: 0 0 auto;
   width: auto;
@@ -4334,6 +4718,7 @@ Map to active/hover color .typed,
   padding: 14px;
   box-sizing: border-box;
 }
+
 .portfolio-window-media img {
   display: block;
   width: auto;
@@ -4350,12 +4735,14 @@ Map to active/hover color .typed,
   color: #ffffff !important;
   border-color: #8fb2ff !important;
 }
+
 .portfolio-terminal-controls .portfolio-command-btn[href*="onrender.com"],
 .portfolio-terminal-controls .portfolio-command-btn[aria-label="Open live demo"] {
   background: #55a86d !important;
   color: #102416 !important;
   border-color: #9be0ad !important;
 }
+
 .portfolio-terminal-controls .portfolio-command-btn[href]:not([aria-label="Open live demo"]) {
   background: #e5b93f !important;
   color: #211b08 !important;
@@ -4368,16 +4755,19 @@ Map to active/hover color .typed,
   color: #211b08 !important;
   border-color: #ffe28a !important;
 }
+
 .portfolio-window-controls .portfolio-demo {
   background: #55a86d !important;
   color: #102416 !important;
   border-color: #9be0ad !important;
 }
+
 .portfolio-window-controls .portfolio-page {
   background: #e5b93f !important;
   color: #211b08 !important;
   border-color: #ffe28a !important;
 }
+
 .portfolio-window-controls .portfolio-close {
   background: #e05252 !important;
   color: #ffffff !important;
@@ -4402,6 +4792,7 @@ Map to active/hover color .typed,
   border-radius: 10px !important;
   overflow: hidden !important;
 }
+
 .glightbox-clean .gslide-image img {
   display: block !important;
   width: auto !important;
@@ -4428,6 +4819,7 @@ Map to active/hover color .typed,
   pointer-events: none !important;
   z-index: 100 !important;
 }
+
 .lightbox-window-panel {
   width: 100%;
   height: 46px;
@@ -4436,6 +4828,7 @@ Map to active/hover color .typed,
   display: block !important;
   pointer-events: none;
 }
+
 .lightbox-window-titlebar {
   width: 100%;
   height: 46px;
@@ -4450,6 +4843,7 @@ Map to active/hover color .typed,
   border-bottom: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 65%);
   pointer-events: none;
 }
+
 .lightbox-window-title {
   min-width: 0;
   overflow: hidden;
@@ -4460,6 +4854,7 @@ Map to active/hover color .typed,
   color: var(--default-color);
   opacity: .9;
 }
+
 .lightbox-window-controls {
   display: flex;
   align-items: center;
@@ -4467,7 +4862,10 @@ Map to active/hover color .typed,
   flex-shrink: 0;
   pointer-events: auto;
 }
-.lightbox-window-panel .win-btn { pointer-events: auto; }
+
+.lightbox-window-panel .win-btn {
+  pointer-events: auto;
+}
 
 /* Push the image below the title bar without creating a bottom bar. */
 .glightbox-clean .gslide-image img {
@@ -4479,13 +4877,15 @@ Map to active/hover color .typed,
 .glightbox-container.is-terminal-minimizing .gslide-image {
   transform: translateY(42vh) scale(.08) !important;
   opacity: .15 !important;
-  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease !important;
+  transition: transform .36s cubic-bezier(.2, .75, .25, 1), opacity .3s ease !important;
 }
+
 .glightbox-container.is-terminal-closing .gslide-image {
   transform: none !important;
   opacity: 1 !important;
   transition: none !important;
 }
+
 .glightbox-container.is-terminal-closing {
   opacity: 0 !important;
   transition: opacity .24s ease !important;
@@ -4496,22 +4896,27 @@ Map to active/hover color .typed,
     max-width: 92vw;
     max-height: 82vh;
   }
+
   .portfolio-window-media {
     max-width: 92vw;
     max-height: calc(82vh - 46px);
   }
+
   .portfolio-window-media img {
     max-width: calc(92vw - 28px);
     max-height: calc(82vh - 74px);
   }
+
   .glightbox-clean .gslide-image {
     max-width: 92vw !important;
     max-height: 82vh !important;
   }
+
   .glightbox-clean .gslide-image img {
     max-width: 92vw !important;
     max-height: calc(82vh - 46px) !important;
   }
+
   .lightbox-window-title {
     font-size: 10px;
   }
@@ -4523,6 +4928,7 @@ Map to active/hover color .typed,
   color: #ffffff !important;
   border-color: #8fb2ff !important;
 }
+
 .portfolio-window-controls .portfolio-close,
 .glightbox-clean .lightbox-window-panel .win-btn-close {
   background: #c83f3f !important;
@@ -4548,7 +4954,7 @@ Map to active/hover color .typed,
   background: var(--surface-color) !important;
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
   border-radius: 8px !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,.52) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .52) !important;
   overflow: hidden !important;
 }
 
@@ -4640,13 +5046,15 @@ Map to active/hover color .typed,
 .glightbox-container.is-terminal-minimizing .gslide-image {
   transform: translateY(42vh) scale(.08) !important;
   opacity: .15 !important;
-  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease !important;
+  transition: transform .36s cubic-bezier(.2, .75, .25, 1), opacity .3s ease !important;
 }
+
 .glightbox-container.is-terminal-closing .gslide-image {
   transform: none !important;
   opacity: 1 !important;
   transition: none !important;
 }
+
 .glightbox-container.is-terminal-closing {
   opacity: 0 !important;
   transition: opacity .24s ease !important;
@@ -4663,31 +5071,40 @@ Map to active/hover color .typed,
     max-width: 94vw !important;
     max-height: 88vh !important;
   }
+
   .glightbox-clean .gslide-description.description-bottom {
     width: min(94vw, 900px) !important;
     height: 38px !important;
     min-height: 38px !important;
   }
+
   .lightbox-window-panel,
   .lightbox-window-titlebar {
     height: 38px !important;
     min-height: 38px !important;
   }
+
   .lightbox-window-titlebar {
     padding: 4px 7px 4px 10px !important;
     gap: 6px !important;
   }
+
   .lightbox-window-title {
     max-width: calc(100% - 125px) !important;
     font-size: 9px !important;
   }
-  .lightbox-window-controls { gap: 4px !important; }
+
+  .lightbox-window-controls {
+    gap: 4px !important;
+  }
+
   .lightbox-window-panel .win-btn {
     width: 25px !important;
     height: 25px !important;
     min-width: 25px !important;
     font-size: 9px !important;
   }
+
   .glightbox-clean .gslide-image img {
     max-width: 94vw !important;
     max-height: calc(88vh - 38px) !important;
@@ -4702,30 +5119,39 @@ Map to active/hover color .typed,
     max-height: 90vh !important;
     border-radius: 6px !important;
   }
+
   .glightbox-clean .gslide-description.description-bottom {
     width: 96vw !important;
     height: 36px !important;
     min-height: 36px !important;
   }
+
   .lightbox-window-panel,
   .lightbox-window-titlebar {
     height: 36px !important;
     min-height: 36px !important;
   }
+
   .lightbox-window-titlebar {
     padding: 3px 6px 3px 8px !important;
   }
+
   .lightbox-window-title {
     max-width: calc(100% - 112px) !important;
     font-size: 8px !important;
   }
-  .lightbox-window-controls { gap: 3px !important; }
+
+  .lightbox-window-controls {
+    gap: 3px !important;
+  }
+
   .lightbox-window-panel .win-btn {
     width: 23px !important;
     height: 23px !important;
     min-width: 23px !important;
     font-size: 8px !important;
   }
+
   .glightbox-clean .gslide-image img {
     max-width: 96vw !important;
     max-height: calc(90vh - 36px) !important;
@@ -4812,22 +5238,27 @@ Map to active/hover color .typed,
     max-height: 88vh !important;
     padding-top: 38px !important;
   }
+
   .glightbox-container .gslide-image img {
     max-width: 94vw !important;
     max-height: calc(88vh - 38px) !important;
   }
+
   .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
   .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
     height: 38px !important;
     min-height: 38px !important;
   }
+
   .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
     padding: 4px 7px 4px 10px !important;
   }
+
   .glightbox-container .lightbox-window-title {
     font-size: 9px !important;
     max-width: calc(100% - 120px) !important;
   }
+
   .glightbox-container .lightbox-window-panel .win-btn {
     width: 25px !important;
     height: 25px !important;
@@ -4843,23 +5274,31 @@ Map to active/hover color .typed,
     padding-top: 36px !important;
     border-radius: 6px !important;
   }
+
   .glightbox-container .gslide-image img {
     max-width: 96vw !important;
     max-height: calc(90vh - 36px) !important;
   }
+
   .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
   .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
     height: 36px !important;
     min-height: 36px !important;
   }
+
   .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
     padding: 3px 6px 3px 8px !important;
   }
+
   .glightbox-container .lightbox-window-title {
     font-size: 8px !important;
     max-width: calc(100% - 105px) !important;
   }
-  .glightbox-container .lightbox-window-controls { gap: 3px !important; }
+
+  .glightbox-container .lightbox-window-controls {
+    gap: 3px !important;
+  }
+
   .glightbox-container .lightbox-window-panel .win-btn {
     width: 23px !important;
     height: 23px !important;
@@ -4890,11 +5329,11 @@ Map to active/hover color .typed,
   background: var(--surface-color) !important;
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 50%) !important;
   border-radius: 7px !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,.52) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .52) !important;
 }
 
 /* The description is now a child of the window body, not a second overlay. */
-.glightbox-container .gslide-image > .gslide-description.description-bottom,
+.glightbox-container .gslide-image>.gslide-description.description-bottom,
 .glightbox-container .gslide-description.description-bottom.lightbox-terminal-mounted {
   position: absolute !important;
   inset: 0 0 auto 0 !important;
@@ -4973,31 +5412,35 @@ Map to active/hover color .typed,
   justify-content: center !important;
   box-sizing: border-box !important;
   pointer-events: auto !important;
-  border: 1px solid rgba(255,255,255,.25) !important;
+  border: 1px solid rgba(255, 255, 255, .25) !important;
 }
 
 .glightbox-container .lightbox-window-panel .win-btn-minimize {
   background: #fdd663 !important;
   color: #332b13 !important;
 }
+
 .glightbox-container .lightbox-window-panel .win-btn-demo {
   background: #81c995 !important;
   color: #17321e !important;
 }
+
 .glightbox-container .lightbox-window-panel .win-btn-portfolio {
   background: var(--accent-highlight) !important;
   color: var(--contrast-color) !important;
 }
+
 .glightbox-container .lightbox-window-panel .win-btn-close {
   background: #c83f3f !important;
   color: #fff !important;
 }
+
 .glightbox-container .lightbox-window-panel .win-btn:hover {
   transform: scale(1.08) !important;
 }
 
 /* The actual project/certificate image occupies only the body below the title. */
-.glightbox-container .gslide-image > img,
+.glightbox-container .gslide-image>img,
 .glightbox-container .gslide-image img {
   display: block !important;
   width: auto !important;
@@ -5019,13 +5462,15 @@ Map to active/hover color .typed,
 .glightbox-container.is-terminal-minimizing .gslide-image {
   transform: translateY(42vh) scale(.08) !important;
   opacity: .15 !important;
-  transition: transform .36s cubic-bezier(.2,.75,.25,1), opacity .3s ease !important;
+  transition: transform .36s cubic-bezier(.2, .75, .25, 1), opacity .3s ease !important;
 }
+
 .glightbox-container.is-terminal-closing .gslide-image {
   transform: none !important;
   opacity: 1 !important;
   transition: none !important;
 }
+
 .glightbox-container.is-terminal-closing {
   opacity: 0 !important;
   transition: opacity .24s ease !important;
@@ -5039,28 +5484,36 @@ Map to active/hover color .typed,
     max-height: 86vh !important;
     padding-top: 38px !important;
   }
+
   .glightbox-container .gslide-description.description-bottom.lightbox-terminal-mounted,
-  .glightbox-container .gslide-image > .gslide-description.description-bottom {
+  .glightbox-container .gslide-image>.gslide-description.description-bottom {
     height: 38px !important;
     min-height: 38px !important;
     max-height: 38px !important;
   }
+
   .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
   .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
     height: 38px !important;
     min-height: 38px !important;
   }
+
   .glightbox-container .lightbox-window-title {
     max-width: calc(100% - 118px) !important;
     font-size: 9px !important;
   }
-  .glightbox-container .lightbox-window-controls { gap: 4px !important; }
+
+  .glightbox-container .lightbox-window-controls {
+    gap: 4px !important;
+  }
+
   .glightbox-container .lightbox-window-panel .win-btn {
     width: 25px !important;
     height: 25px !important;
     min-width: 25px !important;
     font-size: 9px !important;
   }
+
   .glightbox-container .gslide-image img {
     max-width: 100% !important;
     max-height: calc(86vh - 40px) !important;
@@ -5076,28 +5529,36 @@ Map to active/hover color .typed,
     padding-top: 36px !important;
     border-radius: 5px !important;
   }
+
   .glightbox-container .gslide-description.description-bottom.lightbox-terminal-mounted,
-  .glightbox-container .gslide-image > .gslide-description.description-bottom {
+  .glightbox-container .gslide-image>.gslide-description.description-bottom {
     height: 36px !important;
     min-height: 36px !important;
     max-height: 36px !important;
   }
+
   .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
   .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar {
     height: 36px !important;
     min-height: 36px !important;
   }
+
   .glightbox-container .lightbox-window-title {
     max-width: calc(100% - 104px) !important;
     font-size: 8px !important;
   }
-  .glightbox-container .lightbox-window-controls { gap: 3px !important; }
+
+  .glightbox-container .lightbox-window-controls {
+    gap: 3px !important;
+  }
+
   .glightbox-container .lightbox-window-panel .win-btn {
     width: 23px !important;
     height: 23px !important;
     min-width: 23px !important;
     font-size: 8px !important;
   }
+
   .glightbox-container .gslide-image img {
     max-height: calc(88vh - 38px) !important;
   }
@@ -5139,7 +5600,7 @@ Map to active/hover color .typed,
   background: var(--surface-color) !important;
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 45%) !important;
   border-radius: 7px !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,.55) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .55) !important;
 }
 
 /* The description is no longer an independent GLightbox bar. */
@@ -5218,11 +5679,11 @@ Map to active/hover color .typed,
   justify-content: center !important;
   box-sizing: border-box !important;
   pointer-events: auto !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,.35) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .35) !important;
 }
 
-.glightbox-container .gslide.current .gslide-image > img,
-.glightbox-container .gslide.current .gslide-image > .gslide-description ~ img,
+.glightbox-container .gslide.current .gslide-image>img,
+.glightbox-container .gslide.current .gslide-image>.gslide-description~img,
 .glightbox-container .gslide.current .gslide-image img {
   position: relative !important;
   z-index: 1 !important;
@@ -5238,31 +5699,41 @@ Map to active/hover color .typed,
 }
 
 /* Keep GLightbox's own close control out; terminal Close is the only Close. */
-.glightbox-container .gclose { display: none !important; }
+.glightbox-container .gclose {
+  display: none !important;
+}
 
 @media (max-width: 900px) {
   .glightbox-container .gslide.current .gslide-image {
     max-width: 94vw !important;
     max-height: 88vh !important;
   }
+
   .glightbox-container .gslide.current .gslide-image img {
     max-width: 100% !important;
     max-height: calc(88vh - 40px) !important;
   }
+
   .glightbox-container .gslide.current .lightbox-window-titlebar,
   .glightbox-container .gslide.current .lightbox-window-panel {
     height: 40px !important;
     min-height: 40px !important;
   }
+
   .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted {
     height: 40px !important;
     min-height: 40px !important;
   }
+
   .glightbox-container .gslide.current .lightbox-window-title {
     max-width: calc(100% - 126px) !important;
     font-size: 9px !important;
   }
-  .glightbox-container .gslide.current .lightbox-window-controls { gap: 4px !important; }
+
+  .glightbox-container .gslide.current .lightbox-window-controls {
+    gap: 4px !important;
+  }
+
   .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
     width: 24px !important;
     height: 24px !important;
@@ -5276,20 +5747,27 @@ Map to active/hover color .typed,
     max-width: 96vw !important;
     max-height: 90vh !important;
   }
+
   .glightbox-container .gslide.current .gslide-image img {
     max-height: calc(90vh - 38px) !important;
   }
+
   .glightbox-container .gslide.current .lightbox-window-titlebar,
   .glightbox-container .gslide.current .lightbox-window-panel,
   .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted {
     height: 38px !important;
     min-height: 38px !important;
   }
+
   .glightbox-container .gslide.current .lightbox-window-title {
     max-width: calc(100% - 105px) !important;
     font-size: 8px !important;
   }
-  .glightbox-container .gslide.current .lightbox-window-controls { gap: 3px !important; }
+
+  .glightbox-container .gslide.current .lightbox-window-controls {
+    gap: 3px !important;
+  }
+
   .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
     width: 22px !important;
     height: 22px !important;
@@ -5309,30 +5787,37 @@ Map to active/hover color .typed,
    ========================================================================= */
 
 /* --- Theme tokens ------------------------------------------------------- */
-:root { /* Everforest (default) */
+:root {
+  /* Everforest (default) */
   --cmd-red: #E67E80;
   --cmd-yellow: #DBBC7F;
   --cmd-green: #A7C080;
-  --cmd-on: #232A2E;            /* icon color on top of the fills */
+  --cmd-on: #232A2E;
+  /* icon color on top of the fills */
 }
-[data-theme="aurora"] {         /* Nord Aurora */
+
+[data-theme="aurora"] {
+  /* Nord Aurora */
   --cmd-red: #BF616A;
   --cmd-yellow: #EBCB8B;
   --cmd-green: #A3BE8C;
   --cmd-on: #1E222A;
 }
+
 [data-theme="gruvbox"] {
   --cmd-red: #fb4934;
   --cmd-yellow: #fabd2f;
   --cmd-green: #b8bb26;
   --cmd-on: #1d2021;
 }
+
 [data-theme="draculapro"] {
   --cmd-red: #ff6e6e;
   --cmd-yellow: #f1fa8c;
   --cmd-green: #50fa7b;
   --cmd-on: #131516;
 }
+
 [data-theme="monokai"] {
   --cmd-red: #ff6188;
   --cmd-yellow: #ffed72;
@@ -5357,9 +5842,10 @@ html body .lightbox-window-panel .win-btn {
   background: var(--_c) !important;
   color: var(--cmd-on) !important;
   border: 1px solid color-mix(in srgb, var(--_c), #000 25%) !important;
-  box-shadow: 0 1px 4px rgba(0,0,0,.35) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .35) !important;
   text-shadow: none !important;
 }
+
 html body .terminal-command-btn:hover,
 html body .terminal-command-btn:focus-visible,
 html body .portfolio-command-btn:hover,
@@ -5368,30 +5854,40 @@ html body .lightbox-window-panel .win-btn:hover,
 html body .lightbox-window-panel .win-btn:focus-visible {
   background: color-mix(in srgb, var(--_c), #fff 14%) !important;
   color: var(--cmd-on) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--_c), transparent 60%), 0 2px 8px rgba(0,0,0,.4) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--_c), transparent 60%), 0 2px 8px rgba(0, 0, 0, .4) !important;
   transform: translateY(-1px) scale(1.08) !important;
 }
 
 /* Per-action colors: CV terminals, project cards, maximized window, lightbox */
 html body .terminal-command-btn.terminal-close,
 html body .portfolio-window-controls .portfolio-close,
-html body .lightbox-window-panel .win-btn-close                { --_c: var(--cmd-close); }
+html body .lightbox-window-panel .win-btn-close {
+  --_c: var(--cmd-close);
+}
 
 html body .terminal-command-btn.terminal-minimize,
 html body .portfolio-window-controls .portfolio-minimize,
-html body .lightbox-window-panel .win-btn-minimize             { --_c: var(--cmd-minimize); }
+html body .lightbox-window-panel .win-btn-minimize {
+  --_c: var(--cmd-minimize);
+}
 
 html body .terminal-command-btn.terminal-maximize,
-html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize { --_c: var(--cmd-maximize); }
+html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-maximize {
+  --_c: var(--cmd-maximize);
+}
 
 html body .portfolio-terminal-controls .portfolio-command-btn[aria-label="Open live demo"],
 html body .portfolio-terminal-controls .portfolio-command-btn[href*="onrender.com"],
 html body .portfolio-window-controls .portfolio-demo,
-html body .lightbox-window-panel .win-btn-demo                 { --_c: var(--cmd-demo); }
+html body .lightbox-window-panel .win-btn-demo {
+  --_c: var(--cmd-demo);
+}
 
 html body .portfolio-terminal-controls .portfolio-command-btn[href]:not([aria-label="Open live demo"]),
 html body .portfolio-window-controls .portfolio-page,
-html body .lightbox-window-panel .win-btn-portfolio            { --_c: var(--cmd-project); }
+html body .lightbox-window-panel .win-btn-portfolio {
+  --_c: var(--cmd-project);
+}
 
 /* Disabled (no live demo): neutral, theme-tinted, clearly inactive */
 html body .portfolio-command-btn.is-disabled,
@@ -5411,9 +5907,12 @@ html body .lightbox-window-panel .win-btn.is-disabled {
   background: color-mix(in srgb, var(--background-color), #000 55%) !important;
   opacity: .92;
 }
+
 .glightbox-container .gclose,
 .glightbox-container .gprev,
-.glightbox-container .gnext { display: none !important; }
+.glightbox-container .gnext {
+  display: none !important;
+}
 
 /* Center the single window */
 .glightbox-container .gslide.current .gslide-inner-content,
@@ -5426,6 +5925,7 @@ html body .lightbox-window-panel .win-btn.is-disabled {
   align-items: center !important;
   justify-content: center !important;
 }
+
 .glightbox-container .gslide.current .gslide-media {
   width: auto !important;
   height: auto !important;
@@ -5459,12 +5959,12 @@ html body .glightbox-container .gslide.current .gslide-image {
   background: var(--surface-color) !important;
   border: 1px solid color-mix(in srgb, var(--cmd-green), transparent 55%) !important;
   border-radius: 10px !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,.6) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .6) !important;
 }
 
 /* Title bar: in normal flow (this is what stops it covering the image) */
 html body .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted,
-html body .glightbox-container .gslide.current .gslide-image > .gslide-description {
+html body .glightbox-container .gslide.current .gslide-image>.gslide-description {
   position: static !important;
   order: -1 !important;
   flex: 0 0 auto !important;
@@ -5482,8 +5982,12 @@ html body .glightbox-container .gslide.current .gslide-image > .gslide-descripti
   pointer-events: auto !important;
   z-index: 2 !important;
 }
+
 .glightbox-container .gslide.current .gdesc-inner,
-.glightbox-container .gslide.current .gslide-desc { padding: 0 !important; margin: 0 !important; }
+.glightbox-container .gslide.current .gslide-desc {
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
 html body .glightbox-container .gslide.current .lightbox-window-panel {
   display: block !important;
@@ -5492,6 +5996,7 @@ html body .glightbox-container .gslide.current .lightbox-window-panel {
   padding: 0 !important;
   margin: 0 !important;
 }
+
 html body .glightbox-container .gslide.current .lightbox-window-titlebar {
   display: flex !important;
   align-items: center !important;
@@ -5508,6 +6013,7 @@ html body .glightbox-container .gslide.current .lightbox-window-titlebar {
   border-radius: 0 !important;
   pointer-events: auto !important;
 }
+
 html body .glightbox-container .gslide.current .lightbox-window-title {
   flex: 1 1 auto;
   min-width: 0;
@@ -5520,6 +6026,7 @@ html body .glightbox-container .gslide.current .lightbox-window-title {
   line-height: 1;
   color: var(--default-color) !important;
 }
+
 html body .glightbox-container .gslide.current .lightbox-window-controls {
   display: flex !important;
   align-items: center !important;
@@ -5527,6 +6034,7 @@ html body .glightbox-container .gslide.current .lightbox-window-controls {
   flex: 0 0 auto !important;
   pointer-events: auto !important;
 }
+
 html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
   width: 26px !important;
   height: 26px !important;
@@ -5542,7 +6050,7 @@ html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
 }
 
 /* Image sits BELOW the title bar */
-html body .glightbox-container .gslide.current .gslide-image > img,
+html body .glightbox-container .gslide.current .gslide-image>img,
 html body .glightbox-container .gslide.current .gslide-image img {
   position: static !important;
   display: block !important;
@@ -5558,21 +6066,61 @@ html body .glightbox-container .gslide.current .gslide-image img {
 }
 
 /* Close = fade, minimize = shrink (unchanged behavior, themed shadow) */
-.glightbox-container.is-terminal-closing { opacity: 0; transition: opacity .25s ease; }
+.glightbox-container.is-terminal-closing {
+  opacity: 0;
+  transition: opacity .25s ease;
+}
 
 @media (max-width: 900px) {
-  html body .glightbox-container .gslide.current .gslide-image { max-width: 95vw !important; max-height: 88vh !important; }
-  html body .glightbox-container .gslide.current .gslide-image img { max-height: calc(88vh - 40px) !important; }
-  html body .glightbox-container .gslide.current .lightbox-window-titlebar { height: 40px !important; min-height: 40px !important; }
-  html body .glightbox-container .gslide.current .lightbox-window-title { font-size: 10px !important; }
+  html body .glightbox-container .gslide.current .gslide-image {
+    max-width: 95vw !important;
+    max-height: 88vh !important;
+  }
+
+  html body .glightbox-container .gslide.current .gslide-image img {
+    max-height: calc(88vh - 40px) !important;
+  }
+
+  html body .glightbox-container .gslide.current .lightbox-window-titlebar {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  html body .glightbox-container .gslide.current .lightbox-window-title {
+    font-size: 10px !important;
+  }
 }
+
 @media (max-width: 520px) {
-  html body .glightbox-container .gslide.current .gslide-image { max-width: 97vw !important; min-width: 0 !important; }
-  html body .glightbox-container .gslide.current .gslide-image img { max-height: calc(88vh - 38px) !important; }
-  html body .glightbox-container .gslide.current .lightbox-window-titlebar { height: 38px !important; min-height: 38px !important; padding: 0 8px 0 10px !important; }
-  html body .glightbox-container .gslide.current .lightbox-window-title { font-size: 9px !important; }
-  html body .glightbox-container .gslide.current .lightbox-window-controls { gap: 4px !important; }
-  html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn { width: 24px !important; height: 24px !important; min-width: 24px !important; font-size: 9px !important; }
+  html body .glightbox-container .gslide.current .gslide-image {
+    max-width: 97vw !important;
+    min-width: 0 !important;
+  }
+
+  html body .glightbox-container .gslide.current .gslide-image img {
+    max-height: calc(88vh - 38px) !important;
+  }
+
+  html body .glightbox-container .gslide.current .lightbox-window-titlebar {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 8px 0 10px !important;
+  }
+
+  html body .glightbox-container .gslide.current .lightbox-window-title {
+    font-size: 9px !important;
+  }
+
+  html body .glightbox-container .gslide.current .lightbox-window-controls {
+    gap: 4px !important;
+  }
+
+  html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    font-size: 9px !important;
+  }
 }
 
 
@@ -5589,25 +6137,30 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
   background: var(--_c) !important;
   color: var(--cmd-on) !important;
   border: 1px solid color-mix(in srgb, var(--_c), #000 25%) !important;
-  box-shadow: 0 1px 4px rgba(0,0,0,.35) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .35) !important;
 }
+
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-maximize {
   --_c: var(--cmd-maximize);
 }
+
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[aria-label="Open live demo"],
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[href*="onrender.com"],
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[href*="github.io"] {
   --_c: var(--cmd-demo);
 }
+
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn[aria-label="Open portfolio project"] {
   --_c: var(--cmd-project);
 }
+
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-command-btn:hover,
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.portfolio-command-btn:focus-visible {
   background: color-mix(in srgb, var(--_c), #fff 14%) !important;
   color: var(--cmd-on) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--_c), transparent 60%), 0 2px 8px rgba(0,0,0,.4) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--_c), transparent 60%), 0 2px 8px rgba(0, 0, 0, .4) !important;
 }
+
 html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-btn.is-disabled {
   background: color-mix(in srgb, var(--surface-color), var(--default-color) 12%) !important;
   color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
@@ -5624,11 +6177,12 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 55%);
   color: var(--accent-highlight);
   text-shadow: none;
-  box-shadow: 0 4px 14px rgba(0,0,0,.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .3);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
+
 .theme-controls .theme-notice:empty {
   background: transparent;
   border-color: transparent;
@@ -5649,7 +6203,10 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
   opacity: 1 !important;
   transition: none !important;
 }
-.terminal-overlay.is-minimizing { transition: opacity .2s ease; }
+
+.terminal-overlay.is-minimizing {
+  transition: opacity .2s ease;
+}
 
 
 
@@ -5674,6 +6231,7 @@ html body .theme-controls .theme-notice {
   min-height: 0;
   transition: none;
 }
+
 html body .theme-controls .theme-notice:empty {
   background: transparent;
   padding: 8px 0;
@@ -5700,9 +6258,10 @@ html body .glightbox-container .gslide.current .gslide-video {
   background: var(--surface-color) !important;
   border: 1px solid color-mix(in srgb, var(--cmd-green), transparent 55%) !important;
   border-radius: 10px !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,.6) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .6) !important;
 }
-html body .glightbox-container .gslide.current .gslide-video > .gslide-description {
+
+html body .glightbox-container .gslide.current .gslide-video>.gslide-description {
   position: static !important;
   order: -1 !important;
   flex: 0 0 auto !important;
@@ -5715,13 +6274,18 @@ html body .glightbox-container .gslide.current .gslide-video > .gslide-descripti
   display: block !important;
   z-index: 2 !important;
 }
+
 html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
   width: 100% !important;
   margin: 0 !important;
   max-width: none !important;
 }
+
 @media (max-width: 900px) {
-  html body .glightbox-container .gslide.current .gslide-video { width: 95vw !important; max-width: 95vw !important; }
+  html body .glightbox-container .gslide.current .gslide-video {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
 }
 
 /* =========================================================================
@@ -5736,6 +6300,7 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
 .terminal-overlay.is-hard-closed .terminal-window {
   transition: none !important;
 }
+
 .terminal-overlay.is-hard-closed {
   opacity: 0 !important;
   visibility: hidden !important;
@@ -5743,39 +6308,48 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
 
 /* 2a) Mobile theme notice clearance */
 @media (max-width: 768px) {
-  .theme-controls { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  .theme-controls {
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* 2b) Lightbox title bar + command buttons */
-@media (max-width: 900px), (pointer: coarse) {
+@media (max-width: 900px),
+(pointer: coarse) {
   html body .glightbox-container .gslide.current .gslide-image {
     max-height: 88vh !important;
     max-height: 88dvh !important;
   }
+
   html body .glightbox-container .gslide.current .gslide-image img {
     max-height: calc(88vh - 44px) !important;
     max-height: calc(88dvh - 44px) !important;
   }
+
   html body .glightbox-container .gslide.current .lightbox-window-titlebar,
   html body .glightbox-container .gslide.current .lightbox-window-panel,
   html body .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted,
-  html body .glightbox-container .gslide.current .gslide-image > .gslide-description {
+  html body .glightbox-container .gslide.current .gslide-image>.gslide-description {
     height: 44px !important;
     min-height: 44px !important;
     max-height: 44px !important;
   }
+
   html body .glightbox-container .gslide.current .lightbox-window-titlebar {
     padding: 0 8px 0 10px !important;
     gap: 6px !important;
   }
+
   html body .glightbox-container .gslide.current .lightbox-window-title {
     flex: 1 1 auto !important;
     max-width: none !important;
     font-size: 10px !important;
   }
+
   html body .glightbox-container .gslide.current .lightbox-window-controls {
     gap: 6px !important;
   }
+
   html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn {
     width: 34px !important;
     height: 34px !important;
@@ -5786,21 +6360,30 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
 }
 
 /* 2c) CV terminal + project card command buttons */
-@media (max-width: 768px), (pointer: coarse) {
-  .terminal-titlebar { min-height: 52px; }
+@media (max-width: 768px),
+(pointer: coarse) {
+  .terminal-titlebar {
+    min-height: 52px;
+  }
+
   .terminal-titlebar .terminal-title {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .terminal-command-buttons { gap: 8px; }
+
+  .terminal-command-buttons {
+    gap: 8px;
+  }
+
   html body .terminal-command-btn {
     width: 36px;
     height: 36px;
     min-width: 36px;
     touch-action: manipulation;
   }
+
   html body .portfolio-command-btn {
     width: 34px;
     height: 34px;
@@ -5811,6 +6394,7 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
 
 /* Hover grow feels like a stuck state on touch screens. */
 @media (hover: none) {
+
   html body .terminal-command-btn:hover,
   html body .portfolio-command-btn:hover,
   html body .lightbox-window-panel .win-btn:hover,
@@ -5833,42 +6417,63 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
    ========================================================================= */
 
 /* A) Never allow sideways page scroll / zoom-out */
-html { overflow-x: hidden; }
-body { overflow-x: clip; max-width: 100%; }
-@supports (overflow: clip) {
-  html { overflow-x: clip; }
+html {
+  overflow-x: hidden;
 }
+
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+@supports (overflow: clip) {
+  html {
+    overflow-x: clip;
+  }
+}
+
 /* Fallback for browsers without `overflow: clip` on the clipped sections */
 @supports not (overflow: clip) {
-  section, .section { overflow-x: hidden; }
+
+  section,
+  .section {
+    overflow-x: hidden;
+  }
 }
+
 /* On small screens, AOS horizontal fades start below, not off to the side */
 @media (max-width: 991px) {
+
   html body [data-aos="fade-left"]:not(.aos-animate),
   html body [data-aos="fade-right"]:not(.aos-animate) {
     transform: translate3d(0, 24px, 0) !important;
   }
 }
+
 /* B) Video lightbox: size by BOTH width and height so the title bar and its
       buttons always stay on screen (16:9 video + 44px title bar). */
 html body .glightbox-container .gslide.current .gslide-video {
   width: min(95vw, calc((100vh - 96px - 44px) * 16 / 9)) !important;
   max-width: min(95vw, calc((100vh - 96px - 44px) * 16 / 9)) !important;
 }
+
 @supports (height: 100dvh) {
   html body .glightbox-container .gslide.current .gslide-video {
     width: min(95vw, calc((100dvh - 96px - 44px) * 16 / 9)) !important;
     max-width: min(95vw, calc((100dvh - 96px - 44px) * 16 / 9)) !important;
   }
 }
+
 @media (max-height: 520px) {
   html body .glightbox-container .gslide.current .gslide-video {
     width: min(95vw, calc((100vh - 24px - 44px) * 16 / 9)) !important;
     max-width: min(95vw, calc((100vh - 24px - 44px) * 16 / 9)) !important;
   }
+
   html body .glightbox-container .gslide.current .gslide-image {
     max-height: calc(100vh - 24px) !important;
   }
+
   html body .glightbox-container .gslide.current .gslide-image img {
     max-height: calc(100vh - 24px - 44px) !important;
   }
@@ -5880,9 +6485,18 @@ html body .glightbox-container .gslide.current .gslide-video {
    (no fixed height, no cropping).
    ========================================================================= */
 @media (max-width: 768px) {
-  .screenshots-swiper .swiper-wrapper { align-items: flex-start !important; }
-  .screenshots-swiper .swiper-slide { height: auto !important; }
-  .screenshots-swiper .portfolio-wrap { height: auto !important; }
+  .screenshots-swiper .swiper-wrapper {
+    align-items: flex-start !important;
+  }
+
+  .screenshots-swiper .swiper-slide {
+    height: auto !important;
+  }
+
+  .screenshots-swiper .portfolio-wrap {
+    height: auto !important;
+  }
+
   .screenshots-swiper .portfolio-wrap img {
     display: block;
     width: 100% !important;
