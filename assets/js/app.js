@@ -723,11 +723,41 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     flyIn(w);
   }
 
+  /* Taskbar button leaving after its window closed: a quick press, then it shrinks and fades
+     while its width collapses, so the neighbouring buttons glide together instead of jumping.
+     Resolves true when the animation is running (the button removes itself when it ends). */
+  function dismissTaskbarBtn(btn) {
+    if (!btn || !btn.isConnected || reduceMotion()) return false;
+    const cs = getComputedStyle(btn);
+    const gap = parseFloat(getComputedStyle(btn.parentNode).columnGap) || 0;
+    const width = btn.getBoundingClientRect().width;
+    btn.style.pointerEvents = 'none';
+    btn.style.overflow = 'hidden';
+    btn.style.whiteSpace = 'nowrap';
+    btn.setAttribute('aria-hidden', 'true');
+    btn.tabIndex = -1;
+    const a = btn.animate([
+      { opacity: 1, transform: 'scale(1)', width: width + 'px', minWidth: width + 'px',
+        paddingLeft: cs.paddingLeft, paddingRight: cs.paddingRight, marginRight: '0px', offset: 0 },
+      { opacity: 1, transform: 'scale(.86)', width: width + 'px', minWidth: width + 'px',
+        paddingLeft: cs.paddingLeft, paddingRight: cs.paddingRight, marginRight: '0px', offset: 0.22 },
+      { opacity: 0, transform: 'scale(.3)', width: '0px', minWidth: '0px',
+        paddingLeft: '0px', paddingRight: '0px', marginRight: (-gap) + 'px', offset: 1 }
+    ], { duration: 320, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+    const done = () => btn.remove();
+    a.finished.then(done).catch(done);
+    return true;
+  }
+
   async function closeWindow(w, instant) {
     if (w.busy) return;
     w.busy = true;
     let anim = null;
-    if (!instant) anim = await fadeOut(w);          // instant = no await, so the swap is synchronous
+    let leaving = false;
+    if (!instant) {
+      leaving = dismissTaskbarBtn(w.taskbarBtn);   // starts together with the window fade
+      anim = await fadeOut(w);                     // instant = no await, so the swap is synchronous
+    }
     if (w.frame) frames.delete(w.frame);
     if (w.ro) w.ro.disconnect();
     if (w.adopted) store.appendChild(w.adopted);    // keep Resume/Portfolio state for next open
@@ -735,7 +765,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     if (anim) anim.cancel();
     wins.delete(w.id);
     taskbarBtns.delete(w.id);                      // the taskbar button goes away with the window
-    if (w.taskbarBtn) w.taskbarBtn.remove();
+    if (w.taskbarBtn && !leaving) w.taskbarBtn.remove();
     if (focused === w) { focused = null; focusNext(); } else refreshTaskbar();
   }
 
