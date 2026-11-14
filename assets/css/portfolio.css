@@ -140,3 +140,152 @@
 @media (prefers-reduced-motion: reduce) {
   .pj * { transition-duration: .01ms !important; }
 }
+/*--------------------------------------------------------------
+# DESKTOP sidebar layout (Linux Mint style), window wider than 760px
+#   Same pattern as the Resume and project windows. Markup and
+#   portfolio.js are unchanged (chips keep data-filter / aria-pressed,
+#   cards keep [hidden]). Below 761px the layout above still applies.
+#
+#   ┌────────────────┬─────────────────────────────────────────┐
+#   │ Projects       │  ┌────────┐ ┌────────┐ ┌────────┐         │
+#   │ short lead     │  │  card  │ │  card  │ │  card  │         │
+#   │ [View resume]  │  └────────┘ └────────┘ └────────┘         │
+#   ├────────────────┤  ┌────────┐ ┌────────┐                    │
+#   │ CATEGORIES     │  │  card  │ │  card  │   only this pane   │
+#   │ ▌All        9  │  └────────┘ └────────┘   scrolls          │
+#   │  SEO        4  │                                           │
+#   │  WordPress  2  │                                           │
+#   │  Web Dev    5  │                                           │
+#   │  Certificates 2│                                           │
+#   └────────────────┴─────────────────────────────────────────┘
+--------------------------------------------------------------*/
+
+/* The window body hands its full height to the section at every width.
+   (Narrow windows: the section itself scrolls, exactly as before.) */
+.wm-body:has(> section.pj) { display: flex; flex-direction: column; overflow: hidden; scroll-behavior: auto; }
+.wm-body > section.pj { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+
+@container wm (min-width: 761px) {
+
+  .wm-body > section.pj {
+    --pj-side: calc(var(--pj-s) * 14);
+    --pj-r: .45em;
+    --pj-sidebar-bg: color-mix(in srgb, var(--background-color), #000 20%);
+
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: var(--pj-side) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 0;
+    overflow: hidden;                      /* the sidebar stays put; only the cards scroll */
+  }
+
+  /* sidebar panel */
+  .pj::before {
+    content: '';
+    z-index: -1;
+    grid-row: 1 / -1;
+    grid-column: 1;
+    background: var(--pj-sidebar-bg);
+    border-right: 1px solid var(--pj-line);
+  }
+
+  /* ---------- Sidebar top: title, lead, resume button ---------- */
+  .pj-head {
+    grid-row: 1;
+    grid-column: 1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1em;
+    margin: 0;
+    padding: 1.3em 1.1em 1.1em;
+    border-bottom: 1px solid var(--pj-line);
+  }
+  .pj-title { margin: 0 0 .35em; font-size: 1.45em; }
+  .pj-lead { max-width: none; font-size: .9em; line-height: 1.55; }
+  .pj-btn { width: 100%; padding: .55em .9em; border-radius: var(--pj-r); text-align: center; }
+
+  /* ---------- Sidebar: category list ---------- */
+  .pj-filters {
+    grid-row: 2;
+    grid-column: 1;
+    align-self: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: .2em;
+    margin: 0;
+    padding: .9em .7em 1em;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .pj-filters::before {
+    content: 'Categories';
+    padding: 0 .7em .45em;
+    font-size: .72em;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    opacity: .7;
+  }
+
+  .pj-chip {
+    justify-content: flex-start;
+    gap: .75em;
+    width: 100%;
+    padding: .6em .8em;
+    border: 0;
+    border-radius: var(--pj-r);
+    background: transparent;
+    font-size: 1em;
+    text-align: left;
+  }
+  .pj-chip:hover { background: var(--pj-hover); }
+
+  /* icon per category (Font Awesome is already loaded for the cards) */
+  .pj-chip::before {
+    width: 1.25em;
+    flex: 0 0 auto;
+    text-align: center;
+    font-family: "Font Awesome 6 Free", "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f07b";                                   /* folder, fallback */
+  }
+  .pj-chip[data-filter="all"]::before       { content: "\f009"; }   /* grid */
+  .pj-chip[data-filter="seo"]::before       { content: "\f002"; }   /* magnifier */
+  .pj-chip[data-filter="webdev"]::before    { content: "\f121"; }   /* code */
+  .pj-chip[data-filter="cert"]::before      { content: "\f559"; }   /* award */
+  .pj-chip[data-filter="wordpress"]::before { content: "\f19a"; font-family: "Font Awesome 6 Brands", "Font Awesome 5 Brands"; font-weight: 400; }
+
+  /* count becomes a small pill on the right */
+  .pj-chip span {
+    margin-left: auto;
+    min-width: 1.7em;
+    padding: .05em .5em;
+    border-radius: 999px;
+    background: var(--pj-hover);
+    font-size: .82em;
+    font-weight: 600;
+    text-align: center;
+    opacity: 1;
+  }
+  .pj-chip[aria-pressed="true"] { box-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
+  .pj-chip[aria-pressed="true"] span { background: var(--pj-on-accent); color: var(--pj-accent); }
+
+  /* ---------- Content pane: the card grid scrolls on its own ---------- */
+  .pj-grid {
+    grid-row: 1 / -1;
+    grid-column: 2;
+    min-height: 0;
+    align-content: start;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15em), 1fr));
+    gap: 1.1em;
+    padding: 1.6em 1.8em 2.4em;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sb-thumb, var(--accent-highlight)) transparent;
+  }
+  .pj-card { border-radius: .6em; }
+}

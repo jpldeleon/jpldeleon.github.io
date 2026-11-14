@@ -515,3 +515,170 @@ html.dev .rv-h::before { content: '## '; font-family: var(--rv-mono); font-weigh
   .rv-pdf { grid-row: 3; grid-column: 2; }
   .rv-scroll { padding: 1em .9em calc(1.6em + env(safe-area-inset-bottom, 0px)); }
 }
+
+/*--------------------------------------------------------------
+# Resume viewer: DESKTOP sidebar layout (Linux Mint style)
+# Load AFTER resume-viewer.css. Markup and JS unchanged.
+# Only applies when the WINDOW is wider than 760px. At 760px and
+# below, the phone rules in resume-viewer.css (icon rail) still win.
+#
+#   ┌───────────────┬──────────────────────────────────────────┐
+#   │ [icon] Resume │  [ Text | PDF ]       [Download] [Open]  │  toolbar
+#   │  John Paul…   ├──────────────────────────────────────────┤
+#   ├───────────────┤                                          │
+#   │ SECTIONS      │                                          │
+#   │ ▌Profile      │   content pane (scrolls on its own)      │
+#   │  Experience   │                                          │
+#   │  Skills       │                                          │
+#   │  Education    │                                          │
+#   │  Certs        │                                          │
+#   └───────────────┴──────────────────────────────────────────┘
+#     sidebar stays put; only the content pane scrolls.
+--------------------------------------------------------------*/
+
+@container wm (min-width: 761px) {
+
+  /* ---------- Shell: sidebar | (toolbar over content) ---------- */
+  .rv {
+    --rv-side: calc(var(--rv-s) * 13);
+    --rv-r: .45em;                                   /* Mint-Y: small, flat radii */
+    --rv-sidebar-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 22%), transparent 18%);
+    --rv-toolbar-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 10%), transparent 25%);
+
+    isolation: isolate;
+    grid-template-columns: var(--rv-side) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  /* sidebar panel (behind head + tabs) */
+  .rv::before {
+    z-index: -1;
+    grid-row: 1 / -1;
+    grid-column: 1;
+    background: var(--rv-sidebar-bg);
+    border-right: 1px solid var(--rv-line);
+  }
+
+  /* toolbar strip (behind Text/PDF + buttons) */
+  .rv::after {
+    content: '';
+    z-index: -1;
+    grid-row: 1;
+    grid-column: 2;
+    background: var(--rv-toolbar-bg);
+    border-bottom: 1px solid var(--rv-line);
+  }
+
+  /* ---------- Sidebar top: identity ---------- */
+  .rv-head {
+    grid-row: 1;
+    grid-column: 1;
+    padding: 1em 1em .9em 1.1em;
+    border-bottom: 1px solid var(--rv-line);
+  }
+  .rv-head-top { gap: .75em; }
+  .rv-app-icon { width: 2.5em; height: 2.5em; font-size: 1em; border-radius: .6em; }
+  .rv-badge { font-size: .8em; letter-spacing: .02em; }
+  .rv-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 1.12em;
+    line-height: 1.25;
+    white-space: normal;                              /* let the name wrap */
+  }
+
+  /* ---------- Sidebar: vertical section list ---------- */
+  .rv-tree {
+    grid-row: 2;
+    grid-column: 1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: .2em;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: .9em .7em 1em;
+  }
+
+  .rv-tree::before {                                  /* small category label, like Mint's Software Manager */
+    content: 'Sections';
+    padding: 0 .7em .45em;
+    font-size: .72em;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--rv-dim);
+  }
+
+  .rv-item {
+    width: 100%;
+    gap: .75em;
+    padding: .6em .8em;
+    border-radius: var(--rv-r);
+    text-align: left;
+  }
+  .rv-item i { width: 1.25em; text-align: center; font-size: 1em; }
+  .rv-item .rv-name { flex: 1 1 auto; text-align: left; }
+
+  /* selected: solid accent bar-style highlight */
+  .rv-item[aria-selected="true"] { box-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
+
+  /* ---------- Toolbar: Text | PDF (left) ---------- */
+  .rv-modes {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: start;
+    align-self: center;
+    margin: 0 0 0 1.4em;
+    gap: .2em;
+    padding: .2em;
+    border: 1px solid var(--rv-line-strong);
+    border-radius: calc(var(--rv-r) + .2em);
+    background: color-mix(in srgb, var(--default-color), transparent 95%);
+  }
+
+  .rv-mode {
+    gap: .55em;
+    min-width: 5.2em;
+    justify-content: center;
+    padding: .42em 1em;
+    border-radius: var(--rv-r);
+    font-size: 1em;
+    color: var(--rv-dim);
+  }
+  .rv-mode:hover { color: var(--heading-color); background: var(--rv-card-bg); }
+
+  /* pressed = clearly lifted, not another pink pill */
+  .rv-mode[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--default-color), transparent 84%);
+    color: var(--heading-color);
+    box-shadow: inset 0 0 0 1px var(--rv-line-strong), 0 1px 2px rgba(0, 0, 0, .25);
+  }
+  .rv-mode[aria-pressed="true"] i { color: var(--rv-hl); }
+
+  /* ---------- Toolbar: buttons (right) ---------- */
+  .rv-actions {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: end;
+    align-self: center;
+    padding: 0 1.4em 0 1em;
+  }
+  .rv .rv-actions .btn-live,
+  .rv .rv-actions .btn-github {
+    padding: .5em 1em;
+    border-radius: var(--rv-r);
+  }
+
+  /* ---------- Content pane (own scroll, left of nothing: sidebar never moves) ---------- */
+  .rv-scroll,
+  .rv-pdf {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .rv-scroll { padding: 1.6em 2em 2.6em; scroll-padding-top: 1.6em; }
+  .rv-canvas { padding: 1.5em 1.6em 1.9em; }
+
+  /* ---------- Copy toast: centre it over the content pane, not the whole window ---------- */
+  .rv .contact-block .copy-toast-container { inset: auto 0 0 var(--rv-side) !important; }
+}
