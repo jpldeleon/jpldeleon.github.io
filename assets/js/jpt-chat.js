@@ -867,11 +867,7 @@
     return { out: a.out + (t === 'p' && a.prev === 'p' ? '<br>' : '') + h, prev: t };
   };
   const fmt = s => esc(s)
-    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, (m, label, href) =>
-      /\.pdf([?#]|$)/i.test(href)
-        /* PDFs download directly instead of opening the browser's PDF viewer */
-        ? '<a href="' + href + '" download rel="noopener">' + label + '</a>'
-        : '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + label + '</a>')
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
     .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\{\{([^}]+)\}\}/g, '<button type="button" class="jpt-cmd" data-q="$1">$1</button>')
