@@ -1269,6 +1269,59 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     fit();
   }
 
+  /* Resume PDF buttons (start panel, Resume window): always a real download. The file is fetched and saved
+     as an attachment, so the browser's download / save-as dialog appears instead of the PDF opening in a tab
+     or a window. Falls back to the plain link if the fetch is not possible. */
+  document.addEventListener('click', e => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest && e.target.closest('a[download][href]');
+    if (!a || a.__native || !/\.pdf([?#]|$)/i.test(a.getAttribute('href'))) return;
+    e.preventDefault();
+    const name = a.getAttribute('download') || a.getAttribute('href').split('/').pop().split(/[?#]/)[0];
+    const save = (href, blobUrl) => {
+      const t = document.createElement('a');
+      t.href = href; t.download = name; t.__native = true; t.style.display = 'none';
+      document.body.appendChild(t); t.click(); t.remove();
+      if (blobUrl) setTimeout(() => URL.revokeObjectURL(href), 10000);
+    };
+    fetch(a.href).then(r => { if (!r.ok) throw new Error(r.status); return r.blob(); })
+      .then(b => save(URL.createObjectURL(new Blob([b], { type: 'application/octet-stream' })), true))
+      .catch(() => save(a.href, false));
+    const menu = document.getElementById('app-menu'), mb = document.getElementById('taskbar-menu-btn');
+    if (menu && mb && a.closest('#app-menu') && menu.classList.contains('open')) mb.click();
+  });
+
+  /* Start panel: on desktop the hero card (profile + About) lives INSIDE the Mint start menu, above the
+     search bar and the app launchers. One panel, opened from the Mint button, and open on first load
+     (it grows out of the button). Below 992px the hero goes back to being page content. */
+  function initStartPanel() {
+    const hero = document.getElementById('hero'), menu = document.getElementById('app-menu'),
+      btn = document.getElementById('taskbar-menu-btn');
+    if (!hero || !menu || !btn || !hero.parentNode) return;
+    const home = document.createComment('hero-home');
+    hero.parentNode.insertBefore(home, hero);
+    const place = () => {
+      if (isDesk()) { if (hero.parentNode !== menu) menu.insertBefore(hero, menu.firstChild); }
+      else if (hero.parentNode === menu) home.parentNode.insertBefore(hero, home.nextSibling);
+    };
+    place();
+    setAbout(true);                                   // About is always shown in the panel
+    /* main.js centres the menu while it is still scaled down; re-anchor with the real width and
+       grow the panel out of the Mint button */
+    const anchor = () => {
+      if (!isDesk() || !menu.classList.contains('open')) return;
+      const b = btn.getBoundingClientRect(), w = menu.offsetWidth, m = 14, cx = b.left + b.width / 2;
+      const left = clamp(cx - w / 2, m, Math.max(m, window.innerWidth - w - m));
+      menu.style.left = left + 'px';
+      menu.style.transformOrigin = (cx - left) + 'px 100%';
+    };
+    new MutationObserver(anchor).observe(menu, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('resize', () => { place(); anchor(); });
+    document.addEventListener('desktop:booted', () => {
+      if (isDesk() && !menu.classList.contains('open')) btn.click();
+    });
+  }
+
   /* The hero applet is open on first load (desktop). Runs at boot and again on window load, in case another
      script restores a collapsed state in between; stops caring once the person uses the bell themselves. */
   function showHeroOnFirstLoad() {
@@ -1383,7 +1436,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     initHeroApplet();
     initAbout();
     initHeroReserve();
-    showHeroOnFirstLoad();
+    initStartPanel();
     initRightColumn();
     desktopMode = window.innerWidth >= 992;
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio

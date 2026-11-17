@@ -10,9 +10,51 @@
  *   #rv-crumb-dir / #rv-crumb-file / #rv-meta             path bar
  *
  * Opens on Text. Clicking a section always goes to its text.
+ *
+ * Also owns the resume DOWNLOAD buttons (hero applet "Resume" + "Download CV"): they save the
+ * PDF directly instead of opening the browser's PDF viewer. See DIRECT RESUME DOWNLOAD below.
  */
 (function () {
   'use strict';
+
+  /* ───────────────────────── DIRECT RESUME DOWNLOAD ─────────────────────────
+   * Runs before the viewer's own guards below: the hero applet's button lives outside #resume.
+   * The hero applet "Resume" button (.sidebar-cta) and the Resume window's
+   * "Download CV" button (.btn-live) must SAVE the PDF, never show it in the
+   * browser's PDF viewer. A plain <a download> is not enough in every browser /
+   * webview, so the click is handled here: the PDF is fetched once (prefetched when
+   * the browser is idle), kept as a Blob, and saved through a temporary download link.
+   * That temporary link's click still reaches notifications.js, so the
+   * "Resume download started" toast keeps working (the "#name.pdf" tail keeps its
+   * .pdf match). If the fetch fails, it falls back to the plain download link. */
+  (() => {
+    if (!window.fetch || !window.URL || !URL.createObjectURL) return;
+    const SEL = 'a.sidebar-cta[download], a.btn-live[download]';
+    const cache = {};
+    const load = url => cache[url] || (cache[url] = fetch(url, { credentials: 'same-origin' })
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.blob(); })
+      .then(b => URL.createObjectURL(new Blob([b], { type: 'application/pdf' }))));
+    const nameOf = url => url.split('/').pop().split('?')[0] || 'resume.pdf';
+    const save = (href, name) => {
+      const a = document.createElement('a');
+      a.href = href; a.download = name; a.hidden = true; a.setAttribute('data-direct-dl', '');
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+
+    document.addEventListener('click', e => {
+      if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target.closest && e.target.closest(SEL);
+      if (!a || a.hasAttribute('data-direct-dl')) return;
+      e.preventDefault();
+      const url = a.getAttribute('href'), name = nameOf(url);
+      load(url).then(blobUrl => save(blobUrl + '#' + name, name))
+        .catch(() => { delete cache[url]; save(url, name); });
+    }, true);
+
+    /* warm the cache so the first click saves instantly */
+    const warm = () => document.querySelectorAll(SEL).forEach(a => load(a.getAttribute('href')).catch(() => {}));
+    if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 3000 }); else setTimeout(warm, 1500);
+  })();
 
   var root = document.getElementById('resume');
   if (!root || !root.classList.contains('rv')) return;

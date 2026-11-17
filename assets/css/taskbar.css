@@ -141,3 +141,44 @@ html body .top-panel.taskbar .panel-popover[hidden] {
 
 /* Compatibility alias: app.css may still read --dock-space until its dock rules are deleted */
 :root { --dock-space: var(--taskbar-space, 56px); }
+
+/*--------------------------------------------------------------
+# Theme-aware icons
+# Every icon uses --accent-color: the same tint as the Menu (start) button
+# logo and the icons on the right side of the panel (see desktop.css), so
+# all of them follow the active theme together. No glow.
+--------------------------------------------------------------*/
+.top-panel.taskbar .taskbar-item i,
+.top-panel.taskbar .taskbar-item.is-active i,
+.top-panel.taskbar .taskbar-item.is-minimized i {
+  color: var(--accent-color) !important;
+  transition: color 0.15s ease;
+}
+
+/* minimized: same tint, faded by the button's existing opacity */
+
+/* Active indicator: a small round dot under the icon (was a 2px bar),
+   same tint as the icon. !important on position because index.html's inline
+   <style> sets left/right for the old bar and loads after this file. */
+.top-panel.taskbar .taskbar-item.is-active::after {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+/* Open windows: title-bar icon, same tint; slightly faded when not focused */
+.wm-window .wm-title i {
+  color: color-mix(in srgb, var(--accent-color), transparent 35%);
+  transition: color 0.15s ease;
+}
+.wm-window.is-focused .wm-title i { color: var(--accent-color); }
+
+@media (prefers-reduced-motion: reduce) {
+  .top-panel.taskbar .taskbar-item i,
+  .wm-window .wm-title i { transition: none; }
+}

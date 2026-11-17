@@ -606,7 +606,7 @@
       display: flex !important;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 2px;
       max-width: 60vw;
       overflow: visible;
     }
@@ -617,19 +617,67 @@
 
     .top-panel.taskbar .taskbar-apps {
       flex: 0 1 auto;
+      gap: 2px;
+      /* same rhythm as the Connect icons: 28px slots, 2px apart */
     }
 
+    /* Open apps: plain icons, same size and colour as the other taskbar icons (28 x 26, 14px).
+       No background; the window in front just gets a dot under its icon. */
     .top-panel.taskbar .taskbar-item {
-      width: 34px;
-      min-width: 34px;
-      max-width: 34px;
+      width: 28px;
+      min-width: 28px;
+      max-width: 28px;
+      height: 26px;
       padding: 0;
       gap: 0;
       justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--default-color);
+      font-weight: 400;
+      opacity: 1;
     }
 
     .top-panel.taskbar .taskbar-item i {
-      font-size: 16px;
+      font-size: 14px;
+      color: inherit;
+    }
+
+    .top-panel.taskbar .taskbar-item:hover,
+    .top-panel.taskbar .taskbar-item:focus-visible {
+      background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+      color: var(--accent-highlight);
+      opacity: 1;
+    }
+
+    .top-panel.taskbar .taskbar-item.is-minimized {
+      opacity: .5;
+    }
+
+    .top-panel.taskbar .taskbar-item.is-minimized:hover,
+    .top-panel.taskbar .taskbar-item.is-minimized:focus-visible {
+      opacity: 1;
+    }
+
+    .top-panel.taskbar .taskbar-item.is-active {
+      background: transparent;
+      color: var(--default-color);
+      font-weight: 400;
+    }
+
+    .top-panel.taskbar .taskbar-item.is-active:hover {
+      background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+    }
+
+    .top-panel.taskbar .taskbar-item.is-active::after {
+      left: 50%;
+      right: auto;
+      bottom: -3px;
+      width: 4px;
+      height: 4px;
+      margin-left: -2px;
+      border-radius: 50%;
+      background: var(--accent-highlight);
     }
 
     .top-panel.taskbar .taskbar-item .taskbar-label {
@@ -642,11 +690,6 @@
       overflow: hidden;
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
-    }
-
-    .top-panel.taskbar .taskbar-item.is-active::after {
-      left: 10px;
-      right: 10px;
     }
 
     /* theme + volume popovers: same line as the other applets, above the bar */
@@ -676,6 +719,255 @@
   </style>
   <!-- Android-style phone layout (<= 768px): status bar, notification shade, widgets, bottom search (load last) -->
   <link href="assets/css/android.css" rel="stylesheet" />
+  <style id="start-panel-css">
+    /*--------------------------------------------------------------
+# Start panel (desktop): the hero card (profile + About) lives inside the Mint
+# start menu, above the search bar and the app launchers. app.js moves #hero in.
+--------------------------------------------------------------*/
+    @media (min-width: 992px) {
+      html body .app-menu {
+        --sp-w: min(664px, calc(100vw - 28px));
+        width: var(--sp-w);
+        min-width: 0;
+        max-width: none;
+        padding: 0;
+        border-radius: 18px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+        background: color-mix(in srgb, var(--surface-color), transparent 12%);
+        -webkit-backdrop-filter: blur(18px) saturate(1.3);
+        backdrop-filter: blur(18px) saturate(1.3);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+        max-height: calc(100dvh - var(--panel-bar-h) - var(--panel-gap) - 40px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        opacity: 0;
+        transform: translateY(26px) scale(.35);
+        transform-origin: 50% 100%;
+        transition: opacity .22s ease, transform .38s cubic-bezier(.2, .8, .2, 1), visibility 0s linear .38s;
+      }
+
+      html body .app-menu.open {
+        opacity: 1;
+        transform: none;
+        transition: opacity .22s ease, transform .38s cubic-bezier(.2, .8, .2, 1), visibility 0s;
+      }
+
+      /* the hero is a plain two-pane section of the panel (not a floating card) */
+      html body .app-menu .hero-sidebar.hero-applet {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        width: auto;
+        max-height: none;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+
+      .app-menu .hero-applet .hero-card {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 340px;
+        width: 340px;
+        min-width: 0;
+      }
+
+      .app-menu .hero-applet .hero-body {
+        flex: 1 1 auto;
+        overflow: visible;
+        padding: 24px 22px 14px;
+      }
+
+      .app-menu .hero-applet .sidebar-avatar {
+        --avatar: 124px;
+        margin: 0 auto 2px;
+      }
+
+      .app-menu .hero-applet h1 {
+        font-size: 25px;
+      }
+
+      /* Email / Phone only: GitHub is in the taskbar, Resume is in the launcher row */
+      .app-menu .hero-applet .sidebar-contact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .app-menu .hero-applet .sidebar-contact .sidebar-contact-item[href*="github"],
+      .app-menu .hero-applet .sidebar-contact .sidebar-cta {
+        display: none;
+      }
+
+      .app-menu .hero-applet .sidebar-contact .sidebar-contact-item {
+        height: 42px;
+      }
+
+      /* About pane: always open, no toggle */
+      .app-menu .hero-applet .hero-inspector {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+        border-top: 0;
+        border-left: 1px solid var(--hero-hairline, color-mix(in srgb, var(--default-color), transparent 88%));
+      }
+
+      .app-menu .hero-applet .hero-inspector .ab-toggle {
+        display: none;
+      }
+
+      .app-menu .hero-applet .hero-inspector .ab-term-bar {
+        min-height: 54px;
+        padding: 0 22px;
+      }
+
+      .app-menu .hero-applet .hero-inspector .ab-term-title {
+        font-size: var(--fs-read);
+      }
+
+      .app-menu .hero-applet .hero-inspector .ab-term-body {
+        flex: 1 1 auto;
+        overflow: visible;
+        padding: 0 22px 18px;
+      }
+
+      /* bottom: search / chatbot, then the launchers in one row */
+      .app-menu .app-menu-ask {
+        margin: 0;
+        border-radius: 0;
+        border: 0;
+        border-top: 1px solid var(--hero-hairline, color-mix(in srgb, var(--default-color), transparent 88%));
+        background: color-mix(in srgb, var(--default-color), transparent 95%);
+        height: 48px;
+        padding: 0 22px;
+      }
+
+      .app-menu .app-menu-ask input {
+        font-size: var(--fs-base);
+      }
+
+      .app-menu .app-menu-header {
+        display: none;
+      }
+
+      .app-menu>ul {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 6px;
+        padding: 10px 12px 12px;
+      }
+
+      .app-menu>ul li+li {
+        margin: 0;
+      }
+
+      .app-menu>ul .app-menu-sep {
+        display: none;
+      }
+
+      .app-menu>ul button,
+      .app-menu>ul .app-menu-dl {
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 4px;
+        font-size: var(--fs-sm);
+        text-align: center;
+      }
+
+      .app-menu>ul button i,
+      .app-menu>ul .app-menu-dl i {
+        width: auto;
+        font-size: 18px;
+      }
+
+      .app-menu .app-menu-dl {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: 6px;
+        color: var(--default-color);
+        font-family: var(--nav-font);
+        text-decoration: none;
+        transition: background-color .15s ease, color .15s ease;
+      }
+
+      .app-menu .app-menu-dl i {
+        color: var(--accent-color);
+      }
+
+      .app-menu .app-menu-dl:hover,
+      .app-menu .app-menu-dl:focus-visible {
+        background: color-mix(in srgb, var(--accent-highlight), transparent 85%);
+        color: var(--accent-highlight);
+        outline: none;
+      }
+
+      /* copy toast: a pill laid over the Email / Phone row, one line, never clipped */
+      html body .app-menu .hero-sidebar .copy-toast-container {
+        position: absolute;
+        inset: 12px 0 0 0;
+        width: auto;
+        margin: 0;
+        overflow: visible;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      html body .app-menu .hero-sidebar .copy-toast-container .copy-toast {
+        width: 100%;
+        height: 42px;
+        align-items: center;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+        pointer-events: auto;
+      }
+
+      html body .app-menu .hero-sidebar .copy-toast-container .copy-toast.show,
+      html body .app-menu .hero-sidebar .copy-toast-container .copy-toast.showing {
+        display: flex;
+      }
+
+      html body .app-menu .copy-toast .toast-body {
+        width: 100%;
+        padding: 0 14px;
+        white-space: nowrap;
+        font-size: var(--fs-base);
+      }
+
+      /* the card is gone from the left: windows centre on the full width */
+      :root,
+      body.sidebar-collapsed {
+        --notif-w: 0px;
+        --sidebar-w: 0px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html body .app-menu {
+        transform: none;
+        transition: opacity .15s ease, visibility 0s linear .15s;
+      }
+    }
+  </style>
 </head>
 
 <body class="index-page">
@@ -705,10 +997,6 @@
   <!-- Bottom panel: the taskbar (Menu, open apps, applets, clock) -->
   <header class="top-panel taskbar" id="top-panel">
     <div class="panel-left">
-      <button aria-controls="hero" aria-expanded="true" aria-label="Toggle notification panel"
-        class="panel-btn panel-btn-icon" id="panel-notif-btn" title="Hide notifications" type="button"><i
-          aria-hidden="true" class="fa-solid fa-angle-down"></i></button>
-      <span aria-hidden="true" class="panel-sep"></span>
       <nav aria-label="Connect" class="panel-connect">
         <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
           title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -1015,6 +1303,8 @@
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-app="socials" role="menuitem" type="button"><i
             class="fa-solid fa-share-nodes"></i>Contact &amp; Socials</button></li>
+      <li><a class="app-menu-dl" download="" href="assets/johnpauldeleon_resume.pdf" role="menuitem"><i
+            class="fa-solid fa-download"></i>Download Resume</a></li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-power="restart" role="menuitem" type="button"><i
             class="fa-solid fa-rotate-right"></i>Restart</button></li>
@@ -1181,11 +1471,24 @@
             <li><span class="skl-dot"></span><span class="skl-name">Backend &amp; Scripting</span><span
                 class="skl-desc">Node.js, Express.js, automation scripts</span></li>
             <li><span class="skl-dot"></span><span class="skl-name">Tools &amp; Platforms</span><span
-                class="skl-desc">Screaming Frog, Rank Math, Yoast SEO, Elementor, GitHub</span></li>
+                class="skl-desc">Elementor, Rank Math, Yoast SEO, WPForms, WP Optimize, LocalWP, GitHub</span></li>
           </ul>
         </div>
         <div class="cky-block">
-          <div class="cky-row"><span class="cky-label">AI &amp; Automation</span><span class="cky-val">03</span></div>
+          <div class="cky-row"><span class="cky-label">SEO Tools</span><span class="cky-val">04</span></div>
+          <ul class="skl-list">
+            <li><span class="skl-dot"></span><span class="skl-name">Crawling &amp; Audits</span><span
+                class="skl-desc">Screaming Frog, RustySEO, Rank Math, Yoast SEO</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Keyword &amp; Backlink Research</span><span
+                class="skl-desc">Ahrefs, SEMrush, link prospecting and vetting</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Search &amp; Analytics</span><span
+                class="skl-desc">Google Search Console, Google Analytics, Data Studio</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Speed &amp; Core Web Vitals</span><span
+                class="skl-desc">PageSpeed Insights, Lighthouse, WP Optimize</span></li>
+          </ul>
+        </div>
+        <div class="cky-block">
+          <div class="cky-row"><span class="cky-label">AI &amp; Automation</span><span class="cky-val">04</span></div>
           <ul class="skl-list">
             <li><span class="skl-dot"></span><span class="skl-name">Prompt &amp; Context Engineering</span><span
                 class="skl-desc">Structuring prompts and context to get reliable, usable LLM output</span></li>
@@ -1193,6 +1496,8 @@
                 class="skl-desc">Using AI tools to build, debug, and refine portfolio projects</span></li>
             <li><span class="skl-dot"></span><span class="skl-name">AI-Assisted SEO &amp; Research</span><span
                 class="skl-desc">Using LLMs to speed up research, analysis, and data cleanup</span></li>
+            <li><span class="skl-dot"></span><span class="skl-name">Codex &amp; Claude</span><span
+                class="skl-desc">AI coding agents for building sites, scripts, and SEO workflows</span></li>
           </ul>
         </div>
       </aside><!-- /Skills -->
@@ -1481,6 +1786,8 @@
                   <li>AI-Assisted SEO &amp; Research</li>
                   <li>LLM API Integration</li>
                   <li>Local Models (Ollama)</li>
+                  <li>OpenAI Codex</li>
+                  <li>Claude / Claude Code</li>
                 </ul>
               </section>
             </div>
@@ -1552,7 +1859,6 @@
           <p class="pj-lead">Websites and tools I’ve built, plus my certificates. Pick one to see what it does and how I
             built it.</p>
         </div>
-        <button class="pj-btn" data-app="resume" type="button">View resume</button>
       </header>
       <div aria-label="Filter projects" class="pj-filters" role="group">
         <button aria-pressed="true" class="pj-chip" data-filter="all" type="button">All <span>9</span></button>

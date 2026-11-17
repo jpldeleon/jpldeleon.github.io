@@ -3849,3 +3849,50 @@ textarea {
     max-height: 60px;
   }
 }
+/*--------------------------------------------------------------
+# Wide screens (>= 1700px wide, >= 880px tall): Professional Experience on the
+# left-most side, Skills as a vertical column on the right-most side. The hero
+# card now lives in the Mint start menu (centre). Smaller desktops keep the old
+# single scaled column on the right.
+--------------------------------------------------------------*/
+@media (min-width: 1700px) and (min-height: 880px) {
+  .desk-right {
+    display: contents;
+  }
+
+  .desk-right .cky-widget.skl-widget,
+  .desk-right .cky-widget.exp-widget {
+    position: fixed;
+    top: 14px;
+    margin: 0;
+    z-index: 12;
+  }
+
+  .desk-right .exp-widget {
+    left: 28px;
+    width: 330px;
+  }
+
+  .desk-right .skl-widget {
+    right: 28px;
+    width: 380px;
+    max-height: calc(100dvh - var(--panel-bar-h) - var(--panel-gap) - 36px);
+  }
+
+  .skl-widget .cky-head {
+    margin-bottom: 10px;
+  }
+
+  .skl-widget .cky-block {
+    margin-bottom: 5px;
+  }
+
+  .skl-widget .cky-row {
+    margin-bottom: 3px;
+  }
+
+  .skl-widget .skl-list li {
+    margin-bottom: 2px;
+  }
+}
+
