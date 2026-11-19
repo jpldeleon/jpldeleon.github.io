@@ -141,16 +141,40 @@ html.desk-reveal #adr .adr-home{animation:desk-in .7s var(--lx-ease,ease) .1s ba
 html.desk-reveal #adr .adr-dock,html.desk-reveal #adr .adr-search{animation:desk-in .7s var(--lx-ease,ease) .5s backwards}
 @media (prefers-reduced-motion:reduce){html.desk-reveal #adr .adr-home,html.desk-reveal #adr .adr-dock,html.desk-reveal #adr .adr-search{animation:none}}
 
-/* Projects window: two columns on phones, each card stacked (icon, name, text, tags, link) so nothing is squeezed */
-.wm-body .pj-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:stretch}
-.wm-body .pj-card{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;gap:12px!important;min-width:0;padding:14px!important}
-.wm-body .pj-ico{flex:none;width:40px!important;height:40px!important;font-size:16px!important}
-.wm-body .pj-text{display:flex!important;flex-direction:column!important;gap:5px!important;width:100%;min-width:0}
-.wm-body .pj-name{font-size:15px!important;line-height:1.25!important;overflow-wrap:break-word;word-break:normal}
-.wm-body .pj-sub{font-size:12px!important;line-height:1.5!important;overflow-wrap:break-word}
-.wm-body .pj-foot{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%;margin-top:auto!important;padding-top:2px}
-.wm-body .pj-tags{display:flex;flex-wrap:wrap;gap:6px}
-.wm-body .pj-open{font-size:12px!important}
+/* Projects window on phones: a launcher-style app grid. Each project is a round app "bubble" (icon + label),
+   like the LineageOS launcher. The description, tags and "Open project" line are hidden; tapping the bubble opens the project window. */
+.wm-body .pj-head{margin-bottom:10px!important}
+.wm-body .pj-title{font-size:18px!important}
+.wm-body .pj-lead{display:none!important}
+.wm-body .pj-filters{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;overflow-x:auto;margin:0 -4px 18px!important;padding:2px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.wm-body .pj-filters::-webkit-scrollbar{display:none}
+.wm-body .pj-chip{flex:none;white-space:nowrap}
+
+.wm-body .pj-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:22px 6px!important;align-items:start;padding:4px 0 10px}
+.wm-body .pj-card{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;min-width:0;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;text-align:center;text-decoration:none;-webkit-tap-highlight-color:transparent;animation:pj-pop .38s cubic-bezier(.2,.9,.3,1.25) backwards}
+.wm-body .pj-card[hidden]{display:none!important}
+
+/* the bubble */
+.wm-body .pj-ico{flex:none;position:relative;width:68px!important;height:68px!important;border-radius:50%!important;display:grid!important;place-items:center;font-size:26px!important;
+  color:var(--pj-accent,var(--accent-highlight,#a7c080))!important;
+  background:radial-gradient(circle at 30% 24%,color-mix(in srgb,var(--pj-accent,var(--accent-highlight,#a7c080)) 38%,transparent),color-mix(in srgb,var(--pj-accent,var(--accent-highlight,#a7c080)) 14%,var(--surface-color,var(--background-color,#2d353b))) 72%)!important;
+  border:1px solid color-mix(in srgb,var(--default-color,#d3c6aa) 16%,transparent)!important;
+  box-shadow:0 8px 16px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.18)!important;
+  transition:transform .14s ease,box-shadow .14s ease}
+.wm-body .pj-card:active .pj-ico{transform:scale(.9);box-shadow:0 3px 8px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12)!important}
+/* certificates get a filled bubble so they read as a different kind of app */
+.wm-body .pj-card[data-cats~="cert"] .pj-ico{background:var(--pj-accent,var(--accent-highlight,#a7c080))!important;color:var(--pj-on-accent,#1e2327)!important}
+
+/* label under the bubble: two lines max */
+.wm-body .pj-text{display:block!important;width:100%;min-width:0}
+.wm-body .pj-name{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:12px!important;font-weight:600;line-height:1.25!important;overflow-wrap:anywhere;text-align:center}
+.wm-body .pj-sub,.wm-body .pj-foot{display:none!important}
+
+@keyframes pj-pop{from{opacity:0;transform:scale(.6) translateY(10px)}}
+.wm-body .pj-card:nth-child(2){animation-delay:.04s}.wm-body .pj-card:nth-child(3){animation-delay:.08s}.wm-body .pj-card:nth-child(4){animation-delay:.12s}
+.wm-body .pj-card:nth-child(5){animation-delay:.16s}.wm-body .pj-card:nth-child(6){animation-delay:.2s}.wm-body .pj-card:nth-child(7){animation-delay:.24s}
+.wm-body .pj-card:nth-child(8){animation-delay:.28s}.wm-body .pj-card:nth-child(9){animation-delay:.32s}
+@media (prefers-reduced-motion:reduce){.wm-body .pj-card{animation:none}.wm-body .pj-ico{transition:none}}
 
 /* the phone status bar / shade stay out of the way while the boot logo is up */
 html.desk-pre #adr-top,body:has(#boot-screen) #adr-top{visibility:hidden!important}
