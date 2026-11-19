@@ -95,8 +95,8 @@ html.wm-embedded .pi-titlebar { display: none; }
 .pi-head {
   grid-area: head;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas: "icon title" "icon sub";
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "title" "sub";
   column-gap: 1em;
   row-gap: .1em;
   align-items: center;
@@ -105,17 +105,6 @@ html.wm-embedded .pi-titlebar { display: none; }
 }
 .pi-head-top { display: contents; }
 
-.pi-app-icon {
-  grid-area: icon;
-  display: grid;
-  place-items: center;
-  width: 3em;
-  height: 3em;
-  border-radius: .8em;
-  background: var(--pi-accent);
-  color: var(--pi-on-accent);
-  font-size: 1.15em;
-}
 
 .pi-title {
   grid-area: title;
@@ -535,13 +524,12 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
 
   .pi-head {
     grid-row: 2;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "icon title";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title";
     column-gap: .8em;
     padding: .8em 1em .5em;
     background: var(--pi-card);
   }
-  .pi-app-icon { width: 2.5em; height: 2.5em; font-size: 1em; }
   .pi-badge { display: none; }
   .pi-title {
     display: -webkit-box;
@@ -732,15 +720,14 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-head {
     grid-area: auto;
     flex: 0 0 auto;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "icon title" "sub sub";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "sub";
     column-gap: .8em;
     row-gap: .75em;
     align-items: center;
     padding: 1.1em 1em 1em 1.1em;
     border-bottom: 1px solid var(--pi-line);
   }
-  .pi-app-icon { width: 2.6em; height: 2.6em; font-size: 1em; border-radius: .65em; }
   .pi-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
