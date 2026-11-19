@@ -17,6 +17,8 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 /* ---- status bar (swipe down from here to open the shade) ---- */
 #adr-top{position:fixed;inset:0;z-index:2147482000;pointer-events:none}
 .adr-status{position:fixed;top:0;left:0;right:0;height:32px;display:flex;align-items:center;gap:8px;padding:0 16px;font:700 12px var(--mono);pointer-events:auto;touch-action:none;z-index:3;background:color-mix(in srgb,var(--bg) 72%,transparent)}
+.adr-date{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;font-weight:600;color:var(--dim);transition:max-width .28s ease,opacity .28s ease}
+.adr-status.shade-open .adr-date{max-width:90px;opacity:1}
 .adr-nicons{display:flex;gap:7px;font-size:11px;opacity:.9}
 .adr-sys{margin-left:auto;display:flex;gap:7px;font-size:11px;align-items:center}
 
@@ -94,14 +96,12 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-shade.drag{transition:none}
 .adr-scrim{position:fixed;inset:0;z-index:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .28s ease}
 .adr-scrim.show{opacity:1;pointer-events:auto}
-.adr-sh-head{padding:2px 4px 12px}
-.adr-sh-time{font:700 34px/1 var(--mono)}
-.adr-sh-date{font-size:12px;color:var(--dim);margin-top:4px}
 .adr-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:12px}
 .adr-tile{background:none;border:0;color:inherit;font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
 .adr-tile{text-decoration:none}
 .adr-social{padding-top:0}
-.adr-tile .ic{width:100%;max-width:72px;height:52px;border-radius:20px;display:grid;place-items:center;font-size:18px;background:color-mix(in srgb,var(--f) 13%,transparent);transition:background .15s}
+.adr-tile:active .ic{transform:scale(.94)}
+.adr-tile .ic{width:100%;max-width:72px;height:52px;border-radius:20px;display:grid;place-items:center;font-size:18px;background:color-mix(in srgb,var(--f) 13%,transparent);transition:background .15s,transform .12s}
 .adr-tile.on .ic{background:var(--a);color:var(--bg)}
 .adr-tile b{font-size:11px;font-weight:600;line-height:1.15;text-align:center}
 .adr-tile small{font-size:10px;color:var(--dim);margin-top:-4px;white-space:nowrap}
@@ -115,22 +115,41 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-n h4{margin:0 0 2px;font-size:14px;font-weight:700}
 .adr-n p{margin:0;font-size:13px;color:var(--dim)}
 .adr-n .x{position:absolute;top:8px;right:8px;background:none;border:0;color:var(--dim);width:28px;height:28px;cursor:pointer}
-.adr-hire{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
-.adr-hire li{display:flex;gap:10px;font-size:12px}
-.adr-hire li i{color:var(--a);margin-top:2px;width:16px;text-align:center;flex:none}
-.adr-hire b{display:block;font-size:13px}.adr-hire span{color:var(--dim)}
+/* Why hire me (LineageOS / Material You): tonal icon circles, quiet text, pill actions */
+.adr-hire{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.adr-hire li{display:flex;align-items:flex-start;gap:12px;padding:9px 0;font-size:12px;line-height:1.45}
+.adr-hire li+li{border-top:1px solid var(--line)}
+.adr-hire li i{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;margin-top:1px;background:color-mix(in srgb,var(--a) 22%,transparent);color:var(--a)}
+.adr-hire b{display:block;font-size:13px;font-weight:600;line-height:1.3;color:var(--f)}
+.adr-hire span{display:block;margin-top:1px;color:var(--dim)}
 .adr-acts{display:flex;gap:8px;margin-top:12px}
-.adr-btn{flex:1;border-radius:999px;padding:9px;border:1px solid var(--line);background:none;color:var(--f);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.adr-btn{flex:1;height:40px;border-radius:999px;padding:0 12px;border:1px solid var(--line);background:none;color:var(--f);font:inherit;font-size:13px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.adr-btn:active{background:color-mix(in srgb,var(--a),transparent 82%)}
 .adr-btn.p{background:var(--a);color:var(--bg);border-color:var(--a)}
-.adr-hobtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:8px 0}
-.adr-hobtabs button{flex:none;border:1px solid var(--line);background:none;color:var(--f);border-radius:999px;font:700 10px var(--mono);padding:5px 10px;cursor:pointer}
-.adr-hobtabs button.on{background:var(--a);color:var(--bg);border-color:var(--a)}
-.adr-hob{font-size:12px;color:var(--dim);max-height:30vh;overflow-y:auto}
-.adr-hob ul{padding-left:18px;margin:4px 0}.adr-hob h1,.adr-hob h2,.adr-hob h3,.adr-hob h4{font-size:13px;color:var(--f);margin:6px 0 2px}
+/* hobbies & interests, LineageOS / Android settings style: filter chips on top, rows joined into one rounded group */
+.adr-lin{border-radius:28px;padding:14px 12px 12px}
+.adr-lin h4{padding-right:30px}
+.adr-hobtabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:10px 0 8px}
+.adr-hobtabs::-webkit-scrollbar{display:none}
+.adr-hobtabs button{flex:none;display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--f);font:600 12px/1 inherit;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.adr-hobtabs button i{font-size:10px;margin-right:6px;color:var(--a)}
+.adr-hobtabs button.on{background:color-mix(in srgb,var(--a) 26%,transparent);border-color:transparent}
+.adr-hobdesc{margin:0 4px 8px!important;font-size:12px!important;line-height:1.45}
+.adr-hob{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:34vh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.adr-hob::-webkit-scrollbar{display:none}
+.adr-hob li{display:flex;align-items:center;gap:12px;min-height:48px;padding:8px 14px 8px 10px;border-radius:4px;background:color-mix(in srgb,var(--f) 8%,transparent);font-size:13px;color:var(--f);transition:background .15s}
+.adr-hob li:first-child{border-radius:18px 18px 4px 4px}
+.adr-hob li:last-child{border-radius:4px 4px 18px 18px}
+.adr-hob li:only-child{border-radius:18px}
+.adr-hob li:active{background:color-mix(in srgb,var(--a) 16%,transparent)}
+.adr-hob .lg{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:color-mix(in srgb,var(--a) 24%,transparent);color:var(--a)}
+.adr-hob .tx{min-width:0;line-height:1.3}
 .adr-grab{padding:10px 0 6px;display:grid;place-items:center;cursor:pointer}
 .adr-grab i{width:44px;height:5px;border-radius:3px;background:var(--dim)}
-.adr-heads{position:fixed;top:40px;left:12px;right:12px;z-index:1;pointer-events:none;transform:translateY(-150%);opacity:0;transition:transform .25s ease,opacity .25s ease}
-.adr-heads.show{transform:none;opacity:1}
+.adr-heads{position:fixed;top:40px;left:50%;right:auto;width:max-content;max-width:calc(100% - 32px);display:flex;align-items:center;gap:8px;padding:6px 16px 6px 6px;border-radius:999px;z-index:1;pointer-events:none;transform:translate(-50%,-150%);opacity:0;transition:transform .25s ease,opacity .25s ease;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.adr-heads.show{transform:translate(-50%,0);opacity:1}
+.adr-heads>i{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--a);color:var(--bg)}
+.adr-heads>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600;line-height:1.2}
 
 @media (max-width:380px){
   .adr-hero h1{font-size:21px}
@@ -243,13 +262,13 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .rv-profile > div > h3{margin:8px 0 0}
 .adr-sheet .rv-profile > div > p{margin:0}
 .adr-sheet .rv-photo{width:84px;height:84px;border-radius:50%}
-/* contact: small centred pills */
+/* contact: one centred block as wide as its longest line; every pill the same width, text left-aligned */
 .adr-sheet .rv-contact-title{text-align:center;margin-top:20px}
-.adr-sheet .rv-contact{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:none;margin:8px 0 0;padding:0;list-style:none;background:none;border-radius:0;overflow:visible}
-.adr-sheet .rv-contact li{width:fit-content;max-width:100%;padding:7px 14px;border:0;border-radius:999px;background:var(--rv-card-bg);font-size:12px;line-height:1.3;text-align:center}
+.adr-sheet .rv-contact{display:grid;justify-items:stretch;gap:6px;width:fit-content;max-width:100%;margin:8px auto 0;padding:0;list-style:none;background:none;border-radius:0;overflow:visible}
+.adr-sheet .rv-contact li{width:auto;max-width:100%;padding:7px 14px;border:0;border-radius:999px;background:var(--rv-card-bg);font-size:12px;line-height:1.3;text-align:left}
 .adr-sheet .rv-contact li + li{border-top:0!important}
 .adr-sheet .rv-contact li:first-child,.adr-sheet .rv-contact li:last-child{border-radius:999px}
-.adr-sheet .rv-contact li > button,.adr-sheet .rv-contact li > a{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;margin:-7px -14px;padding:7px 14px;border:0;background:none;color:inherit;font:inherit;text-decoration:none}
+.adr-sheet .rv-contact li > button,.adr-sheet .rv-contact li > a{display:inline-flex;align-items:center;justify-content:flex-start;gap:7px;width:calc(100% + 28px);text-align:left;margin:-7px -14px;padding:7px 14px;border:0;background:none;color:inherit;font:inherit;text-decoration:none}
 .adr-sheet .rv-job{margin:0 0 8px;padding:16px;border:0;border-radius:22px;background:var(--rv-card-bg)}
 .adr-sheet .rv-job::before,.adr-sheet .rv-job::after{display:none!important}
 .adr-sheet .rv-job:last-of-type{padding-bottom:16px}

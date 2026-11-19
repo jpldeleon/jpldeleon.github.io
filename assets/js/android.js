@@ -43,9 +43,8 @@
   top.id = 'adr-top'; top.className = 'adr-layer';
   top.innerHTML = `
     <div class="adr-scrim" id="adr-scrim"></div>
-    <div class="adr-heads adr-glass adr-n" id="adr-heads"></div>
+    <div class="adr-heads adr-glass adr-n" id="adr-heads" role="status"></div>
     <section class="adr-shade" id="adr-shade" inert aria-label="Notifications and quick settings">
-      <div class="adr-sh-head"><div class="adr-sh-time"></div><div class="adr-sh-date"></div></div>
       <div class="adr-tiles">
         <button class="adr-tile" data-tile="theme" type="button"><span class="ic"><i class="fa-solid fa-palette"></i></span><b>Theme</b><small></small></button>
         <button class="adr-tile" data-tile="hire" type="button"><span class="ic"><i class="fa-solid fa-user-check"></i></span><b>Why hire me</b></button>
@@ -62,7 +61,7 @@
       <div class="adr-list" role="log" aria-live="polite"></div>
       <div class="adr-grab" tabindex="0" role="button" aria-label="Close notification shade"><i></i></div>
     </section>
-    <div class="adr-status" id="adr-status"><span class="adr-time"></span><span class="adr-nicons"></span>
+    <div class="adr-status" id="adr-status"><span class="adr-time"></span><span class="adr-date" aria-hidden="true"></span><span class="adr-nicons"></span>
       <span class="adr-sys"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-signal"></i><i class="fa-solid fa-battery-three-quarters"></i></span></div>`;
 
   document.body.append(home, top);
@@ -142,7 +141,7 @@
 
   /* ───────── notifications ───────── */
   const events = [];                       // everything notifications.js reports
-  const info = { hire: false, hobbies: false };   // cards opened from the tiles
+  const cards = [];                        // tile cards (hire / hobbies) in the shade, newest first; the latest tap sits on top
   let hobTab = null, shadeOpen = false, headsT = 0;
   const when = ts => { const m = Math.round((Date.now() - ts) / 60000); return m < 1 ? 'now' : m + 'm'; };
 
@@ -151,40 +150,82 @@
     const n = { key, icon, title, text, ts: Date.now() };
     events.unshift(n); render();
     if (!shadeOpen) {                                       // heads-up banner
-      heads.innerHTML = `<div class="t"><i class="fa-solid ${icon}"></i>Portfolio · now</div><h4>${esc(title)}</h4>${text ? `<p>${esc(text)}</p>` : ''}`;
+      heads.innerHTML = `<i class="fa-solid ${icon}"></i><span>${esc(title)}</span>`;
       heads.classList.add('show'); clearTimeout(headsT);
       headsT = setTimeout(() => heads.classList.remove('show'), 2600);
     }
   }
-  const card = (icon, app, title, body, x) => `<div class="adr-n"><div class="t"><i class="fa-solid ${icon}"></i>${app}</div><h4>${title}</h4>${body}${x ? `<button class="x" type="button" data-dismiss="${x}" aria-label="Dismiss">✕</button>` : ''}</div>`;
+  const card = (icon, app, title, body, x, cls) => `<div class="adr-n${cls ? ' ' + cls : ''}"><div class="t"><i class="fa-solid ${icon}"></i>${app}</div><h4>${title}</h4>${body}${x ? `<button class="x" type="button" data-dismiss="${x}" aria-label="Dismiss">✕</button>` : ''}</div>`;
 
   function hireCard() {
-    const items = $$('.cp-list li').map(li => `<li><i class="${esc(($('i', li) || {}).className || 'fa-solid fa-check')}"></i><div><b>${esc(txt($('b', li)))}</b><span>${esc(txt($('span', li)))}</span></div></li>`).join('');
-    return card('fa-user-check', 'Why hire me', 'Why hire me now?', `<p>Early-career, research-driven, and already building.</p><ul class="adr-hire">${items}</ul>
+    const items = $$('.wh-item').map(li => `<li><i class="${esc(($('i', li) || {}).className || 'fa-solid fa-check')}"></i><div><b>${esc(txt($('b', li)))}</b><span>${esc(txt($('span', li)))}</span></div></li>`).join('');
+    return card('fa-user-check', 'Why hire me', 'Why hire me now?', `<p>${esc(txt($('.wh-sub')) || 'Early-career, research-driven, and already building.')}</p><ul class="adr-hire">${items}</ul>
       <div class="adr-acts"><button class="adr-btn p" data-app="resume" type="button">Resume</button><button class="adr-btn" data-app="portfolio" type="button">Projects</button></div>`, 'hire');
   }
+  /* Font Awesome icon for a hobby, picked from keywords in its name (first match wins) */
+  const HOB_ICONS = [
+    [/linux|ubuntu|mint|arch\b|distro/i, 'fa-brands fa-linux'],
+    [/android|lineage/i, 'fa-brands fa-android'],
+    [/rom|firmware|flash|chip|embedded|arduino|raspberry/i, 'fa-solid fa-microchip'],
+    [/hardware|pc build|\bpc\b|computer|troubleshoot|repair/i, 'fa-solid fa-computer'],
+    [/open[- ]?source|foss|free (&|and) /i, 'fa-solid fa-code-branch'],
+    [/llm|\bai\b|artificial|machine learning|model/i, 'fa-solid fa-robot'],
+    [/ui\/?ux|design|ui\b|ux\b|graphic|art\b|draw|sketch/i, 'fa-solid fa-pen-ruler'],
+    [/web|site|internet|browser|wordpress/i, 'fa-solid fa-globe'],
+    [/cod(e|ing)|program|script|develop|learn/i, 'fa-solid fa-code'],
+    [/news|emerging|trend|article|blog/i, 'fa-solid fa-newspaper'],
+    [/desktop|custom|theme|rice|dotfile/i, 'fa-solid fa-desktop'],
+    [/mobile|phone|smartphone|gadget/i, 'fa-solid fa-mobile-screen'],
+    [/terminal|shell|cli\b|command/i, 'fa-solid fa-terminal'],
+    [/server|self-?host|homelab|cloud/i, 'fa-solid fa-server'],
+    [/network|wi-?fi|router/i, 'fa-solid fa-network-wired'],
+    [/secur|privacy|vpn/i, 'fa-solid fa-shield-halved'],
+    [/guitar/i, 'fa-solid fa-guitar'],
+    [/music|song|playlist|band|listen/i, 'fa-solid fa-music'],
+    [/game|gaming|esport|console/i, 'fa-solid fa-gamepad'],
+    [/chess/i, 'fa-solid fa-chess'],
+    [/movie|film|cinema|series|show|anime|watch/i, 'fa-solid fa-film'],
+    [/book|read|novel|manga|comic/i, 'fa-solid fa-book-open'],
+    [/photo|camera|video|film making|edit/i, 'fa-solid fa-camera'],
+    [/travel|trip|explor|adventure|hik|road/i, 'fa-solid fa-earth-asia'],
+    [/cook|food|bak|coffee|tea\b/i, 'fa-solid fa-utensils'],
+    [/gym|fitness|workout|exercise|lift/i, 'fa-solid fa-dumbbell'],
+    [/run|jog|cycl|bike|swim|sport|basketball|football|badminton/i, 'fa-solid fa-person-running'],
+    [/3d|print|maker|diy|build/i, 'fa-solid fa-cube'],
+    [/space|astronom|science|physics/i, 'fa-solid fa-rocket'],
+    [/car|motor|drive/i, 'fa-solid fa-car-side'],
+    [/pet|dog|cat\b/i, 'fa-solid fa-paw']
+  ];
+  const hobIcon = function (t) {
+    for (let i = 0; i < HOB_ICONS.length; i++) if (HOB_ICONS[i][0].test(t)) return HOB_ICONS[i][1];
+    return 'fa-solid fa-circle-dot';
+  };
+
   function hobCard() {
     const tabs = $$('#dotfiles .df-file').map(b => [b.id.replace('df-tab-', ''), txt(b)]);
-    if (!tabs.length) return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests', '<p>Nothing to show yet.</p>', 'hobbies');
+    if (!tabs.length) return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests', '<p>Nothing to show yet.</p>', 'hobbies', 'adr-lin');
     if (!tabs.some(t => t[0] === hobTab)) hobTab = tabs[0][0];
     const pane = $('#df-pane-' + hobTab);
-    const body = pane ? pane.innerHTML.replace(/\sid="[^"]*"/g, '') : '';
+    const desc = pane ? txt($('.df-desc', pane)) : '';
+    const rows = pane ? $$('.df-list li', pane).map(li => txt(li)).filter(Boolean) : [];
+    /* settings-style grouped list: a round badge with a Font Awesome icon, rows joined into one rounded group */
+    const list = rows.length
+      ? `<ul class="adr-hob">${rows.map(r => `<li><span class="lg" aria-hidden="true"><i class="${hobIcon(r)}"></i></span><span class="tx">${esc(r)}</span></li>`).join('')}</ul>`
+      : '<p>Nothing to show yet.</p>';
     return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests',
-      `<div class="adr-hobtabs">${tabs.map(t => `<button type="button" data-hob="${t[0]}" class="${t[0] === hobTab ? 'on' : ''}">${esc(t[1])}</button>`).join('')}</div><div class="adr-hob">${body}</div>`, 'hobbies');
+      `<div class="adr-hobtabs" role="tablist">${tabs.map(t => `<button type="button" role="tab" aria-selected="${t[0] === hobTab}" data-hob="${t[0]}" class="${t[0] === hobTab ? 'on' : ''}">${t[0] === hobTab ? '<i class="fa-solid fa-check" aria-hidden="true"></i>' : ''}${esc(t[1])}</button>`).join('')}</div>${desc ? `<p class="adr-hobdesc">${esc(desc)}</p>` : ''}${list}`,
+      'hobbies', 'adr-lin');
   }
 
   function render() {
-    const showInfo = info.hire || info.hobbies;               // while a tile card is showing, the event notifications step aside
-    let html = '';
-    if (info.hire) html += hireCard();
-    if (info.hobbies) html += hobCard();
-    if (!showInfo) html = events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), e.text ? `<p>${esc(e.text)}</p>` : '')).join('');
+    /* tile cards are ordinary notifications now: the most recently tapped one is on top, the event notifications stay below */
+    let html = cards.map(k => k === 'hire' ? hireCard() : hobCard()).join('');
+    html += events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), e.text ? `<p>${esc(e.text)}</p>` : '')).join('');
     const keep = list.scrollTop;
     list.innerHTML = html || '<div class="adr-empty">No notifications</div>';
     list.scrollTop = keep;
-    $('.adr-clear', shade).style.display = !showInfo && events.length ? '' : 'none';
+    $('.adr-clear', shade).style.display = events.length || cards.length ? '' : 'none';
     $('.adr-nicons', top).innerHTML = events.slice(0, 3).map(e => `<i class="fa-solid ${e.icon}"></i>`).join('');
-    $$('.adr-tile', shade).forEach(t => t.classList.toggle('on', (t.dataset.tile === 'hire' && info.hire) || (t.dataset.tile === 'hobbies' && info.hobbies)));
     $('[data-tile="theme"] small', shade).textContent = themeName();
   }
 
@@ -204,7 +245,7 @@
     if (document.visibilityState !== 'visible' || !leftFor) return;
     const n = leftFor; leftFor = null;
     if (Date.now() - n.ts > 10 * 60 * 1000 || shadeOpen) return;
-    heads.innerHTML = `<div class="t"><i class="fa-solid ${n.icon}"></i>Portfolio · ${when(n.ts)}</div><h4>${esc(n.title)}</h4>`;
+    heads.innerHTML = `<i class="fa-solid ${n.icon}"></i><span>${esc(n.title)}</span>`;
     heads.classList.add('show'); clearTimeout(headsT);
     headsT = setTimeout(() => heads.classList.remove('show'), 3200);
   });
@@ -213,8 +254,9 @@
   function setShade(open) {
     shadeOpen = open; shade.classList.remove('drag'); shade.style.transform = '';
     shade.classList.toggle('open', open); shade.inert = !open; scrim.classList.toggle('show', open);
+    $('#adr-status', top).classList.toggle('shade-open', open);
     if (open) { heads.classList.remove('show'); render(); }
-    else { info.hire = info.hobbies = false; render(); }   // tile cards go away with the shade; events are kept
+    else { cards.length = 0; render(); }   // tile cards go away with the shade; events are kept
   }
 
   /* open: pointer drag that starts on the status bar (the very top of the screen). A plain tap does nothing. */
@@ -269,13 +311,17 @@
     if (t) {
       const k = t.dataset.tile;
       if (k === 'theme') { const i = THEMES.findIndex(x => x[0] === theme()); const n = $(`[data-theme-choice="${THEMES[(i + 1) % THEMES.length][0]}"]`); if (n) n.click(); }
-      else if (k === 'hire') { info.hire = !info.hire; render(); }
-      else if (k === 'hobbies') { info.hobbies = !info.hobbies; render(); }
+      else if (k === 'hire' || k === 'hobbies') {
+        const i = cards.indexOf(k); if (i > -1) cards.splice(i, 1);
+        cards.unshift(k);                                      // latest tapped goes to the very top (tapping again just brings it back up)
+        render(); list.scrollTop = 0;
+        t.classList.remove('on'); t.blur();                    // quick tiles are momentary: they never stay lit or focused
+      }
       else if (k === 'restart') { setShade(false); const r = $('#panel-restart-btn'); if (r) r.click(); else location.reload(); }
       return;
     }
-    if (ev.target.closest('.adr-clear')) { events.length = 0; render(); return; }
-    const x = ev.target.closest('[data-dismiss]'); if (x) { info[x.dataset.dismiss] = false; render(); return; }
+    if (ev.target.closest('.adr-clear')) { events.length = 0; cards.length = 0; render(); return; }
+    const x = ev.target.closest('[data-dismiss]'); if (x) { const i = cards.indexOf(x.dataset.dismiss); if (i > -1) cards.splice(i, 1); render(); return; }
     const h = ev.target.closest('[data-hob]'); if (h) { hobTab = h.dataset.hob; render(); return; }
     if (ev.target.closest('[data-app]')) setShade(false);       // Resume / Projects buttons: the window opens, the shade closes
   });
@@ -288,8 +334,8 @@
   /* ───────── clock + start-up ───────── */
   const tick = () => {
     const n = new Date(), t = n.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    $('.adr-time', top).textContent = t; $('.adr-sh-time', shade).textContent = t;
-    $('.adr-sh-date', shade).textContent = n.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+    $('.adr-time', top).textContent = t;
+    $('.adr-date', top).textContent = n.toLocaleDateString([], { month: 'short', day: 'numeric' });   // month + day only, shown while the shade is open
   };
   tick(); setInterval(tick, 15000);
   setInterval(() => { if (shadeOpen) render(); }, 60000);          // keep "2m" ages fresh

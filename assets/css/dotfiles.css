@@ -1,10 +1,9 @@
 /*--------------------------------------------------------------
-# Hobbies & Interests: dotfiles applet (popover above the taskbar icon)
-# Load AFTER desktop.css. Colours come from the theme variables,
-# so every theme (Everforest, Aurora, Gruvbox, Monokai, Dracula)
-# follows automatically. Plain terminal look: monospace, a prompt,
-# `ls -A` on the left, `cat -n` output on the right. No borders,
-# no glow, no icons or images inside the content.
+# Hobbies & Interests applet (popover above the taskbar icon), Linux Mint menu style
+# Load AFTER desktop.css. Colours come from the theme variables, so every theme
+# (Everforest, Aurora, Gruvbox, Monokai, Dracula) follows automatically.
+# Like the Mint menu: search entry on top, categories on the left with a solid
+# accent selection (Mint-Y), launcher-style rows on the right, a launcher row below.
 --------------------------------------------------------------*/
 
 /* ----- popover shell: placed exactly like the clock applet -----
@@ -58,10 +57,10 @@
   box-sizing: border-box;
   background: transparent;
   color: var(--default-color);
-  font-family: ui-monospace, "JetBrains Mono", "Fira Code", "Cascadia Code", SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: var(--fs-base);
-  line-height: 1.55;
-  padding: 0;            /* the applet is a <section>: cancel main.css's `section { padding: 60px 0 }` (the big top/bottom gap) */
+  font-family: inherit;
+  font-size: var(--fs-base, 14px);
+  line-height: 1.5;
+  padding: 0;            /* the applet is a <section>: cancel main.css's `section { padding: 60px 0 }` */
   margin: 0;
 }
 
@@ -69,53 +68,89 @@
 
 .df-wrap {
   display: grid;
-  grid-template-columns: 148px minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;      /* content, then the John Off the Wall link */
-  height: min(290px, calc(100dvh - var(--taskbar-space, 56px) - 16px));   /* fixed size: every tab is the same height, long ones scroll */
+  grid-template-columns: 156px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "search search" "files view" "cta cta";
+  height: min(372px, calc(100dvh - var(--taskbar-space, 56px) - 16px));   /* fixed size: every category is the same height, long ones scroll */
 }
 
-/* ----- left: file names ----- */
+/* ----- top: search entry (like the Mint menu) ----- */
+.df-search {
+  grid-area: search;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  background: color-mix(in srgb, var(--default-color), transparent 96%);
+}
+.df-search i { flex: none; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.df-q {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 86%);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--background-color, #000), transparent 55%);
+  color: var(--default-color);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.df-q::placeholder { color: color-mix(in srgb, var(--default-color), transparent 55%); }
+.df-q:focus { border-color: var(--accent-highlight); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-highlight), transparent 82%); }
+.dotfiles:focus-within .df-search i { color: var(--accent-highlight); }
+
+/* ----- left: categories ----- */
 .df-files {
+  grid-area: files;
   display: flex;
   flex-direction: column;
-  padding: 6px 0;
+  gap: 2px;
+  padding: 8px;
   overflow-y: auto;
-  background: color-mix(in srgb, var(--default-color), transparent 95%);
+  background: color-mix(in srgb, var(--default-color), transparent 96%);
+  border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
 }
 
 .df-file {
   display: block;
   width: 100%;
-  padding: 3px 12px;
+  padding: 7px 10px;
   border: 0;
+  border-radius: 6px;
   background: transparent;
-  color: var(--default-color);
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
   font: inherit;
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
-  opacity: 0.65;
+  transition: background .15s ease, color .15s ease;
 }
+.df-file:hover { background: color-mix(in srgb, var(--default-color), transparent 91%); color: var(--default-color); }
+.df-file:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent-highlight), transparent 30%); outline-offset: -2px; color: var(--default-color); }
 
-.df-file:hover,
-.df-file:focus-visible {
-  opacity: 1;
-  color: var(--accent-highlight);
-  outline: none;
-}
-
+/* Mint-Y: the selected category is a solid accent block */
 .df-file[aria-selected="true"] {
-  opacity: 1;
-  color: var(--accent-highlight);
+  background: var(--accent-highlight);
+  color: var(--background-color, #111);
   font-weight: 600;
 }
+.dotfiles.is-searching .df-file[aria-selected="true"] {   /* while searching, nothing is "selected" */
+  background: transparent;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  font-weight: inherit;
+}
 
-/* ----- right: only the active pane is shown, so there is no empty
-   space above or below the content ----- */
+/* ----- right: only the active pane is shown ----- */
 .df-view {
+  grid-area: view;
   min-width: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 6px 14px;
+  padding: 10px 12px;
 }
 
 /* thin scrollbars in the theme colour, only visible when a pane is longer than the applet */
@@ -128,57 +163,81 @@
 .df-pane[hidden] { display: none; }
 .df-pane:focus { outline: none; }
 
-.df-ps  { color: var(--accent-highlight); font-weight: 600; }
-.df-dir { color: var(--accent-color); }
-
+/* category title / group label, like the heading above the application list */
 .df-desc {
-  margin: 0 0 6px;
-  color: color-mix(in srgb, var(--default-color), transparent 45%);   /* muted: the intro line */
+  margin: 0 0 6px 4px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--default-color), transparent 42%);
+}
+.df-results .df-desc { margin-top: 8px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-highlight); }
+.df-results .df-desc:first-child { margin-top: 0; }
+.df-empty { margin: 14px 4px; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+
+/* launcher rows: a rounded-square badge with a Font Awesome icon (set by dotfiles.js) + the name */
+.df-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1px; }
+.df-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px 4px 6px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--heading-color, var(--default-color));
+  transition: background .12s ease;
+}
+.df-list li:hover { background: color-mix(in srgb, var(--accent-highlight), transparent 86%); }
+.df-list li > i {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent-highlight), transparent 80%);
+  color: var(--accent-highlight);
+  font-size: 12px;
+  line-height: 1;
 }
 
-
-/* plain list */
-.df-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.df-list li { padding: 1px 0; color: var(--heading-color, var(--default-color)); }   /* brighter than the description */
-
-/* ----- CTA: plain link to John Off the Wall (spans both columns, pinned at the bottom) ----- */
+/* ----- footer launcher row: John Off the Wall (spans both columns) ----- */
 .df-cta {
-  grid-column: 1 / -1;
+  grid-area: cta;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 14px 9px;
+  padding: 9px 16px 10px;
   border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
   color: var(--default-color);
   text-decoration: none;
+  font-size: 12px;
+  transition: background .15s ease;
 }
+.df-cta:hover,
+.df-cta:focus-visible { background: color-mix(in srgb, var(--accent-highlight), transparent 90%); outline: none; }
 
-.df-cta-name { white-space: nowrap; color: var(--accent-highlight); text-underline-offset: 3px; transition: color .15s ease; }   /* the link */
+.df-cta-name { white-space: nowrap; font-weight: 600; color: var(--accent-highlight); }
 .df-cta-desc { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.55; transition: opacity .15s ease; }
 .df-cta-desc::after { content: " \2192"; }
-
-.df-cta:hover .df-cta-name,
-.df-cta:focus-visible .df-cta-name { text-decoration: underline; }
 .df-cta:hover .df-cta-desc,
 .df-cta:focus-visible .df-cta-desc { opacity: 1; }
-.df-cta:focus-visible { outline: none; }
 
-/* narrow window: file names become a scrolling row above the content */
+@media (prefers-reduced-motion: reduce) {
+  .df-file, .df-cta, .df-cta-desc, .df-q, .df-list li { transition: none; }
+}
+
+/* narrow window: categories become a scrolling row of pills under the search entry */
 @container (max-width: 460px) {
-  .df-wrap { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; }
+  .df-wrap { grid-template-columns: 1fr; grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: "search" "files" "view" "cta"; }
   .df-files {
     flex-direction: row;
-    padding: 0 8px;
+    padding: 8px;
     overflow-x: auto;
     overflow-y: hidden;
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
   }
-  .df-file { width: auto; flex: none; padding: 2px 8px; white-space: nowrap; }
-  .df-file[aria-selected="true"] { text-decoration: underline; text-underline-offset: 4px; }
-  .df-view { padding: 6px 12px; }
+  .df-file { width: auto; flex: none; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+  .df-view { padding: 10px 12px; }
 }
