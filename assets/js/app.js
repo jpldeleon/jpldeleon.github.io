@@ -34,19 +34,19 @@
      `url` is the project page. Links on the site pointing to this url are
      intercepted automatically, so existing sidebar/portfolio links just work. */
   const PROJECTS = [
-    { id: 'auditkit', title: 'AuditKit', barTitle: 'AuditKit: Simple Technical SEO Tool', sub: 'API Capstone Project',
+    { id: 'auditkit', title: 'AuditKit', barTitle: 'AuditKit: Technical SEO Audit Tool', sub: 'API Capstone Project',
       icon: 'fa-solid fa-magnifying-glass-chart', url: 'auditkit/index.html' },
-    { id: 'nothingtechblob', title: 'NothingTechBlob', barTitle: 'NothingTechBlob: Tech Blog with SEO',
+    { id: 'nothingtechblob', title: 'NothingTechBlob', barTitle: 'NothingTechBlob: Technical & On-Page SEO + WordPress', sub: 'Case Study',
       icon: 'fa-solid fa-mobile-screen', url: 'nothingtechblob/' },
-    { id: 'badlands-ink', title: 'Badlands Ink', barTitle: 'Badlands Ink: WordPress Site with SEO',
+    { id: 'badlands-ink', title: 'Badlands Ink', barTitle: 'Badlands Ink: Local & E-Commerce SEO + WordPress', sub: 'Case Study',
       icon: 'fa-solid fa-pen-nib', url: 'badlands-ink/' },
-    { id: 'johnoffthewall', title: 'John Off the Wall', barTitle: 'John Off the Wall: Personal Website',
+    { id: 'johnoffthewall', title: 'John Off the Wall', barTitle: 'John Off the Wall: Personal Website', sub: 'API Capstone Project',
       icon: 'fa-solid fa-fire-flame-curved', url: 'johnoffthewall/' },
-    { id: 'pixellog', title: 'PixelLog', barTitle: 'PixelLog: Nostalgia-Themed Blog App',
+    { id: 'pixellog', title: 'PixelLog', barTitle: 'PixelLog: Full-Stack Node.js, Express & PostgreSQL', sub: 'API Capstone Project',
       icon: 'fa-brands fa-mintbit', url: 'pixellog/' },
-    { id: 'jamporudex', title: 'JamporuDEX', barTitle: 'JamporuDEX: Anime and Manga Tracker',
+    { id: 'jamporudex', title: 'JamporuDEX', barTitle: 'JamporuDEX: Full-Stack Node.js & Express', sub: 'API Capstone Project',
       icon: 'fa-brands fa-leanpub', url: 'jamporudex/' },
-    { id: 'route196', title: 'Route 196', barTitle: 'Route 196: Single-Page Site Inspector',
+    { id: 'route196', title: 'Route 196', barTitle: 'Route 196: Full-Stack Node.js & Express', sub: 'API Capstone Project',
       icon: 'fa-solid fa-shield', url: 'route196/' }
   ];
 
