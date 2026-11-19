@@ -507,7 +507,7 @@
         if (line.company) {
           const company = document.createElement('span');
           company.className = 't-entry-company';
-          company.textContent = ' — ' + line.company;
+          company.textContent = ' - ' + line.company;
           row.appendChild(company);
         }
         const sub = document.createElement('div');

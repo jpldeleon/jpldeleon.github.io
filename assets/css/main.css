@@ -98,7 +98,7 @@
   --surface-color: #282828;
 }
 
-/* Dracula Pro Theme — https://draculatheme.com/pro */
+/* Dracula Pro Theme - https://draculatheme.com/pro */
 [data-theme="draculapro"] {
   --background-color: #131516;
   --default-color: #F8F8F2;
@@ -123,7 +123,7 @@
   --surface-color: #131516;
 }
 
-/* Monokai Pro Theme — https://monokai.pro */
+/* Monokai Pro Theme - https://monokai.pro */
 [data-theme="monokai"] {
   --background-color: #1d2528;
   --default-color: #f2fffc;
@@ -4592,7 +4592,7 @@ Map to active/hover color .typed,
 }
 
 /* =========================================================
-   Terminal window refinement — project/certificate windows
+   Terminal window refinement - project/certificate windows
    ========================================================= */
 
 /* Close must fade only. Minimize keeps the shrink-to-taskbar motion. */
@@ -5692,7 +5692,7 @@ Map to active/hover color .typed,
 }
 
 /* =========================================================================
-   CONSOLIDATED FIX — GLightbox window + command buttons (keep this LAST)
+   CONSOLIDATED FIX - GLightbox window + command buttons (keep this LAST)
    1) Linux window-control colors (red / yellow / green) per theme palette.
    2) One in-flow title bar above the image (no overlap), themed frame.
    3) Same tokens drive card buttons, lightbox buttons, maximized window
@@ -6038,7 +6038,7 @@ html body .glightbox-container .gslide.current .gslide-image img {
 }
 
 /* =========================================================================
-   FOLLOW-UP FIX — thumbnail command buttons + theme notice background
+   FOLLOW-UP FIX - thumbnail command buttons + theme notice background
    ========================================================================= */
 
 /* The older thumbnail rules (.portfolio-terminal-controls .portfolio-command-btn
@@ -6105,7 +6105,7 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
 }
 
 /* =========================================================================
-   WINDOW MOTION — shrink / grow / fade are driven by main.js.
+   WINDOW MOTION - shrink / grow / fade are driven by main.js.
    ========================================================================= */
 /* Old class-based minimize/close motion is replaced by JS; make sure a stray
    class can never leave the lightbox window squashed or faded. */
@@ -6148,7 +6148,7 @@ html body .theme-controls .theme-notice:empty {
 }
 
 /* =========================================================================
-   VIDEO SLIDES — extend the window frame + title bar to .gslide-video
+   VIDEO SLIDES - extend the window frame + title bar to .gslide-video
    (GLightbox's native video mode), so YouTube slides get the same
    terminal chrome as image slides. Mirrors the .gslide-image rules above.
    ========================================================================= */
@@ -6389,7 +6389,7 @@ html body .glightbox-container .gslide.current .gslide-video {
 }
 
 /* =========================================================================
-   MOBILE FIX (keep LAST) — gallery carousel follows each screenshot's own size
+   MOBILE FIX (keep LAST) - gallery carousel follows each screenshot's own size
    (no fixed height, no cropping).
    ========================================================================= */
 @media (max-width: 768px) {

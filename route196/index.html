@@ -382,8 +382,8 @@
             <ul>
               <li><strong>GitHub Repository &amp; Local Setup:</strong> A tour of the project repository, codebase
                 documentation, and local development environment setup.</li>
-              <li><strong>Core Features Walkthrough:</strong> Live analysis of URLs across all four tools—robots.txt,
-                sitemap index parsing, redirect path tracing, and historical archive lookups—alongside graceful error
+              <li><strong>Core Features Walkthrough:</strong> Live analysis of URLs across all four tools: robots.txt,
+                sitemap index parsing, redirect path tracing, and historical archive lookups, alongside graceful error
                 and empty states.</li>
               <li><strong>Responsive Mobile Design:</strong> A view of the adaptive user interface across mobile,
                 tablet, and desktop viewports built using fluid CSS media queries.</li>
@@ -557,7 +557,7 @@
               Route 196 is my Capstone Project for Angela Yu's Complete Full-Stack Web Development Bootcamp. It’s a
               cozy, single-page site inspector designed to streamline basic web research. Simply enter a URL, and the
               application fetches the site's robots.txt and sitemap.xml, traces its redirect chain hop by hop, and
-              queries the Wayback Machine for historical archives—all accessible via a floating pill menu without
+              queries the Wayback Machine for historical archives, all accessible via a floating pill menu without
               needing multiple browser tabs.
             </p>
             <p>
@@ -567,7 +567,7 @@
             </p>
             <p>
               As a beginner in backend development, I leveraged Claude (Anthropic's AI assistant) as a learning
-              partner—much like an interactive Stack Overflow. I used it to debug asynchronous code, refine my regex
+              partner, much like an interactive Stack Overflow. I used it to debug asynchronous code, refine my regex
               parsing, and handle tricky edge cases like redirect loops and sitemap index files. While the application
               architecture, feature set, and UI design are my own, working through these concepts ensured I gained a
               solid, practical understanding of backend HTTP requests and data handling.
@@ -594,8 +594,8 @@
             </p>
             <p>
               The redirect tracer ended up being the most complex feature to implement. Learning how to catch
-              meta-refresh tags and JavaScript redirects using regular expressions—while implementing loop detection
-              logic to keep the server responsive—required significant testing and iteration. It also taught me the
+              meta-refresh tags and JavaScript redirects using regular expressions, while implementing loop detection
+              logic to keep the server responsive, required significant testing and iteration. It also taught me the
               importance of thoroughly reading API documentation to understand response structures rather than making
               assumptions about the data format.
             </p>
@@ -615,8 +615,8 @@
             <h2 class="pi-h">Technical Implementation</h2>
             <p>
               The architecture relies on an Express backend serving four distinct GET endpoints. The robots and sitemap
-              endpoints utilize the native fetch API—wrapped in a custom helper with an AbortController to prevent slow
-              external servers from hanging requests—to parse site metadata, including complex sitemap index files. The
+              endpoints utilize the native fetch API, wrapped in a custom helper with an AbortController to prevent slow
+              external servers from hanging requests, to parse site metadata, including complex sitemap index files. The
               wayback endpoint handles the primary Axios integration, executing requests to the Wayback Machine
               Availability API for the most recent snapshot, alongside secondary calls to the CDX API for capture
               history. The redirect-check endpoint traces URLs across up to 10 hops, identifying HTTP 3xx responses,

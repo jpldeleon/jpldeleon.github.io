@@ -11,7 +11,6 @@
  *   resume   the resume PDF download link was clicked
  *   link     an external (other-origin) http(s) link was clicked ("View site", project links, ...)
  *   social   an external link to GitHub / LinkedIn / Upwork / GoLance was clicked
- *   project  a project was opened (card, taskbar menu, dock)
  *   restart  the desktop was restarted
  *
  * Every notification is also announced to other scripts with a "notif:added" event (android.js shows it
@@ -478,17 +477,6 @@
   }
   document.addEventListener('click', onLinkClick, true);
   document.addEventListener('auxclick', onLinkClick, true);
-
-  /* 5) Projects: a project card / menu entry / dock icon was clicked (data-app="project:..."). */
-  function projectName(t) {
-    const n = t.querySelector('.pj-name, h4, strong');
-    const raw = (n && n.textContent) || t.getAttribute('aria-label') || t.getAttribute('title') || t.getAttribute('data-app').slice(8);
-    return raw.replace(/\s+/g, ' ').trim();
-  }
-  document.addEventListener('click', e => {
-    const t = closest(e, '[data-app^="project:"]');
-    if (t) add('project', 'Opened project: ' + projectName(t), t.getAttribute('data-app'));
-  }, true);
 
   /* Project windows are same-origin iframes: their external links leave the portfolio too. */
   const hookedDocs = new WeakSet();

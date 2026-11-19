@@ -1,5 +1,5 @@
 /*!
- * jpt-chat.js — "Ask Jampol", a chat box for jpldeleon.github.io
+ * jpt-chat.js - "Ask Jampol", a chat box for jpldeleon.github.io
  * Mission: let visitors get to know Jampol (the answers are written in his first-person voice). Zero dependencies. No backend: answers come from the KNOWLEDGE BASE below.
  * Embed: <script src="assets/js/jpt-chat.js" defer></script> before </body>
  */
@@ -14,7 +14,7 @@
    * - single words are matched as whole words / prefixes (worth 1 point)
    * - answers are first-person, in Jampol's voice; pass an array of lines: '' = blank gap, '• text' = bullet, anything else = its own line
    * - answers support **bold**, [text](https://url), {{clickable command}}
-   * Entries marked  // EDIT  are drafts in your voice — tweak them!
+   * Entries marked  // EDIT  are drafts in your voice - tweak them!
    * ─────────────────────────────────────────────────────────────── */
   const SITE = 'https://jpldeleon.github.io';
   const E = [];
