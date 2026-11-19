@@ -26,7 +26,7 @@
    * webview, so the click is handled here: the PDF is fetched once (prefetched when
    * the browser is idle), kept as a Blob, and saved through a temporary download link.
    * That temporary link's click still reaches notifications.js, so the
-   * "Resume download started" toast keeps working (the "#name.pdf" tail keeps its
+   * "Resume download started" notification keeps working (the "#name.pdf" tail keeps its
    * .pdf match). If the fetch fails, it falls back to the plain download link. */
   (() => {
     if (!window.fetch || !window.URL || !URL.createObjectURL) return;

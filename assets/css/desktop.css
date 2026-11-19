@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------
 # Desktop shell
 # Load AFTER main.css and app.css.
-# Top panel, compact sidebar, stats widget, toast position and
+# Top panel, compact sidebar, stats widget and
 # the locked (non-scrolling) home page.
 --------------------------------------------------------------*/
 /* Type scale (one set of sizes for the whole desktop; windows scale from --fs-base) */
@@ -250,36 +250,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* "Theme: Gruvbox" typed notice, tucked under the panel */
-.panel-notice {
-  position: fixed;
-  top: calc(var(--panel-h) + 92px);
-  /* below the theme popover, not on top of it */
-  right: 12px;
-  z-index: 5001;
-  padding: 8px 14px;
-  border-radius: 6px;
-  background: #1e1e2e;
-  color: var(--accent-highlight);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: var(--fs-xs);
-  pointer-events: none;
-}
-
-.panel-notice:empty {
-  display: none;
-}
-
-/* Inside the theme menu: right under the theme popover, centred under the dots.
-   The popover is ~188px wide and right-aligned, so its centre is 94px from the right edge. */
-.panel-menu>.panel-notice {
-  position: absolute;
-  top: calc(100% + 82px);
-  right: 94px;
-  transform: translateX(50%);
-  white-space: nowrap;
-}
-
 /*--------------------------------------------------------------
 # Sidebar: smaller avatar, icon-only contact buttons, stats widget
 --------------------------------------------------------------*/
@@ -442,29 +412,8 @@
   height: 100%;
 }
 
-/*--------------------------------------------------------------
-# Copy toast: directly under the Email / Phone buttons
---------------------------------------------------------------*/
 .hero-sidebar .sidebar-contact {
   position: relative;
-}
-
-.copy-toast-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin: 8px 0 0;
-  transform: none;
-  display: flex;
-  justify-content: center;
-  z-index: 6;
-  pointer-events: none;
-}
-
-.copy-toast-container .copy-toast {
-  pointer-events: auto;
 }
 
 /*--------------------------------------------------------------
@@ -837,20 +786,6 @@ html body .lightbox-window-panel .win-btn:focus-visible {
     height: 46px;
   }
 
-  /* comfortable touch target */
-
-  /* Toast: pinned above the dock instead of covering the buttons */
-  .hero-sidebar .copy-toast-container {
-    position: fixed;
-    top: auto;
-    left: 12px;
-    right: 12px;
-    bottom: calc(var(--dock-space) + 6px);
-    width: auto;
-    margin: 0;
-    z-index: 1100;
-  }
-
   /* Room for the dock under the last bit of content */
   main,
   #footer {
@@ -1119,7 +1054,6 @@ body.sidebar-collapsed {
 .cky-widget {
   box-sizing: border-box;
 }
-
 
 /*--------------------------------------------------------------
 # Dock: only the FOCUSED app shows the indicator dot
@@ -1483,7 +1417,6 @@ body.sidebar-collapsed {
   }
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .cky-bar>i {
     transition: none;
@@ -1511,7 +1444,6 @@ body.sidebar-collapsed {
   color: var(--accent-color);
   opacity: 0.85;
 }
-
 
 /* Conky system monitor: desktop only */
 @media (max-width: 991px) {
@@ -3233,7 +3165,6 @@ html.desk-reveal .desk-right .cky-bar>i {
 --------------------------------------------------------------*/
 html.boot-on #top-panel,
 html.boot-on .linux-dock,
-html.boot-on .panel-notice,
 html.boot-on .hero-sidebar,
 html.boot-on .conky,
 html.boot-on .desk-right,
@@ -3503,26 +3434,6 @@ textarea {
 }
 
 /*--------------------------------------------------------------
-# Copy toast (hero card): appears right over the button row, so it never covers
-# the name, the About text or anything else, and never clips at the panel edge.
---------------------------------------------------------------*/
-@media (min-width: 769px) {
-  .hero-sidebar .copy-toast-container {
-    position: absolute;
-    inset: 0;
-    width: auto;
-    margin: 0;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .hero-sidebar .copy-toast-container .copy-toast {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-/*--------------------------------------------------------------
 # Name stays on one line (JetBrains Mono is wide, so it is sized to fit the card)
 --------------------------------------------------------------*/
 .hero-sidebar h1 {
@@ -3628,7 +3539,6 @@ textarea {
   }
 }
 
-
 .boot-logo .bg-a {
   stop-color: var(--accent-highlight);
 }
@@ -3688,7 +3598,6 @@ textarea {
     width: 100%;
   }
 }
-
 
 /*--------------------------------------------------------------
 # Hero + About me: two separate applets, side by side (>= 1360px).

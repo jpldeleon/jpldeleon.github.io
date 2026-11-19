@@ -11,31 +11,32 @@
 
 .notif-badge {
   position: absolute;
-  top: 1px;
-  right: 1px;
+  top: -3px;                                 /* sits on the button's corner, clear of the bell icon */
+  right: -3px;
   box-sizing: border-box;
-  min-width: 15px;
-  height: 15px;
-  padding: 0 4px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
   border-radius: 999px;
   background: var(--accent-highlight);
   color: var(--surface-color);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  line-height: 15px;
+  line-height: 14px;
   text-align: center;
+  box-shadow: 0 0 0 2px var(--surface-color);
   pointer-events: none;
 }
 
 /* exactly one unread = a plain dot, no number */
 .notif-badge.is-dot {
-  top: 4px;
-  right: 6px;
+  top: 1px;
+  right: 3px;
   min-width: 0;
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   padding: 0;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--surface-color), transparent 10%);
+  box-shadow: 0 0 0 2px var(--surface-color);
 }
 
 /* ----- dropdown (anchored to the right edge, under the bell) ----- */

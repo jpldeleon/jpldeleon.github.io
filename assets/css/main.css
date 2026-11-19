@@ -18,7 +18,6 @@
   --quote-color: #E69875;
 }
 
-
 /* Nav Menu Colors - Everforest Theme */
 :root {
   --nav-color: #D3C6AA;
@@ -30,7 +29,6 @@
   --typed-color: #7FBBB3;
 
 }
-
 
 .light-background {
   --background-color: #343F44;
@@ -186,7 +184,6 @@ h6 {
   font-family: var(--heading-font);
 }
 
-
 /*--------------------------------------------------------------
 # Bottom clearance (the taskbar sits along the bottom edge)
 --------------------------------------------------------------*/
@@ -255,10 +252,6 @@ main,
     bottom: 76px;
   }
 }
-
-
-
-
 
 /*--------------------------------------------------------------
 # Navigation Menu
@@ -720,7 +713,6 @@ section,
   gap: 20px;
 }
 
-
 .sidebar-avatar {
   position: relative;
   z-index: 0;
@@ -1133,7 +1125,6 @@ section,
   --smoke-rise: 200px;
 }
 
-
 .hero-sidebar h1 {
   width: 100%;
   font-size: 34px;
@@ -1493,70 +1484,6 @@ section,
   position: relative;
 }
 
-.copy-toast-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 8px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.copy-toast {
-  background-color: var(--surface-color);
-  color: var(--default-color);
-  border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 40%);
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--accent-highlight), transparent 65%);
-  font-size: 0.85rem;
-}
-
-.copy-toast .toast-body i {
-  color: var(--accent-highlight);
-}
-
-.copy-toast.showing,
-.copy-toast.show {
-  animation: copy-toast-pop 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-@keyframes copy-toast-pop {
-  0% {
-    transform: scale(0.9) translateY(-4px);
-    opacity: 0;
-  }
-
-  35% {
-    transform: translateX(-6px);
-  }
-
-  50% {
-    transform: translateX(5px);
-  }
-
-  65% {
-    transform: translateX(-3px);
-  }
-
-  80% {
-    transform: translateX(2px);
-  }
-
-  100% {
-    transform: scale(1) translateY(0) translateX(0);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .copy-toast.showing,
-  .copy-toast.show {
-    animation: none;
-  }
-}
-
 @media (min-width: 992px) {
 
   .hero-sidebar~main,
@@ -1597,7 +1524,6 @@ section,
   .hero-sidebar .lead {
     font-size: 16px;
   }
-
 
   .profile-smoke-avatar {
     width: 160px;
@@ -2110,7 +2036,6 @@ section,
   margin-bottom: 2rem;
 }
 
-
 .about .about-content {
   padding-left: 3rem;
 }
@@ -2209,8 +2134,6 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 40%);
   font-weight: 500;
 }
-
-
 
 .about .cta-section .btn {
   padding: 0.875rem 2rem;
@@ -3097,8 +3020,6 @@ section,
   object-position: top !important;
 }
 
-
-
 .portfolio .portfolio-wrap .portfolio-info h4 {
   font-size: 20px;
   color: var(--contrast-color);
@@ -3591,7 +3512,6 @@ section,
   font-size: 14px;
 }
 
-
 @keyframes drift {
 
   0%,
@@ -3604,8 +3524,6 @@ section,
   }
 }
 
-
-
 @media (max-width: 991px) {
 
   .service-details .service-info,
@@ -3617,7 +3535,6 @@ section,
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-
 
 /* Gallery Carousel Section */
 .gallery-carousel-section {
@@ -3793,7 +3710,6 @@ section,
   font-size: 1.25rem;
   margin: 0;
 }
-
 
 .code-container {
   font-family: 'JetBrains Mono', monospace;
@@ -4577,7 +4493,6 @@ Map to active/hover color .typed,
   display: block !important;
   visibility: visible !important;
 }
-
 
 /* Certificate cards use the same terminal chrome as project cards, with only Maximize. */
 .portfolio-item.filter-certifications .portfolio-terminal-bar {
@@ -5776,7 +5691,6 @@ Map to active/hover color .typed,
   }
 }
 
-
 /* =========================================================================
    CONSOLIDATED FIX — GLightbox window + command buttons (keep this LAST)
    1) Linux window-control colors (red / yellow / green) per theme palette.
@@ -6123,7 +6037,6 @@ html body .glightbox-container .gslide.current .gslide-image img {
   }
 }
 
-
 /* =========================================================================
    FOLLOW-UP FIX — thumbnail command buttons + theme notice background
    ========================================================================= */
@@ -6191,7 +6104,6 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
   -webkit-backdrop-filter: none;
 }
 
-
 /* =========================================================================
    WINDOW MOTION — shrink / grow / fade are driven by main.js.
    ========================================================================= */
@@ -6207,8 +6119,6 @@ html body .portfolio-terminal-controls .portfolio-command-btn.portfolio-command-
 .terminal-overlay.is-minimizing {
   transition: opacity .2s ease;
 }
-
-
 
 /* Theme notice ("Theme: Gruvbox") now matches the hero sidebar's typed-text
    box (.code-container): same dark code background, rounded-rect corners,
@@ -6404,7 +6314,6 @@ html body .glightbox-container .gslide.current .gslide-video .gvideo-wrapper {
   }
 }
 
-
 /* =========================================================================
    FIXES ROUND 2 (keep LAST)
    A) Page wider than the screen on mobile: the
@@ -6478,7 +6387,6 @@ html body .glightbox-container .gslide.current .gslide-video {
     max-height: calc(100vh - 24px - 44px) !important;
   }
 }
-
 
 /* =========================================================================
    MOBILE FIX (keep LAST) — gallery carousel follows each screenshot's own size

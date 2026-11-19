@@ -6,13 +6,14 @@
  *
  * Tracked events, and only these:
  *   theme    a theme dot was clicked AND data-theme actually changed
- *   phone    a phone copy trigger was clicked AND its toast appeared
- *   email    an email copy trigger was clicked AND its toast appeared
+ *   phone    the phone copy button copied (main.js fires "copy:result")
+ *   email    the email copy button copied
  *   resume   the resume PDF download link was clicked
  *   link     an external (other-origin) http(s) link was clicked
  *
- * Every new notification shakes the bell and plays a chime (mute button in the popover header);
- * restarting the desktop plays a boot sound. See SOUND + BELL SHAKE below.
+ * Every new notification also pops up as a pill above the taskbar (desktop only; see PILL below),
+ * shakes the bell and plays a chime (mute button in the popover header);
+ * restarting the desktop plays an exit sound, and the desktop finishing its boot plays a welcome sound. See SOUND + BELL SHAKE below.
  *
  * History lives in sessionStorage, so it lasts for the browser tab's session.
  */
@@ -66,7 +67,7 @@
    * an empty string keeps the built-in sound. A speaker button in the notification header mutes everything
    * (remembered in localStorage). Browsers only allow sound after a click or key press, so a sound that
    * fires before the first interaction is simply skipped. */
-  const SOUND_FILES = { notify: '', restart: '' };
+  const SOUND_FILES = { notify: '', exit: '', welcome: '' };
   const SOUND_KEY = 'notif-sound';
   const VOLUME = 0.2;
   const reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -126,9 +127,14 @@
   }
   const SYNTH = {
     notify: () => { bell(1174.66, 0, 0.55, 0.5); bell(1567.98, 0.13, 0.8, 0.5); },                       // D6, G6
-    restart: () => {                                                                                   // C major arpeggio over a low pad
-      tone(130.81, 0, 1.6, 0.25, 'triangle');
-      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => bell(f, i * 0.17, 1.0, 0.45));
+    exit: () => {                                                                                      // goodbye: a falling phrase that settles on a low note
+      [1046.5, 783.99, 659.25, 523.25].forEach((f, i) => bell(f, i * 0.16, 0.9, 0.4));                 // C6 G5 E5 C5
+      tone(130.81, 0.45, 1.2, 0.22, 'triangle');                                                       // C3
+    },
+    welcome: () => {                                                                                   // hello: a warm swell, then one high bell
+      [220, 329.63, 440].forEach(f => tone(f, 0, 1.5, 0.22, 'triangle'));                              // A3, E4, A4 pad
+      bell(1174.66, 0.35, 1.1, 0.4);                                                                   // D6
+      bell(1760, 0.6, 1.0, 0.3);                                                                       // A6
     }
   };
 
@@ -171,22 +177,100 @@
     head.insertBefore(mute, head.querySelector('.notif-head-actions'));
   }
 
-  /* restarting the desktop: boot sound. The click is the user gesture. If the page reloads straight away,
-     the sound is tried again on the next load (and on the first click if the browser blocks it). */
-  const RESTART_KEY = 'notif-restart-sound';
-  document.addEventListener('desktop:restart', () => {
-    playSound('restart');
-    try { sessionStorage.setItem(RESTART_KEY, String(Date.now())); } catch (e) { /* private mode */ }
+  /* Restart / shut down: the exit sound plays on the click (the click is the user gesture).
+     When the desktop has finished booting (app.js fires "desktop:booted"), the welcome sound plays,
+     after a restart too. If the browser still blocks audio (no click yet on a fresh load), the welcome
+     sound plays on the first click or key press within 20 seconds. */
+  document.addEventListener('desktop:restart', () => playSound('exit'));
+
+  let welcomed = false;
+  document.addEventListener('desktop:restart', () => { welcomed = false; });
+  document.addEventListener('desktop:booted', () => {
+    if (welcomed) return;                              // app.js can announce the boot more than once per load
+    welcomed = true;
+    const c = audio();
+    if (c && c.state === 'running') { playSound('welcome'); return; }
+    const t0 = Date.now();
+    let played = false;
+    const late = () => { if (played || Date.now() - t0 > 20000) return; played = true; playSound('welcome'); };
+    document.addEventListener('pointerdown', late, { once: true, capture: true });
+    document.addEventListener('keydown', late, { once: true, capture: true });
   });
-  try {
-    const at = Number(sessionStorage.getItem(RESTART_KEY));
-    if (at && Date.now() - at < 15000) {
-      sessionStorage.removeItem(RESTART_KEY);
-      const c = audio();
-      if (c && c.state === 'running') playSound('restart');
-      else document.addEventListener('pointerdown', () => playSound('restart'), { once: true, capture: true });
-    }
-  } catch (e) { /* private mode */ }
+
+  /* ===================== card above the bell =====================
+   * Desktop only (the phone layout has its own shade + heads-up banner, see android.js). A small rounded card
+   * slides up right above the bell on the taskbar, like a Windows / Linux Mint notification: icon, message,
+   * close button and a thin timer line. Every card is the same size and takes its colours from the theme
+   * variables (taskbar.css). Hovering a card keeps it open; click it or its close button to dismiss it;
+   * Escape dismisses all of them. */
+  const PILL_MS = 4200;
+  const PILL_MAX = 3;
+  const PILL_ICONS = {
+    theme: 'fa-palette', phone: 'fa-phone', email: 'fa-envelope', resume: 'fa-download', link: 'fa-arrow-up-right-from-square'
+  };
+  const phoneLayout = window.matchMedia ? matchMedia('(max-width: 768px)') : { matches: false };
+  let pillHost = null;
+
+  function pillStack() {
+    if (pillHost && pillHost.isConnected) return pillHost;
+    pillHost = el('div', 'taskbar-pills');
+    pillHost.setAttribute('aria-hidden', 'true');      // the sr-only .notif-announce live region already speaks it
+    document.body.appendChild(pillHost);
+    return pillHost;
+  }
+  /* Sit right above the bell: the stack's right edge lines up with the bell, and a small caret points at it. */
+  function placePills() {
+    if (!pillHost) return;
+    const r = btn.getBoundingClientRect();
+    if (!r.width) return;                              // bell hidden: keep the CSS fallback position
+    const vw = document.documentElement.clientWidth;
+    const right = Math.max(8, vw - r.right - 2);
+    const caret = Math.max(14, vw - (r.left + r.width / 2) - right - 6);
+    pillHost.style.setProperty('--pill-right', right + 'px');
+    pillHost.style.setProperty('--pill-bottom', (window.innerHeight - r.top + 6) + 'px');
+    pillHost.style.setProperty('--pill-caret', caret + 'px');
+  }
+  window.addEventListener('resize', placePills);
+
+  function closePill(p) {
+    if (!p || p.classList.contains('is-leaving')) return;
+    p.classList.add('is-leaving');
+    clearTimeout(p._timer);
+    const done = () => p.remove();
+    if (reducedMotion) done(); else { p.addEventListener('animationend', done, { once: true }); setTimeout(done, 400); }
+  }
+  function showPill(type, text) {
+    if (phoneLayout.matches) return;
+    const host = pillStack();
+    placePills();
+    host.querySelectorAll('.taskbar-pill:not(.is-leaving)').forEach((old, i, all) => {
+      if (old.textContent === text) closePill(old);                           // same message again: replace it
+      else if (all.length >= PILL_MAX && i === 0) closePill(old);            // keep the stack short
+    });
+
+    const p = el('div', 'taskbar-pill taskbar-pill--' + type);
+    const ico = el('span', 'taskbar-pill-icon');
+    ico.appendChild(el('i', 'fa-solid ' + (PILL_ICONS[type] || 'fa-bell')));
+    const msg = el('span', 'taskbar-pill-text', text);
+    msg.title = text;
+    const x = el('button', 'taskbar-pill-x');
+    x.type = 'button';
+    x.setAttribute('aria-label', 'Dismiss');
+    x.appendChild(el('i', 'fa-solid fa-xmark'));
+    const bar = el('span', 'taskbar-pill-timer');
+    bar.style.animationDuration = PILL_MS + 'ms';
+    p.append(ico, msg, x, bar);
+    p.addEventListener('click', () => closePill(p));
+    host.appendChild(p);
+
+    const arm = () => { clearTimeout(p._timer); p._timer = setTimeout(() => closePill(p), PILL_MS); p.classList.remove('is-paused'); };
+    p.addEventListener('pointerenter', () => { clearTimeout(p._timer); p.classList.add('is-paused'); });
+    p.addEventListener('pointerleave', arm);
+    arm();
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && pillHost) pillHost.querySelectorAll('.taskbar-pill').forEach(closePill);
+  });
 
   /* ===================== state ===================== */
   function load() {
@@ -215,6 +299,7 @@
     save();
     render();
     announce(text);
+    showPill(type, text);
     alertUser();
   }
 
@@ -343,42 +428,14 @@
     add('theme', 'Theme changed to ' + (THEME_NAMES[now] || now), now);
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-  /* 2) Phone / email: a copy trigger was clicked AND its toast appeared */
-  let copyPending = null;
-  document.addEventListener('click', e => {
-    const t = closest(e, '.js-copy-trigger');
-    const type = t && t.getAttribute('data-copy-type');
-    if (type === 'phone' || type === 'email') copyPending = { type: type, at: Date.now() };
-  }, true);
-
-  function toastAppeared(toast) {
-    const p = copyPending;
-    if (!p || Date.now() - p.at > 4000) return;       // a toast nobody asked for: ignore
-    copyPending = null;                               // one click = one notification
-    const failed = /fail|unable|couldn|could not|error/i.test(toast.textContent || '');
-    const what = p.type === 'phone' ? 'Phone number' : 'Email address';
-    add(p.type, failed ? 'Could not copy ' + what.toLowerCase() : what + ' copied', p.type);
-  }
-  const watchedToasts = new WeakSet();
-  function watchToasts() {
-    document.querySelectorAll('.copy-toast').forEach(t => {
-      if (watchedToasts.has(t)) return;
-      watchedToasts.add(t);
-      new MutationObserver(recs => {
-        recs.forEach(r => {
-          const was = (r.oldValue || '').split(/\s+/).indexOf('show') !== -1;
-          if (!was && t.classList.contains('show')) toastAppeared(t);
-        });
-      }).observe(t, { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
-    });
-  }
-  /* Bootstrap fires this each time a toast finishes showing, even when it was already visible */
-  document.addEventListener('shown.bs.toast', e => {
-    const t = closest(e, '.copy-toast');
-    if (t) toastAppeared(t);
+  /* 2) Copy buttons: main.js fires "copy:result" once the clipboard write has succeeded or failed.
+        Phone and email copies are filed under their own type; profile links (GitHub, LinkedIn...) under "link". */
+  document.addEventListener('copy:result', e => {
+    const d = e.detail || {};
+    const type = d.type === 'phone' || d.type === 'email' ? d.type : 'link';
+    const label = d.type === 'phone' ? 'Phone number' : d.type === 'email' ? 'Email address' : (d.label || 'Link');
+    add(type, d.success ? label + ' copied' : 'Could not copy ' + (d.custom ? label : label.toLowerCase()), 'copy-' + type + '-' + label);
   });
-  watchToasts();
-  window.addEventListener('load', watchToasts);
 
   /* 3) Resume: the CV download link was clicked */
   document.addEventListener('click', e => {

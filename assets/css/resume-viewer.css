@@ -400,35 +400,8 @@ html.dev .rv-h::before { content: '## '; font-family: var(--rv-mono); font-weigh
 /* everything is thin and themed */
 .rv * { scrollbar-width: thin; scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent); }
 
-/*--------------------------------------------------------------
-# Copy toast ("Copied to clipboard") + tap targets
-#   The toast used to live inside the scrolling contact block, so it
-#   scrolled away or got clipped. Now it is pinned to the bottom of the
-#   resume window, centred, above the safe area. Positional rules use
-#   !important because the base toast styles live in main.css.
---------------------------------------------------------------*/
 .rv { position: relative; }
 .rv .contact-block { position: static; }
-
-.rv .contact-block .copy-toast-container {
-  position: absolute !important;
-  inset: auto 0 0 var(--rv-side) !important;
-  z-index: 30;
-  display: flex;
-  justify-content: center;
-  width: auto !important;
-  margin: 0 !important;
-  padding: 0 1em calc(1em + env(safe-area-inset-bottom, 0px));
-  transform: none !important;
-  pointer-events: none;               /* the empty strip never blocks taps */
-}
-
-.rv .contact-block .copy-toast {
-  width: max-content;
-  max-width: min(100%, 22em);
-  margin: 0 !important;
-  pointer-events: auto;
-}
 
 /*--------------------------------------------------------------
 # Narrow window / phone (<= 760px window width)
@@ -463,8 +436,6 @@ html.dev .rv-h::before { content: '## '; font-family: var(--rv-mono); font-weigh
   .rv-contact li { min-height: 3em; }
   .rv-contact .contact-info-copy { min-height: 2.4em; width: 100%; }   /* whole row is the tap target */
 
-  /* the rail is narrow, so the toast centres over the whole window */
-  .rv .contact-block .copy-toast-container { inset: auto 0 0 0 !important; }
 }
 
 @container wm (max-width: 520px) {

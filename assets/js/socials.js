@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------
 # Contact & Socials: small extras only.
-#   - Copying and the toast are handled by the existing
-#     .js-copy-trigger / .copy-toast code in main.js.
+#   - Copying is handled by the existing
+#     .js-copy-trigger code in main.js (the result shows as a taskbar pill).
 #   - 1. briefly swaps the copy icon for a check mark
 #   - 2. renames the window "Socials" -> "Contact & Socials"
 --------------------------------------------------------------*/

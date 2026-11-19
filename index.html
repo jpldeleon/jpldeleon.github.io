@@ -349,7 +349,6 @@
 
       .hero-sidebar.hero-applet .sidebar-contact {
         position: relative;
-        /* the copy toast covers this row */
         gap: 2px;
         margin-top: 2px;
         padding-top: 12px;
@@ -698,22 +697,11 @@
       bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px));
     }
 
-    /* the typed "Theme: ..." notice goes above the popover */
-    .top-panel.taskbar .panel-menu:has(> #panel-theme-pop)>.panel-notice {
-      top: auto;
-      bottom: calc(50% + var(--panel-bar-h) / 2 + var(--panel-pop-gap, 8px) + 74px);
-    }
-
     @media (max-width: 340px) {
 
       .top-panel.taskbar #panel-theme-pop.panel-popover {
         top: auto;
         bottom: calc(100% + var(--panel-pop-gap, 8px));
-      }
-
-      .top-panel.taskbar .panel-menu:has(> #panel-theme-pop)>.panel-notice {
-        top: auto;
-        bottom: calc(100% + var(--panel-pop-gap, 8px) + 74px);
       }
     }
   </style>
@@ -905,40 +893,6 @@
         outline: none;
       }
 
-      /* copy toast: a pill laid over the Email / Phone row, one line, never clipped */
-      html body .app-menu .hero-sidebar .copy-toast-container {
-        position: absolute;
-        inset: 12px 0 0 0;
-        width: auto;
-        margin: 0;
-        overflow: visible;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-      }
-
-      html body .app-menu .hero-sidebar .copy-toast-container .copy-toast {
-        width: 100%;
-        height: 42px;
-        align-items: center;
-        border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
-        pointer-events: auto;
-      }
-
-      html body .app-menu .hero-sidebar .copy-toast-container .copy-toast.show,
-      html body .app-menu .hero-sidebar .copy-toast-container .copy-toast.showing {
-        display: flex;
-      }
-
-      html body .app-menu .copy-toast .toast-body {
-        width: 100%;
-        padding: 0 14px;
-        white-space: nowrap;
-        font-size: var(--fs-base);
-      }
-
       /* the card is gone from the left: windows centre on the full width */
       :root,
       body.sidebar-collapsed {
@@ -1023,8 +977,6 @@
               title="Dracula Pro theme" type="button"></button>
           </div>
         </div>
-        <!-- typed "Theme: ..." notice: sits right under the theme popover -->
-        <div aria-atomic="true" aria-live="polite" class="panel-notice" id="themeNotice"></div>
       </div>
       <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart" id="panel-restart-btn"
         title="Restart" type="button"><i aria-hidden="true" class="fa-solid fa-rotate-right"></i></button>
@@ -1334,16 +1286,6 @@
         <a aria-label="Download resume" class="sidebar-cta" download="" href="assets/johnpauldeleon_resume.pdf"
           title="Download Resume"><i class="fa-solid fa-download"></i><span
             class="sidebar-quick-label">Resume</span></a>
-        <!-- Copy Toast (Email / Phone) -->
-        <div class="copy-toast-container">
-          <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToast" role="status">
-            <div class="toast-body d-flex align-items-center gap-2">
-              <i class="fa-solid fa-circle-check"></i>
-              <span id="copyToastBody">Copied to clipboard.</span>
-              <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast" type="button"></button>
-            </div>
-          </div>
-        </div>
       </div>
       <!-- About: terminal card inside the hero sidebar -->
       <section aria-label="About me" class="ab-term" id="about">
@@ -1566,15 +1508,6 @@
                 <li><a href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"><i
                       class="fa-brands fa-linkedin"></i> linkedin.com/in/jpldl/</a></li>
               </ul>
-              <div class="copy-toast-container">
-                <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToastResume" role="status">
-                  <div class="toast-body d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span id="copyToastResumeBody">Copied to clipboard.</span>
-                    <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast" type="button"></button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -1910,7 +1843,7 @@
       </div>
     </section><!-- /Projects window -->
     <!-- Contact & Socials: GNOME Contacts style. Rendered inside the Contact & Socials window by app.js.
-         Styles: assets/css/socials.css. Copy + toast: the existing .js-copy-trigger / .copy-toast system in main.js.
+         Styles: assets/css/socials.css. Copy: the existing .js-copy-trigger system in main.js (announced as a taskbar pill).
          Only platform names and usernames are shown; full URLs live in href / data-copy-value. -->
     <section aria-label="Contact &amp; Socials" class="sc contact-block" id="socials">
       <header class="sc-head">
@@ -1987,16 +1920,6 @@
         </div>
       </div>
 
-      <!-- Copy Toast: the existing .copy-toast (Bootstrap toast, driven by main.js) -->
-      <div class="copy-toast-container">
-        <div aria-atomic="true" aria-live="polite" class="copy-toast toast" id="copyToastContact" role="status">
-          <div class="toast-body d-flex align-items-center gap-2">
-            <i class="fa-solid fa-circle-check"></i>
-            <span id="copyToastContactBody">Copied to clipboard.</span>
-            <button aria-label="Close" class="btn-close ms-auto" data-bs-dismiss="toast" type="button"></button>
-          </div>
-        </div>
-      </div>
     </section><!-- /Contact & Socials -->
   </main>
   <footer class="footer position-relative" id="footer">
@@ -2016,7 +1939,7 @@
   <script src="assets/js/resume-viewer.js"></script>
   <!-- Projects window filters -->
   <script src="assets/js/portfolio.js"></script>
-  <!-- Contact & Socials: copy buttons, toast, window rename -->
+  <!-- Contact & Socials: copy buttons, window rename -->
   <script src="assets/js/socials.js"></script>
   <!-- Ambient space scene -->
   <script src="assets/js/space-scene.js"></script>

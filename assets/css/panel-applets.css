@@ -59,12 +59,6 @@
   box-shadow: var(--panel-pop-shadow);
 }
 
-/* the "Theme: Gruvbox" notice sits under the popover, so it follows the popover's centre (the icon's centre) */
-.panel-menu:has(> #panel-theme-pop)>.panel-notice {
-  right: 50%;
-  transform: translateX(50%);
-}
-
 /* phones: the big three span the bar, edge to edge with the pill (same as the clock already did) */
 @media (max-width: 640px) {
 
@@ -90,11 +84,6 @@
     left: auto;
     right: 0;
     translate: none;
-  }
-
-  .panel-menu:has(> #panel-theme-pop)>.panel-notice {
-    right: 94px;
-    top: calc(100% + 78px);
   }
 }
 
@@ -158,14 +147,6 @@
     font-size: 13px;
     line-height: 1.55;
   }
-}
-
-.hero-sidebar .copy-toast-container {
-  overflow: hidden;
-}
-
-.hero-sidebar .copy-toast-container .copy-toast {
-  box-shadow: none;
 }
 
 @media (min-width: 992px) {

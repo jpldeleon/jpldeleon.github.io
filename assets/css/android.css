@@ -8,8 +8,6 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 /* flat everything: no gradient backgrounds, no gradient fade masks, no gradient-filled text */
 .adr-layer,.adr-layer *,.adr-layer *::before,.adr-layer *::after,
 .wm-window,.wm-window *,.wm-window *::before,.wm-window *::after{background-image:none!important;-webkit-mask-image:none!important;mask-image:none!important;-webkit-text-fill-color:currentColor!important}
-/* phone: no toast and no theme/notice pill from the desktop page; the notification shade + heads-up banner cover it */
-.copy-toast-container,.copy-toast,.toast,.panel-notice,#themeNotice{display:none!important}
 
 .adr-layer{--f:var(--default-color,#d3c6aa);--bg:var(--background-color,#2d353b);--a:var(--accent-highlight,#a7c080);--dim:color-mix(in srgb,var(--f) 60%,transparent);--glass:color-mix(in srgb,var(--bg) 46%,transparent);--line:color-mix(in srgb,var(--f) 15%,transparent);--mono:"JetBrains Mono","Space Mono",ui-monospace,Menlo,Consolas,monospace;color:var(--f);font-size:14px;line-height:1.4;display:block}
 .adr-layer *{box-sizing:border-box}

@@ -171,11 +171,9 @@
   });
 
   /**
-   * Theme Dots + typed theme notification.
+   * Theme Dots (the change is announced by notifications.js).
    */
   const themeDots = document.querySelectorAll('.theme-dot');
-  const themeNotice = document.querySelector('#themeNotice');
-  let themeNoticeToken = 0;
 
   if (themeDots.length) {
     const themeLabels = {
@@ -188,34 +186,6 @@
 
     function getCurrentTheme() {
       return document.documentElement.getAttribute('data-theme') || 'everforest';
-    }
-
-    function animateThemeNotice(theme) {
-      if (!themeNotice) return;
-      const token = ++themeNoticeToken;
-      const text = 'Theme: ' + (themeLabels[theme] || theme);
-      themeNotice.textContent = '';
-
-      let i = 0;
-      const type = () => {
-        if (token !== themeNoticeToken) return;
-        if (i < text.length) {
-          themeNotice.textContent = text.slice(0, ++i);
-          window.setTimeout(type, 45);
-        } else {
-          window.setTimeout(backspace, 1300);
-        }
-      };
-      const backspace = () => {
-        if (token !== themeNoticeToken) return;
-        if (i > 0) {
-          themeNotice.textContent = text.slice(0, --i);
-          window.setTimeout(backspace, 32);
-        } else {
-          themeNotice.textContent = '';
-        }
-      };
-      type();
     }
 
     function applyTheme(theme, announce = false) {
@@ -235,7 +205,6 @@
       } else {
         document.documentElement.style.removeProperty('--sb-thumb');
       }
-      if (announce) animateThemeNotice(theme);
     }
 
     applyTheme(getCurrentTheme());
@@ -247,31 +216,14 @@
     });
   }
 
-  const toastInstances = new Map();
-
-  function getToastEl(triggerBtn) {
-    const scope = triggerBtn.closest('.contact-block') || document;
-    return scope.querySelector('.copy-toast');
-  }
-
-  function showCopyToast(toastEl, type, success, customLabel) {
-    if (!toastEl) return;
-    const bodyEl = toastEl.querySelector('.toast-body span');
-    if (!bodyEl) return;
+  /* Copy buttons: copy, then announce the result with a "copy:result" event.
+     notifications.js turns it into a taskbar pill + a bell entry; android.js into a heads-up banner. */
+  function reportCopy(type, success, customLabel) {
     // data-copy-label (e.g. "GitHub link") overrides the default Email / Phone wording
     const label = customLabel || (type === 'phone' ? 'Phone' : 'Email');
-    bodyEl.textContent = success
-      ? label + ' copied!'
-      : 'Could not copy ' + (customLabel ? label : label.toLowerCase()) + '.';
-
-    if (window.bootstrap) {
-      let instance = toastInstances.get(toastEl);
-      if (!instance) {
-        instance = new bootstrap.Toast(toastEl, { delay: 1500 });
-        toastInstances.set(toastEl, instance);
-      }
-      instance.show();
-    }
+    document.dispatchEvent(new CustomEvent('copy:result', {
+      detail: { type: type, success: success, label: label, custom: !!customLabel }
+    }));
   }
 
   document.querySelectorAll('.js-copy-trigger').forEach(function (btn) {
@@ -280,13 +232,12 @@
       const value = btn.getAttribute('data-copy-value');
       const type = btn.getAttribute('data-copy-type');
       const customLabel = btn.getAttribute('data-copy-label');
-      const toastEl = getToastEl(btn);
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(value)
-          .then(() => showCopyToast(toastEl, type, true, customLabel))
-          .catch(() => showCopyToast(toastEl, type, false, customLabel));
+          .then(() => reportCopy(type, true, customLabel))
+          .catch(() => reportCopy(type, false, customLabel));
       } else {
-        showCopyToast(toastEl, type, false, customLabel);
+        reportCopy(type, false, customLabel);
       }
     });
   });

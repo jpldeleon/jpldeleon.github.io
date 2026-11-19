@@ -20,11 +20,10 @@
 #   │ │ …                                        │ │
 #   │ └──────────────────────────────────────────┘ │
 #   └──────────────────────────────────────────────┘
-#        the existing copy toast appears bottom-centre of the window
 --------------------------------------------------------------*/
 
 /* The window body hands its full height to the section; only .sc-scroll scrolls,
-   so the header and the toast stay put. */
+   so the header stays put. */
 .wm-body:has(> section.sc) { display: flex; flex-direction: column; overflow: hidden; scroll-behavior: auto; }
 
 .wm-body > section.sc {                         /* beats app.css `.wm-body > section` padding */
@@ -200,22 +199,7 @@ button.sc-main {
 .sc-copy.is-copied i { font-weight: 900; }
 .sc-copy.is-copied i::before { content: "\f00c"; }           /* check mark for ~1.4s */
 
-/* ---------- Toast: the existing .copy-toast, pinned bottom-centre of the window ----------
-   (same approach as the Resume window; main.css positions it under the block by default) */
 .sc.contact-block { position: relative; }
-.sc .copy-toast-container {
-  position: absolute !important;
-  inset: auto 0 0 0 !important;
-  z-index: 30;
-  display: flex;
-  justify-content: center;
-  width: auto !important;
-  margin: 0 !important;
-  padding: 0 1em 1em;
-  transform: none !important;
-  pointer-events: none;                 /* the empty strip never blocks clicks */
-}
-.sc .copy-toast { width: max-content; max-width: min(100%, 22em); margin: 0 !important; pointer-events: auto; }
 
 /* ---------- Wider windows: Direct Contact | Social Profiles side by side ---------- */
 @container wm (min-width: 500px) {
@@ -401,10 +385,7 @@ button.sc-main {
   .sc .sc-ico-linkedin,
   .sc .sc-ico-upwork,
   .sc .sc-ico-golance { --b: var(--sc-accent); border-radius: var(--sc-r); }     /* symbolic: theme accent on light and dark */
-  .sc .sc-value { display: none; }                                               /* platform names only */
-
-  /* the toast sits just above the bottom bar instead of covering it */
-  .sc .copy-toast-container { padding-bottom: 4.2em; }
+  .sc .sc-value { display: none; }
 }
 
 /* narrow windows: single column of entries */

@@ -130,7 +130,7 @@
 
   scroller.addEventListener('click', ev => {
     if (ev.target.closest('.sidebar-avatar a')) { ev.preventDefault(); return; }
-    const c = ev.target.closest('[data-copy]');          // reuses the page's own copy buttons, so the toast + notification flow is unchanged
+    const c = ev.target.closest('[data-copy]');          // reuses the page's own copy buttons, so the notification flow is unchanged
     if (c) { const b = $(`#hero .js-copy-trigger[data-copy-type="${c.dataset.copy}"]`); if (b) b.click(); return; }
     const t = ev.target.closest('[data-about-toggle]');
     if (t) {
@@ -194,13 +194,11 @@
     const d = e.target.closest('a[download]');
     if (d) push('resume', 'fa-download', 'Resume downloaded', (d.getAttribute('href') || '').split('/').pop() || 'resume.pdf');
   }, true);
-  const seen = new WeakSet();
-  const watchToasts = () => $$('.copy-toast .toast-body span').forEach(s => {
-    if (seen.has(s)) return; seen.add(s);
-    new MutationObserver(() => {
-      const t = txt(s);
-      if (/copied/i.test(t) && !/could not/i.test(t)) push(/phone/i.test(t) ? 'phone' : 'email', /phone/i.test(t) ? 'fa-phone' : 'fa-envelope', /phone/i.test(t) ? 'Phone number copied' : 'Email copied', '');
-    }).observe(s, { childList: true, characterData: true, subtree: true });
+  document.addEventListener('copy:result', e => {
+    const d = e.detail || {};
+    if (!d.success || d.type === 'link') return;
+    const phone = d.type === 'phone';
+    push(phone ? 'phone' : 'email', phone ? 'fa-phone' : 'fa-envelope', phone ? 'Phone number copied' : 'Email copied', '');
   });
 
   /* ───────── shade: swipe DOWN from the status bar to open, swipe UP inside the shade to close ───────── */
@@ -287,7 +285,7 @@
   };
   tick(); setInterval(tick, 15000);
   setInterval(() => { if (shadeOpen) render(); }, 60000);          // keep "2m" ages fresh
-  const init = () => { renderHome(); watchToasts(); render(); };
+  const init = () => { renderHome(); render(); };
   init();
   document.addEventListener('desktop:booted', init);
   window.addEventListener('load', () => setTimeout(init, 600));
