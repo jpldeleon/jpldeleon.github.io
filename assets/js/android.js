@@ -201,6 +201,90 @@
     return 'fa-solid fa-circle-dot';
   };
 
+  /* Non-Font-Awesome icons: Simple Icons (real brand logos) and Material Design Icons, served by Iconify.
+     The SVG is fetched once, cached, and drawn as a mask so it takes the badge's theme colour. If a name does not
+     exist or the network fails, the Font Awesome icon above stays, so a badge is never empty. First match wins. */
+  const HOB_ART = [
+    [/linux/i, 'simple-icons:linux'],
+    [/custom rom|rom\b|firmware/i, 'simple-icons:lineageos'],
+    [/android|mobile tech/i, 'simple-icons:android'],
+    [/pc hardware|hardware/i, 'mdi:expansion-card'],
+    [/open[- ]?source|foss/i, 'simple-icons:opensourceinitiative'],
+    [/llm|\bai\b|ai tools|ai engineer/i, 'simple-icons:ollama'],
+    [/web build|web dev/i, 'mdi:web'],
+    [/coding|software dev/i, 'mdi:code-braces'],
+    [/tech news|emerging/i, 'mdi:newspaper-variant-outline'],
+    [/ui\/?ux/i, 'simple-icons:figma'],
+    [/photoshop/i, 'simple-icons:adobephotoshop'],
+    [/lightroom/i, 'simple-icons:adobelightroomclassic'],
+    [/davinci/i, 'simple-icons:davinciresolve'],
+    [/graphic design/i, 'mdi:vector-curve'],
+    [/photograph/i, 'mdi:camera-outline'],
+    [/seo/i, 'simple-icons:googlesearchconsole'],
+    [/web developer/i, 'mdi:web'],
+    [/data scien/i, 'mdi:chart-scatter-plot'],
+    [/dota/i, 'simple-icons:dota2'],
+    [/counter-?strike/i, 'simple-icons:counterstrike'],
+    [/call of duty/i, 'simple-icons:callofduty'],
+    [/pubg/i, 'simple-icons:pubg'],
+    [/nba/i, 'mdi:basketball'],
+    [/need for speed/i, 'simple-icons:ea'],
+    [/left 4 dead/i, 'mdi:biohazard'],
+    [/red alert/i, 'mdi:radioactive'],
+    [/battle realms/i, 'mdi:sword-cross'],
+    [/mat online/i, 'mdi:car-sports'],
+    [/linkin park|metallica|saosin|blink|chemical romance|silverstein|yellowcard|guns n|the used|green day/i, 'mdi:guitar-electric'],
+    [/marvel/i, 'simple-icons:marvelstudios'],
+    [/ghibli/i, 'mdi:movie-open-star-outline'],
+    [/the office|big bang|how i met|brooklyn|friends|modern family|young sheldon/i, 'mdi:television-classic'],
+    [/life of pi/i, 'mdi:ferry'],
+    [/travel|exploring/i, 'mdi:airplane'],
+    [/motorcycle|motorbike/i, 'mdi:motorbike'],
+    [/dream cars|cars and driving/i, 'mdi:car-sports'],
+    [/bikepacking|cycling/i, 'mdi:bicycle'],
+    [/hiking|nature/i, 'mdi:hiking'],
+    [/food|cuisine/i, 'mdi:silverware-fork-knife'],
+    [/camping/i, 'mdi:tent'],
+    [/skydiv/i, 'mdi:parachute'],
+    [/snowboard/i, 'mdi:snowboard'],
+    [/skiing/i, 'mdi:ski'],
+    [/longboard|skate/i, 'mdi:skateboarding'],
+    [/wingsuit|hang glid|paraglid/i, 'mdi:paragliding'],
+    [/surf/i, 'mdi:surfing'],
+    [/home by the sea|home by/i, 'mdi:home-lake'],
+    [/off-grid/i, 'mdi:solar-power'],
+    [/dream motorcycles/i, 'mdi:motorbike']
+  ];
+  const ART_URL = n => 'https://api.iconify.design/' + n.replace(':', '/') + '.svg';
+  const art = new Map();                              // iconify name -> data: URI once loaded, false when it failed
+  const artName = t => { for (let i = 0; i < HOB_ART.length; i++) if (HOB_ART[i][0].test(t)) return HOB_ART[i][1]; return ''; };
+  const artStyle = u => `-webkit-mask-image:url(&quot;${u}&quot;);mask-image:url(&quot;${u}&quot;)`;
+  /* the badge glyph: the cached mask when we have it, else the Font Awesome icon (swapped later by hydrateArt) */
+  const hobGlyph = t => {
+    const n = artName(t), u = n && art.get(n);
+    if (u) return `<span class="adr-art" style="${artStyle(u)}"></span>`;
+    return `<i class="${hobIcon(t)}"${n && art.get(n) !== false ? ` data-art="${n}"` : ''}></i>`;
+  };
+  function hydrateArt(root) {
+    $$('[data-art]', root).forEach(el => {
+      const n = el.dataset.art; el.removeAttribute('data-art');
+      const done = u => {
+        if (!u || !el.isConnected) return;
+        const sp = document.createElement('span');
+        sp.className = 'adr-art'; sp.setAttribute('style', artStyle(u).replace(/&quot;/g, '"'));
+        el.replaceWith(sp);
+      };
+      if (art.has(n)) { done(art.get(n)); return; }
+      fetch(ART_URL(n)).then(r => r.ok ? r.text() : Promise.reject()).then(svg => {
+        if (!/<svg/i.test(svg)) throw 0;
+        const u = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg); art.set(n, u); done(u);
+      }).catch(() => { art.set(n, false); });
+    });
+  }
+  const artCss = document.createElement('style');
+  artCss.textContent = '.adr-hob .lg .adr-art{display:block;width:1em;height:1em;background:currentColor;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}';
+  document.head.appendChild(artCss);
+
   function hobCard() {
     const tabs = $$('#dotfiles .df-file').map(b => [b.id.replace('df-tab-', ''), txt(b)]);
     if (!tabs.length) return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests', '<p>Nothing to show yet.</p>', 'hobbies', 'adr-lin');
@@ -210,20 +294,45 @@
     const rows = pane ? $$('.df-list li', pane).map(li => txt(li)).filter(Boolean) : [];
     /* settings-style grouped list: a round badge with a Font Awesome icon, rows joined into one rounded group */
     const list = rows.length
-      ? `<ul class="adr-hob">${rows.map(r => `<li><span class="lg" aria-hidden="true"><i class="${hobIcon(r)}"></i></span><span class="tx">${esc(r)}</span></li>`).join('')}</ul>`
+      ? `<ul class="adr-hob">${rows.map(r => `<li><span class="lg" aria-hidden="true">${hobGlyph(r)}</span><span class="tx">${esc(r)}</span></li>`).join('')}</ul>`
       : '<p>Nothing to show yet.</p>';
     return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests',
       `<div class="adr-hobtabs" role="tablist">${tabs.map(t => `<button type="button" role="tab" aria-selected="${t[0] === hobTab}" data-hob="${t[0]}" class="${t[0] === hobTab ? 'on' : ''}">${t[0] === hobTab ? '<i class="fa-solid fa-check" aria-hidden="true"></i>' : ''}${esc(t[1])}</button>`).join('')}</div>${desc ? `<p class="adr-hobdesc">${esc(desc)}</p>` : ''}${list}`,
       'hobbies', 'adr-lin');
   }
 
+  /* tapping a category only swaps the description + list inside the existing card: the tab strip, the notification list
+     and every other card keep their scroll position (a full render() rebuilt them all and snapped them back to 0) */
+  function pickHob(id) {
+    const tabsEl = $('.adr-hobtabs', list);
+    if (!tabsEl) { hobTab = id; render(); return; }
+    hobTab = id;
+    $$('button[data-hob]', tabsEl).forEach(b => {
+      const on = b.dataset.hob === id, ic = $('i', b);
+      b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on));
+      if (on && !ic) b.insertAdjacentHTML('afterbegin', '<i class="fa-solid fa-check" aria-hidden="true"></i>');
+      if (!on && ic) ic.remove();
+    });
+    const keepL = tabsEl.scrollLeft, keepT = list.scrollTop;
+    const tmp = document.createElement('div'); tmp.innerHTML = hobCard();
+    const fresh = $('.adr-hobtabs', tmp), old = tabsEl;
+    /* everything under the tab strip comes from the freshly built card; the strip itself stays in the DOM */
+    while (old.nextSibling) old.nextSibling.remove();
+    let n = fresh.nextSibling; while (n) { const nx = n.nextSibling; old.parentNode.appendChild(n); n = nx; }
+    tabsEl.scrollLeft = keepL; list.scrollTop = keepT;
+    hydrateArt(list);
+  }
+
   function render() {
     /* tile cards are ordinary notifications now: the most recently tapped one is on top, the event notifications stay below */
     let html = cards.map(k => k === 'hire' ? hireCard() : hobCard()).join('');
     html += events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), e.text ? `<p>${esc(e.text)}</p>` : '')).join('');
-    const keep = list.scrollTop;
+    const keep = list.scrollTop, kt = $('.adr-hobtabs', list), ks = kt ? kt.scrollLeft : 0, kh = $('.adr-hob', list), kv = kh ? kh.scrollTop : 0;
     list.innerHTML = html || '<div class="adr-empty">No notifications</div>';
     list.scrollTop = keep;
+    const nt = $('.adr-hobtabs', list), nh = $('.adr-hob', list);   // the hobbies card is rebuilt: put its scroll positions back
+    if (nt) nt.scrollLeft = ks; if (nh) nh.scrollTop = kv;
+    hydrateArt(list);
     $('.adr-clear', shade).style.display = events.length || cards.length ? '' : 'none';
     $('.adr-nicons', top).innerHTML = events.slice(0, 3).map(e => `<i class="fa-solid ${e.icon}"></i>`).join('');
     $('[data-tile="theme"] small', shade).textContent = themeName();
@@ -312,9 +421,9 @@
       const k = t.dataset.tile;
       if (k === 'theme') { const i = THEMES.findIndex(x => x[0] === theme()); const n = $(`[data-theme-choice="${THEMES[(i + 1) % THEMES.length][0]}"]`); if (n) n.click(); }
       else if (k === 'hire' || k === 'hobbies') {
-        const i = cards.indexOf(k); if (i > -1) cards.splice(i, 1);
+        const i = cards.indexOf(k), already = i === 0; if (i > -1) cards.splice(i, 1);
         cards.unshift(k);                                      // latest tapped goes to the very top (tapping again just brings it back up)
-        render(); list.scrollTop = 0;
+        render(); if (!already) list.scrollTop = 0;
         t.classList.remove('on'); t.blur();                    // quick tiles are momentary: they never stay lit or focused
       }
       else if (k === 'restart') { setShade(false); const r = $('#panel-restart-btn'); if (r) r.click(); else location.reload(); }
@@ -322,7 +431,7 @@
     }
     if (ev.target.closest('.adr-clear')) { events.length = 0; cards.length = 0; render(); return; }
     const x = ev.target.closest('[data-dismiss]'); if (x) { const i = cards.indexOf(x.dataset.dismiss); if (i > -1) cards.splice(i, 1); render(); return; }
-    const h = ev.target.closest('[data-hob]'); if (h) { hobTab = h.dataset.hob; render(); return; }
+    const h = ev.target.closest('[data-hob]'); if (h) { pickHob(h.dataset.hob); return; }
     if (ev.target.closest('[data-app]')) setShade(false);       // Resume / Projects buttons: the window opens, the shade closes
   });
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && shadeOpen) setShade(false); });
