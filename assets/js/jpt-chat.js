@@ -1197,7 +1197,7 @@
     });
   });
 
-  /* ───────────── taskbar search bar: left side, right after the social links ─────────────
+  /* ───────────── taskbar search bar: the far left of the taskbar, before the social links ─────────────
    * Click or focus it and the chat opens above it. Type a question and press Enter to ask it. The bar stays
    * the input while the chat is open. Hidden on the phone layout (see taskbar.css), which has its own bottom bar. */
   const mountSearch = () => {
@@ -1212,9 +1212,10 @@
     const social = bar.querySelector('.panel-connect');
     const mb = bar.querySelector('.taskbar-menu, #taskbar-menu-btn');
     const left = bar.querySelector('.panel-left');
-    if (social) social.after(f);
-    else if (mb) mb.after(f);
-    else if (left) left.appendChild(f);
+    /* far left of the taskbar: before the social links, so the chat box (which lines up with this bar) opens at the left edge */
+    if (left) left.prepend(f);
+    else if (social) social.before(f);
+    else if (mb) mb.before(f);
     else bar.insertBefore(f, bar.firstChild);
     searchForm = f; tbInput = f.querySelector('input');
     const sendB = f.querySelector('.taskbar-send');

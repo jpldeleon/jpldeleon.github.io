@@ -145,15 +145,22 @@
   let hobTab = null, shadeOpen = false, headsT = 0;
   const when = ts => { const m = Math.round((Date.now() - ts) / 60000); return m < 1 ? 'now' : m + 'm'; };
 
+  /* heads-up pill: keeps its normal size, but starts at the top edge of the status bar (over it, like Android's
+     compact heads-up) instead of dropping below it */
+  function showHeads(icon, title, ms) {
+    heads.innerHTML = `<i class="fa-solid ${icon}"></i><span>${esc(title)}</span>`;
+    const sb = $('#adr-status', top), r = sb ? sb.getBoundingClientRect() : null;
+    heads.style.top = (r ? Math.max(0, Math.round(r.top) + 4) : 4) + 'px';
+    heads.style.zIndex = '60';
+    heads.classList.add('show'); clearTimeout(headsT);
+    headsT = setTimeout(() => heads.classList.remove('show'), ms);
+  }
+
   function push(key, icon, title, text) {
     const i = events.findIndex(e => e.key === key); if (i > -1) events.splice(i, 1);
     const n = { key, icon, title, text, ts: Date.now() };
     events.unshift(n); render();
-    if (!shadeOpen) {                                       // heads-up banner
-      heads.innerHTML = `<i class="fa-solid ${icon}"></i><span>${esc(title)}</span>`;
-      heads.classList.add('show'); clearTimeout(headsT);
-      headsT = setTimeout(() => heads.classList.remove('show'), 2600);
-    }
+    if (!shadeOpen) showHeads(icon, title, 2600);           // heads-up pill in the status bar
   }
   const card = (icon, app, title, body, x, cls) => `<div class="adr-n${cls ? ' ' + cls : ''}"><div class="t"><i class="fa-solid ${icon}"></i>${app}</div><h4>${title}</h4>${body}${x ? `<button class="x" type="button" data-dismiss="${x}" aria-label="Dismiss">✕</button>` : ''}</div>`;
 
@@ -202,7 +209,7 @@
   };
 
   /* Non-Font-Awesome icons: Simple Icons (real brand logos) and Material Design Icons, served by Iconify.
-     The SVG is fetched once, cached, and drawn as a mask so it takes the badge's theme colour. If a name does not
+     The SVG is fetched once, cached, and drawn inline so it takes the badge's theme colour. If a name does not
      exist or the network fails, the Font Awesome icon above stays, so a badge is never empty. First match wins. */
   const HOB_ART = [
     [/linux/i, 'simple-icons:linux'],
@@ -256,33 +263,35 @@
     [/dream motorcycles/i, 'mdi:motorbike']
   ];
   const ART_URL = n => 'https://api.iconify.design/' + n.replace(':', '/') + '.svg';
-  const art = new Map();                              // iconify name -> data: URI once loaded, false when it failed
+  const art = new Map();                              // iconify name -> cleaned inline <svg> markup, or false when it failed
   const artName = t => { for (let i = 0; i < HOB_ART.length; i++) if (HOB_ART[i][0].test(t)) return HOB_ART[i][1]; return ''; };
-  const artStyle = u => `-webkit-mask-image:url(&quot;${u}&quot;);mask-image:url(&quot;${u}&quot;)`;
-  /* the badge glyph: the cached mask when we have it, else the Font Awesome icon (swapped later by hydrateArt) */
+  /* the SVG is drawn inline (not as a CSS mask), so it always fills the badge and follows the text colour */
+  const cleanSvg = svg => {
+    if (!/^\s*<svg[\s>]/i.test(svg)) return '';
+    return svg.replace(/<\?xml[^>]*>/g, '').replace(/<script[\s\S]*?<\/script>/gi, '').replace(/\son\w+="[^"]*"/gi, '')
+      .replace(/^\s*<svg([^>]*)>/i, (m, at) => '<svg' + at.replace(/\s(width|height|style|class)="[^"]*"/gi, '') + ' aria-hidden="true" focusable="false">');
+  };
   const hobGlyph = t => {
-    const n = artName(t), u = n && art.get(n);
-    if (u) return `<span class="adr-art" style="${artStyle(u)}"></span>`;
+    const n = artName(t), svg = n && art.get(n);
+    if (svg) return `<span class="adr-art">${svg}</span>`;
     return `<i class="${hobIcon(t)}"${n && art.get(n) !== false ? ` data-art="${n}"` : ''}></i>`;
   };
   function hydrateArt(root) {
     $$('[data-art]', root).forEach(el => {
       const n = el.dataset.art; el.removeAttribute('data-art');
-      const done = u => {
-        if (!u || !el.isConnected) return;
-        const sp = document.createElement('span');
-        sp.className = 'adr-art'; sp.setAttribute('style', artStyle(u).replace(/&quot;/g, '"'));
-        el.replaceWith(sp);
+      const done = svg => {
+        if (!svg || !el.isConnected) return;
+        const sp = document.createElement('span'); sp.className = 'adr-art'; sp.innerHTML = svg; el.replaceWith(sp);
       };
       if (art.has(n)) { done(art.get(n)); return; }
-      fetch(ART_URL(n)).then(r => r.ok ? r.text() : Promise.reject()).then(svg => {
-        if (!/<svg/i.test(svg)) throw 0;
-        const u = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg); art.set(n, u); done(u);
+      fetch(ART_URL(n)).then(r => r.ok ? r.text() : Promise.reject()).then(t => {
+        const svg = cleanSvg(t); if (!svg) throw 0;
+        art.set(n, svg); done(svg);
       }).catch(() => { art.set(n, false); });
     });
   }
   const artCss = document.createElement('style');
-  artCss.textContent = '.adr-hob .lg .adr-art{display:block;width:1em;height:1em;background:currentColor;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}';
+  artCss.textContent = '.adr-hob .lg .adr-art{display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;line-height:1}.adr-hob .lg .adr-art svg{display:block;width:100%;height:100%;fill:currentColor}';
   document.head.appendChild(artCss);
 
   function hobCard() {
@@ -354,9 +363,7 @@
     if (document.visibilityState !== 'visible' || !leftFor) return;
     const n = leftFor; leftFor = null;
     if (Date.now() - n.ts > 10 * 60 * 1000 || shadeOpen) return;
-    heads.innerHTML = `<i class="fa-solid ${n.icon}"></i><span>${esc(n.title)}</span>`;
-    heads.classList.add('show'); clearTimeout(headsT);
-    headsT = setTimeout(() => heads.classList.remove('show'), 3200);
+    showHeads(n.icon, n.title, 3200);
   });
 
   /* ───────── shade: swipe DOWN from the status bar to open, swipe UP inside the shade to close ───────── */

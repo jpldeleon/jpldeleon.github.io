@@ -35,7 +35,7 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   color: var(--accent-highlight);
 }
 
-/* ----- Ask Jampol search bar (left group, after the social links) ----- */
+/* ----- Ask Jampol search bar (far left of the taskbar, before the social links) ----- */
 .taskbar-search {
   display: flex;
   align-items: center;
@@ -43,7 +43,7 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   flex: 0 1 190px;
   min-width: 120px;
   height: 26px;
-  margin-left: 4px;
+  margin: 0 4px 0 0;                    /* first item on the left: the social links follow it */
   padding: 0 10px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--default-color), transparent 90%);
