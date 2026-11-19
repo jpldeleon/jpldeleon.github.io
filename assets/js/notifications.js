@@ -470,7 +470,11 @@
     if (!u) return;
     const host = u.hostname.replace(/^www\./, '');
     const social = SOCIAL_HOSTS.find(h => host === h[0] || host.endsWith('.' + h[0]));
-    afterDefault(e, () => social ? add('social', 'Opened ' + social[1], u.href) : add('link', 'Opened ' + host, u.href));
+    /* Report straight away, not after a timer: on a phone the link opens in another tab and the browser freezes
+       this page's timers, so a deferred report would only appear once you came back. Skip only if a script has
+       already cancelled the click. */
+    if (e.defaultPrevented) return;
+    social ? add('social', 'Opened ' + social[1], u.href) : add('link', 'Opened ' + host, u.href);
   }
   document.addEventListener('click', onLinkClick, true);
   document.addEventListener('auxclick', onLinkClick, true);

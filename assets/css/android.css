@@ -296,3 +296,14 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .pj-card:nth-child(5){animation-delay:.12s}.adr-sheet .pj-card:nth-child(6){animation-delay:.15s}.adr-sheet .pj-card:nth-child(n+7){animation-delay:.18s}
 }
 @media (prefers-reduced-motion:reduce){.adr-bub,.adr-bx{transition:none}.adr-bub.show{animation:none}.adr-sheet .pj-card{animation:none}}
+/* ---- Resume sheet fixes (phone) ----
+   1) the viewer now has its own <h2 class="rv-person">; android.js injects the compact name next to the photo,
+      so the page's big one is hidden here (it was showing a second, wrapped copy of the name)
+   2) Text / PDF buttons live INSIDE .rv-actions: put the whole bar on the bottom row, modes left, Download right */
+.adr-sheet .rv-profile .rv-person{display:none}
+.adr-sheet .rv-profile > div > .rv-role,.adr-sheet .rv-profile > div > .rv-typed{grid-column:1/-1;margin:0}
+.adr-sheet .rv-profile > div > .rv-typed{margin-top:2px}
+.adr-sheet .rv .rv-actions{grid-row:3;grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding:8px 16px calc(12px + env(safe-area-inset-bottom,0px));border:0}
+.adr-sheet .rv .rv-modes{margin:0;flex-direction:row;justify-self:auto;align-self:center;border-radius:999px}
+.adr-sheet .rv .rv-mode{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:auto;height:auto;min-height:34px;padding:0 14px;border-radius:999px}
+.adr-sheet .rv .rv-mode span{display:inline}

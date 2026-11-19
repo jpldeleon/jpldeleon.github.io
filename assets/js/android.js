@@ -194,9 +194,19 @@
     theme: 'fa-palette', phone: 'fa-phone', email: 'fa-envelope', resume: 'fa-download', link: 'fa-arrow-up-right-from-square',
     social: 'fa-share-nodes', project: 'fa-window-maximize', restart: 'fa-rotate-right'
   };
+  let leftFor = null;                      // an outbound link opened another tab: show its notification again on return
   document.addEventListener('notif:added', e => {
     const d = e.detail || {};
     push(d.type + '|' + d.key, N_ICONS[d.type] || 'fa-bell', d.text, '');
+    leftFor = (d.type === 'link' || d.type === 'social') ? { icon: N_ICONS[d.type], title: d.text, ts: Date.now() } : null;
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || !leftFor) return;
+    const n = leftFor; leftFor = null;
+    if (Date.now() - n.ts > 10 * 60 * 1000 || shadeOpen) return;
+    heads.innerHTML = `<div class="t"><i class="fa-solid ${n.icon}"></i>Portfolio · ${when(n.ts)}</div><h4>${esc(n.title)}</h4>`;
+    heads.classList.add('show'); clearTimeout(headsT);
+    headsT = setTimeout(() => heads.classList.remove('show'), 3200);
   });
 
   /* ───────── shade: swipe DOWN from the status bar to open, swipe UP inside the shade to close ───────── */
