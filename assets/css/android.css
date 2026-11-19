@@ -180,56 +180,66 @@ html.desk-reveal #adr .adr-dock,html.desk-reveal #adr .adr-search{animation:desk
 html.desk-pre #adr-top,body:has(#boot-screen) #adr-top{visibility:hidden!important}
 }
 /* ======================================================================
-   Chat-head bubbles for the individual Project / Certificate windows (behaviour: android-bubbles.js)
+   App bubbles for the individual Project / Certificate windows (behaviour: android-bubbles.js)
+   Borderless: no outlines, no ring around the sheet, no divider under the title bar.
    ====================================================================== */
-#adr-bubbles,.adr-wm-bub{display:none}
+#adr-bubbles{display:none}
 @media (max-width:768px){
 #adr-bubbles{display:block;position:fixed;inset:0;z-index:2147481000;pointer-events:none}
 html.boot-on #adr-bubbles{visibility:hidden}
 
-/* the floating head */
-.adr-bub{position:absolute;display:none;width:56px;height:56px;margin:0;padding:0;border-radius:50%;place-items:center;font-size:22px;color:var(--a);
+/* a bubble: floating chat head (56px) or, while a sheet is open, part of the row at the top (46px) */
+.adr-bub{position:absolute;display:none;width:56px;height:56px;margin:0;padding:0;border:0;border-radius:50%;place-items:center;font-size:22px;color:var(--a);
   background:radial-gradient(circle at 30% 24%,color-mix(in srgb,var(--a) 42%,transparent),color-mix(in srgb,var(--a) 14%,var(--bg)) 72%);
-  border:2px solid color-mix(in srgb,var(--a) 60%,transparent);
-  box-shadow:0 8px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.2);
+  box-shadow:0 8px 18px rgba(0,0,0,.45);
   cursor:pointer;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;
-  transition:left .3s cubic-bezier(.2,.9,.3,1.25),top .3s cubic-bezier(.2,.9,.3,1.25),transform .16s ease,opacity .18s ease}
+  transition:left .3s cubic-bezier(.2,.9,.3,1.25),top .3s cubic-bezier(.2,.9,.3,1.25),width .25s ease,height .25s ease,font-size .25s ease,background .2s,color .2s,transform .16s ease,opacity .18s ease}
 .adr-bub.show{display:grid;animation:adr-bub-in .34s cubic-bezier(.2,.9,.3,1.3)}
-.adr-bub.drag{transition:transform .16s ease;transform:scale(1.14);box-shadow:0 14px 26px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.2)}
+.adr-bub.inrow{width:46px;height:46px;font-size:18px;box-shadow:0 5px 12px rgba(0,0,0,.4)}
+.adr-bub.active{background:var(--a);color:var(--bg)}
+.adr-bub.drag{transition:width .25s ease,height .25s ease,transform .16s ease;transform:scale(1.14);box-shadow:0 14px 26px rgba(0,0,0,.55)}
 .adr-bub.dying{transform:scale(.1);opacity:0}
-.adr-bub[data-kind="cert"]{background:var(--a);color:var(--bg);border-color:transparent}
+.adr-bub[data-kind="cert"]:not(.active){background:color-mix(in srgb,var(--a) 70%,var(--bg));color:var(--bg)}
+.adr-plus{background:color-mix(in srgb,var(--f) 18%,var(--bg))!important;color:var(--f)!important}
+
+/* the pointer that joins the open bubble to its sheet */
+.adr-bub.active::after{content:"";position:absolute;left:50%;top:calc(100% + 12px);margin-left:-8px;border:8px solid transparent;border-top:0;border-bottom-color:color-mix(in srgb,var(--bg) 80%,var(--a))}
+
+/* name that shows briefly when a head floats free */
 .adr-bub .tip{position:absolute;top:50%;transform:translateY(-50%);padding:6px 12px;border-radius:999px;white-space:nowrap;
-  font:600 11px/1 var(--mono);color:var(--f);background:color-mix(in srgb,var(--bg) 90%,transparent);border:1px solid var(--line);
+  font:600 11px/1 var(--mono);color:var(--f);background:color-mix(in srgb,var(--bg) 90%,transparent);
   box-shadow:0 4px 12px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s}
 .adr-bub.l .tip{left:calc(100% + 8px)}
 .adr-bub.r .tip{right:calc(100% + 8px)}
 .adr-bub.tipon .tip{opacity:1}
+.adr-bub.inrow .tip{display:none}
 @keyframes adr-bub-in{from{transform:scale(.2);opacity:0}}
 
 /* drop here to close */
 .adr-bx{position:absolute;left:50%;bottom:100px;width:60px;height:60px;margin-left:-30px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:var(--f);
-  background:color-mix(in srgb,var(--bg) 72%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--line);
+  background:color-mix(in srgb,var(--bg) 72%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   opacity:0;transform:translateY(40px) scale(.7);pointer-events:none;
   transition:transform .22s cubic-bezier(.2,.9,.3,1.3),opacity .2s,background .15s,color .15s}
 .adr-bx.show{opacity:1;transform:none}
-.adr-bx.near{transform:scale(1.25);background:#e5534b;color:#fff;border-color:transparent}
+.adr-bx.near{transform:scale(1.25);background:#e5534b;color:#fff}
 
-/* collapsed windows stay alive (iframe keeps its state) but are invisible */
+/* a folded window stays alive (the project page keeps its state) but is invisible */
 .wm-window.adr-bubbled{visibility:hidden!important;pointer-events:none!important}
 
-/* expanded window: a rounded sheet with a grab pill, a round icon badge and big round buttons */
-.wm-window[data-wm-app^="project:"],.wm-window[data-wm-app^="cert:"]{border-radius:26px}
-.wm-window[data-wm-app^="project:"] .wm-titlebar,.wm-window[data-wm-app^="cert:"] .wm-titlebar{min-height:56px;padding:14px 8px 6px 12px}
-.wm-window[data-wm-app^="project:"] .wm-titlebar::before,.wm-window[data-wm-app^="cert:"] .wm-titlebar::before{content:"";position:absolute;top:6px;left:50%;width:36px;height:4px;margin-left:-18px;border-radius:3px;background:color-mix(in srgb,var(--default-color),transparent 72%)}
-.wm-window[data-wm-app^="project:"] .wm-title,.wm-window[data-wm-app^="cert:"] .wm-title{display:flex;align-items:center;min-width:0}
+/* the open sheet: rounded, borderless, solid title bar with just the title and a close button */
+.wm-window[data-wm-app^="project:"],.wm-window[data-wm-app^="cert:"]{
+  top:var(--adr-top,106px)!important;height:var(--adr-h,calc(100dvh - 232px))!important;
+  border:0!important;outline:0!important;border-radius:28px;box-shadow:0 14px 36px rgba(0,0,0,.5)!important}
+.wm-window[data-wm-app^="project:"]:not(.is-focused)::after,.wm-window[data-wm-app^="cert:"]:not(.is-focused)::after{display:none!important}
+.wm-window[data-wm-app^="project:"] .wm-titlebar,.wm-window[data-wm-app^="cert:"] .wm-titlebar{
+  min-height:54px;padding:6px 6px 6px 20px;border:0!important;box-shadow:none!important;opacity:1!important;
+  background:color-mix(in srgb,var(--accent-highlight) 30%,var(--background-color))!important}
+.wm-window[data-wm-app^="project:"] .wm-title,.wm-window[data-wm-app^="cert:"] .wm-title{display:flex;align-items:center;font-size:14px;font-weight:700;opacity:1}
+.wm-window[data-wm-app^="project:"] .wm-title i,.wm-window[data-wm-app^="cert:"] .wm-title i{display:none}
 .wm-window[data-wm-app^="project:"] .wm-title span,.wm-window[data-wm-app^="cert:"] .wm-title span{overflow:hidden;text-overflow:ellipsis}
-.wm-window[data-wm-app^="project:"] .wm-title i,.wm-window[data-wm-app^="cert:"] .wm-title i{flex:none;display:inline-grid;place-items:center;width:32px;height:32px;margin-right:10px;border-radius:50%;font-size:14px;
-  background:color-mix(in srgb,var(--accent-highlight) 24%,transparent);border:1px solid color-mix(in srgb,var(--accent-highlight) 45%,transparent)}
 .wm-window[data-wm-app^="project:"] .wm-min,.wm-window[data-wm-app^="cert:"] .wm-min{display:none}
-.wm-window[data-wm-app^="project:"] .adr-wm-bub,.wm-window[data-wm-app^="cert:"] .adr-wm-bub{display:grid;--dot:color-mix(in srgb,var(--accent-highlight) 30%,transparent);--dot-ink:var(--accent-highlight)}
-.wm-window[data-wm-app^="project:"] .wm-close,.wm-window[data-wm-app^="cert:"] .wm-close{--dot:color-mix(in srgb,var(--default-color) 16%,transparent);--dot-ink:var(--default-color)}
-.wm-window[data-wm-app^="project:"] .wm-btn,.wm-window[data-wm-app^="cert:"] .wm-btn{width:40px;height:40px}
-.wm-window[data-wm-app^="project:"] .wm-btn::before,.wm-window[data-wm-app^="cert:"] .wm-btn::before{width:32px;height:32px;box-shadow:none}
-.wm-window[data-wm-app^="project:"] .wm-btn svg,.wm-window[data-wm-app^="cert:"] .wm-btn svg{width:13px;height:13px;opacity:1}
+.wm-window[data-wm-app^="project:"] .wm-close,.wm-window[data-wm-app^="cert:"] .wm-close{width:42px;height:42px;--dot:transparent;--dot-ink:var(--default-color)}
+.wm-window[data-wm-app^="project:"] .wm-close::before,.wm-window[data-wm-app^="cert:"] .wm-close::before{width:34px;height:34px;box-shadow:none;background:color-mix(in srgb,var(--default-color) 14%,transparent)!important}
+.wm-window[data-wm-app^="project:"] .wm-close svg,.wm-window[data-wm-app^="cert:"] .wm-close svg{width:13px;height:13px;opacity:1}
 }
 @media (prefers-reduced-motion:reduce){.adr-bub,.adr-bx{transition:none}.adr-bub.show{animation:none}}

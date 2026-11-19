@@ -1,11 +1,13 @@
 /*!
- * android-bubbles.js: phone layout (<= 768px). Messenger / Android "bubble" behaviour for the individual
- * Project and Certificate windows. It does not touch app.js: it watches #wm-layer and decorates those windows.
- *   - a "bubble" button in the title bar (or swipe the title bar down) shrinks the window into a round chat head
- *   - chat heads float above everything, can be dragged, snap to the left/right edge, and stack
- *   - drag a head onto the X at the bottom to close that window
- *   - tap a head (or the same project in the dock / Projects grid) to pop the window back open
- *   - only one window is open at a time; opening another one turns the current one into a bubble
+ * android-bubbles.js: phone layout (<= 768px). Android 16 style "app bubbles" for the individual Project and
+ * Certificate windows. It does not touch app.js: it watches #wm-layer and decorates those windows.
+ *
+ *   window open     -> every project/certificate has a round bubble; they sit in a row at the top, centred, with the open
+ *                      one filled and a small pointer on the sheet. A "+" bubble opens the Projects list.
+ *   tap open bubble -> the sheet shrinks into its bubble and the bubbles float free as chat heads (edge-snapping, stacking)
+ *   tap other one   -> switch (only one sheet is open at a time)
+ *   drag a bubble   -> the X target appears at the bottom; drop on it to close that window
+ *   swipe the title bar down -> same as tapping the open bubble
  * Load after app.js and android.js:  <script src="assets/js/android-bubbles.js" defer></script>
  */
 (() => {
@@ -13,52 +15,90 @@
   const mq = window.matchMedia('(max-width:768px)');
   const still = () => window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   const KINDS = /^(project|cert):/;
-  const S = 56, M = 6, TOP = 40, BOTTOM = 130;         // bubble size, edge margin, top limit, space kept for dock + search
-  const XS = 60, XB = 100;                              // close target size + distance from the bottom
+  const S = 56, M = 6, TOP = 40, BOTTOM = 130;       // floating chat head: size, edge margin, top limit, space kept for dock + search
+  const R = 46, G = 10, ROWTOP = 40;                  // bubble row: size, gap, y
+  const PANEL_TOP = 106, PANEL_BOTTOM = 126;          // sheet sits between the bubble row and the dock
+  const XS = 60, XB = 100;                            // close target size + distance from the bottom
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const vw = () => window.innerWidth, vh = () => window.innerHeight;
-  const recs = new Map();                               // window id -> { el, bub, collapsed, side, y, ... }
-  let host, xt;
+  const recs = new Map();                             // window id -> record
+  let host, xt, plus;
 
   const build = () => {
     host = document.createElement('div');
     host.id = 'adr-bubbles'; host.className = 'adr-layer';
-    host.innerHTML = '<div class="adr-bx" aria-hidden="true"><i class="fa-solid fa-xmark"></i></div>';
+    host.innerHTML = '<div class="adr-bx" aria-hidden="true"><i class="fa-solid fa-xmark"></i></div>' +
+      '<button type="button" class="adr-bub adr-plus" data-app="portfolio" aria-label="All projects"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>';
     document.body.appendChild(host);
-    xt = host.firstChild;
+    xt = host.children[0]; plus = host.children[1];
+    plus.addEventListener('click', () => recs.forEach(r => collapse(r)));   // the click also reaches app.js, which opens Projects
   };
 
-  /* ───────── bubble placement ───────── */
-  const place = rec => {
-    const b = rec.bub;
-    b.classList.toggle('l', rec.side === 'l'); b.classList.toggle('r', rec.side === 'r');
-    b.style.left = (rec.side === 'l' ? M : vw() - S - M) + 'px';
-    b.style.top = clamp(rec.y, TOP, vh() - S - BOTTOM) + 'px';
-  };
-  const freeY = side => {                               // first free slot on that edge, stacking downwards
-    const ys = [...recs.values()].filter(r => r.collapsed && r.placed && r.side === side).map(r => r.y);
+  const active = () => { for (const r of recs.values()) if (!r.collapsed && r.el.isConnected) return r; return null; };
+
+  /* ───────── layout: bubble row while a sheet is open, floating chat heads otherwise ───────── */
+  const freeY = side => {
+    const ys = [...recs.values()].filter(r => r.placed && r.side === side).map(r => r.y);
     let y = 150;
     while (ys.some(v => Math.abs(v - y) < S + 8) && y < vh() - S - BOTTOM) y += S + 10;
     return y;
+  };
+  const layout = () => {
+    const act = mq.matches ? active() : null, list = [...recs.values()].filter(r => r.bub);
+    host.classList.toggle('row', !!act);
+    if (act) {
+      const n = list.length + 1, x0 = Math.round((vw() - (n * R + (n - 1) * G)) / 2);
+      list.forEach((r, i) => {
+        r.tx = x0 + i * (R + G); r.ty = ROWTOP; r.ts = R;
+        const b = r.bub;
+        b.classList.add('show', 'inrow'); b.classList.toggle('active', r === act);
+        b.style.left = r.tx + 'px'; b.style.top = r.ty + 'px';
+      });
+      plus.style.left = (x0 + list.length * (R + G)) + 'px'; plus.style.top = ROWTOP + 'px';
+      plus.classList.add('show', 'inrow');
+    } else {
+      plus.classList.remove('show', 'inrow');
+      list.forEach(r => {
+        if (!r.placed) { r.y = freeY(r.side); r.placed = true; }
+        r.ts = S; r.tx = r.side === 'l' ? M : vw() - S - M; r.ty = clamp(r.y, TOP, vh() - S - BOTTOM);
+        const b = r.bub;
+        b.classList.remove('inrow', 'active'); b.classList.toggle('show', r.collapsed);
+        b.classList.toggle('l', r.side === 'l'); b.classList.toggle('r', r.side === 'r');
+        b.style.left = r.tx + 'px'; b.style.top = r.ty + 'px';
+      });
+    }
+  };
+
+  /* the sheet: below the bubble row, above the dock. Applied through CSS variables so app.js's own sizing can't undo it. */
+  const fit = rec => {
+    const el = rec.el;
+    if (!mq.matches || !el.isConnected) return;
+    const avail = Math.max(240, vh() - PANEL_BOTTOM - PANEL_TOP);
+    let top = PANEL_TOP, h = avail;
+    if (el.classList.contains('is-lite')) {            // certificate: hugs the image, centred in the free space
+      const h0 = parseFloat(el.style.height) || avail;
+      h = Math.min(h0, avail); top = Math.round(PANEL_TOP + (avail - h) / 2);
+    }
+    if (el.style.getPropertyValue('--adr-top') !== top + 'px') el.style.setProperty('--adr-top', top + 'px');
+    if (el.style.getPropertyValue('--adr-h') !== h + 'px') el.style.setProperty('--adr-h', h + 'px');
   };
 
   /* ───────── collapse / expand ───────── */
   const collapse = (rec, instant) => {
     if (rec.collapsed || !mq.matches || !rec.el.isConnected) return;
     rec.collapsed = true;
-    if (!rec.bub) makeBubble(rec);
-    if (!rec.placed) { rec.y = freeY(rec.side); rec.placed = true; }
-    place(rec);
+    layout();
     const el = rec.el, r = el.getBoundingClientRect();
-    const cx = (rec.side === 'l' ? M : vw() - S - M) + S / 2, cy = clamp(rec.y, TOP, vh() - S - BOTTOM) + S / 2;
     const fin = a => {
       el.classList.add('adr-bubbled'); el.classList.remove('is-focused'); el.style.transformOrigin = '';
       if (a) a.cancel();
-      rec.bub.classList.add('show', 'tipon');
-      clearTimeout(rec.tipT); rec.tipT = setTimeout(() => rec.bub.classList.remove('tipon'), 1900);
+      if (!active()) {                                  // floating again: show the name for a moment
+        rec.bub.classList.add('tipon');
+        clearTimeout(rec.tipT); rec.tipT = setTimeout(() => rec.bub.classList.remove('tipon'), 1900);
+      }
     };
     if (instant || still()) return fin();
-    el.style.transformOrigin = (cx - r.left) + 'px ' + (cy - r.top) + 'px';
+    el.style.transformOrigin = (rec.tx + rec.ts / 2 - r.left) + 'px ' + (rec.ty + rec.ts / 2 - r.top) + 'px';
     const a = el.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.06)', opacity: 0 }],
       { duration: 260, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
     a.onfinish = () => fin(a); a.oncancel = () => fin(null);
@@ -67,67 +107,68 @@
   const expand = (rec, instant) => {
     if (!rec.collapsed || !rec.el.isConnected) return;
     rec.collapsed = false;
-    recs.forEach(o => { if (o !== rec && !o.collapsed && mq.matches) collapse(o); });   // one open window at a time
-    const el = rec.el, bub = rec.bub;
-    const bx = bub ? bub.offsetLeft + S / 2 : vw() - S / 2, by = bub ? bub.offsetTop + S / 2 : 150;
+    recs.forEach(o => { if (o !== rec && !o.collapsed && mq.matches) collapse(o); });   // one open sheet at a time
+    layout(); fit(rec);
+    const el = rec.el;
     el.classList.remove('adr-bubbled');
-    if (bub) { bub.classList.remove('show', 'tipon'); clearTimeout(rec.tipT); }
     el.dispatchEvent(new Event('pointerdown'));         // app.js focuses a window on pointerdown: raises it above the others
     if (instant || still()) return;
     const r = el.getBoundingClientRect();
-    el.style.transformOrigin = (bx - r.left) + 'px ' + (by - r.top) + 'px';
+    el.style.transformOrigin = (rec.tx + rec.ts / 2 - r.left) + 'px ' + (rec.ty + rec.ts / 2 - r.top) + 'px';
     const a = el.animate([{ transform: 'scale(.06)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
       { duration: 300, easing: 'cubic-bezier(.2,.9,.3,1.1)' });
     a.onfinish = a.oncancel = () => { el.style.transformOrigin = ''; };
   };
 
-  const dismiss = rec => {                              // dropped on the X: bubble shrinks away, the window closes
+  const dismiss = rec => {                              // dropped on the X: the bubble shrinks away, the window closes
     rec.bub.classList.add('dying');
     setTimeout(() => { const c = rec.el.querySelector('.wm-close'); if (c) c.click(); }, 180);
   };
 
-  /* ───────── the chat head itself ───────── */
+  /* ───────── a bubble ───────── */
   const makeBubble = rec => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'adr-bub'; b.dataset.kind = rec.kind;
-    b.setAttribute('aria-label', 'Open ' + rec.title);
+    b.setAttribute('aria-label', rec.title);
     b.innerHTML = '<i class="' + rec.icon + '" aria-hidden="true"></i><span class="tip"></span>';
     b.querySelector('.tip').textContent = rec.title;
-    host.appendChild(b); rec.bub = b;
+    host.insertBefore(b, plus); rec.bub = b;
 
     let d = null;
     b.addEventListener('pointerdown', e => {
       if (e.button > 0) return;
-      d = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: b.offsetLeft, oy: b.offsetTop, moved: false, near: false };
+      d = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: b.offsetLeft, oy: b.offsetTop, moved: false, near: false, row: !!active() };
       b.setPointerCapture(e.pointerId);
     });
     b.addEventListener('pointermove', e => {
       if (!d || e.pointerId !== d.id) return;
-      const dx = e.clientX - d.sx, dy = e.clientY - d.sy;
+      const dx = e.clientX - d.sx, dy = e.clientY - d.sy, sz = b.offsetWidth;
       if (!d.moved) {
         if (Math.hypot(dx, dy) < 8) return;
         d.moved = true; b.classList.add('drag'); b.classList.remove('tipon'); xt.classList.add('show');
       }
-      let x = clamp(d.ox + dx, 0, vw() - S), y = clamp(d.oy + dy, TOP - 8, vh() - S);
+      let x = clamp(d.ox + dx, 0, vw() - sz), y = clamp(d.oy + dy, TOP - 8, vh() - sz);
       const tx = vw() / 2, ty = vh() - XB - XS / 2;     // centre of the X target
-      d.near = Math.hypot(x + S / 2 - tx, y + S / 2 - ty) < 84;
+      d.near = Math.hypot(x + sz / 2 - tx, y + sz / 2 - ty) < 84;
       xt.classList.toggle('near', d.near);
-      if (d.near) { x = tx - S / 2; y = ty - S / 2; }   // magnet
+      if (d.near) { x = tx - sz / 2; y = ty - sz / 2; } // magnet
       b.style.left = x + 'px'; b.style.top = y + 'px';
     });
     const up = (e, cancelled) => {
       if (!d || e.pointerId !== d.id) return;
       const dd = d; d = null;
       b.classList.remove('drag'); xt.classList.remove('show', 'near');
-      if (!dd.moved) { if (!cancelled) expand(rec); return; }
+      if (!dd.moved) { if (!cancelled) (rec.collapsed ? expand(rec) : collapse(rec)); return; }   // tap: open, or fold the open one away
       if (dd.near && !cancelled) { dismiss(rec); return; }
-      rec.side = b.offsetLeft + S / 2 < vw() / 2 ? 'l' : 'r';   // snap to the nearest edge
-      rec.y = clamp(b.offsetTop, TOP, vh() - S - BOTTOM);
-      place(rec);
+      if (!dd.row) {                                    // floating: snap to the nearest edge
+        rec.side = b.offsetLeft + S / 2 < vw() / 2 ? 'l' : 'r';
+        rec.y = clamp(b.offsetTop, TOP, vh() - S - BOTTOM); rec.placed = true;
+      }
+      layout();                                         // in the row: spring back into place
     };
     b.addEventListener('pointerup', e => up(e, false));
     b.addEventListener('pointercancel', e => up(e, true));
-    b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expand(rec); } });
+    b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); rec.collapsed ? expand(rec) : collapse(rec); } });
   };
 
   /* ───────── decorate project / certificate windows ───────── */
@@ -136,22 +177,17 @@
     if (!id || !KINDS.test(id) || recs.has(id)) return;
     const ic = el.querySelector('.wm-title i');
     const rec = {
-      id, el, kind: id.split(':')[0], collapsed: false, placed: false, side: 'r', y: 0, bub: null,
+      id, el, kind: id.split(':')[0], collapsed: false, placed: false, side: 'r', y: 0, bub: null, tx: 0, ty: 0, ts: R,
       icon: ic ? ic.className : 'fa-solid fa-window-maximize', title: el.getAttribute('aria-label') || id
     };
     recs.set(id, rec);
+    makeBubble(rec);
+    recs.forEach(o => { if (o !== rec && !o.collapsed && mq.matches) collapse(o); });   // opening a new one folds the old one away
+    fit(rec); layout();
 
-    const ctl = el.querySelector('.wm-controls'), close = el.querySelector('.wm-close');
-    if (ctl && close) {
-      const btn = document.createElement('button');
-      btn.type = 'button'; btn.className = 'wm-btn adr-wm-bub';
-      btn.setAttribute('aria-label', 'Minimize to bubble'); btn.title = 'Minimize to bubble';
-      btn.innerHTML = '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="5" r="3.8"/><circle cx="5" cy="5" r="1.3" fill="currentColor" stroke="none"/></svg>';
-      btn.addEventListener('click', () => collapse(rec));
-      ctl.insertBefore(btn, close);
-    }
+    new MutationObserver(() => fit(rec)).observe(el, { attributes: true, attributeFilter: ['style'] });   // app.js resized it
 
-    /* swipe the title bar down to turn the window into a bubble */
+    /* swipe the title bar down to fold the sheet into its bubble */
     const bar = el.querySelector('.wm-titlebar');
     if (bar) {
       let sy = null;
@@ -165,8 +201,6 @@
       });
       bar.addEventListener('pointerup', end); bar.addEventListener('pointercancel', end);
     }
-
-    recs.forEach(o => { if (o !== rec && !o.collapsed && mq.matches) collapse(o); });    // opening a new one bubbles the old one
   };
 
   const teardown = id => {
@@ -174,6 +208,7 @@
     clearTimeout(rec.tipT);
     if (rec.bub) rec.bub.remove();
     recs.delete(id);
+    layout();
   };
 
   /* ───────── wiring ───────── */
@@ -185,15 +220,15 @@
     })).observe(layer, { childList: true });
     layer.querySelectorAll('.wm-window').forEach(setup);
 
-    /* tapping that project in the dock / Projects grid while it is a bubble pops it open */
+    /* tapping that project in the dock / Projects grid while it is folded away opens it */
     document.addEventListener('click', e => {
       const a = e.target.closest && e.target.closest('[data-app]');
       const rec = a && recs.get(a.getAttribute('data-app'));
       if (rec && rec.collapsed) expand(rec);
     }, true);
 
-    window.addEventListener('resize', () => recs.forEach(r => { if (r.collapsed && r.bub) place(r); }));
-    const sync = () => { if (!mq.matches) recs.forEach(r => expand(r, true)); };      // rotated / resized to desktop: all windows back
+    window.addEventListener('resize', () => { recs.forEach(fit); layout(); });
+    const sync = () => { if (!mq.matches) recs.forEach(r => expand(r, true)); layout(); };   // back on desktop: every window opens normally
     mq.addEventListener ? mq.addEventListener('change', sync) : mq.addListener(sync);
   };
 
