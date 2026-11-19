@@ -11,6 +11,9 @@
  *   resume   the resume PDF download link was clicked
  *   link     an external (other-origin) http(s) link was clicked
  *
+ * Every new notification shakes the bell and plays a chime (mute button in the popover header);
+ * restarting the desktop plays a boot sound. See SOUND + BELL SHAKE below.
+ *
  * History lives in sessionStorage, so it lasts for the browser tab's session.
  */
 (function () {
@@ -55,6 +58,136 @@
     clockEl.textContent = timeOnly();
   }
 
+  /* ===================== sound + bell shake =====================
+   * Every new notification rings the bell (a short shake) and plays a soft two-note chime in the
+   * style of a Linux / LineageOS notification. Restarting the desktop plays a boot arpeggio.
+   * The sounds are synthesised with the Web Audio API, so there are no audio files to ship.
+   * To use real recordings instead, put your own files in SOUND_FILES (for example 'assets/audio/notify.ogg');
+   * an empty string keeps the built-in sound. A speaker button in the notification header mutes everything
+   * (remembered in localStorage). Browsers only allow sound after a click or key press, so a sound that
+   * fires before the first interaction is simply skipped. */
+  const SOUND_FILES = { notify: '', restart: '' };
+  const SOUND_KEY = 'notif-sound';
+  const VOLUME = 0.2;
+  const reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let soundOn = true;
+  try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) { /* private mode */ }
+
+  /* bell shake */
+  const bellStyle = document.createElement('style');
+  bellStyle.textContent =
+    '@keyframes notif-ring{0%{transform:rotate(0)}12%{transform:rotate(18deg)}24%{transform:rotate(-16deg)}' +
+    '36%{transform:rotate(12deg)}48%{transform:rotate(-9deg)}60%{transform:rotate(6deg)}72%{transform:rotate(-3deg)}100%{transform:rotate(0)}}' +
+    '#panel-bell-btn i.is-ringing{display:inline-block;transform-origin:50% 0;animation:notif-ring .9s ease-in-out}' +
+    '.notif-sound[aria-pressed="false"]{opacity:.6}';
+  document.head.appendChild(bellStyle);
+
+  function shakeBell() {
+    if (reducedMotion) return;
+    const icon = btn.querySelector('i');
+    if (!icon) return;
+    icon.classList.remove('is-ringing');
+    void icon.offsetWidth;                            // restart the animation if it is already running
+    icon.classList.add('is-ringing');
+    icon.addEventListener('animationend', () => icon.classList.remove('is-ringing'), { once: true });
+  }
+
+  /* synthesised sounds */
+  let ctx = null, master = null;
+  function audio() {
+    if (ctx) return ctx;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = VOLUME;
+      master.connect(ctx.destination);
+    } catch (e) { ctx = null; }
+    return ctx;
+  }
+  function unlock() { const c = audio(); if (c && c.state === 'suspended') c.resume(); }
+  ['pointerdown', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, unlock, { capture: true, passive: true }));
+
+  function tone(freq, at, dur, vol, type) {
+    const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + at;
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t + dur + 0.05);
+  }
+  function bell(freq, at, dur, vol) {                 // a soft bell: fundamental plus a quiet octave and a fifth above
+    tone(freq, at, dur, vol);
+    tone(freq * 2, at, dur * 0.6, vol * 0.25);
+    tone(freq * 3, at, dur * 0.35, vol * 0.08);
+  }
+  const SYNTH = {
+    notify: () => { bell(1174.66, 0, 0.55, 0.5); bell(1567.98, 0.13, 0.8, 0.5); },                       // D6, G6
+    restart: () => {                                                                                   // C major arpeggio over a low pad
+      tone(130.81, 0, 1.6, 0.25, 'triangle');
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => bell(f, i * 0.17, 1.0, 0.45));
+    }
+  };
+
+  function playSound(name) {
+    if (!soundOn) return;
+    const file = SOUND_FILES[name];
+    const synth = () => { const c = audio(); if (!c) return; if (c.state === 'suspended') c.resume(); SYNTH[name](); };
+    if (file) {
+      const a = new Audio(file);
+      a.volume = 0.6;
+      a.play().catch(synth);
+    } else {
+      synth();
+    }
+  }
+  function alertUser() { shakeBell(); playSound('notify'); }
+
+  /* mute button in the notification header */
+  const head = pop.querySelector('.notif-head');
+  if (head) {
+    const mute = el('button', 'notif-act notif-sound');
+    mute.type = 'button';
+    const icon = el('i', 'fa-solid');
+    icon.setAttribute('aria-hidden', 'true');
+    mute.appendChild(icon);
+    const sync = () => {
+      icon.className = 'fa-solid ' + (soundOn ? 'fa-volume-high' : 'fa-volume-xmark');
+      mute.setAttribute('aria-pressed', String(soundOn));
+      mute.setAttribute('aria-label', soundOn ? 'Mute notification sounds' : 'Unmute notification sounds');
+      mute.title = soundOn ? 'Sound on' : 'Sound off';
+    };
+    mute.addEventListener('click', e => {
+      e.stopPropagation();                            // same reason as the feed: do not let the outside-click handler close the popover
+      soundOn = !soundOn;
+      try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (err) { /* private mode */ }
+      sync();
+      if (soundOn) playSound('notify');               // a preview
+    });
+    sync();
+    head.insertBefore(mute, head.querySelector('.notif-head-actions'));
+  }
+
+  /* restarting the desktop: boot sound. The click is the user gesture. If the page reloads straight away,
+     the sound is tried again on the next load (and on the first click if the browser blocks it). */
+  const RESTART_KEY = 'notif-restart-sound';
+  document.addEventListener('desktop:restart', () => {
+    playSound('restart');
+    try { sessionStorage.setItem(RESTART_KEY, String(Date.now())); } catch (e) { /* private mode */ }
+  });
+  try {
+    const at = Number(sessionStorage.getItem(RESTART_KEY));
+    if (at && Date.now() - at < 15000) {
+      sessionStorage.removeItem(RESTART_KEY);
+      const c = audio();
+      if (c && c.state === 'running') playSound('restart');
+      else document.addEventListener('pointerdown', () => playSound('restart'), { once: true, capture: true });
+    }
+  } catch (e) { /* private mode */ }
+
   /* ===================== state ===================== */
   function load() {
     try {
@@ -82,6 +215,7 @@
     save();
     render();
     announce(text);
+    alertUser();
   }
 
   /* ===================== view ===================== */

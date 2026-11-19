@@ -847,21 +847,7 @@
         padding: 0 22px 18px;
       }
 
-      /* bottom: search / chatbot, then the launchers in one row */
-      .app-menu .app-menu-ask {
-        margin: 0;
-        border-radius: 0;
-        border: 0;
-        border-top: 1px solid var(--hero-hairline, color-mix(in srgb, var(--default-color), transparent 88%));
-        background: color-mix(in srgb, var(--default-color), transparent 95%);
-        height: 48px;
-        padding: 0 22px;
-      }
-
-      .app-menu .app-menu-ask input {
-        font-size: var(--fs-base);
-      }
-
+      /* bottom: the launchers in one row */
       .app-menu .app-menu-header {
         display: none;
       }
@@ -1288,12 +1274,6 @@
   </header>
   <!-- App Menu (opened from the taskbar Menu button: apps, projects, socials, restart) -->
   <div aria-hidden="true" class="app-menu" id="app-menu" role="menu">
-    <form action="#" aria-label="Ask Jampol" autocomplete="off" class="app-menu-ask" data-ask id="app-menu-ask"
-      role="search">
-      <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
-      <input aria-label="Ask Jampol" autocomplete="off" id="app-menu-ask-input" placeholder="Ask Jampol or type help"
-        spellcheck="false" type="text" />
-    </form>
     <div class="app-menu-header">Apps</div>
     <ul>
       <li><button data-app="resume" role="menuitem" type="button"><i class="fa-solid fa-timeline"></i>Resume</button>
@@ -1506,15 +1486,6 @@
     <section aria-label="Resume" class="rv" id="resume">
       <!-- Sidebar -->
       <aside class="rv-side">
-        <div class="rv-head">
-          <div class="rv-head-top">
-            <span aria-hidden="true" class="rv-app-icon"><i class="fa-solid fa-timeline"></i></span>
-            <div>
-              <div class="rv-badge"><span>Resume</span></div>
-              <h2 class="rv-title">John Paul De Leon</h2>
-            </div>
-          </div>
-        </div>
         <nav aria-label="Resume sections" aria-orientation="vertical" class="rv-tree" role="tablist">
           <div aria-hidden="true" class="rv-group"><i class="fa-regular fa-folder-open"></i> <span>Sections</span></div>
           <div class="rv-items">
@@ -1540,11 +1511,14 @@
           </div>
         </nav>
         <div class="rv-actions">
+          <div aria-label="View mode" class="rv-modes" role="group">
+            <button aria-label="Text view" aria-pressed="true" class="rv-mode" data-mode="text" title="Text" type="button"><i
+                class="fa-regular fa-file-lines"></i><span>Text</span></button>
+            <button aria-label="PDF view" aria-pressed="false" class="rv-mode" data-mode="pdf" title="PDF" type="button"><i
+                class="fa-regular fa-file-pdf"></i><span>PDF</span></button>
+          </div>
           <a aria-label="Download resume" class="btn-live" download="" href="assets/johnpauldeleon_resume.pdf"
             title="Download CV"><i class="fa-solid fa-download"></i><span class="rv-btn-label">Download CV</span></a>
-          <a aria-label="Open resume in a new tab" class="btn-github" href="assets/johnpauldeleon_resume.pdf"
-            rel="noopener" target="_blank" title="Open in new tab"><i
-              class="fa-solid fa-arrow-up-right-from-square"></i><span class="rv-btn-label">Open in new tab</span></a>
         </div>
       </aside>
 
@@ -1552,12 +1526,6 @@
       <div class="rv-content">
         <div class="rv-bar">
           <span class="rv-crumb"><span id="rv-crumb-dir">~/cv/</span><b id="rv-crumb-file">profile.md</b></span>
-          <div aria-label="View mode" class="rv-modes" role="group">
-            <button aria-pressed="true" class="rv-mode" data-mode="text" type="button"><i
-                class="fa-regular fa-file-lines"></i><span>Text</span></button>
-            <button aria-pressed="false" class="rv-mode" data-mode="pdf" type="button"><i
-                class="fa-regular fa-file-pdf"></i><span>PDF</span></button>
-          </div>
           <span class="rv-bar-meta" id="rv-meta">summary · contact</span>
         </div>
 
@@ -1568,13 +1536,17 @@
             <div class="rv-profile">
               <img alt="John Paul De Leon" class="rv-photo" height="112" src="assets/img/profile/jp-profile-3.webp"
                 width="112" />
-              <div>
-                <h3 class="rv-h">Professional Summary</h3>
-                <p>Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation and speed
-                  issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects,
-                  backed by a research-heavy SEO background.</p>
+              <div class="rv-id">
+                <h2 class="rv-person">John Paul De Leon</h2>
+                <p class="rv-role">Technical SEO Specialist</p>
+                <p aria-hidden="true" class="rv-typed"><span class="rv-typed-text"
+                    data-items="SEO Specialist|WordPress Developer|Web Developer">SEO Specialist</span></p>
               </div>
             </div>
+            <h3 class="rv-h">Professional Summary</h3>
+            <p>Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation and speed
+              issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects,
+              backed by a research-heavy SEO background.</p>
             <h3 class="rv-h rv-contact-title">Contact Information</h3>
             <div class="contact-block">
               <ul class="rv-contact">
@@ -1607,7 +1579,7 @@
           </div>
 
           <!-- Experience -->
-          <div aria-label="Experience" class="rv-view rv-doc" hidden id="rv-view-experience" role="tabpanel">
+          <div aria-label="Experience" class="rv-view rv-doc" id="rv-view-experience" role="tabpanel">
             <h3 class="rv-h">Professional Experience</h3>
             <p class="rv-sub">Where I've worked, newest first.</p>
 
@@ -1719,7 +1691,7 @@
           </div>
 
           <!-- Skills -->
-          <div aria-label="Skills" class="rv-view rv-doc" hidden id="rv-view-skills" role="tabpanel">
+          <div aria-label="Skills" class="rv-view rv-doc" id="rv-view-skills" role="tabpanel">
             <h3 class="rv-h">Technical Skills</h3>
             <p class="rv-sub">What I use day to day.</p>
             <div class="rv-skills">
@@ -1794,7 +1766,7 @@
           </div>
 
           <!-- Education -->
-          <div aria-label="Education" class="rv-view rv-doc" hidden id="rv-view-education" role="tabpanel">
+          <div aria-label="Education" class="rv-view rv-doc" id="rv-view-education" role="tabpanel">
             <h3 class="rv-h">Education</h3>
             <p class="rv-sub">Where I studied.</p>
             <article class="rv-job">
@@ -1811,7 +1783,7 @@
           </div>
 
           <!-- Certifications -->
-          <div aria-label="Certifications" class="rv-view rv-doc" hidden id="rv-view-certifications" role="tabpanel">
+          <div aria-label="Certifications" class="rv-view rv-doc" id="rv-view-certifications" role="tabpanel">
             <h3 class="rv-h">Certifications</h3>
             <p class="rv-sub">Open a certificate in its own window.</p>
             <article class="rv-job">

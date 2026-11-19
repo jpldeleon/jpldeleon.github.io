@@ -5,11 +5,12 @@
  * Markup contract (see the #resume section in index.html):
  *   .rv-item[data-view][data-dir][data-file][data-meta]   sidebar entries (role="tab")
  *   .rv-view#rv-view-x                                    text panels
- *   .rv-mode[data-mode="text|pdf"]                        Text / PDF tabs
+ *   .rv-mode[data-mode="text|pdf"]                        Text / PDF buttons (in the sidebar, next to Download CV)
  *   .rv-scroll (text pane) / .rv-pdf (pdf pane)
  *   #rv-crumb-dir / #rv-crumb-file / #rv-meta             path bar
  *
- * Opens on Text. Clicking a section always goes to its text.
+ * The Text tab is one long page (Profile down to Certifications). The sidebar is its navigation:
+ * clicking a section scrolls to it, and the highlight follows you as you scroll. Opens on Text.
  *
  * Also owns the resume DOWNLOAD buttons (hero applet "Resume" + "Download CV"): they save the
  * PDF directly instead of opening the browser's PDF viewer. See DIRECT RESUME DOWNLOAD below.
@@ -70,6 +71,19 @@
   var tree = root.querySelector('.rv-tree');
   if (!tabs.length || !views.length || !textPane || !pdfPane) return;
 
+  /* typed subtitle on the Profile page: rotates through data-items (split on "|").
+     Plain text if Typed.js is missing or the person prefers reduced motion. */
+  (function () {
+    var el = root.querySelector('.rv-typed-text');
+    if (!el) return;
+    var items = (el.getAttribute('data-items') || '').split('|').filter(Boolean);
+    if (!items.length) return;
+    el.textContent = items[0];
+    if (typeof Typed === 'undefined') return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    new Typed(el, { strings: items, typeSpeed: 70, backSpeed: 35, backDelay: 1800, startDelay: 400, loop: true });
+  })();
+
   /* icon-only tabs on phones still need a name (screen readers + long-press tooltip) */
   tabs.forEach(function (t) {
     var n = t.getAttribute('data-label') || (t.querySelector('.rv-name') || {}).textContent || '';
@@ -78,6 +92,12 @@
 
   var PDF_NAME = 'JohnPaulDeLeon.pdf';
   var state = { view: tabs[0].getAttribute('data-view'), mode: 'text' };
+  var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var savedScroll = 0;      // text pane position, kept while the PDF tab is open
+  var lockUntil = 0;        // the scroll-spy waits while a nav click is still scrolling
+
+  /* the Text tab is one long page: every section is shown, the sidebar is its navigation */
+  views.forEach(function (v) { v.hidden = false; });
 
   function tabFor(name) {
     for (var i = 0; i < tabs.length; i++) if (tabs[i].getAttribute('data-view') === name) return tabs[i];
@@ -103,44 +123,82 @@
   }
   document.addEventListener('devmode:change', renderBar);
 
+  /* highlight one section in the sidebar (no scrolling of the page) */
+  function setActive(name) {
+    var active = tabFor(name);
+    state.view = active.getAttribute('data-view');
+    tabs.forEach(function (t) {
+      var on = t === active;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    renderBar();
+    return active;
+  }
+
   function setMode(mode) {
     if (mode !== 'text' && mode !== 'pdf') return;
+    if (mode === state.mode) return;
+    if (state.mode === 'text') savedScroll = textPane.scrollTop;
     state.mode = mode;
     modeBtns.forEach(function (b) {
       b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
     });
     textPane.hidden = mode !== 'text';
     pdfPane.hidden = mode !== 'pdf';
+    if (mode === 'text') { textPane.scrollTop = savedScroll; spy(); }
     renderBar();
   }
 
-  function show(name, opts) {
+  /* scroll the text pane so a section starts at the top */
+  function goTo(name, opts) {
     opts = opts || {};
-    var active = tabFor(name);
-    state.view = active.getAttribute('data-view');
-
-    tabs.forEach(function (t) {
-      var on = t === active;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      t.tabIndex = on ? 0 : -1;
-    });
-
-    views.forEach(function (v) { v.hidden = v.id !== 'rv-view-' + state.view; });
-    textPane.scrollTop = 0;
-
-    if (state.mode !== 'text') setMode('text');   // sections live in the Text tab
-    else renderBar();
-
+    var active = setActive(name);
+    if (state.mode !== 'text') setMode('text');
+    var target = document.getElementById('rv-view-' + state.view);
+    if (target) {
+      var pad = parseFloat(getComputedStyle(textPane).paddingTop) || 0;
+      var top = textPane.scrollTop + target.getBoundingClientRect().top - textPane.getBoundingClientRect().top - pad;
+      var smooth = !reduceMotion && !opts.initial;
+      lockUntil = Date.now() + (smooth ? 700 : 0);
+      textPane.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+    }
     if (opts.focus) active.focus();
     if (active.scrollIntoView && !opts.initial) {
       try { active.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { /* old browsers */ }
     }
   }
 
+  /* scroll-spy: the sidebar follows whatever section is at the top of the pane */
+  var spyQueued = false;
+  function spy() {
+    spyQueued = false;
+    if (state.mode !== 'text' || textPane.hidden || Date.now() < lockUntil) return;
+    var paneTop = textPane.getBoundingClientRect().top + (parseFloat(getComputedStyle(textPane).paddingTop) || 0);
+    var current = views[0];
+    for (var i = 0; i < views.length; i++) {
+      if (views[i].getBoundingClientRect().top - paneTop <= 48) current = views[i];
+    }
+    if (textPane.scrollTop + textPane.clientHeight >= textPane.scrollHeight - 2) current = views[views.length - 1];
+    var name = current.id.replace('rv-view-', '');
+    if (name !== state.view) {
+      var active = setActive(name);
+      if (active.scrollIntoView) {
+        try { active.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { /* old browsers */ }
+      }
+    }
+  }
+  textPane.addEventListener('scroll', function () {
+    if (spyQueued) return;
+    spyQueued = true;
+    requestAnimationFrame(spy);
+    if (lockUntil > Date.now()) setTimeout(spy, lockUntil - Date.now() + 30);
+  }, { passive: true });
+
   tabs.forEach(function (t) {
     t.addEventListener('click', function (e) {
       e.preventDefault();
-      show(t.getAttribute('data-view'));
+      goTo(t.getAttribute('data-view'));
     });
   });
 
@@ -160,10 +218,9 @@
       else if (e.key === 'End') next = tabs.length - 1;
       if (next === null) return;
       e.preventDefault();
-      show(tabs[next].getAttribute('data-view'), { focus: true });
+      goTo(tabs[next].getAttribute('data-view'), { focus: true });
     });
   }
 
-  show(state.view, { initial: true });
-  setMode('text');
+  goTo(state.view, { initial: true });
 })();

@@ -1,7 +1,7 @@
 /*!
  * jpt-chat.js — "Ask Jampol", a chat box for jpldeleon.github.io
  * Mission: let visitors get to know Jampol (the answers are written in his first-person voice). Zero dependencies. No backend: answers come from the KNOWLEDGE BASE below.
- * Embed: <script src="assets/js/jpt-chat.js" defer></script> before </body>, plus the #app-menu-ask search bar inside the Start menu (see index.html)
+ * Embed: <script src="assets/js/jpt-chat.js" defer></script> before </body>
  */
 (() => {
   'use strict';
@@ -790,8 +790,8 @@
   }
 
   /* ───────────────────────── UI ─────────────────────────
-   * No launcher icon any more: the chat lives in the Start menu as an "Ask Jampol" search bar
-   * (markup: #app-menu-ask in index.html). Submitting it opens this chat box, just above the taskbar.
+   * The chat is a search bar on the taskbar (built below, #taskbar-ask) plus any form[data-ask] (the phone layout's bottom bar).
+   * Focusing or submitting the taskbar bar opens this chat box right above it.
    * window.jptOpen() opens it from anywhere else. */
   const ICON = (() => {
     try { const src = document.currentScript && document.currentScript.src; if (src) return new URL('../img/astrobot.svg', src).href; } catch (e) {}
@@ -807,8 +807,17 @@
 .jpt-back{position:absolute;inset:0;background:rgba(0,0,0,.22)}
 
 /* the chat box: centered horizontally, just above the taskbar, translucent, frosted */
-.jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:auto;max-height:min(540px,100%);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}
+.jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:min(540px,100%);max-height:none;padding:0!important;margin:0!important;background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}
 @keyframes jpt-in{from{opacity:0}to{opacity:1}}
+
+/* taskbar mode (desktop): the box is a flyout anchored above the taskbar search bar. its left edge follows the bar (--jpt-left),
+   the dim backdrop stops at the taskbar so the bar stays usable, and the bar itself is the input, so the box's own field is hidden */
+.jpt.jpt-tb{justify-content:flex-start;padding-left:var(--jpt-left,16px);pointer-events:none}
+.jpt.jpt-tb .jpt-back{bottom:calc(var(--jpt-bot,64px) - 8px);pointer-events:auto}
+.jpt.jpt-tb .jpt-win{pointer-events:auto;transform-origin:bottom left;animation-name:jpt-rise}
+.jpt.jpt-tb .jpt-in{display:none}
+.jpt.jpt-tb .jpt-chips{padding-bottom:12px}
+@keyframes jpt-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* header: the astronaut, static (no animation, no hover effect) */
 .jpt-bar{display:flex;align-items:center;gap:10px;padding:12px 10px 10px 16px;flex:none;border-bottom:1px solid color-mix(in srgb,var(--fg) 10%,transparent)}
@@ -822,7 +831,7 @@
 .jpt-x:hover,.jpt-x:focus-visible{color:var(--r)}
 
 /* conversation: chat bubbles */
-.jpt-out{flex:0 1 auto;min-height:0;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
+.jpt-out{flex:1 1 0;min-height:0;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
 .jpt-out::-webkit-scrollbar{width:4px}.jpt-out::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--fg) 25%,transparent);border-radius:2px}
 .jpt-ln{margin:0;padding:8px 13px;max-width:90%;overflow-wrap:anywhere;border-radius:14px;background:color-mix(in srgb,var(--fg) 9%,transparent);align-self:flex-start;border-bottom-left-radius:4px}
 .jpt-ln.u{align-self:flex-end;background:color-mix(in srgb,var(--g) 28%,transparent);border-bottom-left-radius:14px;border-bottom-right-radius:4px}
@@ -835,6 +844,8 @@
 .jpt-cmd:hover,.jpt-cmd:focus-visible{text-decoration-style:solid;outline:none}
 .jpt-chips{display:flex;gap:6px;padding:0 16px 8px;overflow-x:auto;scrollbar-width:none;flex:none}
 .jpt-chips::-webkit-scrollbar{display:none}
+/* desktop: the chips wrap onto a second row so every suggestion is visible (a hidden-scrollbar strip can't be scrolled with a mouse) */
+@media (min-width:769px){.jpt-chips{flex-wrap:wrap;overflow-x:visible}}
 .jpt-chips .jpt-cmd{white-space:nowrap;flex:none;color:var(--dim);text-decoration:none;padding:3px 11px;border-radius:999px;background:color-mix(in srgb,var(--fg) 9%,transparent)}
 .jpt-chips .jpt-cmd:hover,.jpt-chips .jpt-cmd:focus-visible{color:var(--g)}
 .jpt-in{display:flex;gap:6px;align-items:center;margin:0 12px 12px;padding:0 4px 0 16px;flex:none;border-radius:999px;background:color-mix(in srgb,var(--fg) 10%,transparent);border:1px solid color-mix(in srgb,var(--fg) 14%,transparent)}
@@ -848,14 +859,41 @@
 .jpt-dots:after{content:"";animation:jpt-d 1s steps(4) infinite}
 @keyframes jpt-d{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
 
-/* the "Ask Jampol" search bar inside the Start menu */
-.app-menu-ask{display:flex;align-items:center;gap:8px;margin:8px 8px 6px;padding:0 10px;height:36px;border-radius:8px;background:color-mix(in srgb,currentColor 9%,transparent);border:1px solid color-mix(in srgb,currentColor 16%,transparent);color:inherit}
-.app-menu-ask:focus-within{border-color:var(--accent-color,#83c092)}
-.app-menu-ask i{font-size:13px;opacity:.65;flex:none}
-.app-menu-ask input{flex:1;min-width:0;height:100%;background:none;border:0;outline:0;color:inherit;font:inherit;font-size:13px}
-.app-menu-ask input::placeholder{color:inherit;opacity:.6}
+/* phone (<=768px): the chat is an Android-style bubble sheet in Material 3 colours: tonal surfaces, 28dp sheet, 20dp message shapes,
+   filled-tonal chips, a 28dp pill field and a filled send button. the sheet keeps one fixed height. Flat colours, no borders, no gradients. */
+@media (max-width:768px){
+.jpt.adr-on{display:block;padding:0;pointer-events:none;z-index:2147480000}
+.jpt.adr-on .jpt-back{display:none}
+.jpt.adr-on .jpt-win{position:fixed;left:var(--adr-left,8px);right:auto;top:var(--adr-top,106px);bottom:auto;width:var(--adr-w,calc(100% - 16px));height:var(--adr-h,calc(100dvh - 232px));max-height:none;padding:0!important;
+  pointer-events:auto;background:color-mix(in srgb,var(--fg) 7%,var(--bg));-webkit-backdrop-filter:none;backdrop-filter:none;border:0;border-radius:28px;box-shadow:0 8px 24px rgba(0,0,0,.45);animation:none}
+.jpt.adr-on .jpt-win.adr-bubbled{visibility:hidden;pointer-events:none}
+/* top app bar */
+.jpt.adr-on .jpt-bar{min-height:56px;padding:8px 8px 8px 20px;gap:12px;border:0;background:color-mix(in srgb,var(--g) 26%,var(--bg))}
+.jpt.adr-on .jpt-ico{width:34px;height:34px}
+.jpt.adr-on .jpt-ttl b{font-size:16px;font-weight:600;letter-spacing:.01em}
+.jpt.adr-on .jpt-ttl small{font-size:12px}
+.jpt.adr-on .jpt-ib{width:40px;height:40px;border-radius:50%}
+.jpt.adr-on .jpt-ib svg{width:20px;height:20px}
+.jpt.adr-on .jpt-ib:hover,.jpt.adr-on .jpt-ib:focus-visible{background:color-mix(in srgb,var(--fg) 12%,transparent)}
+.jpt.adr-on .jpt-x{display:none}
+/* messages */
+.jpt.adr-on .jpt-out{flex:1 1 0;min-height:0;padding:14px 14px 6px;gap:6px}
+.jpt.adr-on .jpt-ln{max-width:88%;padding:10px 14px;border-radius:20px 20px 20px 6px;background:color-mix(in srgb,var(--fg) 13%,var(--bg));font-size:14px;line-height:1.5}
+.jpt.adr-on .jpt-ln.u{border-radius:20px 20px 6px 20px;background:color-mix(in srgb,var(--g) 34%,var(--bg))}
+/* suggestion chips */
+.jpt.adr-on .jpt-chips{gap:8px;padding:6px 14px 10px}
+.jpt.adr-on .jpt-chips .jpt-cmd{height:32px;display:inline-flex;align-items:center;padding:0 14px;border-radius:8px;background:color-mix(in srgb,var(--fg) 11%,var(--bg));color:var(--fg);font-size:13px;font-weight:500}
+.jpt.adr-on .jpt-chips .jpt-cmd:active{background:color-mix(in srgb,var(--g) 30%,var(--bg))}
+/* text field + send */
+.jpt.adr-on .jpt-in{margin:0 12px calc(12px + env(safe-area-inset-bottom,0px));padding:0 6px 0 20px;height:52px;border:0;border-radius:28px;background:color-mix(in srgb,var(--fg) 13%,var(--bg))}
+.jpt.adr-on .jpt-in:focus-within{box-shadow:inset 0 0 0 2px var(--g)}
+.jpt.adr-on .jpt-in input{height:100%;font-size:16px}
+.jpt.adr-on .jpt-send{width:40px;height:40px;background:color-mix(in srgb,var(--fg) 12%,transparent);color:var(--dim)}
+.jpt.adr-on .jpt-send:not(:disabled){background:var(--g);color:var(--bg)}
+.jpt.adr-on .jpt-send:disabled{opacity:1}
+}
 
-@media (max-width:480px){.jpt{padding:10px 10px var(--jpt-bot,64px)}.jpt-in input,.app-menu-ask input{font-size:16px}}
+@media (max-width:480px){.jpt{padding:10px 10px var(--jpt-bot,64px)}.jpt-in input{font-size:16px}}
 @media (prefers-reduced-motion:reduce){.jpt-win,.jpt-dots:after,.jpt-caret{animation:none!important}.jpt *{scroll-behavior:auto!important}}
 `;
 
@@ -908,10 +946,11 @@
       </div>
     </section>`;
   document.body.appendChild(root);
+  document.body.appendChild(root.querySelector('.jpt-svg'));
 
   /* theme-aware (static) tint for the astronaut: follows --accent-color, re-synced when the theme changes */
   const de = document.documentElement;
-  const flood = root.querySelector('#jpt-tint-flood');
+  const flood = document.getElementById('jpt-tint-flood');
   const tint = () => {
     const c = getComputedStyle(de).getPropertyValue('--accent-color').trim();
     if (c && flood.getAttribute('flood-color') !== c) flood.setAttribute('flood-color', c);
@@ -927,6 +966,7 @@
   const out = $('.jpt-out'), input = $('.jpt-in input'), chips = $('.jpt-chips');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hist = []; let hi = 0, booted = false;
+  let searchForm = null, tbInput = null;   // the taskbar search bar (set by mountSearch)
 
   SUGGEST.forEach(s => {
     const b = document.createElement('button');
@@ -944,6 +984,31 @@
   };
 
   const isOpen = () => root.classList.contains('open');
+
+  /* ───────────── phone: Android-style chat head ─────────────
+   * window.adrBubbles comes from android.js (the app-bubbles block). On <=768px this chat registers there as a sheet:
+   * it opens under the bubble row, folds into a round astronaut head that stacks with the project heads, shows a red dot when a
+   * reply arrives while folded, and closes when its head is dragged to the X. */
+  const win = $('#jpt-win'), mqp = matchMedia('(max-width:768px)');
+  const bub = () => window.adrBubbles || null;
+  function openHead() {
+    const B = bub();
+    root.classList.add('open', 'adr-on');
+    if (B.has('chat')) B.open('chat');
+    else B.add({
+      id: 'chat', kind: 'chat', el: win, bar: $('.jpt-bar'), title: 'Ask Jampol', close: closeHead,
+      iconHTML: '<img class="adr-bub-img" src="' + ICON + '" alt="" draggable="false">'
+    });
+    boot();
+  }
+  function closeHead() {
+    const B = bub();
+    if (B && B.has('chat')) B.remove('chat');
+    win.classList.remove('adr-sheet', 'adr-bubbled');
+    ['--adr-top', '--adr-h'].forEach(p => win.style.removeProperty(p));
+    win.style.translate = '';
+    root.classList.remove('open', 'adr-on');
+  }
 
   function boot() {
     if (booted) return;
@@ -1009,6 +1074,8 @@
   /* bot output: typed when the window is open, instant when it arrives while closed */
   function say(html, cls = '') {
     const p = print(html, cls);
+    const B = bub();
+    if (B && B.has('chat') && B.isCollapsed('chat')) B.badge('chat', true);
     if (!reduce && isOpen()) typeInto(p);
     return p;
   }
@@ -1021,11 +1088,11 @@
 
   const sendBtn = $('.jpt-send');
   const syncSend = () => { sendBtn.disabled = !input.value.trim(); };
-  const send = () => { const v = input.value; input.value = ''; syncSend(); run(v); input.focus(); };
+  const send = () => { const v = input.value; input.value = ''; syncSend(); run(v); focusIn(); };
   input.addEventListener('input', syncSend);
   input.addEventListener('keyup', syncSend);
   sendBtn.addEventListener('click', send);
-  $('.jpt-clr').addEventListener('click', () => { clearChat(); input.focus(); });
+  $('.jpt-clr').addEventListener('click', () => { clearChat(); focusIn(); });
   out.addEventListener('click', ev => { if (typer && !ev.target.closest('a,button')) typer.skip(); });
 
   /* on phones keep the centered box inside the visible area when the on-screen keyboard is up */
@@ -1044,13 +1111,26 @@
     if (!tb || !isOpen()) return;
     const t = tb.getBoundingClientRect(), r = root.getBoundingClientRect();
     if (t.height && t.top > r.top) root.style.setProperty('--jpt-bot', Math.round(r.bottom - t.top + 8) + 'px');
+    /* line the box's left edge up with the search bar, kept inside the screen */
+    if (searchForm && root.classList.contains('jpt-tb')) {
+      const s = searchForm.getBoundingClientRect(), w = Math.min(560, innerWidth - 32);
+      root.style.setProperty('--jpt-left', Math.round(Math.max(16, Math.min(s.left, innerWidth - w - 16))) + 'px');
+    }
   };
+  /* taskbar mode is on when the taskbar search bar exists and we are not on the phone layout */
+  const useTb = () => !!searchForm && searchForm.isConnected && !mqp.matches;
+  const focusIn = () => (root.classList.contains('jpt-tb') && tbInput ? tbInput : input).focus();
   addEventListener('resize', place);
   if (vv) vv.addEventListener('resize', place);
 
   function toggle(open) {
+    const B = bub();
+    if (!open && B && B.has('chat')) { closeHead(); return; }
+    if (open && B && mqp.matches) { openHead(); return; }
+    if (!open && tbInput && document.activeElement === tbInput) tbInput.blur();
+    if (open) root.classList.toggle('jpt-tb', useTb());
     root.classList.toggle('open', open);
-    if (open) { place(); boot(); setTimeout(() => input.focus(), 30); }
+    if (open) { place(); boot(); setTimeout(focusIn, 30); }
   }
 
   function run(q) {
@@ -1076,7 +1156,7 @@
   $('.jpt-back').addEventListener('click', () => toggle(false));
   root.addEventListener('click', ev => {
     const b = ev.target.closest('.jpt-cmd');
-    if (b) { run(b.dataset.q); input.focus(); }
+    if (b) { run(b.dataset.q); focusIn(); }
   });
   document.addEventListener('keydown', ev => {
     if (ev.key === 'Escape' && isOpen()) toggle(false);
@@ -1093,11 +1173,11 @@
     } else if (ev.key === 'l' && ev.ctrlKey) { ev.preventDefault(); clearChat(); }
   });
 
-  /* ───────────── Start menu: the "Ask Jampol" search bar ───────────── */
+  /* ───────────── form[data-ask] hookup (phone bottom bar) ───────────── */
   const menu = document.getElementById('app-menu');
   const menuBtn = document.getElementById('taskbar-menu-btn');
   const closeMenu = () => { if (menu && menuBtn && menu.classList.contains('open')) menuBtn.click(); };
-  /* every form[data-ask] (Start menu on desktop, bottom search bar on the phone layout) opens this chat */
+  /* every form[data-ask] (the phone layout's bottom search bar) opens this chat */
   document.querySelectorAll('form[data-ask]').forEach(askForm => {
     const askInput = askForm.querySelector('input');
     if (!askInput) return;
@@ -1116,6 +1196,59 @@
       if (ev.key === 'Escape') { askInput.blur(); closeMenu(); }
     });
   });
+
+  /* ───────────── taskbar search bar: left side, right after the social links ─────────────
+   * Click or focus it and the chat opens above it. Type a question and press Enter to ask it. The bar stays
+   * the input while the chat is open. Hidden on the phone layout (see taskbar.css), which has its own bottom bar. */
+  const mountSearch = () => {
+    if (document.getElementById('taskbar-ask')) return;
+    const bar = document.getElementById('top-panel') || document.querySelector('.top-panel, .taskbar');
+    if (!bar) return;
+    const f = document.createElement('form');
+    f.id = 'taskbar-ask'; f.className = 'taskbar-search'; f.setAttribute('role', 'search'); f.setAttribute('autocomplete', 'off');
+    f.innerHTML = '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>' +
+      '<input type="text" placeholder="Ask Jampol" aria-label="Ask Jampol a question" autocomplete="off" autocapitalize="off" spellcheck="false">' +
+      '<button type="submit" class="taskbar-send" aria-label="Send" title="Send" disabled><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>';
+    const social = bar.querySelector('.panel-connect');
+    const mb = bar.querySelector('.taskbar-menu, #taskbar-menu-btn');
+    const left = bar.querySelector('.panel-left');
+    if (social) social.after(f);
+    else if (mb) mb.after(f);
+    else if (left) left.appendChild(f);
+    else bar.insertBefore(f, bar.firstChild);
+    searchForm = f; tbInput = f.querySelector('input');
+    const sendB = f.querySelector('.taskbar-send');
+    const sync = () => { sendB.disabled = !tbInput.value.trim(); };
+    tbInput.addEventListener('input', sync);
+
+    const openIt = () => { if (!isOpen() && !mqp.matches) toggle(true); };
+    tbInput.addEventListener('focus', openIt);
+    tbInput.addEventListener('click', openIt);
+    f.addEventListener('submit', ev => {
+      ev.preventDefault();
+      const q = tbInput.value.trim();
+      tbInput.value = ''; sync();
+      openIt();
+      if (q) run(q);
+    });
+    tbInput.addEventListener('keydown', ev => {
+      ev.stopPropagation();   // typing here must not trigger desktop shortcuts
+      if (ev.key === 'Escape') { tbInput.value = ''; sync(); toggle(false); }
+      else if (ev.key === 'ArrowUp') { if (hi > 0) tbInput.value = hist[--hi]; sync(); ev.preventDefault(); }
+      else if (ev.key === 'ArrowDown') { tbInput.value = hi < hist.length - 1 ? hist[++hi] : (hi = hist.length, ''); sync(); ev.preventDefault(); }
+      else if (ev.key === 'Tab') {
+        const v = norm(tbInput.value); if (!v) return;
+        const all = [...new Set(E.flatMap(e => e.cmd))].filter(c => c.startsWith(v));
+        if (all.length) { ev.preventDefault(); tbInput.value = all[0]; sync(); }
+      } else if (ev.key === 'l' && ev.ctrlKey) { ev.preventDefault(); clearChat(); }
+    });
+    new MutationObserver(() => f.classList.toggle('is-open', isOpen())).observe(root, { attributes: true, attributeFilter: ['class'] });
+  };
+  mountSearch();
+  { let n = 0; const t = setInterval(() => { mountSearch(); if (document.getElementById('taskbar-ask') || ++n > 20) clearInterval(t); }, 500); }   // the taskbar may be built a moment later
+  document.addEventListener('DOMContentLoaded', mountSearch);
+  document.addEventListener('desktop:booted', mountSearch);
+  addEventListener('load', mountSearch);
 
   /* optional hooks for other buttons */
   window.jptReset = () => {

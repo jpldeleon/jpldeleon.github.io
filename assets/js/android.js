@@ -151,7 +151,7 @@
     const n = { key, icon, title, text, ts: Date.now() };
     events.unshift(n); render();
     if (!shadeOpen) {                                       // heads-up banner
-      heads.innerHTML = `<div class="t"><i class="fa-solid ${icon}"></i>Portfolio · now</div><h4>${esc(title)}</h4><p>${esc(text)}</p>`;
+      heads.innerHTML = `<div class="t"><i class="fa-solid ${icon}"></i>Portfolio · now</div><h4>${esc(title)}</h4>${text ? `<p>${esc(text)}</p>` : ''}`;
       heads.classList.add('show'); clearTimeout(headsT);
       headsT = setTimeout(() => heads.classList.remove('show'), 2600);
     }
@@ -178,7 +178,7 @@
     let html = '';
     if (info.hire) html += hireCard();
     if (info.hobbies) html += hobCard();
-    if (!showInfo) html = events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), `<p>${esc(e.text)}</p>`)).join('');
+    if (!showInfo) html = events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), e.text ? `<p>${esc(e.text)}</p>` : '')).join('');
     const keep = list.scrollTop;
     list.innerHTML = html || '<div class="adr-empty">No notifications</div>';
     list.scrollTop = keep;
@@ -190,7 +190,7 @@
 
   /* what feeds the notifications */
   document.addEventListener('click', e => {
-    if (e.target.closest('[data-theme-choice]')) setTimeout(() => push('theme', 'fa-palette', 'Theme changed', 'Theme: ' + themeName()), 0);
+    if (e.target.closest('[data-theme-choice]')) setTimeout(() => push('theme', 'fa-palette', 'Theme: ' + themeName(), ''), 0);
     const d = e.target.closest('a[download]');
     if (d) push('resume', 'fa-download', 'Resume downloaded', (d.getAttribute('href') || '').split('/').pop() || 'resume.pdf');
   }, true);
@@ -199,7 +199,7 @@
     if (seen.has(s)) return; seen.add(s);
     new MutationObserver(() => {
       const t = txt(s);
-      if (/copied/i.test(t) && !/could not/i.test(t)) push(/phone/i.test(t) ? 'phone' : 'email', /phone/i.test(t) ? 'fa-phone' : 'fa-envelope', /phone/i.test(t) ? 'Phone number copied' : 'Email copied', t);
+      if (/copied/i.test(t) && !/could not/i.test(t)) push(/phone/i.test(t) ? 'phone' : 'email', /phone/i.test(t) ? 'fa-phone' : 'fa-envelope', /phone/i.test(t) ? 'Phone number copied' : 'Email copied', '');
     }).observe(s, { childList: true, characterData: true, subtree: true });
   });
 
@@ -317,7 +317,10 @@
   const XS = 60, XB = 100;                            // close target size + distance from the bottom
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const vw = () => window.innerWidth, vh = () => window.innerHeight;
+  const STEP = 6, STEPY = 5, MAXSTEP = 3;            // stacked chat heads: how far each one peeks out behind the front one
   const recs = new Map();                             // window id -> record
+  const stack = { side: 'r', y: 150 };                // where the stack of floating heads sits (edge + height)
+  let seq = 0;                                        // collapse order: newest head is on top
   let host, xt, plus;
 
   const build = () => {
@@ -332,33 +335,36 @@
   const active = () => { for (const r of recs.values()) if (!r.collapsed && r.el.isConnected) return r; return null; };
 
   /* ───────── layout: bubble row while a sheet is open, floating chat heads otherwise ───────── */
-  const freeY = side => {
-    const ys = [...recs.values()].filter(r => r.placed && r.side === side).map(r => r.y);
-    let y = 150;
-    while (ys.some(v => Math.abs(v - y) < S + 8) && y < vh() - S - BOTTOM) y += S + 10;
-    return y;
-  };
   const layout = () => {
     const act = mq.matches ? active() : null, list = [...recs.values()].filter(r => r.bub);
     host.classList.toggle('row', !!act);
+    document.documentElement.classList.toggle('adr-sheet-chat', !!act && act.kind === 'chat');
     if (act) {
       const showPlus = !recs.has('portfolio'), n = list.length + (showPlus ? 1 : 0), x0 = Math.round((vw() - (n * R + (n - 1) * G)) / 2);
       list.forEach((r, i) => {
         r.tx = x0 + i * (R + G); r.ty = ROWTOP; r.ts = R;
         const b = r.bub;
         b.classList.add('show', 'inrow'); b.classList.toggle('active', r === act);
+        b.style.zIndex = ''; b.style.filter = ''; b.style.setProperty('--sc', '1');
         b.style.left = r.tx + 'px'; b.style.top = r.ty + 'px';
       });
       plus.style.left = (x0 + list.length * (R + G)) + 'px'; plus.style.top = ROWTOP + 'px';
       plus.classList.toggle('show', showPlus); plus.classList.add('inrow');
     } else {
       plus.classList.remove('show', 'inrow');
-      list.forEach(r => {
-        if (!r.placed) { r.y = freeY(r.side); r.placed = true; }
-        r.ts = S; r.tx = r.side === 'l' ? M : vw() - S - M; r.ty = clamp(r.y, TOP, vh() - S - BOTTOM);
-        const b = r.bub;
-        b.classList.remove('inrow', 'active'); b.classList.toggle('show', r.collapsed);
-        b.classList.toggle('l', r.side === 'l'); b.classList.toggle('r', r.side === 'r');
+      /* floating: every head sits on top of the others in ONE stack on a screen edge, newest in front */
+      const col = list.filter(r => r.collapsed).sort((a, b) => b.seq - a.seq);
+      list.forEach(r => { if (!r.collapsed) r.bub.classList.remove('show', 'inrow', 'active'); });
+      const baseY = clamp(stack.y, TOP, vh() - S - BOTTOM - MAXSTEP * STEPY);
+      col.forEach((r, i) => {
+        const k = Math.min(i, MAXSTEP), b = r.bub;
+        r.step = k; r.ts = S;
+        r.tx = stack.side === 'l' ? M - k * STEP : vw() - S - M + k * STEP;   // behind heads slide toward the screen edge, not the middle
+        r.ty = baseY + k * STEPY;
+        b.classList.remove('inrow', 'active'); b.classList.add('show');
+        b.classList.toggle('l', stack.side === 'l'); b.classList.toggle('r', stack.side === 'r');
+        b.style.zIndex = String(100 - i);
+        b.style.setProperty('--sc', String(1 - k * 0.05)); b.style.filter = k ? 'brightness(' + (1 - k * 0.12) + ')' : '';
         b.style.left = r.tx + 'px'; b.style.top = r.ty + 'px';
       });
     }
@@ -368,8 +374,18 @@
   const fit = rec => {
     const el = rec.el;
     if (!mq.matches || !el.isConnected) return;
-    const avail = Math.max(240, vh() - PANEL_BOTTOM - PANEL_TOP);
-    let top = PANEL_TOP, h = avail;
+    const chat = rec.kind === 'chat', topY = PANEL_TOP;
+    let avail = Math.max(240, vh() - PANEL_BOTTOM - PANEL_TOP);
+    if (chat) {                                          // same left edge + width as the other sheets (read from an open window)
+      const w = document.querySelector('.wm-window.adr-sheet');
+      if (w && w.offsetWidth > 100) { el.style.setProperty('--adr-left', w.offsetLeft + 'px'); el.style.setProperty('--adr-w', w.offsetWidth + 'px'); }
+    }
+    const ae = document.activeElement;
+    if (chat && ae && el.contains(ae) && /^(input|textarea)$/i.test(ae.tagName)) {   // keyboard is up: use the visible area
+      const vv = window.visualViewport, bottom = vv ? vv.height + vv.offsetTop : vh();
+      if (bottom < vh() - 80) avail = Math.min(avail, Math.max(160, bottom - 8 - topY));   // a real keyboard only: never taller than the normal sheet
+    }
+    let top = topY, h = avail;
     if (el.classList.contains('is-lite')) {            // certificate: hugs the image, centred in the free space
       const h0 = parseFloat(el.style.height) || avail;
       h = Math.min(h0, avail); top = Math.round(PANEL_TOP + (avail - h) / 2);
@@ -381,11 +397,12 @@
   /* ───────── collapse / expand ───────── */
   const collapse = (rec, instant) => {
     if (rec.collapsed || !mq.matches || !rec.el.isConnected) return;
-    rec.collapsed = true;
+    rec.collapsed = true; rec.seq = ++seq;
     layout();
     const el = rec.el, r = el.getBoundingClientRect();
     const fin = a => {
       el.classList.add('adr-bubbled'); el.classList.remove('is-focused'); el.style.transformOrigin = '';
+      if (document.activeElement && el.contains(document.activeElement)) document.activeElement.blur();
       if (a) a.cancel();
       if (!active()) {                                  // floating again: show the name for a moment
         rec.bub.classList.add('tipon');
@@ -405,7 +422,7 @@
     recs.forEach(o => { if (o !== rec && !o.collapsed && mq.matches) collapse(o); });   // one open sheet at a time
     layout(); fit(rec);
     const el = rec.el;
-    el.classList.remove('adr-bubbled');
+    el.classList.remove('adr-bubbled'); rec.bub.classList.remove('unread');
     el.dispatchEvent(new Event('pointerdown'));         // app.js focuses a window on pointerdown: raises it above the others
     if (instant || still()) return;
     const r = el.getBoundingClientRect();
@@ -417,7 +434,7 @@
 
   const dismiss = rec => {                              // dropped on the X: the bubble shrinks away, the window closes
     rec.bub.classList.add('dying');
-    setTimeout(() => { const c = rec.el.querySelector('.wm-close'); if (c) c.click(); }, 180);
+    setTimeout(() => { if (rec.close) rec.close(); else { const c = rec.el.querySelector('.wm-close'); if (c) c.click(); } }, 180);
   };
 
   /* ───────── a bubble ───────── */
@@ -425,7 +442,7 @@
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'adr-bub'; b.dataset.kind = rec.kind;
     b.setAttribute('aria-label', rec.title);
-    b.innerHTML = '<i class="' + rec.icon + '" aria-hidden="true"></i><span class="tip"></span>';
+    b.innerHTML = (rec.iconHTML || '<i class="' + rec.icon + '" aria-hidden="true"></i>') + '<span class="tip"></span>';
     b.querySelector('.tip').textContent = rec.title;
     host.insertBefore(b, plus); rec.bub = b;
 
@@ -448,6 +465,11 @@
       xt.classList.toggle('near', d.near);
       if (d.near) { x = tx - sz / 2; y = ty - sz / 2; } // magnet
       b.style.left = x + 'px'; b.style.top = y + 'px';
+      if (!d.row) recs.forEach(o => {                   // the heads behind follow, keeping their stacked offsets
+        if (o === rec || !o.collapsed || !o.bub) return;
+        o.bub.style.left = clamp(x + (o.tx - rec.tx), -24, vw() - S + 24) + 'px';
+        o.bub.style.top = clamp(y + (o.ty - rec.ty), 0, vh() - S) + 'px';
+      });
     });
     const up = (e, cancelled) => {
       if (!d || e.pointerId !== d.id) return;
@@ -455,9 +477,9 @@
       b.classList.remove('drag'); xt.classList.remove('show', 'near');
       if (!dd.moved) { if (!cancelled) (rec.collapsed ? expand(rec) : collapse(rec)); return; }   // tap: open, or fold the open one away
       if (dd.near && !cancelled) { dismiss(rec); return; }
-      if (!dd.row) {                                    // floating: snap to the nearest edge
-        rec.side = b.offsetLeft + S / 2 < vw() / 2 ? 'l' : 'r';
-        rec.y = clamp(b.offsetTop, TOP, vh() - S - BOTTOM); rec.placed = true;
+      if (!dd.row) {                                    // floating: the whole stack snaps to the nearest edge
+        stack.side = b.offsetLeft + S / 2 < vw() / 2 ? 'l' : 'r';
+        stack.y = clamp(b.offsetTop - (rec.step || 0) * STEPY, TOP, vh() - S - BOTTOM);
       }
       layout();                                         // in the row: spring back into place
     };
@@ -466,29 +488,93 @@
     b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); rec.collapsed ? expand(rec) : collapse(rec); } });
   };
 
-  /* ───────── decorate project / certificate windows ───────── */
-  const setup = el => {
-    const id = el.getAttribute('data-wm-app');
-    if (!id || !KINDS.test(id) || recs.has(id)) return;
-    const ic = el.querySelector('.wm-title i');
-    const rec = {
-      id, el, kind: id.split(':')[0], collapsed: false, placed: false, side: 'r', y: 0, bub: null, tx: 0, ty: 0, ts: R,
-      icon: ic ? ic.className : 'fa-solid fa-window-maximize', title: el.getAttribute('aria-label') || id
+  /* ───────── resume sheet: one continuous scroll, chips jump to a section, name joins the summary ───────── */
+  const resumeSheet = el => {
+    let lock = 0;
+    const views = () => [...el.querySelectorAll('.rv-view')];
+    const mark = name => {
+      el.querySelectorAll('.rv-item').forEach(it => {
+        const on = it.dataset.view === name;
+        if (it.getAttribute('aria-selected') === String(on)) return;
+        it.setAttribute('aria-selected', String(on)); it.tabIndex = on ? 0 : -1;
+        const tree = it.closest('.rv-tree');
+        if (on && tree) tree.scrollTo({ left: tree.scrollLeft + it.getBoundingClientRect().left - tree.getBoundingClientRect().left - (tree.clientWidth - it.offsetWidth) / 2, behavior: still() ? 'auto' : 'smooth' });
+      });
     };
-    recs.set(id, rec);
+    const go = name => {
+      const sc = el.querySelector('.rv-scroll');
+      const run = () => {
+        const v = el.querySelector('#rv-view-' + name);
+        if (!v || !sc) return;
+        lock = Date.now() + 800; mark(name);
+        sc.scrollTo({ top: sc.scrollTop + v.getBoundingClientRect().top - sc.getBoundingClientRect().top - 4, behavior: still() ? 'auto' : 'smooth' });
+      };
+      if (sc && sc.offsetParent === null) {               // PDF view is showing: switch back to the text first
+        const t = el.querySelector('.rv-mode[data-mode="text"]'); if (t) t.click();
+        requestAnimationFrame(run);
+      } else run();
+    };
+    el.addEventListener('click', e => {                   // capture: the viewer's own tab switching is replaced by scrolling
+      if (!mq.matches) return;
+      const it = e.target.closest && e.target.closest('.rv-item');
+      if (!it) return;
+      e.preventDefault(); e.stopPropagation(); go(it.dataset.view);
+    }, true);
+    el.addEventListener('scroll', e => {                  // scroll-spy keeps the highlighted chip in step
+      const sc = e.target;
+      if (!mq.matches || Date.now() < lock || !sc.classList || !sc.classList.contains('rv-scroll')) return;
+      const vs = views(), base = sc.getBoundingClientRect().top + 24;
+      let cur = null;
+      vs.forEach(v => { if (v.getBoundingClientRect().top <= base) cur = v; });
+      if (sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 4) cur = vs[vs.length - 1];
+      if (cur) mark(cur.id.replace('rv-view-', ''));
+    }, true);
+
+    const prep = () => {                                  // idempotent: runs until the viewer's markup is in the window
+      if (!mq.matches) return false;
+      const ng = el.querySelector('.btn-github'); if (ng) ng.remove();                  // no "open in new tab"
+      const box = el.querySelector('.rv-profile > div');
+      if (!box) return false;
+      if (!box.querySelector('.adr-rv-name')) {
+        const t = el.querySelector('.rv-title'), h = document.createElement('h2');
+        h.className = 'rv-h adr-rv-name'; h.textContent = t ? t.textContent.trim() : 'John Paul De Leon';
+        box.insertBefore(h, box.firstChild);
+      }
+      return true;
+    };
+    if (!prep()) {
+      const mo = new MutationObserver(() => { if (prep()) mo.disconnect(); });
+      mo.observe(el, { childList: true, subtree: true });
+    }
+  };
+
+  /* ───────── decorate project / certificate windows ───────── */
+  /* a sheet = any element that gets a bubble: a .wm-window (setup below) or a custom one such as the chat (window.adrBubbles.add) */
+  const register = o => {
+    const el = o.el;
+    if (!o.id || !el || recs.has(o.id)) return recs.get(o.id) || null;
+    const rec = {
+      id: o.id, el, kind: o.kind || o.id.split(':')[0], collapsed: false, seq: 0, step: 0, bub: null, tx: 0, ty: 0, ts: R,
+      icon: o.icon || 'fa-solid fa-window-maximize', iconHTML: o.iconHTML || '', title: o.title || o.id, close: o.close || null
+    };
+    recs.set(o.id, rec);
     el.classList.add('adr-sheet');
     makeBubble(rec);
-    recs.forEach(o => { if (o !== rec && !o.collapsed && mq.matches) collapse(o); });   // opening a new one folds the old one away
+    recs.forEach(x => { if (x !== rec && !x.collapsed && mq.matches) collapse(x); });   // opening a new one folds the old one away
     fit(rec); layout();
 
-    new MutationObserver(() => fit(rec)).observe(el, { attributes: true, attributeFilter: ['style'] });   // app.js resized it
+    if (!o.close) new MutationObserver(() => fit(rec)).observe(el, { attributes: true, attributeFilter: ['style'] });   // app.js resized it
+    else {                                                                                                              // custom sheet: refit when the keyboard comes and goes
+      el.addEventListener('focusin', () => fit(rec));
+      el.addEventListener('focusout', () => setTimeout(() => fit(rec), 80));
+    }
 
     /* swipe the title bar down to fold the sheet into its bubble */
-    const bar = el.querySelector('.wm-titlebar');
+    const bar = o.bar || el.querySelector('.wm-titlebar');
     if (bar) {
       let sy = null;
       const end = () => { sy = null; el.style.translate = ''; };
-      bar.addEventListener('pointerdown', e => { if (mq.matches && !e.target.closest('.wm-btn')) sy = e.clientY; });
+      bar.addEventListener('pointerdown', e => { if (mq.matches && !e.target.closest('.wm-btn,button')) sy = e.clientY; });
       bar.addEventListener('pointermove', e => {
         if (sy == null) return;
         const dy = e.clientY - sy;
@@ -497,6 +583,15 @@
       });
       bar.addEventListener('pointerup', end); bar.addEventListener('pointercancel', end);
     }
+    return rec;
+  };
+
+  const setup = el => {
+    const id = el.getAttribute('data-wm-app');
+    if (!id || !KINDS.test(id) || recs.has(id)) return;
+    const ic = el.querySelector('.wm-title i');
+    const rec = register({ id, el, icon: ic ? ic.className : '', title: el.getAttribute('aria-label') || id });
+    if (rec && rec.kind === 'resume') resumeSheet(el);
   };
 
   const teardown = id => {
@@ -504,12 +599,21 @@
     clearTimeout(rec.tipT);
     if (rec.bub) rec.bub.remove();
     recs.delete(id);
+    rec.el.classList.remove('adr-bubbled');
     layout();
   };
 
   /* ───────── wiring ───────── */
   const start = layer => {
     build();
+    window.adrBubbles = {                               // used by jpt-chat.js (Ask Jampol) to become a chat head too
+      add: register, remove: teardown,
+      has: id => recs.has(id),
+      open: id => { const r = recs.get(id); if (r) expand(r); },
+      isCollapsed: id => { const r = recs.get(id); return !!(r && r.collapsed); },
+      badge: (id, on) => { const r = recs.get(id); if (r && r.bub) r.bub.classList.toggle('unread', !!on); }
+    };
+    document.dispatchEvent(new Event('adr:bubbles'));
     new MutationObserver(list => list.forEach(m => {
       m.addedNodes.forEach(n => { if (n.nodeType === 1 && n.matches('.wm-window')) setup(n); });
       m.removedNodes.forEach(n => { if (n.nodeType === 1 && n.matches('.wm-window')) teardown(n.getAttribute('data-wm-app')); });
@@ -524,6 +628,7 @@
     }, true);
 
     window.addEventListener('resize', () => { recs.forEach(fit); layout(); });
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', () => recs.forEach(fit));
     const sync = () => { if (!mq.matches) recs.forEach(r => expand(r, true)); layout(); };   // back on desktop: every window opens normally
     mq.addEventListener ? mq.addEventListener('change', sync) : mq.addListener(sync);
   };

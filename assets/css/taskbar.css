@@ -41,6 +41,72 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   color: var(--accent-highlight);
 }
 
+/* ----- Ask Jampol search bar (left group, after the social links) ----- */
+.taskbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 190px;
+  min-width: 120px;
+  height: 26px;
+  margin-left: 4px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--default-color), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 86%);
+  color: var(--default-color);
+  cursor: text;
+  transition: flex-basis 0.2s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+.taskbar-search > i { flex: none; font-size: 12px; color: var(--accent-color); }
+.taskbar-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+}
+.taskbar-search input::placeholder { color: inherit; opacity: 0.6; }
+.taskbar-send {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-right: -6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent-highlight);
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.taskbar-send i { font-size: 11px; color: inherit; }
+.taskbar-send:disabled { opacity: 0.4; cursor: default; }
+.taskbar-send:not(:disabled):hover,
+.taskbar-send:not(:disabled):focus-visible {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 78%);
+  outline: none;
+}
+.taskbar-search:focus-within,
+.taskbar-search.is-open {
+  flex-basis: 260px;
+  border-color: var(--accent-highlight);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+}
+
+/* narrow desktops: the social links give up their room (they live in the Socials app and the Menu) */
+@media (max-width: 1024px) {
+  .top-panel.taskbar .panel-connect { display: none; }
+  .taskbar-search { flex-basis: 160px; }
+}
+
 /* ----- open apps (center) ----- */
 .top-panel.taskbar .panel-center {
   display: flex !important;
@@ -133,9 +199,12 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   .taskbar-item.is-active::after { left: 8px; right: 8px; }
   /* room for Menu + apps + applets + clock: the social links live in the Socials app and the Menu */
   .top-panel.taskbar .panel-connect { display: none; }
+  /* the phone layout has its own bottom search bar */
+  .taskbar-search { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .taskbar-search { transition: none; }
   .taskbar-item { transition: none; }
 }
 
