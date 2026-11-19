@@ -801,3 +801,11 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-content { grid-row: 2; grid-column: 2; min-width: 0; }
   .pi-scroll { padding: 1.6em 2em 3em; }
 }
+
+/*--------------------------------------------------------------
+# Inside a window (phone sheet): the window's title bar already shows
+# "Name: short description", so the page's own title row is dropped.
+--------------------------------------------------------------*/
+@media (max-width: 760px) {
+  html.wm-titled .pi-head { display: none; }
+}

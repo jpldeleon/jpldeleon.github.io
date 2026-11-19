@@ -34,19 +34,19 @@
      `url` is the project page. Links on the site pointing to this url are
      intercepted automatically, so existing sidebar/portfolio links just work. */
   const PROJECTS = [
-    { id: 'auditkit', title: 'AuditKit', sub: 'API Capstone Project',
+    { id: 'auditkit', title: 'AuditKit', barTitle: 'AuditKit: Simple Technical SEO Tool', sub: 'API Capstone Project',
       icon: 'fa-solid fa-magnifying-glass-chart', url: 'auditkit/index.html' },
-    { id: 'nothingtechblob', title: 'NothingTechBlob',
+    { id: 'nothingtechblob', title: 'NothingTechBlob', barTitle: 'NothingTechBlob: Tech Blog with SEO',
       icon: 'fa-solid fa-mobile-screen', url: 'nothingtechblob/' },
-    { id: 'badlands-ink', title: 'Badlands Ink',
+    { id: 'badlands-ink', title: 'Badlands Ink', barTitle: 'Badlands Ink: WordPress Site with SEO',
       icon: 'fa-solid fa-pen-nib', url: 'badlands-ink/' },
-    { id: 'johnoffthewall', title: 'John Off the Wall',
+    { id: 'johnoffthewall', title: 'John Off the Wall', barTitle: 'John Off the Wall: Personal Website',
       icon: 'fa-solid fa-fire-flame-curved', url: 'johnoffthewall/' },
-    { id: 'pixellog', title: 'PixelLog',
+    { id: 'pixellog', title: 'PixelLog', barTitle: 'PixelLog: Nostalgia-Themed Blog App',
       icon: 'fa-brands fa-mintbit', url: 'pixellog/' },
-    { id: 'jamporudex', title: 'JamporuDEX',
+    { id: 'jamporudex', title: 'JamporuDEX', barTitle: 'JamporuDEX: Anime and Manga Tracker',
       icon: 'fa-brands fa-leanpub', url: 'jamporudex/' },
-    { id: 'route196', title: 'Route 196',
+    { id: 'route196', title: 'Route 196', barTitle: 'Route 196: Single-Page Site Inspector',
       icon: 'fa-solid fa-shield', url: 'route196/' }
   ];
 
@@ -279,9 +279,9 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     '<path d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875"/>' +
     '</svg><div class="boot-bar"><i></i></div>';
 
-  function bootSequence(label) {
+  function bootSequence(label, fast) {
     const mobile = isMobile(), still = reduceMotion();
-    const ms = still ? 1200 : (mobile ? 3600 : 3400);
+    const ms = still ? 1200 : fast ? 2200 : (mobile ? 3600 : 3400);   // fast = first load: a shorter boot
     const box = document.createElement('div');
     box.id = 'boot-screen';
     box.className = 'boot-screen ' + (mobile ? 'boot-lineage' : 'boot-mint');
@@ -297,7 +297,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     return {
       covered: wait(still ? 0 : 350),                          // fully faded in
       done: async (hold) => {
-        await Promise.all([wait(ms), hold]);                    // at least the boot time, and not before the page has loaded
+        await Promise.all([wait(ms), hold ? Promise.race([hold, wait(ms + 800)]) : hold]);   // never wait on slow images for more than 0.8s past the boot time                    // at least the boot time, and not before the page has loaded
         box.classList.remove('is-on');
         await wait(still ? 0 : 450);
         box.remove();
@@ -425,7 +425,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       '</header>' +
       '<div class="wm-body"></div>' +
       (def.lite ? '' : HANDLES.map(d => '<span class="wm-resize" data-dir="' + d + '" aria-hidden="true"></span>').join(''));
-    root.querySelector('.wm-title span').textContent = def.title;
+    root.querySelector('.wm-title span').textContent = def.barTitle || def.title;   // project windows: "Name: short description"
     if (def.lite) root.classList.add('is-lite');   // close-only window: fixed position and size
 
     const w = {
@@ -589,6 +589,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
             s.textContent = EMBED_CSS;
             d.head.appendChild(s);
             d.documentElement.classList.add('wm-embedded');
+            if (w.el && w.el.classList && w.el.classList.contains('wm-window')) d.documentElement.classList.add('wm-titled');   // the window's title bar shows the project title
             syncTheme(d);
             bindShots(d, w);
           }
@@ -1445,9 +1446,10 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     /* First load: wallpaper alone for a moment, then hero + widgets fade in (no window opens by itself).
        A deep-linked window keeps the focus. */
     (async () => {
-      const bootScr = bootSequence('Starting');    // same boot animation as Restart: LineageOS on phones, Linux Mint on desktop
+      const bootScr = bootSequence('Starting', true);    // same boot animation as Restart: LineageOS on phones, Linux Mint on desktop
       const loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise(r => window.addEventListener('load', r, { once: true }));
       await bootScr.done(loaded);
+      document.dispatchEvent(new CustomEvent('desktop:welcome'));   // first load: the welcome sound plays as the boot screen lifts, not after the wallpaper pause
       await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the Menu
       document.dispatchEvent(new CustomEvent('desktop:booted'));
     })();

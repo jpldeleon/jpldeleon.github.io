@@ -203,7 +203,7 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .wm-window.adr-sheet:not(.is-focused)::after{display:none!important}
 .wm-window.adr-sheet .wm-titlebar{min-height:54px;padding:6px 20px;border:0!important;box-shadow:none!important;opacity:1!important;
   background:color-mix(in srgb,var(--accent-highlight) 30%,var(--background-color))!important}
-.wm-window.adr-sheet .wm-title{display:flex;align-items:center;font-size:14px;font-weight:700;opacity:1}
+.wm-window.adr-sheet .wm-title{display:flex;align-items:center;font-size:13px;font-weight:700;opacity:1}
 .wm-window.adr-sheet .wm-title i{display:none}
 .wm-window.adr-sheet .wm-title span{overflow:hidden;text-overflow:ellipsis}
 .wm-window.adr-sheet .wm-min,.wm-window.adr-sheet .wm-max,.wm-window.adr-sheet .wm-close{display:none!important}

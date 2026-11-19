@@ -191,7 +191,7 @@
 
   let welcomed = false;
   document.addEventListener('desktop:restart', () => { welcomed = false; });
-  document.addEventListener('desktop:booted', () => {
+  const welcome = () => {
     if (welcomed) return;                              // app.js can announce the boot more than once per load
     welcomed = true;
     const c = audio();
@@ -199,9 +199,10 @@
     const t0 = Date.now();
     let played = false;
     const late = () => { if (played || Date.now() - t0 > 20000) return; played = true; playSound('welcome'); };
-    document.addEventListener('pointerdown', late, { once: true, capture: true });
-    document.addEventListener('keydown', late, { once: true, capture: true });
-  });
+    ['pointerdown', 'touchstart', 'keydown'].forEach(ev => document.addEventListener(ev, late, { once: true, capture: true }));
+  };
+  document.addEventListener('desktop:welcome', welcome);   // first load: fired as soon as the boot screen lifts
+  document.addEventListener('desktop:booted', welcome);    // restart: fired once the desktop is back
 
   /* ===================== card above the bell =====================
    * Desktop only (the phone layout has its own shade + heads-up banner, see android.js). A small rounded card
