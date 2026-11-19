@@ -1,0 +1,388 @@
+/*--------------------------------------------------------------
+# Taskbar: the former top panel, now along the bottom edge.
+# Load LAST (after panel-applets.css). Same look as before: this file
+# only moves the bar, flips its popovers upward, and styles the
+# open-app buttons. Colours come from the theme variables, so every
+# theme follows automatically.
+--------------------------------------------------------------*/
+
+/* ----- the bar: same panel, pinned to the bottom instead of the top ----- */
+.top-panel.taskbar {
+  top: auto !important;
+  bottom: 8px !important;
+}
+
+@supports (padding: max(0px)) {
+  .top-panel.taskbar { bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important; }
+}
+
+/* ----- popovers open upward, with the same 8px gap the downward ones had ----- */
+.top-panel.taskbar .panel-popover,
+.top-panel.taskbar .panel-dropdown {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform-origin: bottom right;
+}
+
+html body .top-panel.taskbar .panel-popover[hidden] {
+  transform: translateY(22px);
+}
+
+/* ----- Menu button (left end): same look as the other panel buttons ----- */
+.taskbar-menu.active,
+.taskbar-menu[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+}
+
+/* ----- Ask Jampol search bar (left group, after the social links) ----- */
+.taskbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 190px;
+  min-width: 120px;
+  height: 26px;
+  margin-left: 4px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--default-color), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 86%);
+  color: var(--default-color);
+  cursor: text;
+  transition: flex-basis 0.2s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+.taskbar-search > i { flex: none; font-size: 12px; color: var(--accent-color); }
+.taskbar-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+}
+.taskbar-search input::placeholder { color: inherit; opacity: 0.6; }
+.taskbar-send {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-right: -6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent-highlight);
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.taskbar-send i { font-size: 11px; color: inherit; }
+.taskbar-send:disabled { opacity: 0.4; cursor: default; }
+.taskbar-send:not(:disabled):hover,
+.taskbar-send:not(:disabled):focus-visible {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 78%);
+  outline: none;
+}
+.taskbar-search:focus-within,
+.taskbar-search.is-open {
+  flex-basis: 260px;
+  border-color: var(--accent-highlight);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 88%);
+}
+
+/* narrow desktops: the social links give up their room (they live in the Socials app and the Menu) */
+@media (max-width: 1024px) {
+  .top-panel.taskbar .panel-connect { display: none; }
+  .taskbar-search { flex-basis: 160px; }
+}
+
+/* ----- open apps (center) ----- */
+.top-panel.taskbar .panel-center {
+  display: flex !important;
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
+}
+
+.taskbar-apps {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.taskbar-apps::-webkit-scrollbar { display: none; }
+
+.taskbar-item {
+  position: relative;
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 34px;
+  max-width: 170px;
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--default-color);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.7;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.taskbar-item i { flex: none; color: var(--accent-highlight); pointer-events: none; }
+
+.taskbar-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.taskbar-item:hover,
+.taskbar-item:focus-visible {
+  opacity: 1;
+  background: color-mix(in srgb, var(--default-color), transparent 90%);
+  outline: none;
+}
+
+/* minimized: dimmer than an open window that is just not in front */
+.taskbar-item.is-minimized { opacity: 0.45; }
+.taskbar-item.is-minimized:hover,
+.taskbar-item.is-minimized:focus-visible { opacity: 0.8; }
+
+/* active (the window in front): same highlight as an open applet button, plus an underline */
+.taskbar-item.is-active {
+  opacity: 1;
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+  font-weight: 600;
+}
+.taskbar-item.is-active::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-highlight);
+}
+
+/* ----- phones: icons only, the strip scrolls sideways ----- */
+@media (max-width: 768px) {
+  .taskbar-item { padding: 0 9px; }
+  .taskbar-label { display: none; }
+  .taskbar-item.is-active::after { left: 8px; right: 8px; }
+  /* room for Menu + apps + applets + clock: the social links live in the Socials app and the Menu */
+  .top-panel.taskbar .panel-connect { display: none; }
+  /* the phone layout has its own bottom search bar */
+  .taskbar-search { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taskbar-search { transition: none; }
+  .taskbar-item { transition: none; }
+}
+
+/* Compatibility alias: app.css may still read --dock-space until its dock rules are deleted */
+:root { --dock-space: var(--taskbar-space, 56px); }
+
+/*--------------------------------------------------------------
+# Theme-aware icons
+# Every icon uses --accent-color: the same tint as the Menu (start) button
+# logo and the icons on the right side of the panel (see desktop.css), so
+# all of them follow the active theme together. No glow.
+--------------------------------------------------------------*/
+.top-panel.taskbar .taskbar-item i,
+.top-panel.taskbar .taskbar-item.is-active i,
+.top-panel.taskbar .taskbar-item.is-minimized i {
+  color: var(--accent-color) !important;
+  transition: color 0.15s ease;
+}
+
+/* minimized: same tint, faded by the button's existing opacity */
+
+/* Active indicator: a small round dot under the icon (was a 2px bar),
+   same tint as the icon. !important on position because index.html's inline
+   <style> sets left/right for the old bar and loads after this file. */
+.top-panel.taskbar .taskbar-item.is-active::after {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+/* Open windows: title-bar icon, same tint; slightly faded when not focused */
+.wm-window .wm-title i {
+  color: color-mix(in srgb, var(--accent-color), transparent 35%);
+  transition: color 0.15s ease;
+}
+.wm-window.is-focused .wm-title i { color: var(--accent-color); }
+
+@media (prefers-reduced-motion: reduce) {
+  .top-panel.taskbar .taskbar-item i,
+  .wm-window .wm-title i { transition: none; }
+}
+/*--------------------------------------------------------------
+# Notification pills (desktop)
+# notifications.js drops a pill into .taskbar-pills whenever something
+# happens (theme changed, copied, resume, outbound link). They float
+# just above the taskbar, centred like a Linux Mint notification.
+# Every colour is a theme variable, so all five themes follow.
+--------------------------------------------------------------*/
+.taskbar-pills {
+  position: fixed;
+  right: var(--pill-right, 12px);               /* notifications.js lines these up with the bell */
+  bottom: var(--pill-bottom, calc(var(--taskbar-space, 56px) + 6px));
+  z-index: 5200;                       /* above the taskbar (5001) and its popovers */
+  display: flex;
+  flex-direction: column-reverse;      /* newest sits closest to the bell */
+  align-items: flex-end;
+  gap: 8px;
+  padding-bottom: 7px;                 /* room for the caret */
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  pointer-events: none;                /* only the pills themselves take clicks */
+}
+.taskbar-pills:empty { display: none; }
+/* little caret pointing down at the bell */
+.taskbar-pills::after {
+  content: '';
+  position: absolute;
+  right: var(--pill-caret, 24px);
+  bottom: 0;
+  width: 9px;
+  height: 9px;
+  transform: translateY(-1px) rotate(45deg);
+  background: color-mix(in srgb, var(--surface-color), var(--background-color) 10%);
+  border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  margin-bottom: 2px;
+}
+
+.taskbar-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 300px;                         /* every card is the same size */
+  max-width: calc(100vw - 16px);
+  height: 52px;
+  padding: 0 10px 0 14px;
+  border-radius: 12px;                  /* material card: soft rounded rectangle */
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface-color), var(--background-color) 10%);
+  color: var(--default-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, .30),
+    0 8px 24px rgba(0, 0, 0, .38);       /* elevation */
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  pointer-events: auto;
+  animation: taskbar-pill-in .26s cubic-bezier(.2, .8, .3, 1) both;
+  -webkit-tap-highlight-color: transparent;
+}
+.taskbar-pill.is-leaving { animation: taskbar-pill-out .18s ease-in both; pointer-events: none; }
+
+.taskbar-pill-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  color: var(--accent-highlight);
+  font-size: 15px;
+}
+.taskbar-pill-icon i { color: inherit; }
+
+.taskbar-pill-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.taskbar-pill-x {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.taskbar-pill-x:hover,
+.taskbar-pill-x:focus-visible {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 78%);
+  color: var(--accent-highlight);
+  outline: none;
+}
+
+/* thin countdown line along the bottom edge; hovering the pill pauses it */
+.taskbar-pill-timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent-highlight);
+  opacity: .85;
+  transform-origin: left center;
+  animation: taskbar-pill-timer linear both;
+}
+.taskbar-pill.is-paused .taskbar-pill-timer { animation-play-state: paused; }
+
+@keyframes taskbar-pill-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes taskbar-pill-out {
+  to { opacity: 0; transform: translateY(6px); }
+}
+@keyframes taskbar-pill-timer {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* phones use the Android shade + heads-up banner instead */
+@media (max-width: 768px) {
+  .taskbar-pills { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taskbar-pill,
+  .taskbar-pill.is-leaving { animation: none; }
+  .taskbar-pill-timer { animation: none; display: none; }
+}

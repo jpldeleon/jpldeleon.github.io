@@ -9,7 +9,13 @@
  *   phone    the phone copy button copied (main.js fires "copy:result")
  *   email    the email copy button copied
  *   resume   the resume PDF download link was clicked
- *   link     an external (other-origin) http(s) link was clicked
+ *   link     an external (other-origin) http(s) link was clicked ("View site", project links, ...)
+ *   social   an external link to GitHub / LinkedIn / Upwork / GoLance was clicked
+ *   project  a project was opened (card, taskbar menu, dock)
+ *   restart  the desktop was restarted
+ *
+ * Every notification is also announced to other scripts with a "notif:added" event (android.js shows it
+ * in the phone shade), so the phone layout gets the same events as the desktop.
  *
  * Every new notification also pops up as a pill above the taskbar (desktop only; see PILL below),
  * shakes the bell and plays a chime (mute button in the popover header);
@@ -29,7 +35,7 @@
 
   const STORE_KEY = 'notif-center-v1';
   const MAX_ITEMS = 50;
-  const TYPES = { theme: 1, phone: 1, email: 1, resume: 1, link: 1 };
+  const TYPES = { theme: 1, phone: 1, email: 1, resume: 1, link: 1, social: 1, project: 1, restart: 1 };
   const THEME_NAMES = {
     everforest: 'Everforest', aurora: 'Aurora', gruvbox: 'Gruvbox',
     monokai: 'Monokai Pro', draculapro: 'Dracula Pro'
@@ -182,6 +188,7 @@
      after a restart too. If the browser still blocks audio (no click yet on a fresh load), the welcome
      sound plays on the first click or key press within 20 seconds. */
   document.addEventListener('desktop:restart', () => playSound('exit'));
+  document.addEventListener('desktop:restart', () => add('restart', 'Restarting desktop', 'restart', { silent: true }));
 
   let welcomed = false;
   document.addEventListener('desktop:restart', () => { welcomed = false; });
@@ -206,7 +213,8 @@
   const PILL_MS = 4200;
   const PILL_MAX = 3;
   const PILL_ICONS = {
-    theme: 'fa-palette', phone: 'fa-phone', email: 'fa-envelope', resume: 'fa-download', link: 'fa-arrow-up-right-from-square'
+    theme: 'fa-palette', phone: 'fa-phone', email: 'fa-envelope', resume: 'fa-download',
+    link: 'fa-arrow-up-right-from-square', social: 'fa-share-nodes', project: 'fa-window-maximize', restart: 'fa-rotate-right'
   };
   const phoneLayout = window.matchMedia ? matchMedia('(max-width: 768px)') : { matches: false };
   let pillHost = null;
@@ -289,7 +297,7 @@
   let seq = items.reduce((m, i) => Math.max(m, i.id), 0);
   let lastKey = '', lastAt = 0;
 
-  function add(type, text, key) {
+  function add(type, text, key, opts) {
     const now = Date.now();
     const k = type + '|' + (key || text);
     if (k === lastKey && now - lastAt < 500) return;  // same event reported twice
@@ -300,7 +308,8 @@
     render();
     announce(text);
     showPill(type, text);
-    alertUser();
+    if (!(opts && opts.silent)) alertUser();            // silent: the event brings its own sound (restart = exit sound)
+    document.dispatchEvent(new CustomEvent('notif:added', { detail: { type: type, text: text, key: key || text } }));
   }
 
   /* ===================== view ===================== */
@@ -441,7 +450,7 @@
   document.addEventListener('click', e => {
     const a = closest(e, 'a[download]');
     if (!a || !/\.pdf([?#]|$)/i.test(a.getAttribute('href') || '')) return;
-    afterDefault(e, () => add('resume', 'Resume download started', 'resume'));
+    add('resume', 'Resume download started', 'resume');   // not afterDefault: the page's own handlers cancel this click and save the file themselves (add() ignores the repeat from their synthetic click)
   }, true);
 
   /* 4) Outbound links: other-origin http(s) only. Internal pages, #anchors, mailto:, tel: and downloads don't count. */
@@ -454,14 +463,28 @@
     if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
     return u.origin === window.location.origin ? null : u;
   }
+  const SOCIAL_HOSTS = [['github.com', 'GitHub'], ['linkedin.com', 'LinkedIn'], ['upwork.com', 'Upwork'], ['golance.com', 'GoLance']];
   function onLinkClick(e) {
     if (e.type === 'auxclick' && e.button !== 1) return;    // middle click = open in new tab
     const u = externalUrl(closest(e, 'a[href]'));
     if (!u) return;
-    afterDefault(e, () => add('link', 'Opened ' + u.hostname.replace(/^www\./, ''), u.href));
+    const host = u.hostname.replace(/^www\./, '');
+    const social = SOCIAL_HOSTS.find(h => host === h[0] || host.endsWith('.' + h[0]));
+    afterDefault(e, () => social ? add('social', 'Opened ' + social[1], u.href) : add('link', 'Opened ' + host, u.href));
   }
   document.addEventListener('click', onLinkClick, true);
   document.addEventListener('auxclick', onLinkClick, true);
+
+  /* 5) Projects: a project card / menu entry / dock icon was clicked (data-app="project:..."). */
+  function projectName(t) {
+    const n = t.querySelector('.pj-name, h4, strong');
+    const raw = (n && n.textContent) || t.getAttribute('aria-label') || t.getAttribute('title') || t.getAttribute('data-app').slice(8);
+    return raw.replace(/\s+/g, ' ').trim();
+  }
+  document.addEventListener('click', e => {
+    const t = closest(e, '[data-app^="project:"]');
+    if (t) add('project', 'Opened project: ' + projectName(t), t.getAttribute('data-app'));
+  }, true);
 
   /* Project windows are same-origin iframes: their external links leave the portfolio too. */
   const hookedDocs = new WeakSet();

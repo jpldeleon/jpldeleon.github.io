@@ -141,7 +141,7 @@
   });
 
   /* ───────── notifications ───────── */
-  const events = [];                       // theme change, email / phone copied, resume downloaded
+  const events = [];                       // everything notifications.js reports
   const info = { hire: false, hobbies: false };   // cards opened from the tiles
   let hobTab = null, shadeOpen = false, headsT = 0;
   const when = ts => { const m = Math.round((Date.now() - ts) / 60000); return m < 1 ? 'now' : m + 'm'; };
@@ -188,17 +188,15 @@
     $('[data-tile="theme"] small', shade).textContent = themeName();
   }
 
-  /* what feeds the notifications */
-  document.addEventListener('click', e => {
-    if (e.target.closest('[data-theme-choice]')) setTimeout(() => push('theme', 'fa-palette', 'Theme: ' + themeName(), ''), 0);
-    const d = e.target.closest('a[download]');
-    if (d) push('resume', 'fa-download', 'Resume downloaded', (d.getAttribute('href') || '').split('/').pop() || 'resume.pdf');
-  }, true);
-  document.addEventListener('copy:result', e => {
+  /* what feeds the notifications: notifications.js reports every event (theme, copy, resume, project, social and
+     outbound links, restart) with "notif:added", so the phone shade shows exactly what the desktop bell does */
+  const N_ICONS = {
+    theme: 'fa-palette', phone: 'fa-phone', email: 'fa-envelope', resume: 'fa-download', link: 'fa-arrow-up-right-from-square',
+    social: 'fa-share-nodes', project: 'fa-window-maximize', restart: 'fa-rotate-right'
+  };
+  document.addEventListener('notif:added', e => {
     const d = e.detail || {};
-    if (!d.success || d.type === 'link') return;
-    const phone = d.type === 'phone';
-    push(phone ? 'phone' : 'email', phone ? 'fa-phone' : 'fa-envelope', phone ? 'Phone number copied' : 'Email copied', '');
+    push(d.type + '|' + d.key, N_ICONS[d.type] || 'fa-bell', d.text, '');
   });
 
   /* ───────── shade: swipe DOWN from the status bar to open, swipe UP inside the shade to close ───────── */
