@@ -12,10 +12,6 @@
   const THEMES = [['everforest', 'Everforest'], ['aurora', 'Aurora'], ['gruvbox', 'Gruvbox'], ['monokai', 'Monokai Pro'], ['draculapro', 'Dracula Pro']];
   const theme = () => document.documentElement.getAttribute('data-theme') || 'everforest';
   const themeName = () => (THEMES.find(t => t[0] === theme()) || THEMES[0])[1];
-  /* light / dark mode: remembered per browser; the colours for it live in android.css (html[data-adr-mode]) */
-  const MODE_KEY = 'adr-mode';
-  const readMode = () => { try { return localStorage.getItem(MODE_KEY) === 'light' ? 'light' : 'dark'; } catch (e) { return 'dark'; } };
-  document.documentElement.setAttribute('data-adr-mode', readMode());
   const PROJECTS = [
     ['auditkit', 'AuditKit', 'fa-solid fa-magnifying-glass-chart'],
     ['nothingtechblob', 'NothingTechBlob', 'fa-solid fa-mobile-screen'],
@@ -54,9 +50,12 @@
         <button class="adr-tile" data-tile="hire" type="button"><span class="ic"><i class="fa-solid fa-user-check"></i></span><b>Why hire me</b></button>
         <button class="adr-tile" data-tile="restart" type="button"><span class="ic"><i class="fa-solid fa-rotate-right"></i></span><b>Restart</b></button>
         <button class="adr-tile" data-tile="hobbies" type="button"><span class="ic"><i class="fa-solid fa-guitar"></i></span><b>Hobbies &amp; Interests</b></button>
-        <button class="adr-tile" data-tile="rotate" type="button"><span class="ic"><i class="fa-solid fa-mobile-screen-button"></i></span><b>Rotate</b><small></small></button>
-        <button class="adr-tile" data-tile="mode" type="button"><span class="ic"><i class="fa-solid fa-moon"></i></span><b>Dark mode</b><small></small></button>
-        <button class="adr-tile adr-wide" data-tile="egg" type="button"><span class="ic"><i class="fa-brands fa-android"></i></span><span class="tx"><b>Android 17</b><small>Easter egg</small></span></button>
+      </div>
+      <div class="adr-tiles adr-social" aria-label="Social links">
+        <a class="adr-tile" href="https://www.linkedin.com/in/jpldl/" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-linkedin-in"></i></span><b>LinkedIn</b></a>
+        <a class="adr-tile" href="https://github.com/jpldeleon" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-github"></i></span><b>GitHub</b></a>
+        <a class="adr-tile" href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-upwork"></i></span><b>Upwork</b></a>
+        <a class="adr-tile" href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" rel="noopener"><span class="ic"><i class="fa-solid fa-circle-nodes"></i></span><b>GoLance</b></a>
       </div>
       <div class="adr-nhead"><span class="adr-lab">Notifications</span><button class="adr-clear" type="button">CLEAR ALL</button></div>
       <div class="adr-list" role="log" aria-live="polite"></div>
@@ -115,9 +114,6 @@
           <button type="button" data-copy="phone"><i class="fa-solid fa-phone"></i>Phone</button>
           <a href="https://github.com/jpldeleon" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i>GitHub</a>
           <a href="assets/johnpauldeleon_resume.pdf" download><i class="fa-solid fa-download"></i>Resume</a>
-          <a href="https://www.linkedin.com/in/jpldl/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i>LinkedIn</a>
-          <a href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" rel="noopener"><i class="fa-brands fa-upwork"></i>Upwork</a>
-          <a href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" rel="noopener"><i class="fa-solid fa-circle-nodes"></i>GoLance</a>
         </div>
       </section>
       <section class="adr-about adr-glass${aboutCollapsed ? ' is-collapsed' : ''}" aria-label="About me">
@@ -349,117 +345,7 @@
     $('.adr-clear', shade).style.display = events.length || cards.length ? '' : 'none';
     $('.adr-nicons', top).innerHTML = events.slice(0, 3).map(e => `<i class="fa-solid ${e.icon}"></i>`).join('');
     $('[data-tile="theme"] small', shade).textContent = themeName();
-    syncTiles();
   }
-
-  /* ───────── quick tiles: dark / light mode + rotation lock ───────── */
-  const rot = { land: false, fs: false, note: '' };   // land: we forced landscape
-  function syncTiles() {
-    const dark = readMode() === 'dark', m = $('[data-tile="mode"]', shade), r = $('[data-tile="rotate"]', shade);
-    if (m) {
-      m.classList.toggle('on', dark); m.setAttribute('aria-pressed', String(dark));
-      $('i', m).className = 'fa-solid ' + (dark ? 'fa-moon' : 'fa-sun');
-      $('b', m).textContent = dark ? 'Dark mode' : 'Light mode';
-      $('small', m).textContent = dark ? 'On' : 'Off';
-    }
-    if (r) {
-      r.classList.toggle('on', rot.land); r.setAttribute('aria-pressed', String(rot.land));
-      $('i', r).className = 'fa-solid ' + (rot.land ? 'fa-mobile-screen' : 'fa-mobile-screen-button');
-      $('small', r).textContent = rot.note || (rot.land ? 'Landscape' : 'Portrait');
-    }
-  }
-  function setMode(m) {
-    document.documentElement.setAttribute('data-adr-mode', m);
-    try { localStorage.setItem(MODE_KEY, m); } catch (e) { /* private mode: the choice just isn't remembered */ }
-    syncTiles();
-  }
-  /* Rotate: tap for landscape, tap again to go back. Browsers only allow an orientation lock in fullscreen,
-     so try the lock directly first and fall back to fullscreen. Not available on iOS Safari or desktop. */
-  async function toggleRotate() {
-    const so = screen.orientation;
-    const say = t => { rot.note = t; syncTiles(); setTimeout(() => { rot.note = ''; syncTiles(); }, 2200); };
-    if (!so || !so.lock) { say('Not supported'); return; }
-    if (rot.land) {
-      try { so.unlock(); } catch (e) {}
-      if (rot.fs && document.fullscreenElement) document.exitFullscreen().catch(() => {});
-      rot.land = rot.fs = false; syncTiles(); return;
-    }
-    try { await so.lock('landscape'); }
-    catch (e) {
-      try { await document.documentElement.requestFullscreen(); rot.fs = true; await so.lock('landscape'); }
-      catch (e2) { if (rot.fs && document.fullscreenElement) document.exitFullscreen().catch(() => {}); rot.fs = false; say('Not available'); return; }
-    }
-    rot.land = true; syncTiles();
-  }
-  document.addEventListener('fullscreenchange', () => { if (rot.fs && !document.fullscreenElement) { rot.land = rot.fs = false; syncTiles(); } });
-
-  /* ───────── Android 17 easter egg: a badge drawn with the current theme's colours (follows light / dark too) ───────── */
-  let egg = null;
-  const scallop = (n, R, A, ph) => {                      // n rounded bumps with pointed valleys, like the badge's petals
-    let d = '';
-    for (let i = 0; i <= 240; i++) {
-      const t = i / 240 * Math.PI * 2, r = R - A + A * Math.pow(Math.abs(Math.cos(n * t / 2 + ph)), .55);
-      d += (i ? 'L' : 'M') + (200 + r * Math.cos(t)).toFixed(1) + ' ' + (200 + r * Math.sin(t)).toFixed(1);
-    }
-    return d + 'Z';
-  };
-  const wavy = (r, k) => {                                // one wobbly ring of the fingerprint
-    let d = '';
-    for (let i = 0; i <= 90; i++) {
-      const t = i / 90 * Math.PI * 2, rr = r + 2.4 * Math.sin(3 * t + k) + 1.6 * Math.sin(5 * t - k * .7);
-      d += (i ? 'L' : 'M') + (200 + rr * Math.cos(t)).toFixed(1) + ' ' + (190 + rr * Math.sin(t)).toFixed(1);
-    }
-    return d + 'Z';
-  };
-  function buildEgg() {
-    const el = document.createElement('div');
-    el.id = 'adr-egg'; el.className = 'adr-layer';
-    el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Android 17 easter egg');
-    let rings = '', stars = '';
-    for (let i = 1; i <= 7; i++) rings += `<path d="${wavy(i * 8.2, i)}"/>`;
-    for (let i = 0; i < 16; i++) {
-      const a = Math.random() * Math.PI * 2, r = 150 + Math.random() * 62, s = .5 + Math.random() * .9;
-      stars += `<g transform="translate(${(200 + r * Math.cos(a)).toFixed(1)} ${(200 + r * Math.sin(a)).toFixed(1)}) scale(${s.toFixed(2)})"><path class="eg-s" style="animation-delay:${(Math.random() * 2.4).toFixed(2)}s" d="M0-7 2-2 7 0 2 2 0 7-2 2-7 0-2-2Z"/></g>`;
-    }
-    el.innerHTML = `
-      <button class="eg-x" type="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-      <svg class="eg-svg" viewBox="-20 -20 440 440" aria-hidden="true">
-        <g class="eg-badge">
-          <g class="eg-hue"><path class="eg-l eg-a" d="${scallop(12, 176, 18, 0)}"/><path class="eg-l eg-b" d="${scallop(12, 160, 15, .26)}"/></g>
-          <circle class="eg-disc" cx="200" cy="200" r="130"/>
-          <circle class="eg-core" cx="200" cy="190" r="60"/>
-          <clipPath id="eg-clip"><circle cx="200" cy="190" r="60"/></clipPath>
-          <g class="eg-print" clip-path="url(#eg-clip)">${rings}</g>
-          <path id="eg-arc" d="M120 190A80 80 0 0 1 280 190" fill="none"/>
-          <text class="eg-t"><textPath href="#eg-arc" startOffset="50%" text-anchor="middle">ANDROID</textPath></text>
-          <text class="eg-n" x="200" y="304" text-anchor="middle">17</text>
-        </g>
-        ${stars}
-      </svg>
-      <p class="eg-hint">Tap the badge. Tap anywhere else to close.</p>`;
-    document.body.appendChild(el);
-    el.addEventListener('click', ev => {
-      if (ev.target.closest('.eg-badge')) {                // a tap spins the badge once more
-        const b = $('.eg-badge', el);
-        if (b.animate && !reduceMotion) b.animate([{ transform: 'rotate(0) scale(1)' }, { transform: 'rotate(360deg) scale(1.12)', offset: .45 }, { transform: 'rotate(720deg) scale(1)' }], { duration: 950, easing: 'cubic-bezier(.2,.8,.2,1)' });
-        try { navigator.vibrate && navigator.vibrate(12); } catch (e) {}
-        return;
-      }
-      closeEgg();
-    });
-    return el;
-  }
-  function openEgg() {
-    setShade(false);
-    egg = egg || buildEgg();
-    egg.classList.add('show');
-    const b = $('.eg-badge', egg);
-    if (b.animate && !reduceMotion) b.animate([{ transform: 'scale(.25) rotate(-120deg)', opacity: 0 }, { transform: 'scale(1.06) rotate(12deg)', opacity: 1, offset: .7 }, { transform: 'scale(1) rotate(0)', opacity: 1 }], { duration: 720, easing: 'cubic-bezier(.2,.8,.2,1)' });
-    try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
-    $('.eg-x', egg).focus({ preventScroll: true });
-  }
-  function closeEgg() { if (egg) egg.classList.remove('show'); }
-  document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && egg && egg.classList.contains('show')) closeEgg(); });
 
   /* what feeds the notifications: notifications.js reports every event (theme, copy, resume, project, social and
      outbound links, restart) with "notif:added", so the phone shade shows exactly what the desktop bell does */
@@ -547,9 +433,6 @@
         render(); if (!already) list.scrollTop = 0;
         t.classList.remove('on'); t.blur();                    // quick tiles are momentary: they never stay lit or focused
       }
-      else if (k === 'mode') { setMode(readMode() === 'dark' ? 'light' : 'dark'); t.blur(); }
-      else if (k === 'rotate') { toggleRotate(); t.blur(); }
-      else if (k === 'egg') { openEgg(); }
       else if (k === 'restart') { setShade(false); const r = $('#panel-restart-btn'); if (r) r.click(); else location.reload(); }
       return;
     }
@@ -593,7 +476,7 @@
  */
 (() => {
   'use strict';
-  const mq = window.matchMedia('(max-width:768px),(max-height:500px) and (orientation:landscape) and (pointer:coarse)');
+  const mq = window.matchMedia('(max-width:768px)');
   const still = () => window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   const KINDS = /^(?:(?:project|cert):.+|resume|portfolio)$/;
   const S = 56, M = 6, TOP = 40, BOTTOM = 130;       // floating chat head: size, edge margin, top limit, space kept for dock + search
