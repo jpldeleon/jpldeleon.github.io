@@ -223,13 +223,16 @@
     [
       `Away from the keyboard, I'm into:`,
       ``,
-      `• {{music}}: alternative, nu metal, emo, punk and metal`,
+      `• {{music}}: {{pop punk}}, {{nu metal}}, {{alternative rock}} and {{opm}}`,
+      `• {{nba}}: favorite players, no favorite team named`,
       `• {{gaming}}: Dota, CS, NBA 2K and more`,
-      `• {{tech hobbies}}: Linux, Android, custom ROMs and local LLMs`,
-      `• {{creative}}: photography, Lightroom and DaVinci Resolve`,
-      `• {{adventures}}: motorcycles, bikes and hiking trails`,
+      `• {{tech hobbies}}: {{linux mint}}, {{android}}, {{open source}} and {{local ai}}`,
+      `• {{seo tools}} and {{web development}}: research, AEO/GEO and building small tools`,
+      `• {{creative}}: {{photography}}, Lightroom and {{davinci resolve}}`,
+      `• {{adventures}}: {{motorcycles}}, {{cars}} and {{travel}}`,
       `• {{dogs}}: Bucky and Loki`,
-      `• {{watchlist}}: sitcoms, Marvel and Ghibli`,
+      `• {{watchlist}}: sitcoms, {{marvel}}, {{john wick}} and {{ghibli}}`,
+      `• {{personality}}: how I'm wired`,
       `• Dreams: {{bucket list}}, {{dream careers}} and {{life goals}}`,
       ``,
       `For even more of me outside work, visit {{johnoffthewall}}.`
@@ -252,7 +255,7 @@
 
   add('hob-creative', ['creative', 'photography', 'photo', 'photos', 'photoshop', 'lightroom', 'davinci', 'resolve', 'video editing', 'graphic design', 'editing'],
     `My creative side shows up in photography, graphic design and video work, with Photoshop, Lightroom and DaVinci Resolve as my go-to tools.`,
-    { w: 2, cmd: ['creative', 'photography'] });
+    { w: 2, cmd: ['creative'] });
 
   add('hob-adventures', ['adventures', 'adventure', 'travel', 'traveling', 'travelling', 'motorcycle', 'motorcycles', 'motorbike', 'cars', 'driving', 'cycling', 'bike', 'hiking', 'nature', 'food trip', 'food trips', 'trips'],
     [
@@ -264,7 +267,7 @@
       ``,
       `Whatever is still unchecked lives on my {{bucket list}}.`
     ],
-    { w: 1.5, cmd: ['adventures', 'travel'] });
+    { w: 1.5, cmd: ['adventures'] });
 
   add('hob-gaming', ['gaming', 'games', 'game', 'gamer', 'dota', 'nba 2k', 'counter-strike', 'cs', 'pubg', 'call of duty', 'left 4 dead', 'need for speed', 'red alert', 'battle realms', 'mat online'],
     [
@@ -326,6 +329,239 @@
       `• A few dream cars and dream motorcycles in the garage`
     ],
     { w: 2.5, cmd: ['life goals', 'personal goals'] });
+
+  /* ---- interests: deep dives (each links back to the hobbies hub) ---- */
+  add('int-linux', ['linux mint', 'mint', 'cinnamon', 'cinnamon desktop', 'desktop themes', 'icon packs', 'icon themes', 'desktop layout', 'terminal commands', 'linux customization', 'customize linux', 'linux themes', 'which distro', 'what linux do you use', 'which linux distro', 'favorite linux distro', 'favourite linux distro', 'linux mint cinnamon', 'customize cinnamon', 'customizing linux', 'linux ricing', 'linux themes and icons', 'do you use linux', 'linux terminal', 'terminal tricks'],
+    [
+      `Linux Mint with the Cinnamon desktop is where I enjoy customizing the most. It feels familiar out of the box, so I can spend my time on the fun part: desktop themes, icon packs, panel layouts and little terminal commands that make things work my way.`,
+      ``,
+      `I like trying different distributions to see how each one feels, but I'm a hobbyist, not a sysadmin. This site's desktop look came from the same itch ({{linux inspiration}}). More tinkering in {{tech hobbies}}.`
+    ],
+    { w: 3, cmd: ['linux mint', 'cinnamon', 'linux customization'] });
+
+  add('int-android', ['android rooting', 'rooting', 'root android', 'magisk', 'bootloader', 'unlock bootloader', 'debloat', 'debloating', 'bloatware', 'lineageos', 'lineage', 'evolution x', 'crdroid', 'derpfest', 'launcher', 'launchers', 'niagara', 'nova launcher', 'lawnchair', 'custom rom', 'custom roms', 'android customization', 'android', 'flash rom', 'optimization', 'do you root', 'do you root your phone', 'custom rom android', 'custom android rom', 'which custom rom', 'favorite custom rom', 'best custom rom', 'android roms', 'android tinkering', 'debloat android', 'android debloating', 'stock android', 'vanilla android', 'pure android', 'near stock android', 'favorite launcher', 'favourite launcher', 'which launcher', 'what launcher', 'niagara launcher', 'evolution-x', 'crdroid rom', 'derpfest rom', 'lineage os', 'android modding', 'android mods', 'flashing roms'],
+    [
+      `Android is my favorite playground. I like rooting, debloating, optimizing and customizing a phone until it feels like mine.`,
+      ``,
+      `• **ROMs I like:** LineageOS, Evolution X, crDroid and Derpfest`,
+      `• **Launchers:** Niagara Launcher and Lawnchair are my kind of clean. Nova Launcher is a classic, though I'm not using it right now`,
+      `• **What I look for:** an easy bootloader unlock and a vanilla, close-to-stock experience`,
+      ``,
+      `It all ties back to free and open-source software ({{open source}}). Which phones catch my eye? See {{phones}}.`
+    ],
+    { w: 3, cmd: ['android', 'custom roms', 'rooting', 'launchers'] });
+
+  add('int-phones', ['phones', 'smartphone', 'smartphones', 'phone brands', 'favorite phone', 'favourite phone', 'favorite phones', 'phone brand', 'phone recommendation', 'nothing phone', 'cmf', 'cmf phone', 'sony', 'sony xperia', 'xperia', 'motorola', 'moto g', 'oneplus', 'google pixel', 'pixel phone', 'pixel phones', 'tech brands', 'favorite brands', 'favorite tech brand', 'which phone', 'favorite phone brand', 'favourite phone brand', 'what phone do you like', 'what phones do you like', 'what phone brands', 'which phone brand', 'phone preferences', 'phone you like', 'nothing phone 2', 'nothing phone 3', 'nothing brand', 'nothing cmf', 'google pixel phone', 'sony phones', 'motorola phones', 'oneplus phones', 'unlockable bootloader', 'easy bootloader unlock', 'what to look for in a phone'],
+    [
+      `My phone radar is tuned to a handful of brands: **Nothing, CMF, Sony, Motorola, OnePlus and Google Pixel**.`,
+      ``,
+      `What they share is what I care about: a clean, near-stock Android feel and, ideally, an easy bootloader unlock so I can tinker later. I'm also budget-conscious, so CMF and Motorola appeal to me for value. Nothing even inspired one of my projects ({{nothingtechblob}}).`,
+      ``,
+      `The software side lives in {{android}}.`
+    ],
+    { w: 3, cmd: ['phones', 'smartphones', 'phone brands'] });
+
+  add('int-foss', ['foss', 'open source', 'open-source', 'free software', 'free and open source', 'open source software', 'open source projects', 'libreoffice', 'firefox', 'brave', 'brave browser', 'vs code', 'vscode', 'visual studio code', 'browser', 'browsers', 'favorite software', 'favorite apps', 'favorite tools', 'software i use', 'do you like open source', 'why open source', 'why foss', 'open source fan', 'open source apps', 'open source tools', 'free and open-source software', 'free open source', 'favorite browser', 'favourite browser', 'which browser', 'what browser do you use', 'office suite', 'libre office', 'what editor do you use', 'code editor', 'favorite code editor', 'what software do you use', 'apps you use'],
+    [
+      `I'm a big fan of free and open-source software. I like being able to see how things work, tweak them and not pay for everything.`,
+      ``,
+      `• **Daily drivers I like:** Firefox, Brave, VS Code, LibreOffice and Linux Mint`,
+      `• **Beyond that:** I enjoy discovering other open-source projects and trying them out`,
+      ``,
+      `The privacy-friendly, budget-friendly angle is a big part of the appeal. See also {{linux mint}} and {{android}}.`
+    ],
+    { w: 3, cmd: ['open source', 'foss', 'firefox'] });
+
+  add('int-localai', ['local ai', 'local llm', 'local llms', 'local models', 'self hosting', 'self-hosting', 'self hosted', 'self-hosted', 'selfhost', 'claude', 'gemini', 'favorite ai', 'favourite ai', 'which ai', 'which ai do you use', 'ai assistants', 'ai chatbots', 'chatgpt claude gemini', 'chatgpt vs claude', 'claude vs chatgpt', 'automation tools', 'which ai tools do you use', 'what ai tools do you use', 'what ai do you use', 'do you use chatgpt claude or gemini', 'claude or chatgpt', 'chatgpt or gemini', 'gemini or claude', 'run ai locally', 'run llms locally', 'local ai models', 'ai at home', 'privacy ai', 'ai privacy', 'self host', 'self-host', 'ai agents', 'automate tasks', 'what do you automate', 'interested in automation'],
+    [
+      `On the AI side I use **ChatGPT, Claude and Gemini** as everyday helpers for research, brainstorming and coding.`,
+      ``,
+      `What really interests me is local AI, self-hosting and automation: running models on my own machine, keeping control of my data and letting software handle the repetitive bits. I'm still learning, so treat me as an enthusiast, not an expert.`,
+      ``,
+      `For my honest skill level see {{ai}}, and for how I code with it see {{ai coding}}.`
+    ],
+    { w: 3, cmd: ['local ai', 'self-hosting'] });
+
+  add('int-seotools', ['seo tools', 'keyword research', 'keywords', 'ga4', 'google analytics', 'analytics', 'website tracking', 'tracking', 'tag manager', 'semrush', 'ahrefs', 'link building tools', 'outreach', 'seo software', 'favorite seo tools', 'seo workflow', 'what seo tools do you use', 'favorite seo tool', 'favourite seo tool', 'seo tool', 'seo tools you use', 'how do you research keywords', 'keyword tools', 'keyword research tools', 'google analytics 4', 'ga 4', 'track website', 'tracking setup', 'website analytics', 'analytics setup', 'how do you track', 'link prospecting tools', 'outreach tools', 'outreach tool', 'email outreach', 'link outreach'],
+    [
+      `I like the research side of SEO: keyword research, link building and outreach, plus the tooling around them.`,
+      ``,
+      `• **Tools:** Screaming Frog, SEMrush, Ahrefs, Search Console and Looker Studio`,
+      `• **Measurement:** GA4 and website tracking, because I like knowing what's actually working`,
+      ``,
+      `My 5+ years of link prospecting and outreach are in {{seo}}, and my audit-minded side is in {{technical audit}}.`
+    ],
+    { w: 2.5, cmd: ['seo tools', 'ga4', 'keyword research'] });
+
+  add('int-aeo', ['aeo', 'geo', 'answer engine optimization', 'answer engine', 'generative engine optimization', 'generative engine', 'ai search', 'ai overviews', 'ai visibility', 'llm seo', 'seo for ai', 'search with ai', 'answer engine optimisation', 'answer engine optimization aeo', 'generative engine optimisation', 'generative engine optimization geo', 'what is geo', 'what is aeo', 'aeo and geo', 'geo and aeo', 'seo in the age of ai', 'future of seo', 'ai search optimization', 'ai search optimisation', 'chatgpt search', 'optimize for ai', 'optimise for ai', 'optimize for chatgpt', 'get cited by ai', 'ai citations', 'zero click', 'ai answers', 'search generative experience', 'sge'],
+    [
+      `AEO (answer engine optimization) and GEO (generative engine optimization) are the topics I'm most curious about right now. Search is shifting toward AI-written answers, and I want to understand how content gets cited in them.`,
+      ``,
+      `I'm exploring it as a learner, with a technical SEO foundation to build on ({{seo}}). It also connects my two interests: {{ai}} and search.`
+    ],
+    { w: 4, cmd: ['aeo', 'geo'] });
+
+  add('int-webdev', ['web development', 'web developer', 'web apps', 'web app', 'web application', 'web applications', 'personal tools', 'build tools', 'html', 'css', 'javascript', 'front end', 'frontend', 'woocommerce hobby', 'building websites', 'build websites', 'do you code', 'do you build websites', 'do you build web apps', 'what do you build', 'what do you like to build', 'build a web app', 'tools you build', 'tools you have built', 'personal web tools', 'small tools', 'web projects', 'web dev', 'webdev', 'frontend development', 'front-end', 'html css js', 'html and css', 'learn web development', 'coding projects', 'coding hobby'],
+    [
+      `I like building small, useful things for the web with HTML, CSS and JavaScript, plus WordPress and WooCommerce when a project calls for them.`,
+      ``,
+      `Mostly it's personal tools and web apps that solve a problem I actually have. I prefer simple, practical builds over anything fancy. See {{projects}} for what I've made and {{wordpress}} for the CMS side.`
+    ],
+    { w: 2.5, cmd: ['web development', 'web apps'] });
+
+  add('int-video', ['video editing', 'video editor', 'video', 'videos', 'davinci resolve', 'davinci', 'resolve', 'wedding video', 'wedding videos', 'wedding', 'personal videos', 'cinematic', 'cinematic edit', 'cinematic edits', 'color grading', 'colour grading', 'music sync', 'music synchronization', 'videography', 'editing videos', 'do you edit videos', 'do you edit video', 'video editing software', 'which video editor', 'what video editor', 'what editor for video', 'editing software', 'da vinci resolve', 'davinci resolve free', 'video projects', 'video editing projects', 'wedding video editing', 'wedding videographer', 'wedding edits', 'color grade', 'colour grade', 'color correction', 'music video', 'music videos', 'beat sync', 'sync music', 'cinematic videos', 'cinematic video', 'video storytelling', 'film editing', 'film editor'],
+    [
+      `Video editing is where my creative side gets to play, and **DaVinci Resolve** is my editor of choice.`,
+      ``,
+      `• **What I make:** wedding videos and personal videos`,
+      `• **What I enjoy most:** cinematic edits, syncing cuts to music and color grading`,
+      `• **Why:** I love telling a story visually, and the beat of a song can turn simple clips into something that feels like a memory`,
+      ``,
+      `Still photos live in {{photography}}.`
+    ],
+    { w: 3, cmd: ['video editing', 'davinci resolve', 'davinci'] });
+
+  add('int-photo', ['photography', 'photographer', 'photo', 'photos', 'photoshop', 'photo editing', 'editing photos', 'travel photography', 'visual storytelling', 'camera', 'lightroom', 'graphic design', 'do you take photos', 'do you take pictures', 'do you do photography', 'photo editing software', 'which photo editor', 'photo editor', 'photography hobby', 'photography gear', 'travel photos', 'travel pictures', 'landscape photography', 'photo storytelling', 'photo editing apps', 'edit photos', 'photoshop skills', 'do you use photoshop', 'adobe photoshop', 'adobe lightroom', 'pictures', 'visual stories'],
+    [
+      `Photography is how I hold on to moments, and I enjoy it most on trips, so travel photography is my favorite flavor.`,
+      ``,
+      `• **Editing:** Lightroom and Photoshop`,
+      `• **What I care about:** visual storytelling, where a single frame says what a paragraph can't`,
+      ``,
+      `Moving pictures are in {{video editing}}, and the trips themselves are in {{travel}}.`
+    ],
+    { w: 3, cmd: ['photography', 'photoshop', 'travel photography'] });
+
+  add('int-moto', ['motorcycle', 'motorcycles', 'motorbike', 'motorbikes', 'motorcycle maintenance', 'motorcycle customization', 'motorcycle mods', 'bike maintenance', 'motorcycle touring', 'motorcycle trip', 'motorcycle trips', 'riding', 'rider', 'ride', 'moto', 'motorcycle road trip', 'do you ride', 'do you ride a motorcycle', 'do you have a motorcycle', 'motorcycle hobby', 'motorcycle rides', 'motorcycle riding', 'motorcycle road trips', 'motorcycle diy', 'diy motorcycle', 'motorcycle repair', 'motorcycle repairs', 'motorcycle modifications', 'modify motorcycle', 'customize motorcycle', 'custom motorcycle', 'touring motorcycle', 'long rides', 'long ride', 'riding trips', 'bikers', 'biker', 'motorcyclist'],
+    [
+      `Motorcycles are my favorite way to travel: road trips, touring and the freedom of the open road.`,
+      ``,
+      `I enjoy the hands-on side too, learning about motorcycle maintenance and customization, since knowing your bike makes every ride more relaxed. I'm a passionate rider and tinkerer, not a professional mechanic.`,
+      ``,
+      `Dream bikes are in {{life goals}}, and four-wheeled interests are in {{cars}}.`
+    ],
+    { w: 3, cmd: ['motorcycles', 'motorcycle'] });
+
+  add('int-cars', ['cars', 'car', 'automotive', 'automotive technology', 'car tech', 'car maintenance', 'car repair', 'diy repair', 'diy repairs', 'diy car repair', 'vehicle', 'vehicles', 'car reliability', 'vehicle reliability', 'car comparison', 'car comparisons', 'vehicle comparison', 'vehicle comparisons', 'which car', 'car buying', 'do you like cars', 'car hobby', 'car enthusiast', 'cars you like', 'favorite car', 'favourite car', 'favorite cars', 'favourite cars', 'car brands', 'car brand', 'car technology', 'automotive tech', 'car comparison reviews', 'car research', 'how do cars work', 'diy car repairs', 'car diy', 'fix cars', 'work on cars', 'car mechanic', 'reliable cars', 'reliable car', 'most reliable car', 'best car for the money', 'car recommendations', 'ev', 'evs', 'electric cars', 'electric vehicles'],
+    [
+      `I like cars from the practical side: how the technology works, what's reliable and which vehicle makes the most sense for the money.`,
+      ``,
+      `• **Research:** comparing vehicles and checking reliability before forming an opinion`,
+      `• **Hands-on:** DIY repairs when they're within my reach`,
+      ``,
+      `It's the same research-first habit as in {{decisions}}. Two-wheeled fun is in {{motorcycles}}.`
+    ],
+    { w: 3, cmd: ['cars', 'automotive'] });
+
+  add('int-travel', ['travel', 'traveling', 'travelling', 'trip', 'trips', 'road trip', 'road trips', 'beach', 'beaches', 'island hopping', 'islands', 'island', 'hiking', 'hike', 'mountain', 'mountains', 'budget travel', 'budget trip', 'budget trips', 'camping trip', 'camping trips', 'go camping', 'food trip', 'food trips', 'vacation', 'where have you traveled', 'favorite destination', 'do you like to travel', 'do you like traveling', 'do you like travelling', 'travel hobby', 'travel style', 'travel plans', 'travel bucket list', 'places you have been', 'places you visited', 'places visited', 'favorite place', 'favourite place', 'favorite places', 'best trip', 'best trips', 'best trip ever', 'beach trip', 'beach trips', 'beach hopping', 'island trip', 'island trips', 'island hop', 'hiking trails', 'hiking trip', 'mountain hike', 'mountain hikes', 'mountain climbing', 'climbing', 'trekking', 'trek', 'budget friendly travel', 'cheap travel', 'travel on a budget', 'how do you travel', 'food travel', 'food tripping', 'foodie', 'eating out', 'weekend trip', 'weekend trips', 'getaway', 'getaways', 'staycation', 'adventure travel'],
+    [
+      `Travel for me is beaches, island hopping, mountain hikes, camping and food trips, ideally done on a budget and on my own schedule.`,
+      ``,
+      `• **How:** road trips, and motorcycle touring when I can ({{motorcycles}})`,
+      `• **Why:** I love scenery, local food and the small unplanned moments, which I try to capture ({{photography}})`,
+      ``,
+      `The bigger dreams are on my {{bucket list}}.`
+    ],
+    { w: 3, cmd: ['travel', 'road trips', 'beaches'] });
+
+  add('int-poppunk', ['pop punk', 'pop-punk', 'poppunk', 'emo', 'emo bands', 'emo music', 'post-hardcore', 'post hardcore', 'sum 41', 'simple plan', 'good charlotte', 'new found glory', 'the offspring', 'offspring', 'fall out boy', 'paramore', 'all-american rejects', 'all american rejects', 'red jumpsuit apparatus', 'boys like girls', 'taking back sunday', 'story of the year', 'dashboard confessional', 'favorite pop punk bands', 'favourite pop punk bands', 'pop punk bands', 'pop punk music', 'emo band', 'emo songs', 'post hardcore bands', 'post-hardcore bands', 'emo phase', 'my chemical romance', 'mcr', 'fob', 'green day or blink', 'blink 182', 'sum41', 'dashboard', 'the used', 'saosin', 'silverstein', 'yellowcard', 'paramore band', 'aar', 'simple plan band', 'pop-punk bands', '2000s music', '2000s bands', '2000s emo', '00s music', 'early 2000s', 'teenage music'],
+    [
+      `Pop punk, emo and post-hardcore are the soundtrack of my comfort zone.`,
+      ``,
+      `• **Pop punk:** Sum 41, Green Day, blink-182, The Offspring, Simple Plan, Good Charlotte, New Found Glory and The All-American Rejects`,
+      `• **Emo and post-hardcore:** My Chemical Romance, Fall Out Boy, Paramore, Taking Back Sunday, The Used, Story of the Year, Saosin, Silverstein and Dashboard Confessional`,
+      `• **Also:** Yellowcard, Boys Like Girls and The Red Jumpsuit Apparatus`,
+      ``,
+      `Big choruses, honest lyrics and a lot of energy. The wider mix is in {{music}}.`
+    ],
+    { w: 3, cmd: ['pop punk', 'emo', 'post-hardcore'] });
+
+  add('int-metal', ['nu metal', 'nu-metal', 'numetal', 'metal bands', 'heavy metal', 'metal music', 'heavier music', 'limp bizkit', 'korn', 'slipknot', 'metallica', 'linkin park hybrid theory', 'do you like metal', 'metal music taste', 'heavy music', 'heavy bands', 'nu metal bands', 'nu metal music', 'nu-metal bands', 'favorite metal band', 'favourite metal band', 'favorite metal bands', 'favourite metal bands', 'metal band', 'metalhead', 'metal head', 'slipknot band', 'korn band', 'limp bizkit band', 'linkin park nu metal', 'hybrid theory', 'rap metal', 'rap rock', 'metal bands you like', 'heavy metal bands'],
+    [
+      `When I want something heavier, I go to nu metal and metal.`,
+      ``,
+      `• **Nu metal:** Linkin Park, Limp Bizkit, Korn and Slipknot`,
+      `• **Metal:** Metallica`,
+      ``,
+      `Linkin Park is the bridge between those and my lighter picks in {{pop punk}}. The full picture is in {{music}}.`
+    ],
+    { w: 3, cmd: ['nu metal', 'metal'] });
+
+  add('int-altrock', ['alternative rock', 'alt rock', 'alt-rock', 'grunge', 'punk rock', 'nirvana', 'red hot chili peppers', 'rhcp', 'chili peppers', 'gorillaz', 'wheatus', 'teenage dirtbag', 'alternative bands', 'alternative music', 'alt bands', 'alt music', 'alternative rock bands', 'alt rock bands', 'punk rock bands', 'punk bands', 'punk music', 'rock bands', 'rock music', 'grunge bands', 'grunge music', '90s rock', '90s alternative', 'red hot chili peppers band', 'chili peppers songs', 'rhcp songs', 'nirvana songs', 'nirvana band', 'gorillaz band', 'wheatus band', 'other favorite bands', 'other favourite bands', 'other favorites', 'more bands'],
+    [
+      `On the alternative and punk rock side, I enjoy Nirvana, Red Hot Chili Peppers, Gorillaz and Wheatus, along with the punk-leaning bands from {{pop punk}}.`,
+      ``,
+      `I like how this style can be raw, catchy or quirky depending on the band. For the full playlist see {{music}}.`
+    ],
+    { w: 3, cmd: ['alternative rock', 'alt rock'] });
+
+  add('int-opm', ['opm', 'filipino bands', 'filipino band', 'filipino music', 'pinoy rock', 'pinoy bands', 'pinoy band', 'pinoy music', 'local bands', 'philippine bands', 'original pilipino music', 'slapshock', 'greyhoundz', 'wolfgang', 'parokya ni edgar', 'parokya', 'kamikazee', 'eraserheads', 'urbandub', 'franco', 'filipino rock', 'filipino rock bands', 'filipino music taste', 'philippine rock', 'philippine music', 'pinoy rock bands', 'pinoy band music', 'opm bands', 'opm rock', 'opm music', 'opm songs', 'pinoy opm', 'local rock', 'local rock bands', 'filipino punk', 'filipino metal', 'pinoy punk', 'pinoy metal', 'pinoy alternative', 'pinoy alt rock', 'parokya ni edgar band', 'kamikazee band', 'eraserheads band', 'urbandub band', 'slapshock band', 'greyhoundz band', 'wolfgang band', 'franco band', 'philippine bands you like', 'bands from the philippines', 'pilipino bands'],
+    [
+      `I'm proudly a fan of Filipino rock, and these bands are staples for me:`,
+      ``,
+      `• **Slapshock, Greyhoundz and Wolfgang** for the heavier, louder side`,
+      `• **Kamikazee, Urbandub and Franco** for the alternative punch`,
+      `• **Parokya ni Edgar and Eraserheads** for the classics and the sing-along energy`,
+      ``,
+      `It's great seeing local bands hold their own next to the international ones in {{music}}.`
+    ],
+    { w: 3, cmd: ['opm', 'filipino bands'] });
+
+  add('int-marvel', ['marvel', 'marvel movies', 'marvel series', 'mcu', 'avengers', 'superhero', 'superheroes', 'superhero movies', 'marvel fan', 'do you like marvel', 'favorite marvel', 'favourite marvel', 'marvel films', 'marvel shows', 'marvel tv', 'marvel cinematic universe', 'mcu movies', 'mcu series', 'mcu fan', 'avengers movies', 'superhero films', 'superhero shows', 'superhero series', 'comic book movies', 'comic movies', 'disney plus marvel'],
+    [
+      `I'm a Marvel fan, both the movies and the series. The shared universe makes everything feel connected, and a good superhero film is easy to rewatch.`,
+      ``,
+      `More of what I watch is in {{watchlist}}.`
+    ],
+    { w: 3, cmd: ['marvel', 'mcu'] });
+
+  add('int-johnwick', ['john wick', 'johnwick', 'keanu', 'keanu reeves', 'action movies', 'action movie', 'action films', 'action film', 'do you like john wick', 'john wick movies', 'john wick films', 'john wick fan', 'john wick series', 'favorite action movie', 'favourite action movie', 'favorite action movies', 'favourite action movies', 'action movie fan', 'action flicks', 'action flick', 'keanu reeves movies', 'continental', 'baba yaga', 'gun fu', 'gun-fu', 'fight choreography'],
+    [
+      `John Wick is my go-to for action. I like the stylish fight choreography and the way the movies build their own underworld with its own rules.`,
+      ``,
+      `For my other picks, see {{watchlist}}.`
+    ],
+    { w: 3, cmd: ['john wick'] });
+
+  add('int-ghibli', ['studio ghibli', 'ghibli', 'miyazaki', 'anime', 'animation', 'animated movies', 'animated films', 'anime movies', 'cartoons', 'do you like ghibli', 'ghibli movies', 'ghibli films', 'ghibli fan', 'studio ghibli movies', 'studio ghibli films', 'favorite ghibli', 'favourite ghibli', 'miyazaki films', 'miyazaki movies', 'hayao miyazaki', 'spirited away', 'totoro', 'my neighbor totoro', 'princess mononoke', 'japanese animation', 'japanese anime', 'do you watch anime', 'anime fan', 'anime shows', 'anime series', 'favorite anime', 'favourite anime', 'animated movie', 'cartoon movies', 'comfort movie', 'comfort movies', 'cozy movies'],
+    [
+      `Studio Ghibli films are my comfort watch. They're calm and beautifully drawn, and they leave room for wonder, which makes a nice change after a day of spreadsheets and audits.`,
+      ``,
+      `More of what I watch is in {{watchlist}}.`
+    ],
+    { w: 3, cmd: ['ghibli', 'anime'] });
+
+  add('int-nba', ['nba', 'basketball', 'michael jordan', 'jordan', 'mj', 'kobe', 'kobe bryant', 'derrick rose', 'rose', 'anthony edwards', 'ant edwards', 'ja morant', 'morant', 'favorite player', 'favourite player', 'favorite nba player', 'favorite basketball player', 'favorite team', 'favourite team', 'nba team', 'nba players', 'do you watch nba', 'nba fan', 'nba player', 'nba stars', 'nba legends', 'favorite nba players', 'favourite nba players', 'favorite nba team', 'favourite nba team', 'who is your favorite nba player', 'who is your favourite nba player', 'who is your favorite player', 'who do you root for', 'who do you support', 'basketball fan', 'do you like basketball', 'do you play basketball', 'basketball player', 'basketball players', 'basketball stars', 'best basketball player', 'goat', 'the goat', 'mj or kobe', 'jordan or kobe', 'kobe or jordan', 'black mamba', 'mamba mentality', 'anthony edwards ant', 'd rose', 'derrick rose mvp', 'ja morant memphis', 'morant grizzlies', 'edwards timberwolves'],
+    [
+      `I follow the NBA mostly through the players. My favorites are **Michael Jordan, Kobe Bryant, Derrick Rose, Anthony Edwards and Ja Morant**.`,
+      ``,
+      `I enjoy the mix of legends and fearless, explosive guards. I haven't named a favorite team, so I'll stick to the players I like watching.`,
+      ``,
+      `Hoops on the console is in {{gaming}}.`
+    ],
+    { w: 3, cmd: ['nba', 'basketball'] });
+
+  add('int-personality', ['personality', 'personality traits', 'traits', 'character traits', 'introvert', 'introverted', 'introvert or extrovert', 'extrovert', 'laid-back', 'laid back', 'sense of humor', 'humor', 'funny', 'what are you like', 'what kind of person', 'what is he like', 'describe your personality', 'type of person', 'what are you like as a person', 'what kind of person are you', 'what type of person are you', 'what is your personality', 'what personality do you have', 'your personality', 'his personality', 'personality type', 'mbti', 'introvert extrovert', 'are you introverted', 'are you an extrovert', 'are you shy', 'are you quiet', 'are you funny', 'do you have a sense of humor', 'sense of humour', 'humour', 'are you laid back', 'are you easygoing', 'easygoing', 'easy going', 'describe yourself in words', 'describe yourself in three words', 'three words', 'how would friends describe you', 'how would your friends describe you', 'how do friends describe you', 'how would coworkers describe you', 'how would colleagues describe you', 'character', 'characteristics', 'personal traits', 'strongest traits', 'best traits'],
+    [
+      `In a nutshell: curious, independent and practical, with a laid-back, introverted streak and a sense of humor that sneaks in when people least expect it.`,
+      ``,
+      `• **How I think:** analytical, detail-oriented and a bit skeptical`,
+      `• **How I work:** resourceful, adaptable and creative`,
+      `• **How I live:** budget-conscious and adventurous, usually on a bike or a trail`,
+      ``,
+      `The professional version is in {{strengths}} and {{work style}}.`
+    ],
+    { w: 3, cmd: ['personality', 'personality traits'] });
+
+  add('int-decisions', ['decisions', 'decision making', 'make decisions', 'making decisions', 'decision-making', 'research before buying', 'before buying', 'how do you shop', 'shopping', 'simplicity', 'keep it simple', 'practical solutions', 'budget conscious', 'budget-conscious', 'frugal', 'skeptical', 'skeptic', 'overcomplicate', 'overcomplicated', 'how do you decide', 'how do you make decisions', 'how do you make a decision', 'how do you choose', 'how do you choose what to buy', 'how do you buy things', 'how do you research', 'research before decisions', 'research first', 'do your research', 'do you research before buying', 'do you compare options', 'compare options', 'weigh options', 'weighing options', 'pros and cons', 'are you frugal', 'are you cheap', 'are you budget conscious', 'do you like saving money', 'save money', 'saving money', 'value for money', 'good value', 'practical approach', 'practical mindset', 'practical person', 'simple solutions', 'simple solution', 'keep things simple', 'avoid complicated', 'avoid complications', 'unnecessary complications', 'overthinking', 'skeptical about', 'are you skeptical', 'are you a skeptic', 'healthy skepticism', 'trust but verify', 'read reviews', 'reading reviews'],
+    [
+      `I research before I commit, whether it's a phone, a vehicle or a tool. I compare options, read reviews with a healthy dose of skepticism and look for the practical choice, not the flashy one.`,
+      ``,
+      `I'm budget-conscious and I prefer simple solutions to complicated ones. If something works and doesn't need extra steps, that wins.`,
+      ``,
+      `That mindset shows up in {{phones}}, {{cars}} and my {{problem solving}}.`
+    ],
+    { w: 3, cmd: ['decisions', 'decision making'] });
 
   /* ---- projects & design story (from the JuPiter knowledge base) ---- */
   add('q-personal-projects', ['personal projects', 'side projects', 'side project', 'custom roms', 'what projects', 'hobby projects', 'things he built', 'what has he built', 'what did you build', 'android roms', 'linux distros', 'distros', 'distro'],
