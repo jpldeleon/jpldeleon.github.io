@@ -20,7 +20,7 @@
   font-size: var(--pj-s);
   line-height: 1.5;
   color: var(--default-color);
-  background: var(--background-color);
+  background: transparent;
 }
 .pj *, .pj *::before, .pj *::after { box-sizing: border-box; }
 .pj a { text-decoration: none; }
@@ -160,7 +160,7 @@
   .wm-body > section.pj {
     --pj-side: calc(var(--pj-s) * 14);
     --pj-r: .45em;
-    --pj-sidebar-bg: color-mix(in srgb, var(--background-color), #000 20%);
+    --pj-sidebar-bg: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 20%), transparent 18%);
 
     position: relative;
     isolation: isolate;

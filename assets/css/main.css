@@ -5,6 +5,12 @@
   --nav-font: "Nunito", sans-serif;
 }
 
+/* Glass: one look for every window and applet */
+:root {
+  --glass-transparency: 22%;
+  --glass-filter: blur(14px) saturate(1.15);
+}
+
 /* Global Colors - Everforest Theme (default / main theme) */
 :root {
   --background-color: #2D353B;
@@ -202,8 +208,9 @@ main,
   display: flex;
   gap: 10px;
   padding: 6px 10px;
-  background: color-mix(in srgb, var(--surface-color), transparent 30%);
-  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--surface-color), transparent var(--glass-transparency));
+  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: var(--glass-filter);
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 75%);
   border-radius: 999px;
 }
@@ -3755,9 +3762,9 @@ Map to active/hover color .typed,
   z-index: 998;
   min-width: 230px;
   max-width: 90vw;
-  background: color-mix(in srgb, var(--surface-color), transparent 12%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: color-mix(in srgb, var(--surface-color), transparent var(--glass-transparency));
+  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: var(--glass-filter);
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 65%);
   border-radius: 10px;
   padding: 6px;

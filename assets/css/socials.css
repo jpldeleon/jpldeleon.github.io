@@ -47,7 +47,7 @@
   font-size: var(--sc-s);
   line-height: 1.5;
   color: var(--default-color);
-  background: var(--background-color);
+  background: transparent;
   text-align: left;
 }
 .sc *, .sc *::before, .sc *::after { box-sizing: border-box; }
@@ -61,7 +61,7 @@
   align-items: center;
   gap: .9em;
   padding: .7em 1.3em;
-  background: color-mix(in srgb, var(--background-color), #000 14%);
+  background: color-mix(in srgb, color-mix(in srgb, var(--background-color), #000 14%), transparent 18%);
   border-bottom: 1px solid var(--sc-line);
 }
 .sc-avatar {

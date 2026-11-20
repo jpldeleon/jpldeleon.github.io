@@ -493,6 +493,9 @@ a.pi-thumb[hidden] { display: none; }
 html.pi-embed .pi,
 html.wm-embedded .pi { grid-template-rows: auto minmax(0, 1fr); }
 
+html.wm-embedded .pi,
+html.wm-embedded .pi-scroll { background: transparent; }
+
 /* base size follows the WINDOW width (inside the frame, 1vw is 1% of the window) */
 html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
 
@@ -695,7 +698,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   html.wm-embedded .pi {
     --pi-side: calc(var(--pi-s) * 14.5);
     --pi-btn-r: .45em;
-    --pi-sidebar-bg: color-mix(in srgb, var(--pi-bg), #000 18%);
+    --pi-sidebar-bg: color-mix(in srgb, color-mix(in srgb, var(--pi-bg), #000 18%), transparent 18%);
     --pi-dim: color-mix(in srgb, var(--pi-text), transparent 30%);
 
     grid-template-columns: var(--pi-side) minmax(0, 1fr);
