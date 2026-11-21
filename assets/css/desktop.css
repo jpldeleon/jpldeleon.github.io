@@ -389,7 +389,7 @@
    The dots now live in the top panel popover, so keep them usable there. */
 @media (max-width: 768px) {
   body.wm-has-window .panel-popover .theme-dots {
-    display: flex;
+    display: grid;
   }
 }
 
@@ -3804,3 +3804,143 @@ textarea {
   }
 }
 
+
+/*--------------------------------------------------------------
+# Theme applet: 3x3 grid of swatch tiles (Cinnamon "style" picker look)
+# Each tile previews its theme: background, surface bar, text line,
+# accent dot and highlight dot. The active tile gets a ring + check.
+# Buttons keep .theme-dot / data-theme-choice so main.js and the
+# Android tile work unchanged. Colours come from --t-* in main.css.
+--------------------------------------------------------------*/
+#panel-theme-pop.panel-popover {
+  width: min(300px, calc(100vw - 16px));
+  box-sizing: border-box;
+}
+
+html body .panel-popover .theme-dots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+}
+
+html body .panel-popover .theme-dots .theme-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  width: auto;
+  height: auto;
+  min-height: 44px;
+  padding: 5px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  color: var(--default-color);
+  font: inherit;
+  cursor: pointer;
+  transform: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html body .panel-popover .theme-dots .theme-dot:hover,
+html body .panel-popover .theme-dots .theme-dot:focus-visible {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 86%);
+  transform: none;
+  outline: none;
+}
+
+html body .panel-popover .theme-dots .theme-dot:focus-visible {
+  border-color: color-mix(in srgb, var(--accent-highlight), transparent 40%);
+}
+
+html body .panel-popover .theme-dots .theme-dot.active {
+  border-color: var(--accent-highlight);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 90%);
+  transform: none;
+}
+
+.theme-dot .tsw {
+  position: relative;
+  display: block;
+  height: 40px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--t-bg);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.theme-dot .tsw b {
+  position: absolute;
+  display: block;
+}
+
+.theme-dot .tsw .s {
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--t-surf);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.theme-dot .tsw .f {
+  top: 12px;
+  left: 12px;
+  width: 46%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--t-fg);
+}
+
+.theme-dot .tsw .a,
+.theme-dot .tsw .h,
+.theme-dot .tsw .q,
+.theme-dot .tsw .t {
+  bottom: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.theme-dot .tsw .a { left: 6px;  background: var(--t-acc); }
+.theme-dot .tsw .h { left: 19px; background: var(--t-hi); }
+.theme-dot .tsw .q { left: 32px; background: var(--t-q); }
+.theme-dot .tsw .t { left: 45px; background: var(--t-t); }
+
+.theme-dot.active .tsw::after {
+  content: "\2713";
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  color: var(--t-hi);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.theme-dot .tname {
+  display: block;
+  min-height: 2.3em;
+  font-size: 11px;
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere;
+  color: color-mix(in srgb, var(--default-color), transparent 12%);
+}
+
+.theme-dot.active .tname {
+  color: var(--accent-highlight);
+  font-weight: 600;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  html body .panel-popover .theme-dots .theme-dot { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .panel-popover .theme-dots .theme-dot { transition: none; }
+}

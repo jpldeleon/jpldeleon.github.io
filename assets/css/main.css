@@ -104,28 +104,28 @@
   --surface-color: #282828;
 }
 
-/* Dracula Pro Theme - https://draculatheme.com/pro */
+/* Dracula Pro Nosferatu - https://draculatheme.com/pro (accent #f8b659) */
 [data-theme="draculapro"] {
   --background-color: #131516;
   --default-color: #F8F8F2;
-  --heading-color: #80FFEA;
+  --heading-color: #59f8e8;
   --accent-color: #f87359;
-  --accent-highlight: #7359f8;
-  --accent-highlight-rgb: 255, 121, 198;
+  --accent-highlight: #f8b659;
+  --accent-highlight-rgb: 248, 182, 89;
   --nav-color: #F8F8F2;
-  --nav-hover-color: #FF79C6;
-  --nav-mobile-background-color: #22212C;
-  --nav-dropdown-background-color: #302F3D;
+  --nav-hover-color: #f8b659;
+  --nav-mobile-background-color: #1a1c1d;
+  --nav-dropdown-background-color: #2a2d30;
   --nav-dropdown-color: #F8F8F2;
-  --nav-dropdown-hover-color: #50FA7B;
-  --surface-color: #363548;
-  --contrast-color: #F8F8F2;
+  --nav-dropdown-hover-color: #59f873;
+  --surface-color: #1f2224;
+  --contrast-color: #131516;
   --quote-color: #f8f859;
-  --typed-color: #80FFEA;
+  --typed-color: #59f8e8;
 }
 
 [data-theme="draculapro"] .light-background {
-  --background-color: #363548;
+  --background-color: #1f2224;
   --surface-color: #131516;
 }
 
@@ -152,6 +152,106 @@
 [data-theme="monokai"] .light-background {
   --background-color: #273136;
   --surface-color: #1d2528;
+}
+
+/* Nord Frost (dark) - https://www.nordtheme.com/docs/colors-and-palettes */
+[data-theme="nordfrost"] {
+  --background-color: #2E3440;
+  --default-color: #D8DEE9;
+  --heading-color: #8FBCBB;
+  --accent-color: #81A1C1;
+  --accent-highlight: #88C0D0;
+  --accent-highlight-rgb: 136, 192, 208;
+  --nav-color: #D8DEE9;
+  --nav-hover-color: #88C0D0;
+  --nav-mobile-background-color: #2E3440;
+  --nav-dropdown-background-color: #434C5E;
+  --nav-dropdown-color: #D8DEE9;
+  --nav-dropdown-hover-color: #D4B5CE;
+  --surface-color: #3B4252;
+  --contrast-color: #2E3440;
+  --quote-color: #A3BE8C;
+  --typed-color: #EBCB8B;
+}
+
+[data-theme="nordfrost"] .light-background {
+  --background-color: #3B4252;
+  --surface-color: #2E3440;
+}
+
+/* Miasma (dark) - https://omarchy.gallery/themes/miasma */
+[data-theme="miasma"] {
+  --background-color: #222222;
+  --default-color: #c2c2b0;
+  --heading-color: #d7c483;
+  --accent-color: #7fa57f;
+  --accent-highlight: #c9a554;
+  --accent-highlight-rgb: 201, 165, 84;
+  --nav-color: #c2c2b0;
+  --nav-hover-color: #c9a554;
+  --nav-mobile-background-color: #222222;
+  --nav-dropdown-background-color: #373737;
+  --nav-dropdown-color: #c2c2b0;
+  --nav-dropdown-hover-color: #9cc09c;
+  --surface-color: #2c2c2c;
+  --contrast-color: #222222;
+  --quote-color: #d08a5a;
+  --typed-color: #a1ab6e;
+}
+
+[data-theme="miasma"] .light-background {
+  --background-color: #2c2c2c;
+  --surface-color: #222222;
+}
+
+/* Kanagawa Dragon (dark) - https://omarchy.gallery/themes/kanagawa-dragon */
+[data-theme="kanagawadragon"] {
+  --background-color: #181616;
+  --default-color: #c5c9c5;
+  --heading-color: #e6c384;
+  --accent-color: #87a987;
+  --accent-highlight: #8ba4b0;
+  --accent-highlight-rgb: 139, 164, 176;
+  --nav-color: #c5c9c5;
+  --nav-hover-color: #8ba4b0;
+  --nav-mobile-background-color: #181616;
+  --nav-dropdown-background-color: #393836;
+  --nav-dropdown-color: #c5c9c5;
+  --nav-dropdown-hover-color: #c4b28a;
+  --surface-color: #282727;
+  --contrast-color: #181616;
+  --quote-color: #b6927b;
+  --typed-color: #a292a3;
+}
+
+[data-theme="kanagawadragon"] .light-background {
+  --background-color: #282727;
+  --surface-color: #181616;
+}
+
+/* Flexoki (dark) - https://stephango.com/flexoki */
+[data-theme="flexoki"] {
+  --background-color: #100F0F;
+  --default-color: #CECDC3;
+  --heading-color: #DFB431;
+  --accent-color: #5ABDAC;
+  --accent-highlight: #DA702C;
+  --accent-highlight-rgb: 218, 112, 44;
+  --nav-color: #CECDC3;
+  --nav-hover-color: #DA702C;
+  --nav-mobile-background-color: #100F0F;
+  --nav-dropdown-background-color: #282726;
+  --nav-dropdown-color: #CECDC3;
+  --nav-dropdown-hover-color: #66A0C8;
+  --surface-color: #1C1B1A;
+  --contrast-color: #100F0F;
+  --quote-color: #E47DA8;
+  --typed-color: #A699D0;
+}
+
+[data-theme="flexoki"] .light-background {
+  --background-color: #1C1B1A;
+  --surface-color: #100F0F;
 }
 
 /* Smooth scroll */
@@ -236,22 +336,110 @@ main,
 
 .theme-dots .theme-dot.dot-aurora {
   background: #BF616A;
+  --dot-hi: #BF616A;
+  --t-bg: #1E222A;
+  --t-surf: #282D37;
+  --t-acc: #D08770;
+  --t-hi: #BF616A;
+  --t-fg: #ECEFF4;
+  --t-q: #a3be8c;
+  --t-t: #8fbcbb;
 }
 
 .theme-dots .theme-dot.dot-gruvbox {
   background: #d65d0e;
+  --dot-hi: #d65d0e;
+  --t-bg: #282828;
+  --t-surf: #3c3836;
+  --t-acc: #98971a;
+  --t-hi: #d79921;
+  --t-fg: #ebdbb2;
+  --t-q: #458588;
+  --t-t: #458588;
 }
 
 .theme-dots .theme-dot.dot-everforest {
   background: #A7C080;
+  --dot-hi: #A7C080;
+  --t-bg: #2D353B;
+  --t-surf: #343F44;
+  --t-acc: #83C092;
+  --t-hi: #A7C080;
+  --t-fg: #D3C6AA;
+  --t-q: #E69875;
+  --t-t: #7FBBB3;
 }
 
 .theme-dots .theme-dot.dot-monokai {
   background: #ffed72;
+  --dot-hi: #ffed72;
+  --t-bg: #1d2528;
+  --t-surf: #273136;
+  --t-acc: #7cd5f1;
+  --t-hi: #ffed72;
+  --t-fg: #f2fffc;
+  --t-q: #a2e57b;
+  --t-t: #baa0f8;
 }
 
 .theme-dots .theme-dot.dot-draculapro {
-  background: #7359f8;
+  background: #f8b659;
+  --dot-hi: #f8b659;
+  --t-bg: #131516;
+  --t-surf: #1f2224;
+  --t-acc: #f87359;
+  --t-hi: #f8b659;
+  --t-fg: #F8F8F2;
+  --t-q: #f8f859;
+  --t-t: #59f8e8;
+}
+
+.theme-dots .theme-dot.dot-nordfrost {
+  background: #88C0D0;
+  --dot-hi: #88C0D0;
+  --t-bg: #2E3440;
+  --t-surf: #3B4252;
+  --t-acc: #81A1C1;
+  --t-hi: #88C0D0;
+  --t-fg: #D8DEE9;
+  --t-q: #A3BE8C;
+  --t-t: #EBCB8B;
+}
+
+.theme-dots .theme-dot.dot-miasma {
+  background: #c9a554;
+  --dot-hi: #c9a554;
+  --t-bg: #222222;
+  --t-surf: #2c2c2c;
+  --t-acc: #7fa57f;
+  --t-hi: #c9a554;
+  --t-fg: #c2c2b0;
+  --t-q: #d08a5a;
+  --t-t: #a1ab6e;
+}
+
+.theme-dots .theme-dot.dot-kanagawadragon {
+  background: #8ba4b0;
+  --dot-hi: #8ba4b0;
+  --t-bg: #181616;
+  --t-surf: #282727;
+  --t-acc: #87a987;
+  --t-hi: #8ba4b0;
+  --t-fg: #c5c9c5;
+  --t-q: #b6927b;
+  --t-t: #a292a3;
+}
+
+.theme-dots .theme-dot.dot-flexoki {
+  background: #DA702C;
+  --dot-hi: #DA702C;
+  --t-bg: #100F0F;
+  --t-surf: #1C1B1A;
+  --t-acc: #5ABDAC;
+  --t-hi: #DA702C;
+  --t-fg: #CECDC3;
+  --t-q: #E47DA8;
+  --t-t: #A699D0;
 }
 
 @media (max-width: 480px) {
@@ -5733,10 +5921,38 @@ Map to active/hover color .typed,
 }
 
 [data-theme="draculapro"] {
-  --cmd-red: #ff6e6e;
-  --cmd-yellow: #f1fa8c;
-  --cmd-green: #50fa7b;
+  --cmd-red: #f87359;
+  --cmd-yellow: #f8f859;
+  --cmd-green: #59f873;
   --cmd-on: #131516;
+}
+
+[data-theme="nordfrost"] {
+  --cmd-red: #BF616A;
+  --cmd-yellow: #EBCB8B;
+  --cmd-green: #A3BE8C;
+  --cmd-on: #2E3440;
+}
+
+[data-theme="miasma"] {
+  --cmd-red: #d08a5a;
+  --cmd-yellow: #c9a554;
+  --cmd-green: #7fa57f;
+  --cmd-on: #222222;
+}
+
+[data-theme="kanagawadragon"] {
+  --cmd-red: #c4746e;
+  --cmd-yellow: #e6c384;
+  --cmd-green: #87a987;
+  --cmd-on: #181616;
+}
+
+[data-theme="flexoki"] {
+  --cmd-red: #D14D41;
+  --cmd-yellow: #D0A215;
+  --cmd-green: #879A39;
+  --cmd-on: #100F0F;
 }
 
 [data-theme="monokai"] {

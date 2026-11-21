@@ -50,8 +50,8 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-cursor{font-style:normal;animation:adr-blink 1s steps(1) infinite}
 @keyframes adr-blink{50%{opacity:0}}
 .adr-sum{margin:0;font-size:12px;line-height:1.65;text-align:left;color:color-mix(in srgb,var(--f),transparent 15%)}
-.adr-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:100%;margin-top:2px;padding-top:12px;border-top:1px solid var(--line)}
-.adr-actions a,.adr-actions button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:52px;padding:0 4px;border:0;border-radius:10px;background:transparent;color:color-mix(in srgb,var(--f),transparent 22%);font:500 11px/1 var(--mono);text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.adr-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;width:100%;margin-top:2px;padding-top:12px;border-top:1px solid var(--line)}
+.adr-actions a,.adr-actions button{flex:0 0 calc(25% - 3px);min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:52px;padding:0 4px;border:0;border-radius:10px;background:transparent;color:color-mix(in srgb,var(--f),transparent 22%);font:500 11px/1 var(--mono);text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .adr-actions i{font-size:16px;color:var(--a)}
 .adr-actions a:active,.adr-actions button:active{background:color-mix(in srgb,var(--a),transparent 82%)}
 
@@ -96,15 +96,17 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-shade.drag{transition:none}
 .adr-scrim{position:fixed;inset:0;z-index:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .28s ease}
 .adr-scrim.show{opacity:1;pointer-events:auto}
-.adr-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:12px}
-.adr-tile{background:none;border:0;color:inherit;font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
-.adr-tile{text-decoration:none}
-.adr-social{padding-top:0}
-.adr-tile:active .ic{transform:scale(.94)}
-.adr-tile .ic{width:100%;max-width:72px;height:52px;border-radius:20px;display:grid;place-items:center;font-size:18px;background:color-mix(in srgb,var(--f) 13%,transparent);transition:background .15s,transform .12s}
-.adr-tile.on .ic{background:var(--a);color:var(--bg)}
-.adr-tile b{font-size:11px;font-weight:600;line-height:1.15;text-align:center}
-.adr-tile small{font-size:10px;color:var(--dim);margin-top:-4px;white-space:nowrap}
+/* quick-settings tiles, Android 15 style: two columns of wide pill tiles (icon left, label + status right) */
+.adr-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-bottom:12px}
+.adr-tile{display:flex;flex-direction:row;align-items:center;gap:12px;min-width:0;min-height:64px;padding:0 16px 0 14px;border:0;border-radius:32px;background:color-mix(in srgb,var(--f) 13%,transparent);color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,transform .12s}
+.adr-tile:active{transform:scale(.97)}
+.adr-tile .ic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:17px;background:color-mix(in srgb,var(--f) 12%,transparent);transition:background .15s}
+.adr-tile .tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.adr-tile.on{background:var(--a);color:var(--bg)}
+.adr-tile.on .ic{background:color-mix(in srgb,var(--bg) 18%,transparent)}
+.adr-tile b{font-size:14px;font-weight:600;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adr-tile small{font-size:12px;line-height:1.2;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adr-tile.on small{color:inherit;opacity:.8}
 .adr-nhead{display:flex;justify-content:space-between;align-items:center;padding:6px 4px}
 .adr-clear{background:none;border:1px solid var(--line);color:var(--f);border-radius:999px;font:700 10px var(--mono);letter-spacing:.08em;padding:6px 12px;cursor:pointer}
 .adr-list{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0;touch-action:pan-y;overscroll-behavior:contain}
@@ -255,12 +257,12 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .rv .rv-actions .rv-btn-label{display:inline}
 .adr-sheet .rv .rv-actions .btn-github{display:none!important}   /* "open in new tab" is gone on the phone */
 /* profile: photo + name on one line, then the summary under them */
-.adr-sheet .rv-profile{display:grid;grid-template-columns:84px minmax(0,1fr);align-items:center;gap:10px 14px}
-.adr-sheet .rv-profile > div{display:contents}
-.adr-sheet .rv-profile .adr-rv-name{display:block;margin:0;font-size:19px;line-height:1.2}
-.adr-sheet .rv-profile > div > h3,.adr-sheet .rv-profile > div > p{grid-column:1/-1}
-.adr-sheet .rv-profile > div > h3{margin:8px 0 0}
-.adr-sheet .rv-profile > div > p{margin:0}
+.adr-sheet .rv-profile{display:grid;grid-template-columns:84px minmax(0,1fr);align-items:center;gap:0 14px}
+.adr-sheet .rv-profile > .rv-id{display:block;min-width:0}
+.adr-sheet .rv-profile .rv-person{margin:0;font-size:19px;line-height:1.2}
+.adr-sheet .rv-profile .rv-role{margin:.3em 0 0;font-size:13px;line-height:1.35}
+.adr-sheet .rv-profile .rv-typed{min-height:0;margin:.35em 0 0;font-size:12px}
+.adr-sheet .rv-profile .rv-typed-text{overflow:hidden;text-overflow:ellipsis}
 .adr-sheet .rv-photo{width:84px;height:84px;border-radius:50%}
 /* contact: one centred block as wide as its longest line; every pill the same width, text left-aligned */
 .adr-sheet .rv-contact-title{text-align:center;margin-top:20px}
@@ -310,14 +312,22 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .pj-card:nth-child(5){animation-delay:.12s}.adr-sheet .pj-card:nth-child(6){animation-delay:.15s}.adr-sheet .pj-card:nth-child(n+7){animation-delay:.18s}
 }
 @media (prefers-reduced-motion:reduce){.adr-bub,.adr-bx{transition:none}.adr-bub.show{animation:none}.adr-sheet .pj-card{animation:none}}
-/* ---- Resume sheet fixes (phone) ----
-   1) the viewer now has its own <h2 class="rv-person">; android.js injects the compact name next to the photo,
-      so the page's big one is hidden here (it was showing a second, wrapped copy of the name)
-   2) Text / PDF buttons live INSIDE .rv-actions: put the whole bar on the bottom row, modes left, Download right */
-.adr-sheet .rv-profile .rv-person{display:none}
+/* ---- Resume sheet fixes (phone only) ----
+   1) the name is the viewer's own <h2 class="rv-person"> (android.js no longer injects a second copy): it sits next to the
+      photo, above the role and the typed line. It used to be hidden here, so the name never showed on the phone.
+   2) Text / PDF and Download CV share the bottom row: one line, centred. The viewer's narrow-window rule stacks the Text / PDF
+      switch vertically, which made the bar tall and ate the page, so the direction is set back to a row here.
+   These rules are inside the phone media query on purpose: android.js puts .adr-sheet on the Resume window on desktop too, so
+   unscoped they pushed the Text / PDF / Download CV buttons into one cramped row that spilled out of the desktop sidebar,
+   where they belong (stacked, at the bottom of the left sidebar, styled by resume-viewer.css). */
+@media (max-width:768px){
+.adr-sheet .rv-profile .rv-person{display:block;margin:0 0 .15em;font-size:19px;font-weight:700;line-height:1.2;color:var(--heading-color);overflow-wrap:anywhere}
 .adr-sheet .rv-profile > div > .rv-role,.adr-sheet .rv-profile > div > .rv-typed{grid-column:1/-1;margin:0}
+.adr-sheet .rv-profile > div > .rv-role{margin-top:.2em}
 .adr-sheet .rv-profile > div > .rv-typed{margin-top:2px}
-.adr-sheet .rv .rv-actions{grid-row:3;grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding:8px 16px calc(12px + env(safe-area-inset-bottom,0px));border:0}
-.adr-sheet .rv .rv-modes{margin:0;flex-direction:row;justify-self:auto;align-self:center;border-radius:999px}
-.adr-sheet .rv .rv-mode{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:auto;height:auto;min-height:34px;padding:0 14px;border-radius:999px}
+.adr-sheet .rv .rv-actions{grid-row:3;grid-column:1/-1;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;gap:10px;padding:8px 16px calc(12px + env(safe-area-inset-bottom,0px));border:0}
+.adr-sheet .rv .rv-modes{flex:0 0 auto;flex-direction:row;width:auto;margin:0;padding:3px;border:0;border-radius:999px;background:color-mix(in srgb,var(--default-color) 9%,transparent)}
+.adr-sheet .rv .rv-mode{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;gap:6px;width:auto;height:auto;min-height:34px;padding:0 14px;border-radius:999px;white-space:nowrap}
 .adr-sheet .rv .rv-mode span{display:inline}
+.adr-sheet .rv .rv-actions .btn-live{flex:0 0 auto;white-space:nowrap}
+}

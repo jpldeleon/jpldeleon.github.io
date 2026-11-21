@@ -442,3 +442,35 @@ html.dev .rv-h::before { content: '## '; font-family: var(--rv-mono); font-weigh
   .rv-profile { flex-direction: column; align-items: flex-start; }
   .rv-job-row { flex-direction: column; align-items: flex-start; gap: .7em; }
 }
+
+.wm-window:not(.adr-sheet) .rv .rv-actions {
+  grid-row: 2 !important;
+  grid-column: 1 !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: auto !important;
+  min-width: 0 !important;
+  padding-inline: .5em !important;
+}
+
+.wm-window:not(.adr-sheet) .rv .rv-modes {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.wm-window:not(.adr-sheet) .rv .rv-mode {
+  min-width: 0 !important;
+  padding: .42em .3em !important;
+  gap: .4em !important;
+  font-size: .9em !important;
+  white-space: nowrap;
+}
+
+.wm-window:not(.adr-sheet) .rv .rv-mode i {
+  flex: 0 0 auto;
+}
+
+.wm-window:not(.adr-sheet) .rv .rv-actions .btn-live {
+  width: 100% !important;
+}

@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const txt = el => (el ? el.textContent.trim() : '');
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const THEMES = [['everforest', 'Everforest'], ['aurora', 'Aurora'], ['gruvbox', 'Gruvbox'], ['monokai', 'Monokai Pro'], ['draculapro', 'Dracula Pro']];
+  const THEMES = [['everforest', 'Everforest'], ['aurora', 'Aurora'], ['gruvbox', 'Gruvbox'], ['monokai', 'Monokai Pro'], ['draculapro', 'Dracula Pro Nosferatu'], ['nordfrost', 'Nord Frost'], ['miasma', 'Miasma'], ['kanagawadragon', 'Kanagawa Dragon'], ['flexoki', 'Flexoki']];
   const theme = () => document.documentElement.getAttribute('data-theme') || 'everforest';
   const themeName = () => (THEMES.find(t => t[0] === theme()) || THEMES[0])[1];
   const PROJECTS = [
@@ -46,16 +46,10 @@
     <div class="adr-heads adr-glass adr-n" id="adr-heads" role="status"></div>
     <section class="adr-shade" id="adr-shade" inert aria-label="Notifications and quick settings">
       <div class="adr-tiles">
-        <button class="adr-tile" data-tile="theme" type="button"><span class="ic"><i class="fa-solid fa-palette"></i></span><b>Theme</b><small></small></button>
-        <button class="adr-tile" data-tile="hire" type="button"><span class="ic"><i class="fa-solid fa-user-check"></i></span><b>Why hire me</b></button>
-        <button class="adr-tile" data-tile="restart" type="button"><span class="ic"><i class="fa-solid fa-rotate-right"></i></span><b>Restart</b></button>
-        <button class="adr-tile" data-tile="hobbies" type="button"><span class="ic"><i class="fa-solid fa-guitar"></i></span><b>Hobbies &amp; Interests</b></button>
-      </div>
-      <div class="adr-tiles adr-social" aria-label="Social links">
-        <a class="adr-tile" href="https://www.linkedin.com/in/jpldl/" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-linkedin-in"></i></span><b>LinkedIn</b></a>
-        <a class="adr-tile" href="https://github.com/jpldeleon" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-github"></i></span><b>GitHub</b></a>
-        <a class="adr-tile" href="https://www.upwork.com/freelancers/~01562764cad5d47331" target="_blank" rel="noopener"><span class="ic"><i class="fa-brands fa-upwork"></i></span><b>Upwork</b></a>
-        <a class="adr-tile" href="https://golance.com/freelancer/john.paul.leonard.de.leon" target="_blank" rel="noopener"><span class="ic"><i class="fa-solid fa-circle-nodes"></i></span><b>GoLance</b></a>
+        <button class="adr-tile" data-tile="theme" type="button"><span class="ic"><i class="fa-solid fa-palette"></i></span><span class="tx"><b>Theme</b><small></small></span></button>
+        <button class="adr-tile" data-tile="hire" type="button"><span class="ic"><i class="fa-solid fa-user-check"></i></span><span class="tx"><b>Why hire me</b><small>Tap to view</small></span></button>
+        <button class="adr-tile" data-tile="restart" type="button"><span class="ic"><i class="fa-solid fa-rotate-right"></i></span><span class="tx"><b>Restart</b><small>Reload page</small></span></button>
+        <button class="adr-tile" data-tile="hobbies" type="button" aria-label="Hobbies &amp; Interests"><span class="ic"><i class="fa-solid fa-guitar"></i></span><span class="tx"><b>Hobbies</b><small>&amp; Interests</small></span></button>
       </div>
       <div class="adr-nhead"><span class="adr-lab">Notifications</span><button class="adr-clear" type="button">CLEAR ALL</button></div>
       <div class="adr-list" role="log" aria-live="polite"></div>
@@ -93,6 +87,21 @@
     return c.outerHTML;
   };
 
+  /* social links live in the hero applet now. Each icon is copied from the page's own link to the same site
+     (top-bar connect icons / desktop hero), so they always match; the Font Awesome class below is only the fallback. */
+  const SOCIALS = {
+    linkedin: ['linkedin.com', 'https://www.linkedin.com/in/jpldl/', 'LinkedIn', 'fa-brands fa-linkedin-in'],
+    github: ['github.com/jpldeleon', 'https://github.com/jpldeleon', 'GitHub', 'fa-brands fa-github'],
+    upwork: ['upwork.com', 'https://www.upwork.com/freelancers/~01562764cad5d47331', 'Upwork', 'fa-brands fa-upwork'],
+    golance: ['golance.com', 'https://golance.com/freelancer/john.paul.leonard.de.leon', 'GoLance', 'fa-solid fa-circle-nodes']
+  };
+  const siteIcon = (host, fallback) => {
+    const links = $$(`.panel-connect a[href*="${host}"], #hero a[href*="${host}"]`).filter(a => !a.closest('.adr-layer'));
+    for (const a of links) { const i = $('i', a); if (i && /\bfa-(brands|solid|regular)\b/.test(i.className)) return i.className.replace(/\s+/g, ' ').trim(); }
+    return fallback;
+  };
+  const social = k => { const [host, url, name, fb] = SOCIALS[k]; return `<a href="${url}" target="_blank" rel="noopener"><i class="${esc(siteIcon(host, fb))}"></i>${name}</a>`; };
+
   function renderHome() {
     const keep = scroller.scrollTop;
     const photo = $('#hero .photo-original');
@@ -112,7 +121,10 @@
         <div class="adr-actions">
           <button type="button" data-copy="email"><i class="fa-solid fa-envelope"></i>Email</button>
           <button type="button" data-copy="phone"><i class="fa-solid fa-phone"></i>Phone</button>
-          <a href="https://github.com/jpldeleon" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i>GitHub</a>
+          ${social('linkedin')}
+          ${social('github')}
+          ${social('upwork')}
+          ${social('golance')}
           <a href="assets/johnpauldeleon_resume.pdf" download><i class="fa-solid fa-download"></i>Resume</a>
         </div>
       </section>
@@ -345,6 +357,14 @@
     $('.adr-clear', shade).style.display = events.length || cards.length ? '' : 'none';
     $('.adr-nicons', top).innerHTML = events.slice(0, 3).map(e => `<i class="fa-solid ${e.icon}"></i>`).join('');
     $('[data-tile="theme"] small', shade).textContent = themeName();
+    /* quick tile state: Theme is always lit; Why hire me / Hobbies are lit while their card is open in the shade
+       (tapping brings it back to the top, dismissing it or closing the shade turns the tile off); Restart stays momentary */
+    $$('.adr-tile[data-tile]', shade).forEach(b => {
+      const k = b.dataset.tile;
+      const on = k === 'theme' || ((k === 'hire' || k === 'hobbies') && cards.includes(k));
+      b.classList.toggle('on', on);
+      if (k !== 'restart') b.setAttribute('aria-pressed', String(on));
+    });
   }
 
   /* what feeds the notifications: notifications.js reports every event (theme, copy, resume, project, social and
@@ -431,7 +451,7 @@
         const i = cards.indexOf(k), already = i === 0; if (i > -1) cards.splice(i, 1);
         cards.unshift(k);                                      // latest tapped goes to the very top (tapping again just brings it back up)
         render(); if (!already) list.scrollTop = 0;
-        t.classList.remove('on'); t.blur();                    // quick tiles are momentary: they never stay lit or focused
+        t.blur();                                              // the tile stays lit through render() while its card is open
       }
       else if (k === 'restart') { setShade(false); const r = $('#panel-restart-btn'); if (r) r.click(); else location.reload(); }
       return;
@@ -703,7 +723,7 @@
       const ng = el.querySelector('.btn-github'); if (ng) ng.remove();                  // no "open in new tab"
       const box = el.querySelector('.rv-profile > div');
       if (!box) return false;
-      if (!box.querySelector('.adr-rv-name')) {
+      if (!box.querySelector('.rv-person') && !box.querySelector('.adr-rv-name')) {   // the viewer's own <h2 class="rv-person"> is the name
         const t = el.querySelector('.rv-title'), h = document.createElement('h2');
         h.className = 'rv-h adr-rv-name'; h.textContent = t ? t.textContent.trim() : 'John Paul De Leon';
         box.insertBefore(h, box.firstChild);

@@ -40,7 +40,7 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+      if (['aurora', 'gruvbox', 'monokai', 'draculapro', 'nordfrost', 'miasma', 'kanagawadragon', 'flexoki'].indexOf(saved) !== -1) {
         document.documentElement.setAttribute('data-theme', saved);
       }
     })();
@@ -965,16 +965,15 @@
         <div class="panel-popover" hidden id="panel-theme-pop">
           <div class="panel-popover-label">Theme</div>
           <div aria-label="Switch color theme" class="theme-dots" role="group">
-            <button aria-label="Everforest theme" class="theme-dot dot-everforest active" data-theme-choice="everforest"
-              title="Everforest theme" type="button"></button>
-            <button aria-label="Aurora theme" class="theme-dot dot-aurora" data-theme-choice="aurora"
-              title="Aurora theme" type="button"></button>
-            <button aria-label="Gruvbox theme" class="theme-dot dot-gruvbox" data-theme-choice="gruvbox"
-              title="Gruvbox theme" type="button"></button>
-            <button aria-label="Monokai Pro theme" class="theme-dot dot-monokai" data-theme-choice="monokai"
-              title="Monokai Pro theme" type="button"></button>
-            <button aria-label="Dracula Pro theme" class="theme-dot dot-draculapro" data-theme-choice="draculapro"
-              title="Dracula Pro theme" type="button"></button>
+            <button aria-label="Everforest theme" aria-pressed="true" class="theme-dot dot-everforest active" data-theme-choice="everforest" title="Everforest theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Everforest</span></button>
+            <button aria-label="Aurora theme" aria-pressed="false" class="theme-dot dot-aurora" data-theme-choice="aurora" title="Aurora theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Aurora</span></button>
+            <button aria-label="Gruvbox theme" aria-pressed="false" class="theme-dot dot-gruvbox" data-theme-choice="gruvbox" title="Gruvbox theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Gruvbox</span></button>
+            <button aria-label="Monokai Pro theme" aria-pressed="false" class="theme-dot dot-monokai" data-theme-choice="monokai" title="Monokai Pro theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Monokai Pro</span></button>
+            <button aria-label="Dracula Pro Nosferatu theme" aria-pressed="false" class="theme-dot dot-draculapro" data-theme-choice="draculapro" title="Dracula Pro Nosferatu theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Dracula Pro Nosferatu</span></button>
+            <button aria-label="Nord Frost theme" aria-pressed="false" class="theme-dot dot-nordfrost" data-theme-choice="nordfrost" title="Nord Frost theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Nord Frost</span></button>
+            <button aria-label="Miasma theme" aria-pressed="false" class="theme-dot dot-miasma" data-theme-choice="miasma" title="Miasma theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Miasma</span></button>
+            <button aria-label="Kanagawa Dragon theme" aria-pressed="false" class="theme-dot dot-kanagawadragon" data-theme-choice="kanagawadragon" title="Kanagawa Dragon theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Kanagawa Dragon</span></button>
+            <button aria-label="Flexoki theme" aria-pressed="false" class="theme-dot dot-flexoki" data-theme-choice="flexoki" title="Flexoki theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Flexoki</span></button>
           </div>
         </div>
       </div>

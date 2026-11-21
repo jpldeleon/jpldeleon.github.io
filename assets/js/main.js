@@ -181,7 +181,11 @@
       aurora: 'Aurora',
       gruvbox: 'Gruvbox',
       monokai: 'Monokai Pro',
-      draculapro: 'Dracula Pro'
+      draculapro: 'Dracula Pro Nosferatu',
+      nordfrost: 'Nord Frost',
+      miasma: 'Miasma',
+      kanagawadragon: 'Kanagawa Dragon',
+      flexoki: 'Flexoki'
     };
 
     function getCurrentTheme() {
@@ -197,9 +201,11 @@
       localStorage.setItem('site-theme', theme);
       themeDots.forEach(dot => {
         dot.classList.toggle('active', dot.getAttribute('data-theme-choice') === theme);
+        dot.setAttribute('aria-pressed', dot.getAttribute('data-theme-choice') === theme ? 'true' : 'false');
       });
       const activeDot = Array.from(themeDots).find(d => d.getAttribute('data-theme-choice') === theme);
-      const dotColor = activeDot ? getComputedStyle(activeDot).backgroundColor : '';
+      const dotStyle = activeDot ? getComputedStyle(activeDot) : null;
+      const dotColor = dotStyle ? (dotStyle.getPropertyValue('--dot-hi').trim() || dotStyle.backgroundColor) : '';
       if (dotColor && dotColor !== 'transparent' && dotColor !== 'rgba(0, 0, 0, 0)') {
         document.documentElement.style.setProperty('--sb-thumb', dotColor);
       } else {
@@ -213,6 +219,21 @@
       dot.addEventListener('click', () => {
         applyTheme(dot.getAttribute('data-theme-choice'), true);
       });
+    });
+
+    // Arrow keys move through the 3-column swatch grid in the theme popover.
+    themeDots[0].parentElement.addEventListener('keydown', e => {
+      const dots = Array.from(themeDots);
+      const i = dots.indexOf(document.activeElement);
+      if (i < 0) return;
+      const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -3, ArrowDown: 3 }[e.key];
+      let n = -1;
+      if (step) n = i + step;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = dots.length - 1;
+      else return;
+      e.preventDefault();
+      if (n >= 0 && n < dots.length) dots[n].focus();
     });
   }
 

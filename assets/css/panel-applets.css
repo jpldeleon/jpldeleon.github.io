@@ -158,3 +158,31 @@
     overflow-x: hidden !important;
   }
 }
+
+/* 4) glass: every popover uses EXACTLY the hero applet's translucency (same --glass-transparency,
+   --glass-filter and hairline), so none of them is more see-through than the hero card.
+   !important + the extra .top-panel specificity beat whatever desktop.css / theme rules set on these popovers. */
+:root {
+  --applet-bg: color-mix(in srgb, var(--surface-color), transparent var(--glass-transparency));
+  --applet-hairline: color-mix(in srgb, var(--default-color), transparent 88%);
+}
+
+.top-panel .panel-popover.notif-popover,
+.top-panel .panel-popover.clock-popover,
+.top-panel .panel-popover.df-popover,
+.top-panel #panel-theme-pop.panel-popover {
+  background: var(--applet-bg) !important;
+  background-color: var(--applet-bg) !important;
+  -webkit-backdrop-filter: var(--glass-filter) !important;
+  backdrop-filter: var(--glass-filter) !important;
+  border: 1px solid var(--applet-hairline) !important;
+  box-shadow: var(--panel-pop-shadow) !important;
+}
+
+/* inner wrappers must not add their own see-through layer on top of the glass */
+.top-panel .clock-popover .wh,
+.top-panel .clock-popover .wh-list,
+.dotfiles,
+.df-wrap {
+  background: transparent;
+}
