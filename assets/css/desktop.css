@@ -1075,7 +1075,7 @@ body.sidebar-collapsed {
 }
 
 .linux-dock .dock-item.dock-app.dock-cert i {
-  color: #e5534b;
+  color: var(--pal-red);
 }
 
 /*--------------------------------------------------------------

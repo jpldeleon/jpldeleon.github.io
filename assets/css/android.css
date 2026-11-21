@@ -194,7 +194,7 @@ html.boot-on #adr-bubbles{visibility:hidden}
 /* Ask Jampol head: the astronaut on a neutral disc, red dot when a reply arrived while it was folded */
 .adr-bub .adr-bub-img{width:68%;height:68%;object-fit:contain;filter:url(#jpt-tint);pointer-events:none;-webkit-user-drag:none}
 .adr-bub[data-kind="chat"],.adr-bub[data-kind="chat"].active{background:color-mix(in srgb,var(--f) 16%,var(--bg));color:var(--f)}
-.adr-bub.unread::before{content:"";position:absolute;top:1px;right:1px;width:13px;height:13px;border-radius:50%;background:#e5534b;box-shadow:0 0 0 2px var(--bg)}
+.adr-bub.unread::before{content:"";position:absolute;top:1px;right:1px;width:13px;height:13px;border-radius:50%;background:var(--danger-color);box-shadow:0 0 0 2px var(--bg)}
 html.adr-sheet-chat .adr-search{visibility:hidden}
 /* pointer joining the open bubble to its sheet */
 .adr-bub.active::after{content:"";position:absolute;left:50%;top:calc(100% + 12px);margin-left:-8px;border:8px solid transparent;border-top:0;border-bottom-color:color-mix(in srgb,var(--bg) 80%,var(--a))}
@@ -213,7 +213,7 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
   opacity:0;transform:translateY(40px) scale(.7);pointer-events:none;
   transition:transform .22s cubic-bezier(.2,.9,.3,1.3),opacity .2s,background .15s,color .15s}
 .adr-bx.show{opacity:1;transform:none}
-.adr-bx.near{transform:scale(1.25);background:#e5534b;color:#fff}
+.adr-bx.near{transform:scale(1.25);background:var(--danger-color);color:#fff}
 
 /* a folded window stays alive (project page keeps its state) but is invisible */
 .adr-bubbled{visibility:hidden!important;pointer-events:none!important}

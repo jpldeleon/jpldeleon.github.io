@@ -254,3 +254,768 @@ html body .hero-sidebar.hero-applet .ab-tags li {
 .taskbar-search input:focus-visible {
   outline: none;
 }
+
+.wm-window:has(.rv) { --wh: var(--series-2); }
+.wm-window:has(.pj),
+.wm-window:has(.pi) { --wh: var(--series-1); }
+.wm-window:has(.sc) { --wh: var(--series-3); }
+.wm-window:has(.dotfiles) { --wh: var(--series-5); }
+.wm-window:has(.is-cert) { --wh: var(--series-6); }
+
+.wm-window {
+  --sb-thumb: color-mix(in srgb, var(--wh, var(--accent-highlight)) 55%, transparent);
+}
+
+.wm-window .wm-title i {
+  color: color-mix(in srgb, var(--wh, var(--accent-color)), transparent 35%);
+}
+
+.wm-window.is-focused .wm-title i {
+  color: var(--wh, var(--accent-color));
+}
+
+.wm-window .wm-titlebar {
+  background: color-mix(in srgb, color-mix(in srgb, color-mix(in srgb, var(--surface-color), var(--background-color) 40%), var(--wh, var(--surface-color)) 6%), transparent 30%);
+}
+
+.wm-window.is-focused .wm-titlebar {
+  background: color-mix(in srgb, color-mix(in srgb, var(--surface-color), var(--wh, var(--accent-highlight)) 11%), transparent 30%);
+}
+
+.wm-window *::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--wh, var(--accent-highlight)) 38%, transparent);
+  background-clip: content-box;
+}
+
+.wm-window *::-webkit-scrollbar-thumb:hover,
+.wm-window *::-webkit-scrollbar-thumb:active {
+  background: color-mix(in srgb, var(--wh, var(--accent-highlight)) 65%, transparent);
+  background-clip: content-box;
+}
+
+.wm-window *::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--wh, var(--accent-highlight)) 5%, transparent);
+}
+
+@media (max-width: 768px) {
+  .wm-window.is-focused {
+    box-shadow: 0 0 0 2px var(--wh, var(--accent-highlight)), 0 16px 44px rgba(0, 0, 0, 0.55);
+  }
+
+  .wm-window.is-focused .wm-titlebar {
+    box-shadow: inset 0 -2px 0 var(--wh, var(--accent-highlight));
+  }
+}
+
+.wm-btn:focus-visible {
+  outline-color: var(--wh, var(--accent-highlight));
+}
+
+.linux-dock .wm-dock-apps .dock-item:nth-child(6n+1) { --dk: var(--series-1); }
+.linux-dock .wm-dock-apps .dock-item:nth-child(6n+2) { --dk: var(--series-2); }
+.linux-dock .wm-dock-apps .dock-item:nth-child(6n+3) { --dk: var(--series-3); }
+.linux-dock .wm-dock-apps .dock-item:nth-child(6n+4) { --dk: var(--series-4); }
+.linux-dock .wm-dock-apps .dock-item:nth-child(6n+5) { --dk: var(--series-5); }
+.linux-dock .wm-dock-apps .dock-item:nth-child(6n)   { --dk: var(--series-6); }
+
+.linux-dock .dock-item.dock-app i {
+  color: var(--dk, var(--accent-highlight));
+}
+
+.linux-dock .dock-item.dock-app.dock-cert i {
+  color: var(--pal-red);
+}
+
+.linux-dock .dock-item.wm-focused {
+  background: color-mix(in srgb, var(--dk, var(--accent-highlight)), transparent 82%) !important;
+  color: var(--dk, var(--accent-highlight));
+}
+
+.linux-dock .dock-item.wm-open::after,
+.linux-dock .dock-item.wm-minimized::after {
+  background: var(--dk, var(--accent-highlight));
+}
+
+.panel-notif-menu { --pb: var(--pal-yellow); }
+.panel-dotfiles-menu { --pb: var(--series-5); }
+.panel-clock-menu { --pb: var(--series-2); }
+.panel-menu:has(> #panel-theme-pop) { --pb: var(--series-3); }
+
+.panel-btn i {
+  color: var(--pb, var(--accent-color));
+}
+
+.panel-btn:hover,
+.panel-btn:focus-visible,
+.panel-btn[aria-expanded="true"],
+.panel-clock[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--pb, var(--accent-highlight)), transparent 82%);
+  color: var(--pb, var(--accent-highlight));
+}
+
+.panel-dropdown button:nth-child(6n+1) { --di: var(--series-1); }
+.panel-dropdown button:nth-child(6n+2) { --di: var(--series-2); }
+.panel-dropdown button:nth-child(6n+3) { --di: var(--series-3); }
+.panel-dropdown button:nth-child(6n+4) { --di: var(--series-4); }
+.panel-dropdown button:nth-child(6n+5) { --di: var(--series-5); }
+.panel-dropdown button:nth-child(6n)   { --di: var(--series-6); }
+
+.panel-dropdown button i,
+.app-menu button i {
+  color: var(--di, var(--accent-color));
+}
+
+.panel-dropdown button:hover,
+.panel-dropdown button:focus-visible {
+  background: color-mix(in srgb, var(--di, var(--accent-highlight)), transparent 82%);
+  color: var(--di, var(--accent-highlight));
+}
+
+.app-menu button:nth-child(6n+1) { --di: var(--series-1); }
+.app-menu button:nth-child(6n+2) { --di: var(--series-2); }
+.app-menu button:nth-child(6n+3) { --di: var(--series-3); }
+.app-menu button:nth-child(6n+4) { --di: var(--series-4); }
+.app-menu button:nth-child(6n+5) { --di: var(--series-5); }
+.app-menu button:nth-child(6n)   { --di: var(--series-6); }
+
+.app-menu button:focus-visible {
+  background: color-mix(in srgb, var(--di, var(--accent-highlight)), transparent 85%);
+  color: var(--di, var(--accent-highlight));
+}
+
+.panel-connect a:nth-child(4n+1) { --ci: var(--series-1); }
+.panel-connect a:nth-child(4n+2) { --ci: var(--series-2); }
+.panel-connect a:nth-child(4n+3) { --ci: var(--series-3); }
+.panel-connect a:nth-child(4n)   { --ci: var(--series-4); }
+
+.panel-connect a {
+  color: var(--ci, var(--default-color));
+}
+
+.panel-connect a:hover,
+.panel-connect a:focus-visible {
+  background: color-mix(in srgb, var(--ci, var(--accent-highlight)), transparent 82%);
+  color: var(--ci, var(--accent-highlight));
+}
+
+.taskbar-apps .taskbar-item:nth-child(6n+1) { --tb: var(--series-1); }
+.taskbar-apps .taskbar-item:nth-child(6n+2) { --tb: var(--series-2); }
+.taskbar-apps .taskbar-item:nth-child(6n+3) { --tb: var(--series-3); }
+.taskbar-apps .taskbar-item:nth-child(6n+4) { --tb: var(--series-4); }
+.taskbar-apps .taskbar-item:nth-child(6n+5) { --tb: var(--series-5); }
+.taskbar-apps .taskbar-item:nth-child(6n)   { --tb: var(--series-6); }
+
+.top-panel.taskbar .taskbar-item i,
+.top-panel.taskbar .taskbar-item.is-active i,
+.top-panel.taskbar .taskbar-item.is-minimized i {
+  color: var(--tb, var(--accent-color)) !important;
+}
+
+.taskbar-item.is-active {
+  background: color-mix(in srgb, var(--tb, var(--accent-highlight)), transparent 82%);
+  color: var(--tb, var(--accent-highlight));
+}
+
+.top-panel.taskbar .taskbar-item.is-active::after {
+  background: var(--tb, var(--accent-color));
+}
+
+.taskbar-item:hover,
+.taskbar-item:focus-visible {
+  background: color-mix(in srgb, var(--tb, var(--default-color)), transparent 88%);
+}
+
+.taskbar-search > i {
+  color: var(--series-2);
+}
+
+.taskbar-send {
+  color: var(--series-1);
+}
+
+.taskbar-search.is-open {
+  border-color: var(--series-2);
+  background: color-mix(in srgb, var(--series-2), transparent 88%);
+}
+
+.taskbar-pill:nth-child(3n+1) { --pk: var(--series-1); }
+.taskbar-pill:nth-child(3n+2) { --pk: var(--series-2); }
+.taskbar-pill:nth-child(3n)   { --pk: var(--series-3); }
+
+.taskbar-pill-icon {
+  color: var(--pk, var(--accent-highlight));
+}
+
+.taskbar-pill-timer {
+  background: var(--pk, var(--accent-highlight));
+}
+
+.taskbar-pill {
+  border-color: color-mix(in srgb, var(--pk, var(--default-color)) 28%, transparent);
+}
+
+.notif-item:nth-child(4n+1) { --nk: var(--series-1); }
+.notif-item:nth-child(4n+2) { --nk: var(--series-2); }
+.notif-item:nth-child(4n+3) { --nk: var(--series-3); }
+.notif-item:nth-child(4n)   { --nk: var(--series-4); }
+
+.notif-item.is-unread::before {
+  background: var(--nk, var(--info-color));
+}
+
+.notif-item.is-unread {
+  background: color-mix(in srgb, var(--nk, var(--info-color)) 7%, transparent);
+}
+
+.notif-title {
+  color: var(--heading-color);
+}
+
+.notif-act:hover:not(:disabled),
+.notif-act:focus-visible {
+  color: var(--series-2);
+  background: color-mix(in srgb, var(--series-2), transparent 85%);
+}
+
+.hub-tab:nth-child(3n+1) { --ht: var(--series-1); }
+.hub-tab:nth-child(3n+2) { --ht: var(--series-2); }
+.hub-tab:nth-child(3n)   { --ht: var(--series-3); }
+
+.hub-tab[aria-selected="true"] {
+  border-bottom-color: var(--ht, var(--accent-highlight));
+}
+
+.hub-tab:hover {
+  color: var(--ht, var(--default-color));
+}
+
+.hub-popover .wh-item:nth-child(4n+1) > i { color: var(--series-1); }
+.hub-popover .wh-item:nth-child(4n+2) > i { color: var(--series-2); }
+.hub-popover .wh-item:nth-child(4n+3) > i { color: var(--series-3); }
+.hub-popover .wh-item:nth-child(4n)   > i { color: var(--series-4); }
+
+.clock-popover .cp-time .t-sec,
+.clock-popover .cp-clock .cp-date {
+  color: var(--pal-orange);
+}
+
+.clock-popover .cp-time::after {
+  background: var(--pal-yellow);
+}
+
+.clock-popover .cp-dow > *,
+.clock-popover .cp-dow span {
+  color: var(--pal-cyan);
+}
+
+.clock-popover .cp-nav {
+  color: var(--pal-blue);
+}
+
+.clock-popover .cp-nav:hover,
+.clock-popover .cp-month:hover {
+  background: color-mix(in srgb, var(--pal-blue), transparent 84%);
+}
+
+.clock-popover .cp-month:focus-visible {
+  outline-color: var(--pal-blue);
+}
+
+.clock-popover .cp-btn:not(.is-primary) {
+  border-color: var(--pal-green);
+  color: var(--pal-green);
+}
+
+.clock-popover .cp-btn:not(.is-primary):hover {
+  background: color-mix(in srgb, var(--pal-green), transparent 84%);
+}
+
+.clock-popover .cp-head::before {
+  color: var(--pal-purple);
+}
+
+.clock-popover #cal-today {
+  border-color: color-mix(in srgb, var(--pal-yellow), transparent 45%);
+  color: var(--pal-yellow);
+}
+
+.clock-popover #cal-today:hover {
+  background: color-mix(in srgb, var(--pal-yellow), transparent 84%);
+  border-color: var(--pal-yellow);
+}
+
+.clock-popover .cp-day:not(.is-today):hover {
+  background: color-mix(in srgb, var(--pal-cyan), transparent 84%);
+  box-shadow: inset 0 0 0 1px var(--pal-cyan);
+}
+
+.clock-popover .cp-bar {
+  background: color-mix(in srgb, var(--pal-purple) 14%, var(--surface-color));
+}
+
+.clock-popover .cp-list li:nth-child(4n+1) { --cl: var(--series-1); }
+.clock-popover .cp-list li:nth-child(4n+2) { --cl: var(--series-2); }
+.clock-popover .cp-list li:nth-child(4n+3) { --cl: var(--series-3); }
+.clock-popover .cp-list li:nth-child(4n)   { --cl: var(--series-4); }
+
+.clock-popover .cp-list li {
+  background: color-mix(in srgb, var(--cl, var(--accent-highlight)) 8%, transparent);
+  border-color: color-mix(in srgb, var(--cl, var(--accent-highlight)), transparent 78%);
+  border-left-color: color-mix(in srgb, var(--cl, var(--accent-highlight)), transparent 45%);
+}
+
+.clock-popover .cp-list li:hover {
+  background: color-mix(in srgb, var(--cl, var(--accent-highlight)), transparent 90%);
+  border-left-color: var(--cl, var(--accent-highlight));
+}
+
+.clock-popover .cp-list i {
+  color: var(--cl, var(--accent-highlight));
+}
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item:nth-child(odd) { --ct: var(--series-1); }
+.hero-sidebar .sidebar-contact .sidebar-contact-item:nth-child(even) { --ct: var(--series-2); }
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item {
+  background: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 88%);
+}
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item i {
+  color: var(--ct, var(--accent-highlight));
+}
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item:hover,
+.hero-sidebar .sidebar-contact .sidebar-contact-item:focus-visible {
+  background: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 78%);
+}
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item:active {
+  background: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 68%);
+}
+
+.cky-down {
+  color: var(--series-2);
+}
+
+.cky-graph .ln {
+  stroke: var(--series-2);
+}
+
+.cky-graph .ar {
+  fill: var(--series-2);
+}
+
+.conky .cky-block:nth-of-type(7) .cky-bar {
+  --bar: var(--series-5);
+}
+
+.desk-right .cky-widget:nth-of-type(odd) {
+  border-color: color-mix(in srgb, var(--series-1), transparent 78%);
+}
+
+.desk-right .cky-widget:nth-of-type(even) {
+  border-color: color-mix(in srgb, var(--series-2), transparent 78%);
+}
+
+.ab-dots i:nth-child(1) { background: var(--cmd-red); }
+.ab-dots i:nth-child(2) { background: var(--cmd-yellow); }
+.ab-dots i:nth-child(3) { background: var(--cmd-green); }
+
+.ab-term {
+  border-color: color-mix(in srgb, var(--series-2), transparent 72%);
+}
+
+.ab-term-bar {
+  background: color-mix(in srgb, color-mix(in srgb, var(--series-2) 14%, var(--surface-color)), transparent 45%);
+  border-bottom-color: color-mix(in srgb, var(--series-2), transparent 72%);
+}
+
+.ab-cmd span {
+  color: var(--series-1);
+}
+
+.ab-toggle {
+  color: var(--series-2);
+}
+
+.hero-applet .hero-bar {
+  background: color-mix(in srgb, color-mix(in srgb, var(--series-3) 14%, var(--surface-color)), transparent 45%);
+  border-bottom-color: color-mix(in srgb, var(--series-3), transparent 72%);
+}
+
+.hero-applet .hero-inspector {
+  background: color-mix(in srgb, color-mix(in srgb, var(--series-3) 5%, var(--surface-color)), transparent 45%);
+}
+
+.terminal-window {
+  border-color: color-mix(in srgb, var(--series-2), transparent 55%);
+}
+
+.terminal-titlebar {
+  border-bottom-color: color-mix(in srgb, var(--series-2), transparent 65%);
+}
+
+.terminal-footer {
+  border-top-color: color-mix(in srgb, var(--series-2), transparent 65%);
+}
+
+.terminal-body .t-prompt {
+  color: var(--pal-green);
+}
+
+.terminal-body .t-entry-title {
+  color: var(--pal-yellow);
+}
+
+.terminal-cursor {
+  background: var(--pal-cyan);
+}
+
+.terminal-close-btn {
+  color: var(--pal-red);
+  background: color-mix(in srgb, var(--pal-red), transparent 88%);
+  border-color: color-mix(in srgb, var(--pal-red), transparent 45%);
+}
+
+.terminal-close-btn:hover {
+  background: var(--pal-red);
+  color: var(--on-accent-color);
+}
+
+.theme-notice {
+  color: var(--pal-yellow);
+}
+
+.theme-dot.active .tname {
+  color: var(--series-3);
+}
+
+html body .panel-popover .theme-dots .theme-dot.active {
+  border-color: var(--series-3);
+  background: color-mix(in srgb, var(--series-3), transparent 90%);
+}
+
+.boot-bar i {
+  background: var(--series-2);
+}
+
+.boot-bar {
+  background: color-mix(in srgb, var(--series-2), transparent 80%);
+}
+
+.rv {
+  --rv-hl: var(--series-2);
+  --rv-hl-soft: color-mix(in srgb, var(--series-2), transparent 86%);
+  --rv-focus: 1px solid color-mix(in srgb, var(--series-2), transparent 35%);
+  --rv-pill-bg: color-mix(in srgb, var(--series-2), transparent 88%);
+}
+
+.rv-item:nth-child(6n+1) { --ih: var(--series-1); }
+.rv-item:nth-child(6n+2) { --ih: var(--series-2); }
+.rv-item:nth-child(6n+3) { --ih: var(--series-3); }
+.rv-item:nth-child(6n+4) { --ih: var(--series-4); }
+.rv-item:nth-child(6n+5) { --ih: var(--series-5); }
+.rv-item:nth-child(6n)   { --ih: var(--series-6); }
+
+.rv-item:not([aria-selected="true"]) i {
+  color: var(--ih, inherit);
+}
+
+.rv-item[aria-selected="true"] {
+  background: var(--ih, var(--rv-hl));
+}
+
+.rv-item:hover:not([aria-selected="true"]) {
+  background: color-mix(in srgb, var(--ih, var(--rv-hl)), transparent 88%);
+}
+
+.rv-typed::before {
+  background: var(--series-1);
+}
+
+.rv-typed .typed-cursor {
+  color: var(--series-1);
+}
+
+.rv-person {
+  color: var(--heading-color);
+}
+
+.rv-job:nth-of-type(4n+1) { --jh: var(--series-1); }
+.rv-job:nth-of-type(4n+2) { --jh: var(--series-2); }
+.rv-job:nth-of-type(4n+3) { --jh: var(--series-3); }
+.rv-job:nth-of-type(4n)   { --jh: var(--series-4); }
+
+.rv-job li::marker {
+  color: var(--jh, var(--rv-hl));
+}
+
+.rv-link {
+  color: var(--series-4);
+}
+
+.rv-link:focus-visible {
+  outline-color: color-mix(in srgb, var(--series-4), transparent 35%);
+}
+
+.rv-meta i {
+  color: var(--series-5);
+}
+
+.rv-contact i {
+  color: var(--series-2);
+}
+
+.rv-mode[aria-pressed="true"] i {
+  color: var(--series-1);
+}
+
+html.dev .rv-h::before {
+  color: var(--series-6);
+}
+
+.pi,
+.wm-body > section.pj {
+  --pi-accent: var(--series-1);
+  --pj-accent: var(--series-1);
+}
+
+.pi-item:nth-child(6n+1) { --ih: var(--series-1); }
+.pi-item:nth-child(6n+2) { --ih: var(--series-2); }
+.pi-item:nth-child(6n+3) { --ih: var(--series-3); }
+.pi-item:nth-child(6n+4) { --ih: var(--series-4); }
+.pi-item:nth-child(6n+5) { --ih: var(--series-5); }
+.pi-item:nth-child(6n)   { --ih: var(--series-6); }
+
+.pi-item:not([aria-selected="true"]) i {
+  color: var(--ih, inherit);
+}
+
+.pi-item[aria-selected="true"] {
+  background: var(--ih, var(--pi-accent));
+}
+
+.pi-item[aria-selected="true"] .pi-count {
+  color: var(--ih, var(--pi-accent));
+}
+
+.pi-item:not([aria-selected="true"]):hover {
+  background: color-mix(in srgb, var(--ih, var(--pi-accent)), transparent 88%);
+}
+
+.pi-filter:nth-child(6n+1) { --ih: var(--series-1); }
+.pi-filter:nth-child(6n+2) { --ih: var(--series-2); }
+.pi-filter:nth-child(6n+3) { --ih: var(--series-3); }
+.pi-filter:nth-child(6n+4) { --ih: var(--series-4); }
+.pi-filter:nth-child(6n+5) { --ih: var(--series-5); }
+.pi-filter:nth-child(6n)   { --ih: var(--series-6); }
+
+.pi-filter {
+  border-color: color-mix(in srgb, var(--ih, var(--pi-line)) 40%, var(--pi-line));
+}
+
+.pi-filter:hover {
+  background: color-mix(in srgb, var(--ih, var(--pi-accent)), transparent 88%);
+}
+
+.pi-filter[aria-pressed="true"] {
+  background: var(--ih, var(--pi-accent));
+  border-color: var(--ih, var(--pi-accent));
+}
+
+.pi-feature:nth-child(6n+1) { --ih: var(--series-1); }
+.pi-feature:nth-child(6n+2) { --ih: var(--series-2); }
+.pi-feature:nth-child(6n+3) { --ih: var(--series-3); }
+.pi-feature:nth-child(6n+4) { --ih: var(--series-4); }
+.pi-feature:nth-child(6n+5) { --ih: var(--series-5); }
+.pi-feature:nth-child(6n)   { --ih: var(--series-6); }
+
+.pi-feature i {
+  background: var(--ih, var(--pi-accent));
+}
+
+.pi-feature {
+  border-color: color-mix(in srgb, var(--ih, var(--pi-line)) 28%, var(--pi-line));
+}
+
+.pi .pi-actions .btn-live {
+  background: var(--series-1);
+  border-color: var(--series-1);
+}
+
+.pj-chip:nth-child(6n+1) { --ih: var(--series-1); }
+.pj-chip:nth-child(6n+2) { --ih: var(--series-2); }
+.pj-chip:nth-child(6n+3) { --ih: var(--series-3); }
+.pj-chip:nth-child(6n+4) { --ih: var(--series-4); }
+.pj-chip:nth-child(6n+5) { --ih: var(--series-5); }
+.pj-chip:nth-child(6n)   { --ih: var(--series-6); }
+
+.pj-chip {
+  border-color: color-mix(in srgb, var(--ih, var(--pj-line)) 40%, var(--pj-line));
+}
+
+.pj-chip:hover {
+  background: color-mix(in srgb, var(--ih, var(--pj-accent)), transparent 88%);
+}
+
+.pj-chip[aria-pressed="true"] {
+  background: var(--ih, var(--pj-accent));
+  border-color: var(--ih, var(--pj-accent));
+}
+
+.pj-chip[aria-pressed="true"] span {
+  color: var(--ih, var(--pj-accent));
+}
+
+.pj-card:nth-child(6n+1) { --ch: var(--series-1); }
+.pj-card:nth-child(6n+2) { --ch: var(--series-2); }
+.pj-card:nth-child(6n+3) { --ch: var(--series-3); }
+.pj-card:nth-child(6n+4) { --ch: var(--series-4); }
+.pj-card:nth-child(6n+5) { --ch: var(--series-5); }
+.pj-card:nth-child(6n)   { --ch: var(--series-6); }
+
+.pj-card {
+  border-color: color-mix(in srgb, var(--ch, var(--pj-line)) 26%, var(--pj-line));
+}
+
+.pj-card:hover,
+.pj-card:focus-visible {
+  border-color: var(--ch, var(--pj-line));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 6px 18px color-mix(in srgb, var(--ch, var(--surface-sunken-color)) 22%, transparent);
+}
+
+.pj-open {
+  color: var(--ch, var(--heading-color));
+}
+
+.pj-card:hover .pj-open {
+  text-decoration-color: var(--ch, var(--pj-accent));
+}
+
+.sc {
+  --sc-accent: var(--series-3);
+}
+
+.wm-body > section.sc {
+  --sc-accent: var(--series-3);
+}
+
+.sc-ico-github   { --b: var(--pal-purple); }
+.sc-ico-golance  { --b: var(--pal-orange); }
+
+.sc-wrap > .sc-list:nth-child(2) { --sl: var(--series-1); }
+.sc-wrap > .sc-list:nth-child(4) { --sl: var(--series-2); }
+.sc-wrap > .sc-list:nth-child(6) { --sl: var(--series-3); }
+
+.sc-list {
+  border-color: color-mix(in srgb, var(--sl, var(--sc-line)) 30%, var(--sc-line));
+}
+
+.sc-row:hover,
+.sc-row:focus-within {
+  background: color-mix(in srgb, var(--sl, var(--sc-accent)) 9%, var(--surface-color));
+}
+
+.sc-row:nth-child(4n+1) .sc-ico { --b: var(--series-1); }
+.sc-row:nth-child(4n+2) .sc-ico { --b: var(--series-2); }
+.sc-row:nth-child(4n+3) .sc-ico { --b: var(--series-3); }
+.sc-row:nth-child(4n)   .sc-ico { --b: var(--series-4); }
+
+.sc-row .sc-ico.sc-ico-github   { --b: var(--pal-purple); }
+.sc-row .sc-ico.sc-ico-linkedin { --b: var(--pal-blue); }
+.sc-row .sc-ico.sc-ico-upwork   { --b: var(--pal-green); }
+.sc-row .sc-ico.sc-ico-golance  { --b: var(--pal-orange); }
+
+.sc-label {
+  color: var(--heading-color);
+}
+
+.dotfiles:focus-within .df-search i {
+  color: var(--series-5);
+}
+
+.df-arrow:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--series-5), transparent 84%);
+}
+
+.df-cta-name {
+  color: var(--series-5);
+}
+
+.df-cta:focus-visible {
+  background: color-mix(in srgb, var(--series-5), transparent 92%);
+}
+
+.df-file:nth-child(6n+1) { --dfc: var(--series-1); }
+.df-file:nth-child(6n+2) { --dfc: var(--series-2); }
+.df-file:nth-child(6n+3) { --dfc: var(--series-3); }
+.df-file:nth-child(6n+4) { --dfc: var(--series-4); }
+.df-file:nth-child(6n+5) { --dfc: var(--series-5); }
+.df-file:nth-child(6n)   { --dfc: var(--series-6); }
+
+.df-file:hover {
+  color: var(--dfc, var(--default-color));
+}
+
+.df-file[aria-selected="true"] {
+  background: var(--dfc, var(--accent-highlight));
+}
+
+.df-list li:hover {
+  box-shadow: inset 2px 0 0 var(--cat, var(--accent-highlight));
+}
+
+.adr-hire li:nth-child(4n+1) { --a: var(--series-1); }
+.adr-hire li:nth-child(4n+2) { --a: var(--series-2); }
+.adr-hire li:nth-child(4n+3) { --a: var(--series-3); }
+.adr-hire li:nth-child(4n)   { --a: var(--series-4); }
+
+.adr-hob li:nth-child(4n+1) { --a: var(--series-1); }
+.adr-hob li:nth-child(4n+2) { --a: var(--series-2); }
+.adr-hob li:nth-child(4n+3) { --a: var(--series-3); }
+.adr-hob li:nth-child(4n)   { --a: var(--series-4); }
+
+.adr-hobtabs button:nth-child(6n+1) { --a: var(--series-1); }
+.adr-hobtabs button:nth-child(6n+2) { --a: var(--series-2); }
+.adr-hobtabs button:nth-child(6n+3) { --a: var(--series-3); }
+.adr-hobtabs button:nth-child(6n+4) { --a: var(--series-4); }
+.adr-hobtabs button:nth-child(6n+5) { --a: var(--series-5); }
+.adr-hobtabs button:nth-child(6n)   { --a: var(--series-6); }
+
+.adr-dock > :nth-child(6n+1) { --a: var(--series-1); }
+.adr-dock > :nth-child(6n+2) { --a: var(--series-2); }
+.adr-dock > :nth-child(6n+3) { --a: var(--series-3); }
+.adr-dock > :nth-child(6n+4) { --a: var(--series-4); }
+.adr-dock > :nth-child(6n+5) { --a: var(--series-5); }
+.adr-dock > :nth-child(6n)   { --a: var(--series-6); }
+
+.adr-actions > :nth-child(3n+1) { --a: var(--series-1); }
+.adr-actions > :nth-child(3n+2) { --a: var(--series-2); }
+.adr-actions > :nth-child(3n)   { --a: var(--series-3); }
+
+.adr-n:nth-child(4n+1) { --a: var(--series-1); }
+.adr-n:nth-child(4n+2) { --a: var(--series-2); }
+.adr-n:nth-child(4n+3) { --a: var(--series-3); }
+.adr-n:nth-child(4n)   { --a: var(--series-4); }
+
+.adr-heads > i {
+  background: var(--series-2);
+}
+
+.adr-hero h1 span {
+  color: var(--pal-orange);
+}
+
+.stats .stats-item:nth-child(1) .icon-wrapper { background-color: color-mix(in srgb, var(--series-1), transparent 85%); }
+.stats .stats-item:nth-child(1) .icon-wrapper i { color: var(--series-1); }
+.stats .stats-item:nth-child(2) .icon-wrapper { background-color: color-mix(in srgb, var(--series-2), transparent 85%); }
+.stats .stats-item:nth-child(2) .icon-wrapper i { color: var(--series-2); }
+.stats .stats-item:nth-child(3) .icon-wrapper { background-color: color-mix(in srgb, var(--series-3), transparent 85%); }
+.stats .stats-item:nth-child(3) .icon-wrapper i { color: var(--series-3); }
+.stats .stats-item:nth-child(4) .icon-wrapper { background-color: color-mix(in srgb, var(--series-4), transparent 85%); }
+.stats .stats-item:nth-child(4) .icon-wrapper i { color: var(--series-4); }
+
+.orbit-sys .tw:nth-child(6)  { --c: var(--pal-blue); }
+.orbit-sys .tw:nth-child(9)  { --c: var(--pal-purple); }
+.orbit-sys .tw:nth-child(12) { --c: var(--pal-orange); }
+.orbit-sys .tw:nth-child(16) { --c: var(--pal-cyan); }

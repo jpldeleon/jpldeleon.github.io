@@ -154,9 +154,9 @@
 .wm-btn:active::before { filter: brightness(0.9); transform: translate(-50%, -50%) scale(0.92); }
 .wm-btn:focus-visible { outline: 2px solid var(--accent-highlight); outline-offset: 1px; }
 
-.wm-min   { --dot: #fdd663; }
-.wm-max   { --dot: #81c995; }
-.wm-close { --dot: #f28b82; }
+.wm-min   { --dot: var(--cmd-minimize); }
+.wm-max   { --dot: var(--cmd-maximize); }
+.wm-close { --dot: var(--cmd-close); }
 
 /* Unfocused windows: dots go neutral until the pointer is on them */
 .wm-window:not(.is-focused) .wm-btn:not(:hover)::before { background: color-mix(in srgb, var(--default-color), transparent 72%); }
