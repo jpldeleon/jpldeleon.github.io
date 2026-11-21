@@ -11,7 +11,7 @@
    * ===================================================================== */
 
   /* Apps (Resume, Portfolio, Socials). Hobbies & Interests is no longer a window:
-     it is a top-panel applet (#df-pop, assets/js/dotfiles.js).
+     it is a tab of the clock applet (#clock-popover, assets/js/dotfiles.js).
      `adopt` = an existing <section> on the page that is moved
      into the window (so your current Resume/Portfolio markup is reused as-is).
      `url` = optional iframe fallback if that section isn't on the page. */
@@ -1152,73 +1152,29 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
         });
         /* phones show only the time (CSS reads data-short) */
         clock.setAttribute('data-short', now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
-        clock.title = isMobile() ? 'Why hire me' : 'Calendar';
+        clock.title = 'Why hire me and hobbies';
       };
       tick();
       setInterval(tick, 15000);
     }
-    initCalendar();
+    initClockApplet();
   }
 
-  /* Calendar applet (right pane of the clock popover). Sunday-first month grid. */
-  function initCalendar() {
-    const grid = document.getElementById('cal-grid');
-    if (!grid) return;
-    const title = document.getElementById('cal-title'), dateLine = document.getElementById('cal-date');
-    const same = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-    const monthStart = () => { const d = new Date(); d.setDate(1); return d; };
-    let view = monthStart();
-    function render() {
-      const today = new Date();
-      dateLine.textContent = today.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-      title.textContent = view.toLocaleDateString([], { month: 'long', year: 'numeric' });
-      const start = new Date(view.getFullYear(), view.getMonth(), 1 - new Date(view.getFullYear(), view.getMonth(), 1).getDay());
-      let out = '';
-      for (let i = 0; i < 42; i++) {
-        const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
-        const t = same(d, today);
-        out += '<span class="cp-day' + (d.getMonth() !== view.getMonth() ? ' is-out' : '') + (t ? ' is-today' : '') +
-          '" role="gridcell"' + (t ? ' aria-current="date"' : '') + '>' + d.getDate() + '</span>';
-      }
-      grid.innerHTML = out;
-    }
-    const shift = n => { view = new Date(view.getFullYear(), view.getMonth() + n, 1); render(); };
-    document.getElementById('cal-prev').addEventListener('click', () => shift(-1));
-    document.getElementById('cal-next').addEventListener('click', () => shift(1));
-    document.getElementById('cal-today').addEventListener('click', () => { view = monthStart(); render(); });
-    document.getElementById('panel-clock').addEventListener('click', () => { view = monthStart(); render(); tickClock(); });
-    render();
-
-    /* Left pane: live clock + date above the existing "Why hire me" content and buttons.
-       The date element (#cal-date) moves here, so render() keeps updating it. */
-    const pop = document.querySelector('.clock-popover'), why = pop && pop.querySelector('.cp-why');
-    let timeEl = null;
-    if (why && !why.querySelector('.cp-clock')) {
-      const box = el('div', { class: 'cp-clock' },
-        '<time class="cp-time" id="cp-time"></time><span class="cp-tz"></span>');
-      box.querySelector('.cp-tz').textContent = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').replace(/_/g, ' ');
-      if (dateLine) box.insertBefore(dateLine, box.querySelector('.cp-tz'));
-      why.prepend(box);
-      timeEl = box.querySelector('#cp-time');
-    }
-    const timeFmt = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  function initClockApplet() {
+    const timeEl = document.getElementById('cp-time'), dateLine = document.getElementById('cal-date');
+    const pop = document.getElementById('clock-popover');
+    if (!timeEl || !pop) return;
+    const timeFmt = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' });
     function tickClock() {
-      if (!timeEl) return;
       const now = new Date(), v = {};
       timeFmt.formatToParts(now).forEach(p => { v[p.type] = p.value; });
-      timeEl.innerHTML = '<span class="t-main">' + v.hour + ':' + v.minute + '</span>' +
-        '<span class="t-sec">' + v.second + '</span>' + (v.dayPeriod ? '<span class="t-ap">' + v.dayPeriod + '</span>' : '');
+      timeEl.innerHTML = '<span class="t-main">' + v.hour + ':' + v.minute + '</span>' + (v.dayPeriod ? '<span class="t-ap">' + v.dayPeriod + '</span>' : '');
       timeEl.setAttribute('datetime', now.toISOString());
-      dateLine.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      if (dateLine) dateLine.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
     }
-    /* Window bar, same language as the About card */
-    if (pop && !pop.querySelector('.cp-bar')) {
-      pop.prepend(el('div', { class: 'cp-bar', 'aria-hidden': 'true' },
-        '<span class="ab-dots"><i></i><i></i><i></i></span><span class="cp-bar-title">Why hire me &amp; calendar</span>'));
-    }
-
+    document.getElementById('panel-clock').addEventListener('click', tickClock);
     tickClock();
-    setInterval(() => { if (pop && !pop.hidden) tickClock(); }, 1000);   // only runs while the popover is open
+    setInterval(() => { if (!pop.hidden) tickClock(); }, 1000);
   }
 
   /* =====================================================================

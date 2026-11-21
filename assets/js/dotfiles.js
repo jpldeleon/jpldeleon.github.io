@@ -1,7 +1,7 @@
 /**
- * Hobbies & Interests (dotfiles) applet, Linux Mint menu style: a small popover above the
- * taskbar icon with a search entry on top, categories on the left, content on the right. Vanilla JS. Not a window app: it no
- * longer goes through app.js, app.js owns open/close; this file wires the two panes.
+ * Hobbies & Interests: a tab inside the clock applet (#clock-popover), next to Why hire me.
+ * Search entry on top, categories on the left, content on the right. Vanilla JS.
+ * app.js owns open/close of the applet; this file wires the two tabs and the hobbies panes.
  */
 (function () {
   'use strict';
@@ -14,6 +14,7 @@
   const panes = Array.prototype.slice.call(root.querySelectorAll('.df-pane'));
   const view = root.querySelector('.df-view');
   const wrap = root.querySelector('.df-wrap');
+  const files = root.querySelector('.df-files');
   const esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
   /* Font Awesome icon for a hobby, picked from keywords in its name (first match wins) */
@@ -79,6 +80,39 @@
     view.appendChild(results);
   }
 
+  let syncArrows = function () {};
+  if (files && files.parentNode) {
+    const cats = document.createElement('div');
+    cats.className = 'df-cats';
+    const arrow = function (dir, icon, label) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'df-arrow';
+      b.tabIndex = -1;
+      b.setAttribute('aria-label', label);
+      b.innerHTML = '<i class="fa-solid ' + icon + '" aria-hidden="true"></i>';
+      b.addEventListener('click', function () {
+        files.scrollBy({ left: dir * Math.max(120, files.clientWidth * 0.7), behavior: 'smooth' });
+      });
+      return b;
+    };
+    const prev = arrow(-1, 'fa-chevron-left', 'Scroll categories left');
+    const next = arrow(1, 'fa-chevron-right', 'Scroll categories right');
+    files.parentNode.insertBefore(cats, files);
+    cats.appendChild(prev);
+    cats.appendChild(files);
+    cats.appendChild(next);
+    syncArrows = function () {
+      const max = files.scrollWidth - files.clientWidth;
+      cats.classList.toggle('is-scrollable', max > 1);
+      prev.disabled = files.scrollLeft <= 1;
+      next.disabled = files.scrollLeft >= max - 1;
+    };
+    files.addEventListener('scroll', syncArrows, { passive: true });
+    window.addEventListener('resize', syncArrows);
+    if (window.ResizeObserver) new ResizeObserver(syncArrows).observe(files);
+  }
+
   function current() {
     return tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0];
   }
@@ -120,7 +154,7 @@
   if (input) {
     input.addEventListener('input', search);
     input.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && clearSearch()) { e.stopPropagation(); e.preventDefault(); }   // first Esc clears, the next one closes the applet
+      if (e.key === 'Escape' && clearSearch()) { e.stopPropagation(); e.preventDefault(); }
       else if (e.key === 'ArrowDown') { e.preventDefault(); const cur = current(); if (cur) cur.focus(); }
     });
   }
@@ -134,21 +168,44 @@
     });
     panes.forEach(function (p) { p.hidden = p.id !== tab.getAttribute('aria-controls'); });
     if (view) view.scrollTop = 0;
-    if (focus) tab.focus();
+    if (files) files.scrollTo({ left: tab.offsetLeft - (files.clientWidth - tab.offsetWidth) / 2, behavior: 'smooth' });
+    if (focus) tab.focus({ preventScroll: true });
   }
 
-  /* Open/close, outside click and Escape are handled by app.js initPanel()
-     (the applet is a .panel-menu with a .panel-popover). Here we only move focus
-     to the active file when the popover opens. */
-  const btn = document.getElementById('panel-dotfiles-btn');
-  const pop = document.getElementById('df-pop');
-  if (btn && pop) {
-    btn.addEventListener('click', function () {
+  const hubTabs = Array.prototype.slice.call(document.querySelectorAll('.hub-tab'));
+  const clockBtn = document.getElementById('panel-clock');
+  const clockPop = document.getElementById('clock-popover');
+
+  function hubSelect(tab, focus) {
+    hubTabs.forEach(function (t) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      const p = document.getElementById(t.getAttribute('aria-controls'));
+      if (p) p.hidden = !on;
+    });
+    if (tab.id === 'hub-tab-hobbies' && input) input.focus({ preventScroll: true });
+    else if (focus) tab.focus();
+  }
+
+  hubTabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { hubSelect(t, false); });
+    t.addEventListener('keydown', function (e) {
+      let n = i;
+      if (e.key === 'ArrowRight') n = (i + 1) % hubTabs.length;
+      else if (e.key === 'ArrowLeft') n = (i - 1 + hubTabs.length) % hubTabs.length;
+      else return;
+      e.preventDefault();
+      hubSelect(hubTabs[n], true);
+    });
+  });
+
+  if (clockBtn && clockPop) {
+    clockBtn.addEventListener('click', function () {
       setTimeout(function () {
-        if (pop.hidden) return;
-        if (input) { input.focus({ preventScroll: true }); return; }   // like the Mint menu: opens with the search entry ready
-        const cur = current();
-        if (cur) cur.focus({ preventScroll: true });
+        if (clockPop.hidden || !input) return;
+        const hob = document.getElementById('hub-tab-hobbies');
+        if (hob && hob.getAttribute('aria-selected') === 'true') input.focus({ preventScroll: true });
       }, 0);
     });
   }

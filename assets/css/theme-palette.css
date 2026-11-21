@@ -1,0 +1,256 @@
+/*--------------------------------------------------------------
+# Theme palette: applies each theme's extended colours
+# Load LAST. The colours themselves are defined per theme in main.css
+# (--pal-*, --series-*, --border-*, --muted-color, --link-color, ...), so
+# every rule here is theme-agnostic. Delete this file to go back to the
+# single-accent look; nothing else depends on it.
+--------------------------------------------------------------*/
+
+/* ---------- 1. Global: selection, links, keyboard focus ---------- */
+::selection {
+  background: var(--selection-bg-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+/* :where() adds no specificity, so it only fills gaps; components that
+   already style their own focus ring keep it. */
+:where(a, button, [role="button"], [role="tab"], input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* ---------- 2. Shared surfaces: official border tones ---------- */
+:root {
+  --applet-hairline: color-mix(in srgb, var(--border-strong-color) 70%, transparent);
+  --hero-hairline: var(--applet-hairline);
+}
+
+.panel-dropdown,
+.panel-popover {
+  border-color: color-mix(in srgb, var(--accent-highlight) 30%, var(--border-strong-color));
+}
+
+.clock-popover {
+  --cp-line: color-mix(in srgb, var(--accent-highlight) 22%, var(--border-color));
+}
+
+/* ---------- 3. Notifications: meaning, not decoration ---------- */
+.notif-badge {
+  background: var(--danger-color);
+  color: var(--surface-sunken-color);
+}
+
+.notif-item.is-unread::before {
+  background: var(--info-color);
+}
+
+.notif-head,
+.notif-item {
+  border-bottom-color: var(--border-color);
+}
+
+.notif-time {
+  color: var(--muted-color);
+  opacity: 1;
+}
+
+/* ---------- 4. Calendar: weekends read as "off", today stays the accent ---------- */
+.cp-day:nth-child(7n+1):not(.is-today),
+.cp-day:nth-child(7n):not(.is-today) {
+  color: var(--pal-red);
+}
+
+.cp-day.is-today {
+  color: var(--on-accent-color);
+}
+
+/* ---------- 5. Hero card: code-style role line + availability ---------- */
+html body .role-code .role-string .brace,
+html body .role-code .role-string .quote {
+  color: var(--pal-orange);
+}
+
+html body .hero-sidebar .role-code .role-comment,
+html body .hero-sidebar .role-code .role-comment .typed,
+html body .hero-sidebar .role-code .role-comment .typed-cursor,
+html body .role-code .role-comment,
+html body .role-code .role-comment .typed,
+html body .role-code .role-comment .typed-cursor {
+  color: var(--muted-color);
+}
+
+.open-dot,
+.wh-dot,
+.top-panel .clock-popover .wh-dot,
+html body .hero-sidebar.hero-applet .sidebar-open .open-dot,
+html body .sidebar-open .open-dot {
+  background: var(--success-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success-color) 28%, transparent);
+}
+
+/* About tags: three hues, low-alpha tints, so the row has rhythm without noise */
+.ab-tags li:nth-child(3n+1) { --tg: var(--series-1); }
+.ab-tags li:nth-child(3n+2) { --tg: var(--series-2); }
+.ab-tags li:nth-child(3n)   { --tg: var(--series-3); }
+
+html body .ab-tags li,
+html body .hero-sidebar.hero-applet .ab-tags li {
+  --tg: var(--series-1);
+  color: var(--tg);
+  background: color-mix(in srgb, var(--tg) 6%, transparent);
+  border-color: color-mix(in srgb, var(--tg) 38%, transparent);
+}
+
+/* ---------- 6. Conky monitors: one hue per entry ---------- */
+/* Experience: the current job is "live" (success); earlier jobs cycle three hues */
+.exp-widget .cky-block:nth-of-type(3n+1) .cky-bar { --bar: var(--series-1); }
+.exp-widget .cky-block:nth-of-type(3n+2) .cky-bar { --bar: var(--series-2); }
+.exp-widget .cky-block:nth-of-type(3n)   .cky-bar { --bar: var(--series-3); }
+
+.exp-widget .cky-block:first-of-type .cky-bar > i,
+.exp-widget .cky-block:nth-of-type(2) .cky-bar > i {
+  --bar: var(--success-color);
+}
+
+/* Skills: each group gets a hue for its status dots and label */
+.skl-widget .cky-block:nth-of-type(5n+2) { --grp: var(--series-1); }
+.skl-widget .cky-block:nth-of-type(5n+3) { --grp: var(--series-2); }
+.skl-widget .cky-block:nth-of-type(5n+4) { --grp: var(--series-3); }
+.skl-widget .cky-block:nth-of-type(5n+5) { --grp: var(--series-4); }
+.skl-widget .cky-block:nth-of-type(5n+6) { --grp: var(--series-5); }
+
+.skl-widget .cky-block .skl-dot {
+  background: var(--grp, var(--accent-highlight));
+}
+
+.skl-widget .cky-block .cky-label {
+  color: var(--grp, var(--accent-highlight));
+}
+
+.skl-desc,
+.cky-sub-row {
+  color: var(--muted-color);
+}
+
+/* ---------- 7. Hobbies menu: a hue per category ---------- */
+#df-pane-tech       { --cat: var(--series-1); }
+#df-pane-creative   { --cat: var(--series-2); }
+#df-pane-adventures { --cat: var(--series-3); }
+#df-pane-gaming     { --cat: var(--series-4); }
+#df-pane-music      { --cat: var(--series-5); }
+#df-pane-dogs       { --cat: var(--series-6); }
+#df-pane-watchlist  { --cat: var(--series-2); }
+#df-pane-bucketlist { --cat: var(--series-3); }
+#df-pane-career     { --cat: var(--series-1); }
+#df-pane-personal   { --cat: var(--series-5); }
+
+.df-list li > i {
+  background: color-mix(in srgb, var(--cat, var(--accent-highlight)) 18%, transparent);
+  color: var(--cat, var(--accent-highlight));
+}
+
+.df-list li:hover {
+  background: color-mix(in srgb, var(--cat, var(--accent-highlight)) 12%, transparent);
+}
+
+.df-file {
+  color: var(--muted-color);
+}
+
+.df-file:hover {
+  color: var(--default-color);
+}
+
+.df-file[aria-selected="true"] {
+  color: var(--on-accent-color);
+}
+
+.df-files,
+.df-search,
+.df-cta {
+  border-color: var(--border-color);
+}
+
+/* ---------- 8. Content windows: Resume, Projects, Socials ---------- */
+.rv {
+  --rv-line: var(--border-color);
+  --rv-line-strong: var(--border-strong-color);
+  --rv-dim: var(--muted-color);
+  --rv-on-hl: var(--on-accent-color);
+}
+
+.pi {
+  --pi-line: var(--border-color);
+  --pi-dim: var(--muted-color);
+  --pi-on-accent: var(--on-accent-color);
+}
+
+.wm-body > section.pj {
+  --pj-line: var(--border-color);
+  --pj-on-accent: var(--on-accent-color);
+}
+
+.wm-body > section.sc {
+  --sc-line: var(--border-color);
+  --sc-line-strong: var(--border-strong-color);
+}
+
+/* Resume: card icon chips and dates take their own hues */
+.rv-card:nth-of-type(4n+1) h3 i { --ic: var(--series-1); }
+.rv-card:nth-of-type(4n+2) h3 i { --ic: var(--series-2); }
+.rv-card:nth-of-type(4n+3) h3 i { --ic: var(--series-3); }
+.rv-card:nth-of-type(4n)   h3 i { --ic: var(--series-4); }
+
+.rv-card h3 i {
+  color: var(--ic, var(--rv-hl));
+  background: color-mix(in srgb, var(--ic, var(--rv-hl)) 16%, transparent);
+}
+
+.rv-when {
+  color: var(--pal-cyan);
+}
+
+.rv-contact a,
+.rv-meta a,
+.rv-contact .contact-info-copy {
+  color: var(--link-color);
+}
+
+.rv-contact a:hover,
+.rv-meta a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Project tags: the same three-hue rhythm as the About tags */
+.pj-tags span:nth-child(3n+1) { --tg: var(--series-1); }
+.pj-tags span:nth-child(3n+2) { --tg: var(--series-2); }
+.pj-tags span:nth-child(3n)   { --tg: var(--series-3); }
+
+.pj-tags span {
+  --tg: var(--series-1);
+  color: var(--tg);
+  background: color-mix(in srgb, var(--tg) 6%, transparent);
+  border-color: color-mix(in srgb, var(--tg) 34%, transparent);
+}
+
+/* Socials: brand icons recoloured from the theme instead of brand blue/green */
+.sc-ico-linkedin { --b: var(--pal-blue); }
+.sc-ico-upwork   { --b: var(--pal-green); }
+
+/* ---------- 9. Phone layout: tonal icon circles + chips follow the same hues ---------- */
+.adr-sheet .pj-tags span {
+  background: color-mix(in srgb, var(--tg) 9%, transparent);
+}
+
+/* Search entries draw their own focus border + glow; skip the generic ring */
+.df-q:focus-visible,
+.taskbar-search input:focus-visible {
+  outline: none;
+}

@@ -1,213 +1,152 @@
-/*--------------------------------------------------------------
-# Hobbies & Interests applet (popover above the taskbar icon), Linux Mint menu style
-# Load AFTER desktop.css. Colours come from the theme variables, so every theme
-# (Everforest, Aurora, Gruvbox, Monokai, Dracula) follows automatically.
-# Like the Mint menu: search entry on top, categories on the left with a solid
-# accent selection (Mint-Y), launcher-style rows on the right, a launcher row below.
---------------------------------------------------------------*/
-
-/* ----- popover shell: placed exactly like the clock applet -----
-   desktop.css anchors the clock popover to the panel itself (position: static on
-   its .panel-menu), so "bottom: calc(100% + 8px)" is measured from the top edge of the
-   taskbar, not from the small button. Same here, so the gap above the bar matches. */
-.panel-dotfiles-menu,
-.panel-menu:has(> .df-popover) { position: static; }
-
-.top-panel .panel-popover.df-popover {
-  z-index: 5002;
-  box-sizing: border-box;
-  width: min(480px, calc(100vw - 16px));
-  height: auto;
-  top: auto;
-  bottom: calc(100% + 8px);
-  max-height: calc(100dvh - var(--taskbar-space, 56px) - 16px);
-  padding: 0;
-  border: 0;
-  outline: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, .42);
-  transform-origin: bottom right;
-  transition: transform 0.28s var(--lx-ease, ease), opacity 0.2s ease, visibility 0s linear 0s;
-}
-
-/* same open/close motion as the clock: slide up + fade in, slide down + fade out */
-.top-panel .panel-popover.df-popover[hidden] {
-  display: block;
-  transform: translateY(22px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: transform 0.26s ease, opacity 0.2s ease, visibility 0s linear 0.26s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .top-panel .panel-popover.df-popover,
-  .top-panel .panel-popover.df-popover[hidden] { transition: none; }
-}
-
-#panel-dotfiles-btn[aria-expanded="true"] {
-  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
-  color: var(--accent-highlight);
-}
-
-/* ----- the window content ----- */
 .dotfiles {
-  container-type: inline-size;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
   background: transparent;
   color: var(--default-color);
   font-family: inherit;
-  font-size: var(--fs-base, 14px);
-  line-height: 1.5;
-  padding: 0;            /* the applet is a <section>: cancel main.css's `section { padding: 60px 0 }` */
-  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
-.top-panel .panel-popover .dotfiles { padding: 0; margin: 0; }
+.df-wrap { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
 
-.df-wrap {
-  display: grid;
-  grid-template-columns: 156px minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  grid-template-areas: "search search" "files view" "cta cta";
-  height: min(372px, calc(100dvh - var(--taskbar-space, 56px) - 16px));   /* fixed size: every category is the same height, long ones scroll */
-}
-
-/* ----- top: search entry (like the Mint menu) ----- */
 .df-search {
-  grid-area: search;
+  flex: none;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px;
-  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
-  background: color-mix(in srgb, var(--default-color), transparent 96%);
+  padding: 10px 18px 6px;
 }
-.df-search i { flex: none; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.df-search i { flex: none; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); transition: color .15s ease; }
+.dotfiles:focus-within .df-search i { color: var(--accent-highlight); }
 .df-q {
   flex: 1;
   min-width: 0;
-  height: 28px;
-  padding: 0 10px;
-  border: 1px solid color-mix(in srgb, var(--default-color), transparent 86%);
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--background-color, #000), transparent 55%);
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   color: var(--default-color);
   font: inherit;
   font-size: 13px;
   outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
 }
-.df-q::placeholder { color: color-mix(in srgb, var(--default-color), transparent 55%); }
-.df-q:focus { border-color: var(--accent-highlight); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-highlight), transparent 82%); }
-.dotfiles:focus-within .df-search i { color: var(--accent-highlight); }
+.df-q::placeholder { color: color-mix(in srgb, var(--default-color), transparent 50%); }
 
-/* ----- left: categories ----- */
-.df-files {
-  grid-area: files;
+.df-cats {
+  flex: none;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 2px;
-  padding: 8px;
-  overflow-y: auto;
-  background: color-mix(in srgb, var(--default-color), transparent 96%);
-  border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  padding: 2px 12px 10px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
 }
-
-.df-file {
-  display: block;
-  width: 100%;
-  padding: 7px 10px;
+.df-files {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.df-files::-webkit-scrollbar { display: none; }
+.df-arrow {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
   border: 0;
-  border-radius: 6px;
+  border-radius: 50%;
   background: transparent;
-  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  box-shadow: none;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+  font-size: 10px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, opacity .15s ease;
+}
+.df-arrow:hover:not(:disabled) { background: color-mix(in srgb, var(--accent-highlight), transparent 84%); color: var(--accent-highlight); }
+.df-arrow:disabled { opacity: .25; cursor: default; }
+.df-cats:not(.is-scrollable) .df-arrow { display: none; }
+.df-file {
+  appearance: none;
+  flex: none;
+  padding: 3px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
   font: inherit;
-  font-size: 13px;
-  text-align: left;
+  font-size: 12px;
+  white-space: nowrap;
   cursor: pointer;
   transition: background .15s ease, color .15s ease;
 }
-.df-file:hover { background: color-mix(in srgb, var(--default-color), transparent 91%); color: var(--default-color); }
+.df-file:hover { color: var(--default-color); background: color-mix(in srgb, var(--default-color), transparent 92%); }
 .df-file:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent-highlight), transparent 30%); outline-offset: -2px; color: var(--default-color); }
-
-/* Mint-Y: the selected category is a solid accent block */
 .df-file[aria-selected="true"] {
-  background: var(--accent-highlight);
-  color: var(--background-color, #111);
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
   font-weight: 600;
 }
-.dotfiles.is-searching .df-file[aria-selected="true"] {   /* while searching, nothing is "selected" */
+.dotfiles.is-searching .df-file[aria-selected="true"] {
   background: transparent;
-  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
   font-weight: inherit;
 }
 
-/* ----- right: only the active pane is shown ----- */
 .df-view {
-  grid-area: view;
+  flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 10px 12px;
-}
-
-/* thin scrollbars in the theme colour, only visible when a pane is longer than the applet */
-.df-files,
-.df-view {
+  padding: 10px 18px;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--accent-highlight), transparent 35%) transparent;
 }
-
 .df-pane[hidden] { display: none; }
 .df-pane:focus { outline: none; }
 
-/* category title / group label, like the heading above the application list */
-.df-desc {
-  margin: 0 0 6px 4px;
-  font-size: 11px;
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--default-color), transparent 42%);
-}
-.df-results .df-desc { margin-top: 8px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-highlight); }
+.df-desc { margin: 0 0 8px; font-size: 12px; line-height: 1.45; color: color-mix(in srgb, var(--default-color), transparent 30%); }
+.df-results .df-desc { margin-top: 12px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-highlight); }
 .df-results .df-desc:first-child { margin-top: 0; }
-.df-empty { margin: 14px 4px; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+.df-empty { margin: 14px 0; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 30%); }
 
-/* launcher rows: a rounded-square badge with a Font Awesome icon (set by dotfiles.js) + the name */
-.df-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1px; }
+.df-list { margin: 0; padding: 0; list-style: none; }
 .df-list li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px 8px 4px 6px;
-  border-radius: 6px;
+  gap: 12px;
+  padding: 6px 0;
   font-size: 13px;
   color: var(--heading-color, var(--default-color));
-  transition: background .12s ease;
 }
-.df-list li:hover { background: color-mix(in srgb, var(--accent-highlight), transparent 86%); }
-.df-list li > i {
-  flex: none;
-  width: 24px;
-  height: 24px;
-  display: grid;
-  place-items: center;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--accent-highlight), transparent 80%);
-  color: var(--accent-highlight);
-  font-size: 12px;
-  line-height: 1;
-}
+.df-list li + li { border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 93%); }
+.df-list li > i { flex: none; width: 18px; text-align: center; font-size: 13px; line-height: 1; color: var(--accent-highlight); }
 
-/* ----- footer launcher row: John Off the Wall (spans both columns) ----- */
 .df-cta {
-  grid-area: cta;
+  flex: none;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  padding: 9px 16px 10px;
+  padding: 10px 18px 12px;
   border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
   color: var(--default-color);
   text-decoration: none;
@@ -215,29 +154,11 @@
   transition: background .15s ease;
 }
 .df-cta:hover,
-.df-cta:focus-visible { background: color-mix(in srgb, var(--accent-highlight), transparent 90%); outline: none; }
-
+.df-cta:focus-visible { background: color-mix(in srgb, var(--accent-highlight), transparent 92%); outline: none; }
 .df-cta-name { white-space: nowrap; font-weight: 600; color: var(--accent-highlight); }
-.df-cta-desc { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.55; transition: opacity .15s ease; }
+.df-cta-desc { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: color-mix(in srgb, var(--default-color), transparent 30%); }
 .df-cta-desc::after { content: " \2192"; }
-.df-cta:hover .df-cta-desc,
-.df-cta:focus-visible .df-cta-desc { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .df-file, .df-cta, .df-cta-desc, .df-q, .df-list li { transition: none; }
-}
-
-/* narrow window: categories become a scrolling row of pills under the search entry */
-@container (max-width: 460px) {
-  .df-wrap { grid-template-columns: 1fr; grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: "search" "files" "view" "cta"; }
-  .df-files {
-    flex-direction: row;
-    padding: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-right: 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
-  }
-  .df-file { width: auto; flex: none; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
-  .df-view { padding: 10px 12px; }
+  .df-file, .df-cta, .df-search i, .df-arrow { transition: none; }
 }

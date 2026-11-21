@@ -25,8 +25,8 @@
 (function () {
   'use strict';
 
-  if (window.top !== window.self) return;            // never run inside a project iframe
-  if (window.__notifCenterReady) return;             // never bind twice
+  if (window.top !== window.self) return;
+  if (window.__notifCenterReady) return;
   const btn = document.getElementById('panel-bell-btn');
   const pop = document.getElementById('notif-pop');
   if (!btn || !pop) return;
@@ -77,7 +77,7 @@
   const VOLUME = 0.2;
   const reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   let soundOn = true;
-  try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) { /* private mode */ }
+  try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) { }
 
   /* bell shake */
   const bellStyle = document.createElement('style');
@@ -93,7 +93,7 @@
     const icon = btn.querySelector('i');
     if (!icon) return;
     icon.classList.remove('is-ringing');
-    void icon.offsetWidth;                            // restart the animation if it is already running
+    void icon.offsetWidth;
     icon.classList.add('is-ringing');
     icon.addEventListener('animationend', () => icon.classList.remove('is-ringing'), { once: true });
   }
@@ -125,21 +125,20 @@
     o.connect(g); g.connect(master);
     o.start(t); o.stop(t + dur + 0.05);
   }
-  function bell(freq, at, dur, vol) {                 // a soft bell: fundamental plus a quiet octave and a fifth above
+  function bell(freq, at, dur, vol) {
     tone(freq, at, dur, vol);
-    tone(freq * 2, at, dur * 0.6, vol * 0.25);
-    tone(freq * 3, at, dur * 0.35, vol * 0.08);
+    tone(freq * 2, at, dur * 0.5, vol * 0.1);
   }
   const SYNTH = {
-    notify: () => { bell(1174.66, 0, 0.55, 0.5); bell(1567.98, 0.13, 0.8, 0.5); },                       // D6, G6
-    exit: () => {                                                                                      // goodbye: a falling phrase that settles on a low note
-      [1046.5, 783.99, 659.25, 523.25].forEach((f, i) => bell(f, i * 0.16, 0.9, 0.4));                 // C6 G5 E5 C5
-      tone(130.81, 0.45, 1.2, 0.22, 'triangle');                                                       // C3
+    notify: () => { bell(493.88, 0, 0.6, 0.5); bell(659.25, 0.14, 0.9, 0.5); },
+    exit: () => {
+      [523.25, 392, 329.63, 261.63].forEach((f, i) => bell(f, i * 0.16, 0.9, 0.4));
+      tone(98, 0.45, 1.2, 0.22, 'triangle');
     },
-    welcome: () => {                                                                                   // hello: a warm swell, then one high bell
-      [220, 329.63, 440].forEach(f => tone(f, 0, 1.5, 0.22, 'triangle'));                              // A3, E4, A4 pad
-      bell(1174.66, 0.35, 1.1, 0.4);                                                                   // D6
-      bell(1760, 0.6, 1.0, 0.3);                                                                       // A6
+    welcome: () => {
+      [110, 164.81, 220].forEach(f => tone(f, 0, 1.5, 0.22, 'triangle'));
+      bell(587.33, 0.35, 1.1, 0.4);
+      bell(783.99, 0.6, 1.0, 0.3);
     }
   };
 
@@ -172,11 +171,11 @@
       mute.title = soundOn ? 'Sound on' : 'Sound off';
     };
     mute.addEventListener('click', e => {
-      e.stopPropagation();                            // same reason as the feed: do not let the outside-click handler close the popover
+      e.stopPropagation();
       soundOn = !soundOn;
-      try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (err) { /* private mode */ }
+      try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (err) { }
       sync();
-      if (soundOn) playSound('notify');               // a preview
+      if (soundOn) playSound('notify');
     });
     sync();
     head.insertBefore(mute, head.querySelector('.notif-head-actions'));
@@ -192,7 +191,7 @@
   let welcomed = false;
   document.addEventListener('desktop:restart', () => { welcomed = false; });
   const welcome = () => {
-    if (welcomed) return;                              // app.js can announce the boot more than once per load
+    if (welcomed) return;
     welcomed = true;
     const c = audio();
     if (c && c.state === 'running') { playSound('welcome'); return; }
@@ -201,8 +200,8 @@
     const late = () => { if (played || Date.now() - t0 > 20000) return; played = true; playSound('welcome'); };
     ['pointerdown', 'touchstart', 'keydown'].forEach(ev => document.addEventListener(ev, late, { once: true, capture: true }));
   };
-  document.addEventListener('desktop:welcome', welcome);   // first load: fired as soon as the boot screen lifts
-  document.addEventListener('desktop:booted', welcome);    // restart: fired once the desktop is back
+  document.addEventListener('desktop:welcome', welcome);
+  document.addEventListener('desktop:booted', welcome);
 
   /* ===================== card above the bell =====================
    * Desktop only (the phone layout has its own shade + heads-up banner, see android.js). A small rounded card
@@ -222,7 +221,7 @@
   function pillStack() {
     if (pillHost && pillHost.isConnected) return pillHost;
     pillHost = el('div', 'taskbar-pills');
-    pillHost.setAttribute('aria-hidden', 'true');      // the sr-only .notif-announce live region already speaks it
+    pillHost.setAttribute('aria-hidden', 'true');
     document.body.appendChild(pillHost);
     return pillHost;
   }
@@ -230,7 +229,7 @@
   function placePills() {
     if (!pillHost) return;
     const r = btn.getBoundingClientRect();
-    if (!r.width) return;                              // bell hidden: keep the CSS fallback position
+    if (!r.width) return;
     const vw = document.documentElement.clientWidth;
     const right = Math.max(8, vw - r.right - 2);
     const caret = Math.max(14, vw - (r.left + r.width / 2) - right - 6);
@@ -252,8 +251,8 @@
     const host = pillStack();
     placePills();
     host.querySelectorAll('.taskbar-pill:not(.is-leaving)').forEach((old, i, all) => {
-      if (old.textContent === text) closePill(old);                           // same message again: replace it
-      else if (all.length >= PILL_MAX && i === 0) closePill(old);            // keep the stack short
+      if (old.textContent === text) closePill(old);
+      else if (all.length >= PILL_MAX && i === 0) closePill(old);
     });
 
     const p = el('div', 'taskbar-pill taskbar-pill--' + type);
@@ -291,16 +290,16 @@
         .slice(0, MAX_ITEMS);
     } catch (e) { return []; }
   }
-  function save() { try { sessionStorage.setItem(STORE_KEY, JSON.stringify(items)); } catch (e) { /* private mode */ } }
+  function save() { try { sessionStorage.setItem(STORE_KEY, JSON.stringify(items)); } catch (e) { } }
 
-  let items = load();                                 // newest first
+  let items = load();
   let seq = items.reduce((m, i) => Math.max(m, i.id), 0);
   let lastKey = '', lastAt = 0;
 
   function add(type, text, key, opts) {
     const now = Date.now();
     const k = type + '|' + (key || text);
-    if (k === lastKey && now - lastAt < 500) return;  // same event reported twice
+    if (k === lastKey && now - lastAt < 500) return;
     lastKey = k; lastAt = now;
     items.unshift({ id: ++seq, type: type, text: text, ts: now, read: false });
     if (items.length > MAX_ITEMS) items.length = MAX_ITEMS;
@@ -308,7 +307,7 @@
     render();
     announce(text);
     showPill(type, text);
-    if (!(opts && opts.silent)) alertUser();            // silent: the event brings its own sound (restart = exit sound)
+    if (!(opts && opts.silent)) alertUser();
     document.dispatchEvent(new CustomEvent('notif:added', { detail: { type: type, text: text, key: key || text } }));
   }
 
@@ -450,7 +449,7 @@
   document.addEventListener('click', e => {
     const a = closest(e, 'a[download]');
     if (!a || !/\.pdf([?#]|$)/i.test(a.getAttribute('href') || '')) return;
-    add('resume', 'Resume download started', 'resume');   // not afterDefault: the page's own handlers cancel this click and save the file themselves (add() ignores the repeat from their synthetic click)
+    add('resume', 'Resume download started', 'resume');
   }, true);
 
   /* 4) Outbound links: other-origin http(s) only. Internal pages, #anchors, mailto:, tel: and downloads don't count. */
@@ -465,7 +464,7 @@
   }
   const SOCIAL_HOSTS = [['github.com', 'GitHub'], ['linkedin.com', 'LinkedIn'], ['upwork.com', 'Upwork'], ['golance.com', 'GoLance']];
   function onLinkClick(e) {
-    if (e.type === 'auxclick' && e.button !== 1) return;    // middle click = open in new tab
+    if (e.type === 'auxclick' && e.button !== 1) return;
     const u = externalUrl(closest(e, 'a[href]'));
     if (!u) return;
     const host = u.hostname.replace(/^www\./, '');
@@ -489,12 +488,12 @@
       hookedDocs.add(d);
       d.addEventListener('click', onLinkClick, true);
       d.addEventListener('auxclick', onLinkClick, true);
-    } catch (e) { /* cross-origin frame */ }
+    } catch (e) { }
   }
   function watchFrame(f) {
     if (watchedFrames.has(f)) return;
     watchedFrames.add(f);
-    f.addEventListener('load', () => hookFrameDoc(f));      // every navigation brings a new document
+    f.addEventListener('load', () => hookFrameDoc(f));
     hookFrameDoc(f);
   }
   document.querySelectorAll('iframe').forEach(watchFrame);

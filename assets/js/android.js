@@ -490,7 +490,7 @@
  *                      one filled and a small pointer on the sheet. A "+" bubble opens the Projects list.
  *   tap open bubble -> the sheet shrinks into its bubble and the bubbles float free as chat heads (edge-snapping, stacking)
  *   tap other one   -> switch (only one sheet is open at a time)
- *   drag a bubble   -> the X target appears at the bottom; drop on it to close that window
+ *   drag a bubble   -> the X target appears at the bottom; drop on it to close that window (floating stack: closes every head in it)
  *   swipe the title bar down -> same as tapping the open bubble
  * Load after app.js and android.js:  <script src="assets/js/android-bubbles.js" defer></script>
  */
@@ -664,7 +664,10 @@
       const dd = d; d = null;
       b.classList.remove('drag'); xt.classList.remove('show', 'near');
       if (!dd.moved) { if (!cancelled) (rec.collapsed ? expand(rec) : collapse(rec)); return; }   // tap: open, or fold the open one away
-      if (dd.near && !cancelled) { dismiss(rec); return; }
+      if (dd.near && !cancelled) {
+        if (dd.row) dismiss(rec); else [...recs.values()].filter(o => o.collapsed && o.bub).forEach(dismiss);
+        return;
+      }
       if (!dd.row) {                                    // floating: the whole stack snaps to the nearest edge
         stack.side = b.offsetLeft + S / 2 < vw() / 2 ? 'l' : 'r';
         stack.y = clamp(b.offsetTop - (rec.step || 0) * STEPY, TOP, vh() - S - BOTTOM);
