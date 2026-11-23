@@ -3174,7 +3174,7 @@ html.boot-on #wm-layer {
 }
 
 #boot {
-  background: rgba(8, 10, 14, .42) !important;
+  background: color-mix(in srgb, var(--surface-sunken-color, #080a0e) 42%, transparent) !important;
   /* translucent veil instead of black */
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);

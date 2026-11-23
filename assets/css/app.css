@@ -108,7 +108,7 @@
 }
 
 .wm-btn {
-  --dot: #8a8f98;
+  --dot: var(--muted-color, #8a8f98);
   --dot-ink: rgba(0, 0, 0, 0.62);
   position: relative;
   z-index: 1;
