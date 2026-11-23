@@ -1019,3 +1019,53 @@ html.dev .rv-h::before {
 .orbit-sys .tw:nth-child(9)  { --c: var(--pal-purple); }
 .orbit-sys .tw:nth-child(12) { --c: var(--pal-orange); }
 .orbit-sys .tw:nth-child(16) { --c: var(--pal-cyan); }
+
+/* ---------- 10. Phone: individual projects (Projects sheet + project pages) ----------
+   android.css styles the phone sheet with !important and with `.adr-sheet ...` selectors, which beat the
+   desktop rules above (they never reached the phone). These rules use the same specificity and load later,
+   so they win. The hues (--ch per card, --ih per filter chip, --tg per tag) are already assigned in section 8. */
+@media (max-width: 768px) {
+
+  /* Projects list: each card is a tonal surface in its own series hue, name picks it up */
+  .adr-sheet .pj-card {
+    background: color-mix(in srgb, var(--ch, var(--default-color)) 11%, transparent);
+  }
+
+  .adr-sheet .pj-card:active {
+    background: color-mix(in srgb, var(--ch, var(--default-color)) 20%, transparent);
+  }
+
+  .adr-sheet .pj-name {
+    color: var(--ch, var(--heading-color));
+  }
+
+  /* Tags: the same three-hue rhythm as desktop (android.css forced them all to the single accent) */
+  .adr-sheet .pj-tags span {
+    color: var(--tg, var(--series-1));
+    background: color-mix(in srgb, var(--tg, var(--series-1)) 14%, transparent);
+  }
+
+  /* Filter chips: tinted at rest, solid hue when selected */
+  .adr-sheet .pj-chip {
+    background: color-mix(in srgb, var(--ih, var(--default-color)) 12%, transparent);
+  }
+
+  .adr-sheet .pj-chip[aria-pressed="true"] {
+    background: var(--ih, var(--pj-accent));
+    color: var(--on-accent-color);
+  }
+
+  /* Sheet title bar: android.css sets it with !important, so this needs it too.
+     The window hue (--wh) comes from section 9; project pages (iframe windows) get series-4. */
+  .wm-window:has(.wm-frame) {
+    --wh: var(--series-4);
+  }
+
+  .wm-window.adr-sheet .wm-titlebar {
+    background: color-mix(in srgb, var(--wh, var(--accent-highlight)) 30%, var(--background-color)) !important;
+  }
+
+  .wm-window.adr-sheet .wm-title {
+    color: var(--heading-color);
+  }
+}
