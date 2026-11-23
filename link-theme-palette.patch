@@ -1,0 +1,13 @@
+diff --git a/index.html b/index.html
+index 9d015b1..623b92c 100644
+--- a/index.html
++++ b/index.html
+@@ -908,6 +908,8 @@
+       }
+     }
+   </style>
++  <!-- Extended theme palette: per-theme hues applied to tags, icons, status, links (must load LAST, after every inline <style>) -->
++  <link href="assets/css/theme-palette.css" rel="stylesheet" />
+ </head>
+ 
+ <body class="index-page">
