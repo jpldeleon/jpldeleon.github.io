@@ -866,23 +866,25 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-feature i { background: var(--ih, var(--pi-accent)); color: var(--on-accent-color, var(--pi-on-accent)); }
 }
 
-/*--------------------------------------------------------------
-# Phone: compact Live Demo / GitHub Repo bar
-#   small pill buttons, centred, instead of two full-width blocks
---------------------------------------------------------------*/
+
 @media (max-width: 760px) {
   .pi-actions {
     display: flex;
     justify-content: center;
-    gap: .5em;
-    padding: .4em .8em calc(.4em + env(safe-area-inset-bottom, 0px));
+    gap: .6em;
+    padding: .55em 1em calc(.55em + env(safe-area-inset-bottom, 0px));
   }
   .pi .pi-actions .btn-live,
   .pi .pi-actions .btn-github {
+    flex: 1 1 0;
+    max-width: 12em;
     width: auto;
-    padding: .38em .95em;
-    font-size: .8em;
+    padding: .65em 1em;
+    font-size: .95em;
+    font-weight: 700;
     line-height: 1.2;
     border-radius: 999px;
   }
+  .pi .pi-actions .btn-live { box-shadow: 0 2px 8px color-mix(in srgb, var(--pi-accent) 40%, transparent); }
+  .pi .pi-actions .btn-github { border-color: color-mix(in srgb, var(--pi-text) 35%, transparent); }
 }
