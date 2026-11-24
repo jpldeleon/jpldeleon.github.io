@@ -888,3 +888,67 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi .pi-actions .btn-live { box-shadow: 0 2px 8px color-mix(in srgb, var(--pi-accent) 40%, transparent); }
   .pi .pi-actions .btn-github { border-color: color-mix(in srgb, var(--pi-text) 35%, transparent); }
 }
+
+/*--------------------------------------------------------------
+# Project pages, DESKTOP: theme palette (viewport > 760px)
+# Same series hues as the phone block above, so the desktop project
+# window follows the active theme too. Keep this LAST in the file.
+# Needs only main.css variables (--series-*, --border-color, --on-accent-color).
+--------------------------------------------------------------*/
+@media (min-width: 761px) {
+
+  .pi {
+    --pi-accent: var(--series-1, var(--accent-highlight));
+    --pi-line: var(--border-color, color-mix(in srgb, var(--default-color) 18%, var(--surface-color)));
+    --pi-on-accent: var(--on-accent-color, var(--contrast-color, var(--background-color)));
+  }
+
+  /* sidebar tabs: one series hue each */
+  .pi-item:nth-child(6n+1) { --ih: var(--series-1); }
+  .pi-item:nth-child(6n+2) { --ih: var(--series-2); }
+  .pi-item:nth-child(6n+3) { --ih: var(--series-3); }
+  .pi-item:nth-child(6n+4) { --ih: var(--series-4); }
+  .pi-item:nth-child(6n+5) { --ih: var(--series-5); }
+  .pi-item:nth-child(6n)   { --ih: var(--series-6); }
+
+  .pi .pi-item:not([aria-selected="true"]) i { color: var(--ih, inherit); }
+  .pi .pi-item:not([aria-selected="true"]):hover {
+    background: color-mix(in srgb, var(--ih, var(--pi-accent)), transparent 88%);
+  }
+  .pi .pi-item[aria-selected="true"] {
+    background: var(--ih, var(--pi-accent));
+    color: var(--pi-on-accent);
+  }
+  .pi .pi-item[aria-selected="true"] i { color: var(--pi-on-accent); }
+  .pi .pi-item[aria-selected="true"] .pi-count {
+    background: var(--pi-on-accent);
+    color: var(--ih, var(--pi-accent));
+  }
+
+  /* gallery filter chips + feature cards */
+  .pi-filter:nth-child(6n+1), .pi-feature:nth-child(6n+1) { --ih: var(--series-1); }
+  .pi-filter:nth-child(6n+2), .pi-feature:nth-child(6n+2) { --ih: var(--series-2); }
+  .pi-filter:nth-child(6n+3), .pi-feature:nth-child(6n+3) { --ih: var(--series-3); }
+  .pi-filter:nth-child(6n+4), .pi-feature:nth-child(6n+4) { --ih: var(--series-4); }
+  .pi-filter:nth-child(6n+5), .pi-feature:nth-child(6n+5) { --ih: var(--series-5); }
+  .pi-filter:nth-child(6n),   .pi-feature:nth-child(6n)   { --ih: var(--series-6); }
+
+  .pi-filter { border-color: color-mix(in srgb, var(--ih, var(--pi-line)) 40%, var(--pi-line)); }
+  .pi-filter:hover { background: color-mix(in srgb, var(--ih, var(--pi-accent)), transparent 88%); }
+  .pi-filter[aria-pressed="true"] {
+    background: var(--ih, var(--pi-accent));
+    border-color: var(--ih, var(--pi-accent));
+    color: var(--pi-on-accent);
+  }
+
+  .pi-feature { border-color: color-mix(in srgb, var(--ih, var(--pi-line)) 28%, var(--pi-line)); }
+  .pi-feature i { background: var(--ih, var(--pi-accent)); color: var(--pi-on-accent); }
+
+  /* sidebar divider + Live Demo button */
+  .pi-side { border-right-color: var(--pi-line); }
+  .pi .pi-actions .btn-live {
+    background: var(--series-1, var(--pi-accent));
+    border-color: var(--series-1, var(--pi-accent));
+    color: var(--pi-on-accent);
+  }
+}
