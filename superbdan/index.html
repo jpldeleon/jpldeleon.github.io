@@ -94,11 +94,6 @@
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="fa-solid fa-angles-up"></i></a>
 
-  <style>
-    .ph { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:120px; font-size:2rem; opacity:.45; border:1px dashed currentColor; border-radius:6px; }
-    a.ph-tile { cursor: default; pointer-events: none; }
-  </style>
-
   <div class="pi">
 
     <header class="pi-titlebar">
@@ -121,8 +116,8 @@
         <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>media/</div>
         <div class="pi-items">
           <a href="#gallery" class="pi-item" role="tab" id="tab-gallery" aria-controls="view-gallery"
-            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="6 placeholders">
-            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">6</span>
+            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="15 images">
+            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">15</span>
           </a>
         </div>
 
@@ -176,34 +171,84 @@
 
       <div class="pi-scroll">
 
-        <!-- screenshots/ : placeholders, swap each .pi-thumb for the glightbox markup from your other projects -->
+        <!-- screenshots/ -->
         <div class="pi-view" id="view-gallery" role="tabpanel" aria-labelledby="tab-gallery">
           <h2 class="pi-h">Screenshots</h2>
-          <p class="pi-sub">Placeholder tiles. Screenshots of the audit report and workbook will be added here.</p>
+          <p class="pi-sub">Crawl data, validation checks, and the audit deliverables. Click any screenshot to enlarge.</p>
           <div class="pi-grid" id="project-screenshots">
-            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 1" tabindex="-1">
-              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
-              <span class="pi-thumb-cap"><span>Screenshot 1</span><span>1/6</span></span>
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/01-sf-crawl-overview.webp" data-gallery="project-screenshots" data-title="Crawl Overview" data-description="Screaming Frog crawl overview of superbdan.com" aria-label="View screenshot 1: Crawl Overview">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/01-sf-crawl-overview_thumbnail.webp" alt="Screaming Frog crawl overview of superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Crawl Overview</span><span>1/15</span></span>
             </a>
-            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 2" tabindex="-1">
-              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
-              <span class="pi-thumb-cap"><span>Screenshot 2</span><span>2/6</span></span>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/02-sf-search-param-urls.webp" data-gallery="project-screenshots" data-title="Search Parameter URLs" data-description="Screaming Frog list of internal search parameter URLs" aria-label="View screenshot 2: Search Parameter URLs">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/02-sf-search-param-urls_thumbnail.webp" alt="Screaming Frog list of internal search parameter URLs" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Search Parameter URLs</span><span>2/15</span></span>
             </a>
-            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 3" tabindex="-1">
-              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
-              <span class="pi-thumb-cap"><span>Screenshot 3</span><span>3/6</span></span>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/03-sf-http-redirect-inlinks.webp" data-gallery="project-screenshots" data-title="HTTP Redirect Inlinks" data-description="Screaming Frog inlinks pointing to HTTP redirect URLs" aria-label="View screenshot 3: HTTP Redirect Inlinks">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/03-sf-http-redirect-inlinks_thumbnail.webp" alt="Screaming Frog inlinks pointing to HTTP redirect URLs" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>HTTP Redirect Inlinks</span><span>3/15</span></span>
             </a>
-            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 4" tabindex="-1">
-              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
-              <span class="pi-thumb-cap"><span>Screenshot 4</span><span>4/6</span></span>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/04-sf-crawl-depth-author-404s.webp" data-gallery="project-screenshots" data-title="Crawl Depth & Author 404s" data-description="Screaming Frog crawl depth report and author page 404 errors" aria-label="View screenshot 4: Crawl Depth & Author 404s">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/04-sf-crawl-depth-author-404s_thumbnail.webp" alt="Screaming Frog crawl depth report and author page 404 errors" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Crawl Depth & Author 404s</span><span>4/15</span></span>
             </a>
-            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 5" tabindex="-1">
-              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
-              <span class="pi-thumb-cap"><span>Screenshot 5</span><span>5/6</span></span>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/05-sf-titles-h1-duplicate.webp" data-gallery="project-screenshots" data-title="Duplicate Titles & H1s" data-description="Screaming Frog report of duplicate page titles and H1 headings" aria-label="View screenshot 5: Duplicate Titles & H1s">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/05-sf-titles-h1-duplicate_thumbnail.webp" alt="Screaming Frog report of duplicate page titles and H1 headings" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Duplicate Titles & H1s</span><span>5/15</span></span>
             </a>
-            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 6" tabindex="-1">
-              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
-              <span class="pi-thumb-cap"><span>Screenshot 6</span><span>6/6</span></span>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/05-sf-titles-h1-issues.webp" data-gallery="project-screenshots" data-title="Title & H1 Issues" data-description="Screaming Frog report of page title and H1 issues" aria-label="View screenshot 6: Title & H1 Issues">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/05-sf-titles-h1-issues_thumbnail.webp" alt="Screaming Frog report of page title and H1 issues" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Title & H1 Issues</span><span>6/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/06-audit-report.webp" data-gallery="project-screenshots" data-title="Audit Report" data-description="SuperbDan technical SEO audit report" aria-label="View screenshot 7: Audit Report">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/06-audit-report.webp" alt="SuperbDan technical SEO audit report" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Audit Report</span><span>7/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/06-audit-workbook.webp" data-gallery="project-screenshots" data-title="Audit Workbook" data-description="SuperbDan technical SEO audit workbook" aria-label="View screenshot 8: Audit Workbook">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/06-audit-workbook.webp" alt="SuperbDan technical SEO audit workbook" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Audit Workbook</span><span>8/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/07-auditkit-result.webp" data-gallery="project-screenshots" data-title="AuditKit Result" data-description="AuditKit scan result for superbdan.com" aria-label="View screenshot 9: AuditKit Result">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/07-auditkit-result.webp" alt="AuditKit scan result for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>AuditKit Result</span><span>9/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/08-route196-redirect-check.webp" data-gallery="project-screenshots" data-title="Redirect Check" data-description="Route196 redirect check for superbdan.com" aria-label="View screenshot 10: Redirect Check">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/08-route196-redirect-check_thumbnail.webp" alt="Route196 redirect check for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Redirect Check</span><span>10/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/08-route196-sitemapxml-check.webp" data-gallery="project-screenshots" data-title="Sitemap.xml Check" data-description="Route196 sitemap.xml check for superbdan.com" aria-label="View screenshot 11: Sitemap.xml Check">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/08-route196-sitemapxml-check.webp" alt="Route196 sitemap.xml check for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Sitemap.xml Check</span><span>11/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/08-route196-waybackmachine-check.webp" data-gallery="project-screenshots" data-title="Wayback Machine Check" data-description="Route196 Wayback Machine check for superbdan.com" aria-label="View screenshot 12: Wayback Machine Check">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/08-route196-waybackmachine-check_thumbnail.webp" alt="Route196 Wayback Machine check for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Wayback Machine Check</span><span>12/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/09-pagespeedinsights-results.webp" data-gallery="project-screenshots" data-title="PageSpeed Insights" data-description="PageSpeed Insights results for superbdan.com" aria-label="View screenshot 13: PageSpeed Insights">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/09-pagespeedinsights-results.webp" alt="PageSpeed Insights results for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>PageSpeed Insights</span><span>13/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/10-rich-results-test.webp" data-gallery="project-screenshots" data-title="Rich Results Test" data-description="Google Rich Results Test for superbdan.com" aria-label="View screenshot 14: Rich Results Test">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/10-rich-results-test_thumbnail.webp" alt="Google Rich Results Test for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Rich Results Test</span><span>14/15</span></span>
+            </a>
+
+            <a class="pi-thumb glightbox" href="/assets/img/portfolio/superbdan/10-schema-markup-checker.webp" data-gallery="project-screenshots" data-title="Schema Markup Checker" data-description="Schema markup checker results for superbdan.com" aria-label="View screenshot 15: Schema Markup Checker">
+              <span class="pi-thumb-img"><img src="/assets/img/portfolio/superbdan/10-schema-markup-checker_thumbnail.webp" alt="Schema markup checker results for superbdan.com" loading="lazy"></span>
+              <span class="pi-thumb-cap"><span>Schema Markup Checker</span><span>15/15</span></span>
             </a>
           </div>
         </div>
