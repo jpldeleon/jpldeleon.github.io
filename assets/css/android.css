@@ -331,30 +331,3 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .rv .rv-mode span{display:inline}
 .adr-sheet .rv .rv-actions .btn-live{flex:0 0 auto;white-space:nowrap}
 }
-/* ---- Screenshot lightbox (phone only): borderless window, no ring, no divider under the title bar ----
-   main.css draws these with !important at 3 to 4 classes deep, so each selector here is prefixed "html body"
-   to out-rank it regardless of load order. */
-@media (max-width:768px){
-html body .glightbox-container .gslide-image,
-html body .glightbox-clean .gslide-image,
-html body .glightbox-container .gslide[data-type="image"] .gslide-image{border:0!important;outline:0!important;box-shadow:0 14px 36px rgba(0,0,0,.5)!important}
-html body .glightbox-container .gslide-description.description-bottom,
-html body .glightbox-clean .gslide-description.description-bottom,
-html body .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
-html body .glightbox-clean .gslide-description.description-bottom .lightbox-window-panel,
-html body .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar,
-html body .glightbox-clean .gslide-description.description-bottom .lightbox-window-titlebar,
-html body .glightbox-container .lightbox-window-titlebar,
-html body .glightbox-container .lightbox-window-panel{border:0!important;border-top:0!important;border-bottom:0!important;border-left:0!important;border-right:0!important;outline:0!important;box-shadow:none!important}
-/* the round command buttons keep their colour but lose the outline, ring and shadow */
-html body .glightbox-container .gslide-description.description-bottom .lightbox-window-panel .win-btn,
-html body .glightbox-clean .lightbox-window-panel .win-btn,
-html body .glightbox-clean .lightbox-window-panel .win-btn-close,
-html body .glightbox-clean .lightbox-window-panel .win-btn-minimize,
-html body .glightbox-clean .lightbox-window-panel .win-btn-demo,
-html body .glightbox-clean .lightbox-window-panel .win-btn-portfolio,
-html body .glightbox-container .lightbox-window-panel .win-btn:hover,
-html body .glightbox-container .lightbox-window-panel .win-btn:focus,
-html body .glightbox-container .lightbox-window-panel .win-btn:focus-visible{border:0!important;outline:0!important;box-shadow:none!important}
-html body .glightbox-container .gslide-image img{border:0!important;outline:0!important;box-shadow:none!important}
-}

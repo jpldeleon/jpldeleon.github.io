@@ -6917,3 +6917,65 @@ html body .glightbox-container .gslide.current .gslide-video {
     object-fit: contain !important;
   }
 }
+/* =========================================================
+   NO WINDOW BORDERS, NO TITLE BAR DIVIDERS (all screen sizes)
+   Screenshot lightbox, CV terminal and project window: no outline,
+   no ring, no line under the title bar, no outline on the round
+   command buttons. Depth comes from the drop shadow only.
+   Kept LAST in the file, at the same specificity as the
+   "html body .glightbox-container .gslide.current" rules above.
+   ========================================================= */
+
+/* the window frame (image and video) */
+html body .glightbox-container .gslide.current .gslide-image,
+html body .glightbox-container .gslide.current .gslide-video,
+html body .glightbox-container .gslide-image,
+html body .glightbox-clean .gslide-image,
+html body .terminal-window,
+html body .portfolio-window {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+/* the title bar and its wrappers: no divider underneath */
+html body .glightbox-container .gslide.current .lightbox-window-titlebar,
+html body .glightbox-container .gslide.current .lightbox-window-panel,
+html body .glightbox-container .gslide.current .gslide-description.description-bottom.lightbox-terminal-mounted,
+html body .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar,
+html body .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+html body .glightbox-container .gslide-description.description-bottom,
+html body .glightbox-clean .gslide-description.description-bottom,
+html body .lightbox-window-titlebar,
+html body .lightbox-window-panel,
+html body .terminal-titlebar,
+html body .portfolio-window-titlebar {
+  border: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* round command buttons in the title bars: keep the colour, drop the outline and ring */
+html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn,
+html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn:hover,
+html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn:focus,
+html body .glightbox-container .gslide.current .lightbox-window-panel .win-btn:focus-visible,
+html body .glightbox-clean .lightbox-window-panel .win-btn-close,
+html body .glightbox-clean .lightbox-window-panel .win-btn-minimize,
+html body .glightbox-clean .lightbox-window-panel .win-btn-demo,
+html body .glightbox-clean .lightbox-window-panel .win-btn-portfolio,
+html body .terminal-titlebar .terminal-command-btn,
+html body .terminal-titlebar .terminal-command-btn:hover,
+html body .terminal-titlebar .terminal-command-btn:focus-visible,
+html body .portfolio-window-titlebar .portfolio-command-btn,
+html body .portfolio-window-titlebar .portfolio-command-btn:hover,
+html body .portfolio-window-titlebar .portfolio-command-btn:focus-visible,
+html body .portfolio-window-controls .portfolio-minimize,
+html body .portfolio-window-controls .portfolio-demo,
+html body .portfolio-window-controls .portfolio-page,
+html body .portfolio-window-controls .portfolio-close {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
