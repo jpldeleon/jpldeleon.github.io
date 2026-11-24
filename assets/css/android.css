@@ -331,33 +331,30 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .rv .rv-mode span{display:inline}
 .adr-sheet .rv .rv-actions .btn-live{flex:0 0 auto;white-space:nowrap}
 }
-/* ---- Screenshot lightbox (phone only): borderless window, no divider or lines on the title bar ----
-   Matches the borderless sheets above: no outline, no ring, no rules between the title bar and the image. */
+/* ---- Screenshot lightbox (phone only): borderless window, no ring, no divider under the title bar ----
+   main.css draws these with !important at 3 to 4 classes deep, so each selector here is prefixed "html body"
+   to out-rank it regardless of load order. */
 @media (max-width:768px){
-.glightbox-container .gslide-image,
-.glightbox-container .gslide-media,
-.glightbox-container .gslide-inner-content,
-.glightbox-container .ginner-container,
-.glightbox-container .gslide-description,
-.glightbox-container .gslide-description.lightbox-terminal-mounted,
-.glightbox-container .lightbox-window-controls,
-.glightbox-container .lightbox-window-controls .win-btn,
-.glightbox-container [data-glightbox-close],
-.glightbox-container [data-glightbox-minimize],
-.glightbox-container .gdesc-inner,
-.glightbox-container .gslide-title,
-.glightbox-container .gslide-desc{border:0!important;outline:0!important;box-shadow:none!important;text-decoration:none!important}
-/* the title bar: every child and pseudo-element loses its rules, rings and separators */
-.glightbox-container .gslide-description *,
-.glightbox-container .gslide-description::before,
-.glightbox-container .gslide-description::after,
-.glightbox-container .lightbox-window-controls *,
-.glightbox-container .lightbox-window-controls::before,
-.glightbox-container .lightbox-window-controls::after,
-.glightbox-container .gslide-image::before,
-.glightbox-container .gslide-image::after{border:0!important;border-top:0!important;border-bottom:0!important;outline:0!important;box-shadow:none!important;background-image:none!important}
-.glightbox-container .gslide-description hr{display:none!important}
-/* keep depth with the same soft drop shadow as the other sheets, instead of a ring */
-.glightbox-container .gslide-image{border-radius:28px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.5)!important}
-.glightbox-container .gslide-image img{border:0!important;outline:0!important;box-shadow:none!important}
+html body .glightbox-container .gslide-image,
+html body .glightbox-clean .gslide-image,
+html body .glightbox-container .gslide[data-type="image"] .gslide-image{border:0!important;outline:0!important;box-shadow:0 14px 36px rgba(0,0,0,.5)!important}
+html body .glightbox-container .gslide-description.description-bottom,
+html body .glightbox-clean .gslide-description.description-bottom,
+html body .glightbox-container .gslide-description.description-bottom .lightbox-window-panel,
+html body .glightbox-clean .gslide-description.description-bottom .lightbox-window-panel,
+html body .glightbox-container .gslide-description.description-bottom .lightbox-window-titlebar,
+html body .glightbox-clean .gslide-description.description-bottom .lightbox-window-titlebar,
+html body .glightbox-container .lightbox-window-titlebar,
+html body .glightbox-container .lightbox-window-panel{border:0!important;border-top:0!important;border-bottom:0!important;border-left:0!important;border-right:0!important;outline:0!important;box-shadow:none!important}
+/* the round command buttons keep their colour but lose the outline, ring and shadow */
+html body .glightbox-container .gslide-description.description-bottom .lightbox-window-panel .win-btn,
+html body .glightbox-clean .lightbox-window-panel .win-btn,
+html body .glightbox-clean .lightbox-window-panel .win-btn-close,
+html body .glightbox-clean .lightbox-window-panel .win-btn-minimize,
+html body .glightbox-clean .lightbox-window-panel .win-btn-demo,
+html body .glightbox-clean .lightbox-window-panel .win-btn-portfolio,
+html body .glightbox-container .lightbox-window-panel .win-btn:hover,
+html body .glightbox-container .lightbox-window-panel .win-btn:focus,
+html body .glightbox-container .lightbox-window-panel .win-btn:focus-visible{border:0!important;outline:0!important;box-shadow:none!important}
+html body .glightbox-container .gslide-image img{border:0!important;outline:0!important;box-shadow:none!important}
 }
