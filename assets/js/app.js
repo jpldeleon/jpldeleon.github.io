@@ -47,7 +47,9 @@
     { id: 'jamporudex', title: 'JamporuDEX', barTitle: 'JamporuDEX: Full-Stack Node.js & Express', sub: 'API Capstone Project',
       icon: 'fa-brands fa-leanpub', url: 'jamporudex/' },
     { id: 'route196', title: 'Route 196', barTitle: 'Route 196: Full-Stack Node.js & Express', sub: 'API Capstone Project',
-      icon: 'fa-solid fa-shield', url: 'route196/' }
+      icon: 'fa-solid fa-shield', url: 'route196/' },
+    { id: 'superbdan', title: 'SuperbDan Audit', barTitle: 'SuperbDan: Technical SEO Audit', sub: 'Case Study',
+      icon: 'fa-solid fa-clipboard-check', url: 'superbdan/' }
   ];
 
   /* Certificates: each opens in the SAME window system as the projects
