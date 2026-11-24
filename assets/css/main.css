@@ -45,15 +45,15 @@
   --pal-green: #A7C080; /* green */
   --pal-cyan: #88C396; /* aqua, lightness +2% (was #83C092) */
   --pal-blue: #89C0B9; /* blue, lightness +3% (was #7FBBB3) */
-  --pal-purple: #DCA8C0; /* purple, lightness +4% (was #D699B6) */
-  --pal-pink: #DCA8C0; /* purple, lightness +4% (was #D699B6) */
+  --pal-purple: #B5A8DC; /* DERIVED lavender, same lightness as the old pink (was #DCA8C0) */
+  --pal-pink: var(--pal-purple);
   --muted-color: #A0ABA3; /* grey2, lightness +1% (was #9DA9A0) */
   --faint-color: #7A8478; /* grey0 */
   --border-color: #475258; /* bg3 */
   --border-strong-color: #56635F; /* bg5 */
   --surface-raised-color: #3D484D; /* bg2 */
   --surface-sunken-color: #232A2E; /* bg_dim */
-  --selection-bg-color: #543A48; /* bg_visual */
+  --selection-bg-color: #384B55; /* bg_blue (was bg_visual #543A48) */
   --link-color: var(--pal-blue);
   --link-hover-color: var(--pal-cyan);
   --success-color: var(--pal-green);
@@ -108,8 +108,8 @@
   --pal-green: #A3BE8C; /* nord14 */
   --pal-cyan: #8FBCBB; /* nord7 (already in theme) */
   --pal-blue: #8FBCBB; /* nord7 (already in theme) */
-  --pal-purple: #B996B3; /* nord15, lightness +3% (was #B48EAD) */
-  --pal-pink: #B996B3; /* nord15, lightness +3% (was #B48EAD) */
+  --pal-purple: #95B1D0; /* nord9, lightened (was nord15 #B996B3) */
+  --pal-pink: var(--pal-purple);
   --muted-color: #A9B2C3; /* nord4 @ 72% on polar night */
   --faint-color: #616E88; /* nord3 brightened */
   --border-color: #434C5E; /* nord2 */
@@ -170,8 +170,8 @@
   --pal-green: #b8bb26; /* bright_green */
   --pal-cyan: #8ec07c; /* bright_aqua */
   --pal-blue: #9bb6ac; /* bright_blue, lightness +8% (was #83a598) */
-  --pal-purple: #dda0b1; /* bright_purple, lightness +7% (was #d3869b) */
-  --pal-pink: #dda0b1; /* bright_purple, lightness +7% (was #d3869b) */
+  --pal-purple: #ADA5D4; /* DERIVED lavender (was #dda0b1) */
+  --pal-pink: var(--pal-purple);
   --muted-color: #aea08d; /* fg4, lightness +3% (was #a89984) */
   --faint-color: #928374; /* gray */
   --border-color: #504945; /* bg2 */
@@ -227,7 +227,7 @@
   --pal-cyan: #59f8e8; /* existing */
   --pal-blue: #59f8e8; /* existing cyan */
   --pal-purple: #ab98fb; /* DERIVED (Plague, 7.5:1) */
-  --pal-pink: #f97bba; /* DERIVED (Dried rose, 7.45:1) */
+  --pal-pink: var(--pal-orange); /* was #f97bba */
   --muted-color: #a1a29e; /* DERIVED (Dust, 7.05:1) */
   --faint-color: #6a6b6a; /* derived */
   --border-color: #2a2d30; /* existing dropdown */
@@ -283,7 +283,7 @@
   --pal-cyan: #7cd5f1; /* accent5 */
   --pal-blue: #7cd5f1; /* accent5 */
   --pal-purple: #baa0f8; /* accent6 */
-  --pal-pink: #ff7a89; /* accent1, lightness +3% (was #ff6d7e) */
+  --pal-pink: var(--pal-orange); /* was red alias */
   --muted-color: #8e999a; /* dimmed2, lightness +1% (was #8b9798) */
   --faint-color: #6b7678; /* dimmed3 */
   --border-color: #3a4449; /* dimmed5 */
@@ -325,7 +325,7 @@
   --nav-mobile-background-color: #2E3440;
   --nav-dropdown-background-color: #434C5E;
   --nav-dropdown-color: #D8DEE9;
-  --nav-dropdown-hover-color: #D4B5CE;
+  --nav-dropdown-hover-color: #C9C4DE;
   --surface-color: #3B4252;
   --contrast-color: #2E3440;
   --quote-color: #A3BE8C;
@@ -338,8 +338,8 @@
   --pal-green: #ABC496; /* nord14, lightness +3% (was #A3BE8C) */
   --pal-cyan: #9CC4C3; /* nord7, lightness +4% (was #8FBCBB) */
   --pal-blue: #AAC0D5; /* nord9, lightness +12% (was #81A1C1) */
-  --pal-purple: #CEB6CA; /* nord15, lightness +13% (was #B48EAD) */
-  --pal-pink: #CEB6CA; /* nord15, lightness +13% (was #B48EAD) */
+  --pal-purple: #B6B1D3; /* DERIVED periwinkle (was nord15 #CEB6CA) */
+  --pal-pink: var(--pal-purple);
   --muted-color: #A9B2C3; /* nord4 @ 72% */
   --faint-color: #616E88; /* nord3 brightened */
   --border-color: #4C566A; /* nord3 */
@@ -451,7 +451,7 @@
   --pal-cyan: #8ea4a2; /* dragonAqua */
   --pal-blue: #8ba4b0; /* dragonBlue2 */
   --pal-purple: #939baf; /* dragonViolet, lightness +4% (was #8992a7) */
-  --pal-pink: #a696a7; /* dragonPink, lightness +2% (was #a292a3) */
+  --pal-pink: #A6A69C; /* dragonGray (was dragonPink #A696A7) */
   --muted-color: #878f8e; /* dragonGray3, lightness +5% (was #7a8382) */
   --faint-color: #625e5a; /* dragonBlack6 */
   --border-color: #393836; /* dragonBlack5 */
@@ -496,7 +496,7 @@
   --nav-dropdown-hover-color: #66A0C8;
   --surface-color: #1C1B1A;
   --contrast-color: #100F0F;
-  --quote-color: #E47DA8;
+  --quote-color: #A699D0; /* purple-300 (was magenta) */
   --typed-color: #A699D0;
 
   /* Extended palette: official Flexoki colours (text-safe: 4.5:1 on background, 3:1 on surface) */
@@ -507,7 +507,7 @@
   --pal-cyan: #5ABDAC; /* cyan-300 */
   --pal-blue: #66A0C8; /* blue-300 */
   --pal-purple: #A699D0; /* purple-300 */
-  --pal-pink: #E47DA8; /* magenta-300 */
+  --pal-pink: var(--pal-orange); /* was magenta-300 #E47DA8 */
   --muted-color: #878580; /* base-500 */
   --faint-color: #6F6E69; /* base-600 */
   --border-color: #343331; /* base-850 */
@@ -720,7 +720,7 @@ main,
   --t-acc: #5ABDAC;
   --t-hi: #DA702C;
   --t-fg: #CECDC3;
-  --t-q: #E47DA8;
+  --t-q: #A699D0;
   --t-t: #A699D0;
 }
 
