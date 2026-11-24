@@ -865,7 +865,30 @@ html.dev .rv-h::before {
 .pj-card:hover,
 .pj-card:focus-visible {
   border-color: var(--ch, var(--pj-line));
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 6px 18px color-mix(in srgb, var(--ch, var(--surface-sunken-color)) 22%, transparent);
+  box-shadow: none;
+}
+
+/* Compact screenshot preview shown on card hover (created by portfolio.js) */
+.pj-peek {
+  position: fixed;
+  z-index: 9999;
+  width: 220px;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--border-strong-color);
+  border-radius: 8px;
+  background: var(--surface-sunken-color) center top / cover no-repeat;
+  box-shadow: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+.pj-peek.is-on {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .pj-peek { display: none; }
 }
 
 .pj-open {
