@@ -132,6 +132,10 @@
             data-view="overview" data-dir="docs/" data-file="overview.md" data-meta="markdown">
             <i class="fa-solid fa-file-lines" aria-hidden="true"></i><span class="pi-name">overview.md</span>
           </a>
+          <a href="#tools" class="pi-item" role="tab" id="tab-tools" aria-controls="view-tools"
+            data-view="tools" data-dir="docs/" data-file="tools.md" data-meta="6 tools">
+            <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i><span class="pi-name">tools.md</span>
+          </a>
           <a href="#scorecard" class="pi-item" role="tab" id="tab-scorecard" aria-controls="view-scorecard"
             data-view="scorecard" data-dir="docs/" data-file="scorecard.md" data-meta="5 pillars">
             <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i><span class="pi-name">scorecard.md</span>
@@ -217,17 +221,43 @@
 
             <h2 class="pi-h">Scope Note</h2>
             <p>Google Search Console access was not available, so GSC sitemap submission, parameter settings and low-traffic page analysis are marked as not audited.</p>
+          </div>
+        </div>
 
-            <h2 class="pi-h">Tools &amp; Methodology</h2>
-            <p>The audit combines an industry-standard crawler and validators with two tools I built myself:</p>
-            <ul class="pi-tools">
-              <li><strong>Screaming Frog SEO Spider</strong>Full site crawl: response codes, indexability, redirects, internal links, crawl depth and on-page metadata</li>
-              <li><strong>PageSpeed Insights</strong>Performance and Core Web Vitals checks</li>
-              <li><strong>Rich Results Test &amp; Schema Markup Validator</strong>Structured data eligibility and syntax validation</li>
-              <li><strong>Plagiarism checker</strong>Content originality and duplication checks</li>
-              <li><strong><a href="https://auditkit.onrender.com/" target="_blank" rel="noopener noreferrer">AuditKit</a> (built by me)</strong>Custom page-performance audit tool, similar to PageSpeed Insights</li>
-              <li><strong><a href="https://route196.onrender.com/" target="_blank" rel="noopener noreferrer">Route 196</a> (built by me)</strong>Custom tool for Wayback Machine history and redirect checks</li>
-            </ul>
+        <div class="pi-view" id="view-tools" role="tabpanel" aria-labelledby="tab-tools" hidden>
+          <h2 class="pi-h" style="margin-bottom:6px">Tools &amp; Methodology</h2>
+          <p class="pi-sub">Industry-standard crawlers and validators, plus two tools I built for this audit.</p>
+          <div class="pi-features">
+            <div class="pi-feature">
+              <i class="fa-solid fa-spider" aria-hidden="true"></i>
+              <h3>Screaming Frog SEO Spider</h3>
+              <p>Full site crawl covering response codes, indexability, redirects, internal links, crawl depth and on-page metadata.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+              <h3>PageSpeed Insights</h3>
+              <p>Performance and Core Web Vitals checks on key templates.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-code" aria-hidden="true"></i>
+              <h3>Rich Results Test &amp; Schema Markup Validator</h3>
+              <p>Structured data eligibility (Google) and syntax validation (<a href="https://validator.schema.org/" target="_blank" rel="noopener noreferrer">validator.schema.org</a>).</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-clone" aria-hidden="true"></i>
+              <h3>Plagiarism Checker</h3>
+              <p>Content originality and duplication checks across key pages.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
+              <h3>AuditKit <span class="pi-badge">Built by me</span></h3>
+              <p>Custom page-performance audit tool, similar to PageSpeed Insights. <a href="https://auditkit.onrender.com/" target="_blank" rel="noopener noreferrer">Open AuditKit</a></p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+              <h3>Route 196 <span class="pi-badge">Built by me</span></h3>
+              <p>Custom tool for Wayback Machine history and redirect checks. <a href="https://route196.onrender.com/" target="_blank" rel="noopener noreferrer">Open Route 196</a></p>
+            </div>
           </div>
         </div>
 
