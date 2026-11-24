@@ -664,8 +664,8 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   /* centre the button group vertically along the rail. margin:auto (not justify-content:center)
      so that when the rail is shorter than the buttons (landscape, small phones) it scrolls from the top
      instead of clipping the first tab. */
-  .pi-tree > .pi-item:first-child { margin-top: auto; }
-  .pi-tree > .pi-item:last-child  { margin-bottom: auto; }
+  .pi-tree > .pi-items > .pi-item:first-child { margin-top: auto; }
+  .pi-tree > .pi-items > .pi-item:last-child  { margin-bottom: auto; }
 
   /* if a tab has no icon of its own, give it one by category */
   .pi .pi-item:not(:has(> i))::before {
@@ -817,4 +817,64 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
 --------------------------------------------------------------*/
 @media (max-width: 760px) {
   html.wm-titled .pi-head { display: none; }
+}
+
+/*--------------------------------------------------------------
+# Project pages, phone icon rail: centring + theme palette
+# Load in every project page AFTER inspector.css (and after theme-palette.css if the pages load it).
+# Runs inside the iframe, so it only needs the page's own main.css variables (--series-*, --on-accent-color ...).
+--------------------------------------------------------------*/
+@media (max-width: 760px) {
+
+  /* 1. CENTRE THE RAIL
+     The buttons live in .pi-items (display: contents), so "> .pi-item" never matched.
+     margin:auto on the first/last button centres the group, and still scrolls from the top
+     on short screens instead of clipping the first tab. */
+  .pi-tree > .pi-items > .pi-item:first-child,
+  .pi-tree > .pi-item:first-child { margin-top: auto; }
+  .pi-tree > .pi-items > .pi-item:last-child,
+  .pi-tree > .pi-item:last-child  { margin-bottom: auto; }
+
+  /* 2. PALETTE: one series hue per button (same order as theme-palette.css) */
+  .pi { --pi-accent: var(--series-1, var(--accent-highlight)); }
+
+  .pi-item:nth-child(6n+1) { --ih: var(--series-1); }
+  .pi-item:nth-child(6n+2) { --ih: var(--series-2); }
+  .pi-item:nth-child(6n+3) { --ih: var(--series-3); }
+  .pi-item:nth-child(6n+4) { --ih: var(--series-4); }
+  .pi-item:nth-child(6n+5) { --ih: var(--series-5); }
+  .pi-item:nth-child(6n)   { --ih: var(--series-6); }
+
+  .pi .pi-item:not([aria-selected="true"]) {
+    background: color-mix(in srgb, var(--ih, var(--pi-accent)) 14%, transparent);
+  }
+  .pi .pi-item:not([aria-selected="true"]) i,
+  .pi .pi-item:not([aria-selected="true"])::before { color: var(--ih, var(--pi-accent)); }
+  .pi .pi-item:not([aria-selected="true"]):active {
+    background: color-mix(in srgb, var(--ih, var(--pi-accent)) 26%, transparent);
+  }
+  .pi .pi-item[aria-selected="true"] {
+    background: var(--ih, var(--pi-accent));
+    color: var(--on-accent-color, var(--pi-on-accent));
+  }
+  .pi .pi-item[aria-selected="true"] i,
+  .pi .pi-item[aria-selected="true"]::before { color: var(--on-accent-color, var(--pi-on-accent)); }
+
+  /* 3. the rail divider + the Live/GitHub bar follow the palette */
+  .pi-tree { border-right-color: var(--border-color, var(--pi-line)); }
+  .pi .pi-actions .btn-live {
+    background: var(--series-1, var(--pi-accent));
+    border-color: var(--series-1, var(--pi-accent));
+    color: var(--on-accent-color, var(--pi-on-accent));
+  }
+
+  /* 4. the same hues for the content cards */
+  .pi-filter:nth-child(6n+1), .pi-feature:nth-child(6n+1) { --ih: var(--series-1); }
+  .pi-filter:nth-child(6n+2), .pi-feature:nth-child(6n+2) { --ih: var(--series-2); }
+  .pi-filter:nth-child(6n+3), .pi-feature:nth-child(6n+3) { --ih: var(--series-3); }
+  .pi-filter:nth-child(6n+4), .pi-feature:nth-child(6n+4) { --ih: var(--series-4); }
+  .pi-filter:nth-child(6n+5), .pi-feature:nth-child(6n+5) { --ih: var(--series-5); }
+  .pi-filter:nth-child(6n),   .pi-feature:nth-child(6n)   { --ih: var(--series-6); }
+  .pi-feature { border-color: color-mix(in srgb, var(--ih, var(--pi-line)) 28%, var(--pi-line)); }
+  .pi-feature i { background: var(--ih, var(--pi-accent)); color: var(--on-accent-color, var(--pi-on-accent)); }
 }

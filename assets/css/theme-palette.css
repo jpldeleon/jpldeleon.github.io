@@ -1,11 +1,3 @@
-/*--------------------------------------------------------------
-# Theme palette: applies each theme's extended colours
-# Load LAST. The colours themselves are defined per theme in main.css
-# (--pal-*, --series-*, --border-*, --muted-color, --link-color, ...), so
-# every rule here is theme-agnostic. Delete this file to go back to the
-# single-accent look; nothing else depends on it.
---------------------------------------------------------------*/
-
 /* ---------- 1. Global: selection, links, keyboard focus ---------- */
 ::selection {
   background: var(--selection-bg-color);
@@ -19,8 +11,6 @@ a:hover {
   color: var(--link-hover-color);
 }
 
-/* :where() adds no specificity, so it only fills gaps; components that
-   already style their own focus ring keep it. */
 :where(a, button, [role="button"], [role="tab"], input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--focus-ring-color);
   outline-offset: 2px;
@@ -109,7 +99,6 @@ html body .hero-sidebar.hero-applet .ab-tags li {
 }
 
 /* ---------- 6. Conky monitors: one hue per entry ---------- */
-/* Experience: the current job is "live" (success); earlier jobs cycle three hues */
 .exp-widget .cky-block:nth-of-type(3n+1) .cky-bar { --bar: var(--series-1); }
 .exp-widget .cky-block:nth-of-type(3n+2) .cky-bar { --bar: var(--series-2); }
 .exp-widget .cky-block:nth-of-type(3n)   .cky-bar { --bar: var(--series-3); }
@@ -202,7 +191,6 @@ html body .hero-sidebar.hero-applet .ab-tags li {
   --sc-line-strong: var(--border-strong-color);
 }
 
-/* Resume: card icon chips and dates take their own hues */
 .rv-card:nth-of-type(4n+1) h3 i { --ic: var(--series-1); }
 .rv-card:nth-of-type(4n+2) h3 i { --ic: var(--series-2); }
 .rv-card:nth-of-type(4n+3) h3 i { --ic: var(--series-3); }
@@ -228,7 +216,6 @@ html body .hero-sidebar.hero-applet .ab-tags li {
   color: var(--link-hover-color);
 }
 
-/* Project tags: the same three-hue rhythm as the About tags */
 .pj-tags span:nth-child(3n+1) { --tg: var(--series-1); }
 .pj-tags span:nth-child(3n+2) { --tg: var(--series-2); }
 .pj-tags span:nth-child(3n)   { --tg: var(--series-3); }
@@ -240,16 +227,13 @@ html body .hero-sidebar.hero-applet .ab-tags li {
   border-color: color-mix(in srgb, var(--tg) 34%, transparent);
 }
 
-/* Socials: brand icons recoloured from the theme instead of brand blue/green */
 .sc-ico-linkedin { --b: var(--pal-blue); }
 .sc-ico-upwork   { --b: var(--pal-green); }
 
-/* ---------- 9. Phone layout: tonal icon circles + chips follow the same hues ---------- */
 .adr-sheet .pj-tags span {
   background: color-mix(in srgb, var(--tg) 9%, transparent);
 }
 
-/* Search entries draw their own focus border + glow; skip the generic ring */
 .df-q:focus-visible,
 .taskbar-search input:focus-visible {
   outline: none;
@@ -1020,13 +1004,8 @@ html.dev .rv-h::before {
 .orbit-sys .tw:nth-child(12) { --c: var(--pal-orange); }
 .orbit-sys .tw:nth-child(16) { --c: var(--pal-cyan); }
 
-/* ---------- 10. Phone: individual projects (Projects sheet + project pages) ----------
-   android.css styles the phone sheet with !important and with `.adr-sheet ...` selectors, which beat the
-   desktop rules above (they never reached the phone). These rules use the same specificity and load later,
-   so they win. The hues (--ch per card, --ih per filter chip, --tg per tag) are already assigned in section 8. */
 @media (max-width: 768px) {
 
-  /* Projects list: each card is a tonal surface in its own series hue, name picks it up */
   .adr-sheet .pj-card {
     background: color-mix(in srgb, var(--ch, var(--default-color)) 11%, transparent);
   }
@@ -1039,13 +1018,11 @@ html.dev .rv-h::before {
     color: var(--ch, var(--heading-color));
   }
 
-  /* Tags: the same three-hue rhythm as desktop (android.css forced them all to the single accent) */
   .adr-sheet .pj-tags span {
     color: var(--tg, var(--series-1));
     background: color-mix(in srgb, var(--tg, var(--series-1)) 14%, transparent);
   }
 
-  /* Filter chips: tinted at rest, solid hue when selected */
   .adr-sheet .pj-chip {
     background: color-mix(in srgb, var(--ih, var(--default-color)) 12%, transparent);
   }
@@ -1055,8 +1032,6 @@ html.dev .rv-h::before {
     color: var(--on-accent-color);
   }
 
-  /* Sheet title bar: android.css sets it with !important, so this needs it too.
-     The window hue (--wh) comes from section 9; project pages (iframe windows) get series-4. */
   .wm-window:has(.wm-frame) {
     --wh: var(--series-4);
   }
