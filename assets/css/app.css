@@ -556,3 +556,29 @@
     pointer-events: none;
   }
 }
+/*--------------------------------------------------------------
+# MOBILE: screenshot windows (project screenshots / certificates)
+#   No border or accent ring around the window, and no line or
+#   divider under the title bar. Depth comes from the drop shadow only.
+--------------------------------------------------------------*/
+@media (max-width: 768px) {
+  .wm-window:has(.wm-body.is-cert),
+  .wm-window.is-focused:has(.wm-body.is-cert) {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5) !important;   /* drop shadow only, no accent ring */
+  }
+
+  .wm-window:has(.wm-body.is-cert) .wm-titlebar,
+  .wm-window.is-focused:has(.wm-body.is-cert) .wm-titlebar {
+    border: 0 !important;
+    box-shadow: none !important;                              /* removes the accent line under the title bar */
+  }
+
+  .wm-window:has(.wm-body.is-cert) .wm-body,
+  .wm-window:has(.wm-body.is-cert) .wm-cert {
+    border: 0 !important;
+    border-top: 0 !important;
+    outline: 0 !important;
+  }
+}
