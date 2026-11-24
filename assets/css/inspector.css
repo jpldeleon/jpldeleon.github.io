@@ -1,20 +1,3 @@
-/*--------------------------------------------------------------
-# Project pages: minimal app window
-# Load AFTER main.css. Replaces the old sidebar / file-tree "inspector".
-#
-# Layout:  header (icon, name, summary, buttons) -> tab row -> content
-# Look:    flat, calm, rounded cards, subtle borders, plain words.
-# Colours: only theme colours, never blended into odd tints:
-#            --background-color  page
-#            --surface-color     header + cards
-#            --default-color     text (borders are a faint line of the same colour)
-#            --accent-highlight  one accent (text on it: --contrast-color)
-# Markup:  unchanged. Class names (.pi-*) and data-view attributes stay,
-#          so inspector.js keeps working.
-# Size:    em from --pi-s (standalone 14px; embedded follows the window width).
---------------------------------------------------------------*/
-
-/* ---------- Tokens ---------- */
 html.wm-embedded,
 body.pi-page,
 .pi {
@@ -91,7 +74,6 @@ html.wm-embedded .pi-titlebar { display: none; }
   background: var(--pi-card);
 }
 
-/* icon on the left, name + short description stacked on the right */
 .pi-head {
   grid-area: head;
   display: grid;
@@ -192,7 +174,6 @@ html.wm-embedded .pi-titlebar { display: none; }
   transition: background-color .15s ease;
 }
 
-/* plain labels instead of file names (the file names stay in the HTML, but are not shown) */
 .pi-item .pi-name { display: none; }
 .pi-item i { order: 0; width: auto; color: inherit; font-size: .95em; }
 .pi-item::after { order: 1; content: attr(data-view); }
@@ -223,7 +204,7 @@ html.wm-embedded .pi-titlebar { display: none; }
 .pi-item[aria-selected="true"] .pi-count { background: var(--pi-on-accent); color: var(--pi-accent); }
 
 /* ---------- Content ---------- */
-.pi-content {            /* the <main> element */
+.pi-content {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -232,7 +213,7 @@ html.wm-embedded .pi-titlebar { display: none; }
 }
 html body .pi-content { padding-bottom: 0; }
 
-.pi-bar { display: none; }   /* the old path bar is gone */
+.pi-bar { display: none; }
 
 .pi-scroll {
   flex: 1 1 auto;
@@ -242,11 +223,10 @@ html body .pi-content { padding-bottom: 0; }
   padding: 1.6em 1.6em 3em;
   background: var(--pi-bg);
   scroll-behavior: auto;
-  container: pi-main / size;   /* lets .pi-stage size itself from the pane (cqw / cqh) */
+  container: pi-main / size;
 }
 
 .pi-view[hidden] { display: none; }
-/* centred, comfortable reading width (the video page keeps its own wide layout) */
 .pi-view:not(:has(> .pi-stage)) { max-width: 70em; margin-inline: auto; }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -266,7 +246,6 @@ html body .pi-content { padding-bottom: 0; }
 
 /* ---------- Video page ---------- */
 .pi-stage {
-  /* fluid player, sized from the reading pane (size container .pi-scroll) */
   --pi-film-peek: 12.7em;
   --pi-stage-floor: max(20.1em, 60cqw);
   width: 100%;
@@ -296,8 +275,8 @@ html body .pi-content { padding-bottom: 0; }
   margin-bottom: .8em;
   font-size: .92em;
 }
-.pi-film-head > span { font-size: 0; }                       /* hide "screenshots/" ... */
-.pi-film-head > span::before {                               /* ... show a plain title */
+.pi-film-head > span { font-size: 0; }
+.pi-film-head > span::before {
   content: "Screenshots";
   font-size: calc(var(--pi-s) * 1.1);
   font-weight: 700;
@@ -441,11 +420,7 @@ a.pi-thumb[hidden] { display: none; }
 /* ---------- Scrollbars ---------- */
 .pi * { scrollbar-width: thin; scrollbar-color: var(--pi-line) transparent; }
 
-/*--------------------------------------------------------------
-# Container-driven layout (follows the WINDOW, not the viewport)
-#   wide pane   -> video + scrolling screenshot panel side by side, points underneath
-#   narrow pane -> stacked
---------------------------------------------------------------*/
+
 @container pi-main (min-width: 40em) {
 
   .pi-view:has(> .pi-stage):not([hidden]) {
@@ -461,7 +436,6 @@ a.pi-thumb[hidden] { display: none; }
 
   .pi-view:has(> .pi-stage) .pi-stage { grid-area: stage; width: 100%; margin: 0; }
 
-  /* screenshot panel: same height as the video, scrolls inside */
   .pi-view:has(> .pi-stage) .pi-film { grid-area: film; position: relative; align-self: stretch; margin: 0; min-width: 0; }
   .pi-view:has(> .pi-stage) .pi-film-head { height: 1.8em; margin: 0; }
   .pi-view:has(> .pi-stage) .pi-strip {
@@ -489,7 +463,6 @@ a.pi-thumb[hidden] { display: none; }
   .pi-doc .pi-h:first-child { margin-top: 0; }
 }
 
-/* ---------- Embedded in a desktop window (html.wm-embedded, set by app.js) ---------- */
 html.pi-embed .pi,
 html.wm-embedded .pi { grid-template-rows: auto minmax(0, 1fr); }
 
@@ -503,14 +476,6 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi *, .pi *::before, .pi *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
 
-/*--------------------------------------------------------------
-# Phones and narrow windows (<= 760px)
-#   top:     compact header (icon + name)
-#   below:   one row of tabs that swipes sideways
-#   middle:  the content, as tall as possible
-#   bottom:  Live Demo / GitHub Repo as a bar within thumb reach
-# Declared last so it wins over the desktop rules above.
---------------------------------------------------------------*/
 @media (max-width: 760px) {
   .pi,
   html.pi-embed .pi,
@@ -518,10 +483,9 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto minmax(0, 1fr) auto;
   }
-  html.wm-embedded .pi.pi { --pi-s: 14px; --pi-main-scale: 1.05; }   /* 1.15vw of a phone is too small */
+  html.wm-embedded .pi.pi { --pi-s: 14px; --pi-main-scale: 1.05; }
   .pi { --pi-s: 14px; --pi-main-scale: 1.05; }
 
-  /* the aside dissolves, its three parts become rows of the page */
   .pi-side { display: contents; }
   .pi-titlebar { grid-row: 1; }
 
@@ -597,11 +561,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-props dd { padding: .15em 1.1em .8em; }
 }
 
-/*--------------------------------------------------------------
-# Phone fixes: content width + tab row
-#   - the reading pane must always take the full width (it had collapsed to a thin strip)
-#   - the tab row no longer snaps, so the selected tab is never cut off at the edge
---------------------------------------------------------------*/
+
 @media (max-width: 760px) {
   .pi-content { width: 100%; min-width: 0; }
 
@@ -620,12 +580,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-tree { scroll-snap-type: none; scroll-padding-inline: 1em; }
   .pi-item { scroll-snap-align: none; }
 }
-/*--------------------------------------------------------------
-# Phone grid fix: the desktop grid-area names must not leak into the
-# phone grid (.pi-side is display: contents there). Without this the
-# header, tabs and buttons land in stray implicit columns and squeeze
-# the content into a thin strip.
---------------------------------------------------------------*/
+
 @media (max-width: 760px) {
   .pi-titlebar,
   .pi-content { grid-column: 1 / -1; min-width: 0; }
@@ -634,10 +589,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-actions { grid-area: auto; grid-row: 5; grid-column: 1 / -1; min-width: 0; }
   .pi { grid-auto-columns: minmax(0, 1fr); }
 }
-/*--------------------------------------------------------------
-# Phone: the categories (Video demo, Screenshots, Overview, Details, ...) become an
-#   icon rail on the left. Declared last so it wins over the phone rules above.
---------------------------------------------------------------*/
+
 @media (max-width: 760px) {
   .pi,
   html.pi-embed .pi,
@@ -647,6 +599,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-tree {
     grid-row: 3; grid-column: 1;
     flex-direction: column; align-items: center; gap: .35em;
+    justify-content: center; justify-content: safe center;
     overflow-x: hidden; overflow-y: auto;
     padding: .6em .45em;
     border-right: 1px solid var(--pi-line);
@@ -661,12 +614,6 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi .pi-item::after,
   .pi .pi-item .pi-count { display: none; }
 
-  /* centre the button group vertically along the rail. margin:auto (not justify-content:center)
-     so that when the rail is shorter than the buttons (landscape, small phones) it scrolls from the top
-     instead of clipping the first tab. */
-  .pi-tree > .pi-items > .pi-item:first-child { margin-top: auto; }
-  .pi-tree > .pi-items > .pi-item:last-child  { margin-bottom: auto; }
-
   /* if a tab has no icon of its own, give it one by category */
   .pi .pi-item:not(:has(> i))::before {
     content: "\f15c"; font-family: "Font Awesome 6 Free", "Font Awesome 5 Free"; font-weight: 900; font-size: 1.1em;
@@ -677,25 +624,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi .pi-item[data-view="features"]:not(:has(> i))::before { content: "\f0ae"; }
   .pi .pi-item[data-view="stack"]:not(:has(> i))::before { content: "\f1b3"; }
 }
-/*--------------------------------------------------------------
-# DESKTOP sidebar layout (Linux Mint style), viewport > 760px
-#   Project pages load in an iframe, so this follows the window
-#   width through normal media queries. Phone rules above still win
-#   at 760px and below. Markup and inspector.js are unchanged.
-#
-#   ┌────────────────┬─────────────────────────────────────────┐
-#   │ [icon] Title   │                                         │
-#   │ short summary  │                                         │
-#   ├────────────────┤                                         │
-#   │ PROJECT        │      content pane (scrolls on its own)  │
-#   │ ▌Video demo    │                                         │
-#   │  Screenshots   │                                         │
-#   │  Overview …    │                                         │
-#   ├────────────────┤                                         │
-#   │ [ Live Demo  ] │                                         │
-#   │ [ GitHub Repo] │                                         │
-#   └────────────────┴─────────────────────────────────────────┘
---------------------------------------------------------------*/
+
 @media (min-width: 761px) {
 
   /* ---------- Shell: sidebar | content ---------- */
@@ -711,7 +640,7 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
     grid-template-rows: auto minmax(0, 1fr);
   }
 
-  .pi-titlebar { grid-row: 1; grid-column: 1 / -1; }   /* standalone page only; hidden when embedded */
+  .pi-titlebar { grid-row: 1; grid-column: 1 / -1; }
 
   /* ---------- Sidebar ---------- */
   .pi-side {
@@ -787,7 +716,6 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-count { margin-left: auto; }
   .pi-item[aria-selected="true"] { box-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
 
-  /* Live Demo / GitHub Repo pinned to the bottom of the sidebar */
   .pi-actions {
     grid-area: auto;
     flex: 0 0 auto;
@@ -811,29 +739,13 @@ html.wm-embedded .pi.pi { --pi-s: clamp(11px, 1.15vw, 15px); }
   .pi-scroll { padding: 1.6em 2em 3em; }
 }
 
-/*--------------------------------------------------------------
-# Inside a window (phone sheet): the window's title bar already shows
-# "Name: short description", so the page's own title row is dropped.
---------------------------------------------------------------*/
+
 @media (max-width: 760px) {
   html.wm-titled .pi-head { display: none; }
 }
 
-/*--------------------------------------------------------------
-# Project pages, phone icon rail: centring + theme palette
-# Load in every project page AFTER inspector.css (and after theme-palette.css if the pages load it).
-# Runs inside the iframe, so it only needs the page's own main.css variables (--series-*, --on-accent-color ...).
---------------------------------------------------------------*/
 @media (max-width: 760px) {
 
-  /* 1. CENTRE THE RAIL
-     The buttons live in .pi-items (display: contents), so "> .pi-item" never matched.
-     margin:auto on the first/last button centres the group, and still scrolls from the top
-     on short screens instead of clipping the first tab. */
-  .pi-tree > .pi-items > .pi-item:first-child,
-  .pi-tree > .pi-item:first-child { margin-top: auto; }
-  .pi-tree > .pi-items > .pi-item:last-child,
-  .pi-tree > .pi-item:last-child  { margin-bottom: auto; }
 
   /* 2. PALETTE: one series hue per button (same order as theme-palette.css) */
   .pi { --pi-accent: var(--series-1, var(--accent-highlight)); }
