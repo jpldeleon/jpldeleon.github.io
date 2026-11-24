@@ -634,6 +634,8 @@
     `Wait for it: **AuditKit** is my API capstone project, and you can [take it for a spin here](${SITE}/auditkit/).`, { w: 3 });
   add('nothingtechblob', ['nothingtechblob', 'nothing tech blob', 'blob'],
     `**NothingTechBlob** is where I pair technical and on-page SEO with WordPress development, and you can [see it live here](${SITE}/nothingtechblob/).`, { w: 3 });
+  add('superbdan', ['superbdan', 'superb dan', 'superbdan audit'],
+    `**SuperbDan Audit** is a technical SEO audit of a WordPress tech news site, covering crawlability, indexation and on-page metadata with a prioritized fix roadmap, and you can [read the case here](${SITE}/superbdan/).`, { w: 3 });
   add('badlands', ['badlands', 'badlands ink', 'ink', 'tattoo'],
     `**Badlands Ink** is my playground for technical, local and e-commerce SEO with WordPress and WooCommerce, from the product catalog and payments to optimization, and you can [explore it here](${SITE}/badlands-ink/).`,
     { w: 3, cmd: ['badlands ink', 'badlands'] });

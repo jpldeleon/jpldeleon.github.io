@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('site-theme');
+      if (saved === 'aurora' || saved === 'gruvbox' || saved === 'monokai' || saved === 'draculapro') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+      /* embedded in a desktop window: hide the standalone title bar before first paint */
+      if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add('pi-embed');
+    })();
+  </script>
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>SuperbDan Technical SEO Audit - Case Study</title>
+  <meta name="description"
+    content="Technical SEO audit of superbdan.com (November 2026): crawlability, indexation, site architecture and on-page metadata findings with a prioritized roadmap">
+  <meta name="keywords" content="technical seo, seo audit, wordpress, crawl budget, portfolio">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.webp" rel="icon">
+  <link href="/assets/img/apple-touch-icon.webp" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css">
+  
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+  <!-- Project Inspector layout (must load after main.css) -->
+  <link href="/assets/css/inspector.css" rel="stylesheet">
+  <style id="glightbox-overrides">
+    .glightbox-container .gclose:not([data-glightbox-close]) {
+      display: none !important;
+    }
+
+    .glightbox-container .goverlay,
+    .glightbox-container {
+      background: transparent !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+    body.glightbox-open, body.glightbox-open > *:not(.glightbox-container) {
+      filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+    .glightbox-container { z-index: 2147483000 !important; }
+    
+    .glightbox-container .gslide-image img {
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+      pointer-events: none !important;
+    }
+    .glightbox-container .gslide-media {
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+      pointer-events: auto !important;
+    }
+
+    .glightbox-container .gslide-description.lightbox-terminal-mounted {
+      position: relative; z-index: 10; pointer-events: auto !important;
+    }
+    .glightbox-container .lightbox-window-controls,
+    .glightbox-container .lightbox-window-controls .win-btn,
+    .glightbox-container [data-glightbox-close] {
+      position: relative; z-index: 11; pointer-events: auto !important; cursor: pointer;
+      top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--sb-thumb, var(--accent-highlight, #178C7A)) color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent);
+    }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: color-mix(in srgb, var(--sb-thumb, var(--accent-highlight, #178C7A)) 15%, transparent); }
+    *::-webkit-scrollbar-thumb { background: var(--sb-thumb, var(--accent-highlight, #178C7A)); border-radius: 8px; }
+    *::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
+  </style>
+</head>
+
+<body class="pi-page">
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="fa-solid fa-angles-up"></i></a>
+
+  <style>
+    .ph { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:120px; font-size:2rem; opacity:.45; border:1px dashed currentColor; border-radius:6px; }
+    a.ph-tile { cursor: default; pointer-events: none; }
+  </style>
+
+  <div class="pi">
+
+    <header class="pi-titlebar">
+      <i class="fa-solid fa-terminal" aria-hidden="true"></i>
+      <span class="pi-titlebar-title"><b>jp@portfolio:</b> ~/superbdan-audit</span>
+      <a class="pi-back" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Portfolio</a>
+    </header>
+
+    <aside class="pi-side" aria-label="Project navigation">
+
+      <div class="pi-head">
+        <div class="pi-head-top">
+          <span class="pi-badge">Technical SEO Audit</span>
+        </div>
+        <h1 class="pi-title" title="SuperbDan Technical SEO Audit">SuperbDan: Technical SEO Audit</h1>
+      </div>
+
+      <nav class="pi-tree" role="tablist" aria-orientation="vertical" aria-label="Project files">
+
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>media/</div>
+        <div class="pi-items">
+          <a href="#gallery" class="pi-item" role="tab" id="tab-gallery" aria-controls="view-gallery"
+            data-view="gallery" data-dir="media/" data-file="screenshots/" data-meta="6 placeholders">
+            <i class="fa-solid fa-images" aria-hidden="true"></i><span class="pi-name">screenshots/</span><span class="pi-count">6</span>
+          </a>
+        </div>
+
+        <div class="pi-group"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>docs/</div>
+        <div class="pi-items">
+          <a href="#overview" class="pi-item" role="tab" id="tab-overview" aria-controls="view-overview"
+            data-view="overview" data-dir="docs/" data-file="overview.md" data-meta="markdown">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i><span class="pi-name">overview.md</span>
+          </a>
+          <a href="#scorecard" class="pi-item" role="tab" id="tab-scorecard" aria-controls="view-scorecard"
+            data-view="scorecard" data-dir="docs/" data-file="scorecard.md" data-meta="5 pillars">
+            <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i><span class="pi-name">scorecard.md</span>
+          </a>
+          <a href="#findings" class="pi-item" role="tab" id="tab-findings" aria-controls="view-findings"
+            data-view="findings" data-dir="docs/" data-file="findings.md" data-meta="8 failed checks">
+            <i class="fa-solid fa-bug" aria-hidden="true"></i><span class="pi-name">findings.md</span>
+          </a>
+          <a href="#diagnostics" class="pi-item" role="tab" id="tab-diagnostics" aria-controls="view-diagnostics"
+            data-view="diagnostics" data-dir="docs/" data-file="diagnostics.md" data-meta="5 categories">
+            <i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i><span class="pi-name">diagnostics.md</span>
+          </a>
+          <a href="#roadmap" class="pi-item" role="tab" id="tab-roadmap" aria-controls="view-roadmap"
+            data-view="roadmap" data-dir="docs/" data-file="roadmap.md" data-meta="3 phases">
+            <i class="fa-solid fa-route" aria-hidden="true"></i><span class="pi-name">roadmap.md</span>
+          </a>
+          <a href="#info" class="pi-item" role="tab" id="tab-info" aria-controls="view-info"
+            data-view="info" data-dir="docs/" data-file="info.json" data-meta="properties">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="pi-name">info.json</span>
+          </a>
+        </div>
+
+      </nav>
+
+      <div class="pi-actions">
+        <a href="https://docs.google.com/document/d/1uj7VvoMPfD50E0p--rgxxmFcQQOucOKF29_PoMHWZQI/edit?tab=t.0" target="_blank" rel="noopener noreferrer" class="btn-live">Audit Report</a>
+        <a href="https://docs.google.com/spreadsheets/d/1jqZqe6MHXGz04SaOmCDe7vCbPjdaenZVA8RXH_1ptYI/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-github">Audit Data</a>
+      </div>
+
+    </aside>
+
+    <main class="pi-content" id="portfolio-details">
+
+      <div class="pi-bar">
+        <div class="pi-crumb" aria-live="polite">~/superbdan-audit/<span id="pi-crumb-dir"></span><b id="pi-crumb-file"></b></div>
+        <div class="pi-bar-meta" id="pi-meta"></div>
+      </div>
+
+      <div class="pi-scroll">
+
+        <!-- screenshots/ : placeholders, swap each .pi-thumb for the glightbox markup from your other projects -->
+        <div class="pi-view" id="view-gallery" role="tabpanel" aria-labelledby="tab-gallery">
+          <h2 class="pi-h">Screenshots</h2>
+          <p class="pi-sub">Placeholder tiles. Screenshots of the audit report and workbook will be added here.</p>
+          <div class="pi-grid" id="project-screenshots">
+            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 1" tabindex="-1">
+              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
+              <span class="pi-thumb-cap"><span>Screenshot 1</span><span>1/6</span></span>
+            </a>
+            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 2" tabindex="-1">
+              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
+              <span class="pi-thumb-cap"><span>Screenshot 2</span><span>2/6</span></span>
+            </a>
+            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 3" tabindex="-1">
+              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
+              <span class="pi-thumb-cap"><span>Screenshot 3</span><span>3/6</span></span>
+            </a>
+            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 4" tabindex="-1">
+              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
+              <span class="pi-thumb-cap"><span>Screenshot 4</span><span>4/6</span></span>
+            </a>
+            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 5" tabindex="-1">
+              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
+              <span class="pi-thumb-cap"><span>Screenshot 5</span><span>5/6</span></span>
+            </a>
+            <a class="pi-thumb ph-tile" href="#gallery" aria-label="Screenshot placeholder 6" tabindex="-1">
+              <span class="pi-thumb-img"><span class="ph"><i class="fa-regular fa-image" aria-hidden="true"></i></span></span>
+              <span class="pi-thumb-cap"><span>Screenshot 6</span><span>6/6</span></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="pi-view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" hidden>
+          <div class="pi-doc" id="details">
+            <h2 class="pi-h">Project Overview</h2>
+            <p>A technical SEO audit of <strong>superbdan.com</strong>, a WordPress tech news and reviews site, completed in November 2026. It evaluates crawlability, indexability, site architecture and on-page metadata, and ends with a phased remediation roadmap.</p>
+
+            <h2 class="pi-h">What Went Well</h2>
+            <p>The foundation is strong: zero 5xx errors or timeouts, HTTPS enforced, host and trailing-slash canonicalization intact, no soft 404s, and no orphan pages.</p>
+
+            <h2 class="pi-h">What Needs Work</h2>
+            <p>Template-level issues waste crawl budget and dilute link equity: crawlable internal search URLs (1,415 links to 119 variations), 3,516 internal links hitting legacy http:// redirects, malformed author pagination that creates 404 loops, and indexable paginated archives.</p>
+
+            <h2 class="pi-h">Scope Note</h2>
+            <p>Google Search Console access was not available, so GSC sitemap submission, parameter settings and low-traffic page analysis are marked as not audited.</p>
+          </div>
+        </div>
+
+        <div class="pi-view" id="view-scorecard" role="tabpanel" aria-labelledby="tab-scorecard" hidden>
+          <h2 class="pi-h">Audit Pillar Scorecard</h2>
+          <dl class="pi-props">
+            <dt>Crawlability &amp; Indexation</dt><dd>Action required: 7 failed checks (search bloat, indexable pagination, 3xx links, author pagination, 4xx links, noindex, sitemap)</dd>
+            <dt>Dynamic Content &amp; Parameters</dt><dd>Action required: 1,415 internal links to /?s= URLs</dd>
+            <dt>Content Duplication</dt><dd>Pass: 6 of 6 checks (HTTP/HTTPS, www, trailing slash, canonicals)</dd>
+            <dt>Accessibility &amp; Readability</dt><dd>Pass: 100% uptime, zero 5xx, no soft 404s, zero orphan pages</dd>
+            <dt>Metadata &amp; Media</dt><dd>Needs optimization: titles, H1s and external images</dd>
+          </dl>
+        </div>
+
+        <div class="pi-view" id="view-findings" role="tabpanel" aria-labelledby="tab-findings" hidden>
+          <h2 class="pi-h" style="margin-bottom:18px">Key Findings</h2>
+          <div class="pi-features">
+            <div class="pi-feature">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <h3>Internal Search (/?s=) Crawlable</h3>
+              <p><strong>High impact · Low effort</strong></p>
+              <p>1,415 internal links point to 119 search-parameter URLs, creating infinite low-value URL variations. Block via robots.txt and add noindex, follow.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-copy" aria-hidden="true"></i>
+              <h3>Paginated Archives Indexable</h3>
+              <p><strong>High impact · Medium effort</strong></p>
+              <p>39 paginated archive URLs (/page/2/ to /page/13/) are open to indexation. Set page 2+ to noindex, follow.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-link" aria-hidden="true"></i>
+              <h3>Canonicals to Parameter URLs</h3>
+              <p><strong>High impact · Low effort</strong></p>
+              <p>5 author filter URLs (?section=review) fragment link equity. Point links and canonicals to the clean master URLs.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-arrows-split-up-and-left" aria-hidden="true"></i>
+              <h3>Malformed Author Pagination</h3>
+              <p><strong>Medium impact · Medium effort</strong></p>
+              <p>Archive logic appends author names (e.g. /page/12/Dantebisais), producing 404s and pushing content past 4 clicks deep.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+              <h3>Legacy HTTP Redirect Hops</h3>
+              <p><strong>Medium impact · Low effort</strong></p>
+              <p>3,516 internal links in the footer and off-canvas menu use http:// and trigger a 301 on every page view.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-link-slash" aria-hidden="true"></i>
+              <h3>Internal &amp; Social 4xx Links</h3>
+              <p><strong>Medium impact · Low effort</strong></p>
+              <p>15 internal URLs (23 inlinks) return 4xx, mostly relative X/Twitter handles in author bio boxes.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-sitemap" aria-hidden="true"></i>
+              <h3>Outdated XML Sitemap</h3>
+              <p><strong>Medium impact · Low effort</strong></p>
+              <p>sitemap.xml lists redirected and non-canonical URLs. Regenerate with 200-OK canonical URLs only.</p>
+            </div>
+            <div class="pi-feature">
+              <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+              <h3>Accidental noindex</h3>
+              <p><strong>Low impact · Low effort</strong></p>
+              <p>A published review article carries a noindex meta tag. Switch it to index, follow.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pi-view" id="view-diagnostics" role="tabpanel" aria-labelledby="tab-diagnostics" hidden>
+          <h2 class="pi-h">Crawl Diagnostics: On-Page Elements &amp; Assets</h2>
+          <dl class="pi-props">
+            <dt>Titles &gt; 60 chars</dt><dd>160 URLs: long templates and repeated brand suffixes</dd>
+            <dt>Duplicate titles</dt><dd>11 URLs: category and tag archives share a title pattern</dd>
+            <dt>Missing H1</dt><dd>21 URLs: author.php has no H1 element</dd>
+            <dt>Multiple H1</dt><dd>4 URLs: in-article subheadings formatted as H1 (up to 6 on one post)</dd>
+            <dt>Oversized external images</dt><dd>37 instances: uncompressed Blogger-hosted images (130 KB+)</dd>
+          </dl>
+        </div>
+
+        <div class="pi-view" id="view-roadmap" role="tabpanel" aria-labelledby="tab-roadmap" hidden>
+          <h2 class="pi-h">Prioritized Implementation Roadmap</h2>
+          <p class="pi-sub">Quick wins come first.</p>
+            <h2 class="pi-h" style="margin-top:22px">Phase 1: Quick Wins (Week 1)</h2>
+            <ul class="pi-tools">
+              <li><strong>Block /?s= in robots.txt and add noindex, follow to search templates</strong>Impact / effort: High / Low</li>
+              <li><strong>Fix ?section=review canonicals and internal links</strong>Impact / effort: High / Low</li>
+              <li><strong>Replace hardcoded http:// links in footer.php and mobile menu</strong>Impact / effort: Medium / Low</li>
+              <li><strong>Fix relative X/Twitter URLs in author boxes</strong>Impact / effort: Medium / Low</li>
+              <li><strong>Regenerate a clean XML sitemap</strong>Impact / effort: Medium / Low</li>
+              <li><strong>Remove the accidental noindex on the review post</strong>Impact / effort: Low / Low</li>
+            </ul>
+            <h2 class="pi-h" style="margin-top:22px">Phase 2: Theme &amp; Structure (Weeks 2-3)</h2>
+            <ul class="pi-tools">
+              <li><strong>Fix the author.php pagination loop and noindex page 2+ archives</strong>Impact / effort: High / Medium</li>
+              <li><strong>Replace 1,415 in-article /?s= links with canonical posts or categories</strong>Impact / effort: High / Medium</li>
+            </ul>
+            <h2 class="pi-h" style="margin-top:22px">Phase 3: On-Page Polish (Week 4)</h2>
+            <ul class="pi-tools">
+              <li><strong>Add H1 to author templates and demote extra H1s on 4 posts</strong>Impact / effort: Medium / Low</li>
+              <li><strong>Resolve 11 duplicate titles and trim priority titles over 60 characters</strong>Impact / effort: Medium / Medium</li>
+              <li><strong>Compress and self-host 37 external images as WebP/AVIF</strong>Impact / effort: Medium / Medium</li>
+            </ul>
+        </div>
+
+        <div class="pi-view" id="view-info" role="tabpanel" aria-labelledby="tab-info" hidden>
+          <h2 class="pi-h">Project Information</h2>
+          <dl class="pi-props">
+            <dt>Target</dt><dd>https://www.superbdan.com/</dd>
+            <dt>Type</dt><dd>Technical SEO Audit</dd>
+            <dt>Date</dt><dd>November 2026</dd>
+            <dt>Platform</dt><dd>WordPress</dd>
+            <dt>Focus</dt><dd>Crawlability, Indexation, Site Architecture, On-Page Metadata</dd>
+            <dt>Deliverables</dt><dd>Audit report (Google Docs) and audit workbook (Google Sheets)</dd>
+            <dt>Limitation</dt><dd>No Google Search Console access</dd>
+          </dl>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <div id="preloader"></div>
+
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/inspector.js"></script>
+
+</body>
+
+</html>

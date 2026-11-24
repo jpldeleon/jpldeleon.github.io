@@ -19,7 +19,8 @@
     ['johnoffthewall', 'John Off the Wall', 'fa-solid fa-fire-flame-curved'],
     ['pixellog', 'PixelLog', 'fa-brands fa-mintbit'],
     ['jamporudex', 'JamporuDEX', 'fa-brands fa-leanpub'],
-    ['route196', 'Route 196', 'fa-solid fa-shield']
+    ['route196', 'Route 196', 'fa-solid fa-shield'],
+    ['superbdan', 'SuperbDan Audit', 'fa-solid fa-clipboard-check']
   ];
 
   /* ───────── markup ───────── */
