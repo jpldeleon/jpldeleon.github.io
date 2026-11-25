@@ -208,7 +208,10 @@
       synth();
     }
   }
-  function alertUser() { shakeBell(); playSound('notify'); }
+  /* The theme toggle has its own sound (ink-transition.js adds html.ink-switching for the length of the switch).
+     The general chime never plays while that class is set, whichever code path asked for it. */
+  const themeSwitching = () => document.documentElement.classList.contains('ink-switching');
+  function alertUser() { shakeBell(); if (!themeSwitching()) playSound('notify'); }
 
   /* mute button in the notification header */
   const head = pop.querySelector('.notif-head');
@@ -369,7 +372,7 @@
     announce(text);
     showPill(type, text);
     if (!(opts && opts.silent)) { if (opts && opts.quiet) shakeBell(); else if (opts && opts.sound) { shakeBell(); playSound(opts.sound); } else alertUser(); }   // quiet: bell shake only; sound: own sound instead of the chime
-    document.dispatchEvent(new CustomEvent('notif:added', { detail: { type: type, text: text, key: key || text } }));
+    document.dispatchEvent(new CustomEvent('notif:added', { detail: { type: type, text: text, key: key || text, quiet: !!(opts && (opts.quiet || opts.silent)) } }));
   }
 
   /* ===================== view ===================== */
