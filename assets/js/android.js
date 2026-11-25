@@ -447,7 +447,15 @@
     const t = ev.target.closest('.adr-tile[data-tile]');
     if (t) {
       const k = t.dataset.tile;
-      if (k === 'theme') { const i = THEMES.findIndex(x => x[0] === theme()); const n = $(`[data-theme-choice="${THEMES[(i + 1) % THEMES.length][0]}"]`); if (n) n.click(); }
+      if (k === 'theme') {
+        const i = THEMES.findIndex(x => x[0] === theme()); const n = $(`[data-theme-choice="${THEMES[(i + 1) % THEMES.length][0]}"]`);
+        if (n) {
+          n.click();
+          /* the shade closes with the theme change: inside the ink transition when one is playing (it vanishes behind the
+             spreading ink), straight away otherwise */
+          if (window.InkTheme && InkTheme.active()) InkTheme.queue(() => setShade(false)); else setShade(false);
+        }
+      }
       else if (k === 'hire' || k === 'hobbies') {
         const i = cards.indexOf(k), already = i === 0; if (i > -1) cards.splice(i, 1);
         cards.unshift(k);                                      // latest tapped goes to the very top (tapping again just brings it back up)
