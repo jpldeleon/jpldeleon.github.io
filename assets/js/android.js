@@ -380,6 +380,12 @@
     push(d.type + '|' + d.key, N_ICONS[d.type] || 'fa-bell', d.text, '');
     leftFor = (d.type === 'link' || d.type === 'social') ? { icon: N_ICONS[d.type], title: d.text, ts: Date.now() } : null;
   });
+  /* Restart: the phone shade starts clean too (events, tile cards and any heads-up pill still showing). */
+  document.addEventListener('desktop:restart', () => {
+    events.length = 0; cards.length = 0; leftFor = null;
+    clearTimeout(headsT); heads.classList.remove('show');
+    render();
+  });
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState !== 'visible' || !leftFor) return;
     const n = leftFor; leftFor = null;

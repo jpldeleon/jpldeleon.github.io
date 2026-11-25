@@ -1407,7 +1407,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       const bootScr = bootSequence('Starting', true);    // same boot animation as Restart: LineageOS on phones, Linux Mint on desktop
       const loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise(r => window.addEventListener('load', r, { once: true }));
       await bootScr.done(loaded);
-      document.dispatchEvent(new CustomEvent('desktop:welcome'));   // first load: the welcome sound plays as the boot screen lifts, not after the wallpaper pause
+      document.dispatchEvent(new CustomEvent('desktop:welcome'));   // first load: the welcome sound plays the moment the boot screen lifts, so it is not held back by the wallpaper pause
       await revealDesktop();                       // nothing opens on its own; the visitor launches windows from the Menu
       document.dispatchEvent(new CustomEvent('desktop:booted'));
     })();
@@ -1447,9 +1447,9 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
  *  - Pointer events pass through during the animation (the live page underneath is already in the new theme).
  *  - prefers-reduced-motion, hidden tabs and browsers without View Transitions: instant switch, nothing breaks.
  *  - Phones (<= 768px) and low-core devices render a smaller sprite and fewer drops, same 800 ms.
- *  - Sound: a synthesised water-drop soundscape that follows the animation (a "bloop" for every ink drop at the moment
- *    it appears, panned to where it lands, a soft swell while the ink spreads, a gentle chime as the theme settles;
- *    the chime's pitch depends on the theme). The old theme-toggle sound is silenced while it plays.
+ *  - Sound: the ONE sound of the theme toggle (the theme notification is silent). Low, mellow lofi / Ghibli felt-piano in
+ *    the same register and key as the notifications: a soft note for every ink drop, a slow C-E-G-B phrase, a warm pad.
+ *    The notification panel's speaker button mutes it as well.
  *    Mute with InkTheme.setSound(false) or localStorage.setItem('ink-mute','1').
  *  - Console: InkTheme.why() (what could block it), InkTheme.test() (play it),
  *    localStorage.setItem('ink-force','1') (ignore reduced-motion while testing).
@@ -1639,7 +1639,7 @@ html.ink-switching::view-transition-new(root){animation:none;mix-blend-mode:norm
 
   /* ───────── sound: Web Audio, timed to the same plan that draws the ink ───────── */
   let actx = null, master = null, noiseBuf = null, hushUntil = 0;
-  const soundOn = () => { try { return localStorage.getItem('ink-mute') !== '1'; } catch (e) { return true; } };
+  const soundOn = () => { try { return localStorage.getItem('ink-mute') !== '1' && localStorage.getItem('notif-sound') !== 'off'; } catch (e) { return true; } };   // the notification panel's speaker button mutes this too
   const hush = ms => { hushUntil = performance.now() + ms; };
   const hushed = () => performance.now() < hushUntil;
 
@@ -1689,62 +1689,42 @@ html.ink-switching::view-transition-new(root){animation:none;mix-blend-mode:norm
     };
     const out = (node, x) => { const p = x == null ? null : pan(x); if (p) { node.connect(p); p.connect(master); } else node.connect(master); };
 
-    /* ripple: where each ink drop lands, a soft ring spreads out as a few fading lapping pulses of band-passed noise
-       (the band slides down as the ring widens), with just a hint of a pitched ring underneath. */
-    const getNoise = () => {
-      if (!noiseBuf) {
-        noiseBuf = c.createBuffer(1, c.sampleRate, c.sampleRate);
-        const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-      }
-      return noiseBuf;
+    /* Theme-toggle sound, one voice only: the same low, mellow lofi / Ghibli felt-piano as the notifications
+       (C major-7, 260-500 Hz, dark filter, slow tape wobble). Every ink drop is a soft note as it appears (panned to
+       where it lands), a slow C-E-G-B phrase rises and settles, and a warm low pad sits underneath. The theme
+       notification itself is silent (see notifications.js), so nothing else plays at the toggle. */
+    const KEYS = [261.63, 329.63, 392, 493.88, 293.66, 392];
+    const keys = (when, f, dur, vol, x) => {
+      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1300; lp.Q.value = 0.5;
+      const lfo = c.createOscillator(), lfoG = c.createGain();          // tape wobble
+      lfo.frequency.value = 0.9; lfoG.gain.value = 9; lfo.connect(lfoG);
+      lfo.start(when); lfo.stop(when + dur + 0.05);
+      [[1, 1, 0], [2, 0.18, 0], [1, 0.5, 6]].forEach(([m, v, cents], k) => {
+        const o = c.createOscillator(), a = c.createGain();
+        o.type = 'sine'; o.frequency.value = f * m; o.detune.value = cents;
+        lfoG.connect(o.detune);
+        a.gain.setValueAtTime(0.0001, when);
+        a.gain.exponentialRampToValueAtTime(vol * v, when + 0.025);
+        a.gain.exponentialRampToValueAtTime(0.0001, when + dur / (1 + k * 0.3));
+        o.connect(a); a.connect(lp);
+        o.start(when); o.stop(when + dur + 0.05);
+      });
+      out(lp, x);
     };
-    const bloop = (when, f, g, x) => {
-      const n = c.createBufferSource(); n.buffer = getNoise();
-      const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 3;
-      bp.frequency.setValueAtTime(f * 1.5, when);
-      bp.frequency.exponentialRampToValueAtTime(f * 0.8, when + 0.34);
-      const a = c.createGain(), k = g * 5;
-      a.gain.setValueAtTime(0.0001, when);
-      a.gain.exponentialRampToValueAtTime(k, when + 0.012);            // the touch
-      a.gain.exponentialRampToValueAtTime(k * 0.3, when + 0.07);
-      a.gain.exponentialRampToValueAtTime(k * 0.8, when + 0.10);       // first ring
-      a.gain.exponentialRampToValueAtTime(k * 0.15, when + 0.17);
-      a.gain.exponentialRampToValueAtTime(k * 0.4, when + 0.20);       // second, wider ring
-      a.gain.exponentialRampToValueAtTime(0.0001, when + 0.38);
-      n.connect(bp); bp.connect(a); out(a, x);
-      n.start(when, Math.random() * 0.5); n.stop(when + 0.42);
+    plan.drops.forEach((d, i) => keys(t0 + d.delay * DUR / 1000, KEYS[i % KEYS.length], 0.8, i === 0 ? 0.11 : 0.07 * (1 - i * 0.08), d.x));
 
-      const o = c.createOscillator(), og = c.createGain();             // faint tonal ring
-      o.type = 'sine';
-      o.frequency.setValueAtTime(f * 1.1, when);
-      o.frequency.exponentialRampToValueAtTime(f * 0.9, when + 0.2);
-      og.gain.setValueAtTime(0.0001, when);
-      og.gain.exponentialRampToValueAtTime(g * 0.2, when + 0.01);
-      og.gain.exponentialRampToValueAtTime(0.0001, when + 0.22);
-      o.connect(og); out(og, x);
-      o.start(when); o.stop(when + 0.25);
-    };
-    plan.drops.forEach((d, i) => bloop(t0 + d.delay * DUR / 1000, i === 0 ? base : base * deg[i % deg.length], i === 0 ? 0.2 : 0.11 * (1 - i * 0.08), d.x));
+    [261.63, 329.63, 392, 493.88, 392, 329.63].forEach((f, i) => keys(t0 + 0.05 + i * 0.14, f, 1.1, i === 3 ? 0.06 : 0.1, plan.W * (0.3 + 0.4 * (i / 5))));
 
-    /* the first drop landing: a soft low "plunk" */
-    const th = c.createOscillator(), tg = c.createGain();
-    th.type = 'sine';
-    th.frequency.setValueAtTime(190, t0); th.frequency.exponentialRampToValueAtTime(100, t0 + 0.24);
-    tg.gain.setValueAtTime(0.0001, t0); tg.gain.exponentialRampToValueAtTime(0.22, t0 + 0.01); tg.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.32);
-    th.connect(tg); out(tg, plan.drops[0].x); th.start(t0); th.stop(t0 + 0.36);
-
-    /* the ink spreading: filtered noise that blooms open and thins out, following the coverage curve */
-    if (!noiseBuf) {
-      noiseBuf = c.createBuffer(1, c.sampleRate, c.sampleRate);
-      const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    }
-    const n = c.createBufferSource(); n.buffer = noiseBuf; n.loop = true;
-    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.6;
-    lp.frequency.setValueAtTime(380, t0); lp.frequency.exponentialRampToValueAtTime(2600, t0 + 0.62);
-    const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 140;
-    const ng = c.createGain();
-    ng.gain.setValueAtTime(0.0001, t0); ng.gain.exponentialRampToValueAtTime(0.075, t0 + 0.36); ng.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.9);
-    n.connect(lp); lp.connect(hp); hp.connect(ng); out(ng); n.start(t0); n.stop(t0 + 0.95);
+    [130.81, 196, 329.63].forEach(f => {                                  // warm low pad
+      const o = c.createOscillator(), og = c.createGain(), lp = c.createBiquadFilter();
+      o.type = 'triangle'; o.frequency.value = f;
+      lp.type = 'lowpass'; lp.frequency.value = 600;
+      og.gain.setValueAtTime(0.0001, t0);
+      og.gain.exponentialRampToValueAtTime(0.03, t0 + 0.4);
+      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.2);
+      o.connect(lp); lp.connect(og); out(og);
+      o.start(t0); o.stop(t0 + 1.25);
+    });
   }
 
   /* ───────── runner ───────── */
@@ -1770,7 +1750,7 @@ html.ink-switching::view-transition-new(root){animation:none;mix-blend-mode:norm
 
     let mask = null, st = null, plan = null, key = '';
     const sound = soundOn();
-    if (sound) { audio(); }
+    if (sound) { audio(); hush(1500); }   // silences any other theme-toggle sound (other scripts, cached files) while the ink plays
     root.classList.add('ink-switching');
     const vt = document.startViewTransition(async () => {
       const w = watchTheme();

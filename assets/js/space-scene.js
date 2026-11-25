@@ -5,8 +5,6 @@
 # - ~10 tiny glowing spheres orbit close around it on tilted ellipses,
 #   slowly shifting through the theme colours, passing behind and in
 #   front of it (back canvas under the astronaut, front canvas over it).
-# - On first load, after the boot sequence and after Restart, the astronaut
-#   (and its orbs) slowly drifts in from far away at the back.
 # - Sparse twinkling stars, 5 faint distant bodies, a rare shooting star.
 # - All colours come from the active theme's CSS variables and ease
 #   smoothly when the theme changes.
@@ -33,8 +31,6 @@
   var MOBILE_HEIGHT = 0.26;    // smaller on mobile so it fits between content and dock
   var MOBILE_DOCK_GAP = 26;    // px of clear space between astronaut and dock
   var ORB_COUNT = 10;
-  var ARRIVE_S = 16;           // seconds for the astronaut to drift in from the back (raise = slower)
-  var ARRIVE_FROM = 0.08;      // starting size when it is 'far away' (1 = full size)
   var TWO_PI = Math.PI * 2;
   var reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -276,28 +272,9 @@
   var arrSc = 1;
   var ax = 0, ay = 0; // astronaut centre on screen (used by halo + orbits)
 
-  /* ---- Arrival from the back ------------------------------------
-     Waits while the boot sequence is on screen (html.boot-on), then plays once the boot ends.
-     First load without boot: plays straight away. Restart (html.desk-pre comes back after the desktop
-     was revealed): resets, waits for the boot replay to finish, then plays again. */
-  var de = document.documentElement;
-  var phase = 'wait', seenReveal = false, gotBoot = false;
-  var arrT = 0, arrP = 0, arrE = 0, arrOp = 0;
-  astro.style.opacity = '0';
-  astro.style.transition = 'none';   // space-scene.css fades opacity over 1.6s; the arrival drives opacity itself, frame by frame
-
-  function stepArrival(dt) {
-    var bo = de.classList.contains('boot-on'), dp = de.classList.contains('desk-pre');
-    if (!dp) seenReveal = true;
-    if (bo) { phase = 'wait'; gotBoot = true; }
-    else if (phase === 'run' && dp && seenReveal) { phase = 'wait'; gotBoot = false; }   // Restart pressed
-    else if (phase === 'wait' && (gotBoot || !dp || !seenReveal)) { phase = 'run'; gotBoot = false; arrT = 0; }
-    if (phase === 'wait') arrT = 0;
-    else if (astro.classList.contains('is-ready')) arrT += reduceMq.matches ? ARRIVE_S : dt;
-    arrP = clamp(arrT / ARRIVE_S, 0, 1);
-    arrE = arrP * arrP * arrP * (arrP * (arrP * 6 - 15) + 10);   // smootherstep: eases out of the dark, glides, then settles with no abrupt stop
-    arrOp = clamp(arrP * 5, 0, 1);
-  }
+  /* No arrival animation: the astronaut is simply there (space-scene.css fades it in once its image is ready).
+     These stay at their final values so the orbs and the transform below need no other changes. */
+  var arrP = 1, arrE = 1, arrOp = 1;
 
   function updateAstronaut(dt) {
     var k = 1 - Math.exp(-dt / 0.5);
@@ -316,21 +293,8 @@
     var rx = wave(89, 2.2) * 6.5;           // pitch
     var ry = wave(127, 3.6) * 6;            // slow yaw
 
-    /* arrival: travels from the vanishing point (screen centre) and grows from tiny to full size */
-    var vx = W / 2, vy = H * 0.46;
-    /* true perspective: the distance shrinks smoothly from far to 1, size and sideways offset both follow 1/distance */
-    arrSc = 1 / (1 + (1 / ARRIVE_FROM - 1) * (1 - arrE));
-    ax = vx + (cx + dx - vx) * arrSc;
-    ay = vy + (cy + dy - vy) * arrSc;
-    /* zero-gravity drift: it meanders sideways and up/down on slow overlapping curves instead of flying straight in;
-       the meander fades to nothing exactly as it arrives, so it hands over smoothly to the normal floating */
-    var env = 1 - arrE, mn = Math.min(W, H), P = arrP * TWO_PI;
-    ax += env * mn * 0.22 * (Math.sin(P * 1.15 + 0.6) * 0.65 + Math.sin(P * 0.55 + 2.2) * 0.35);
-    ay += env * mn * 0.15 * (Math.cos(P * 0.9 + 1.1) * 0.6 + Math.sin(P * 0.45 + 0.4) * 0.4);
-    /* slow zero-gravity tumble that dies away as it arrives */
-    rz += (1 - arrE) * 18;
-    ry += (1 - arrE) * 28;
-    astro.style.opacity = arrP >= 1 ? '' : arrOp.toFixed(3);
+    ax = cx + dx;
+    ay = cy + dy;
 
     astro.style.transform =
       'translate3d(' + (ax - astW / 2).toFixed(2) + 'px,' + (ay - astH / 2).toFixed(2) + 'px,0) ' +
@@ -441,11 +405,10 @@
 
   function drawOrbs() {
     var n = palCur.length;
-    if (arrOp < 0.01) return;                   // nothing to show until the astronaut starts arriving
     var maxA = Math.min(W * 0.46, Infinity);
     for (var i = 0; i < orbs.length; i++) {
       var o = orbs[i];
-      var a = Math.min(o.a * astH, maxA) * arrSc;   // orbits shrink with the astronaut while it is far away
+      var a = Math.min(o.a * astH, maxA) * arrSc;
       var b = a * o.e;
       var th = o.th0 + o.dir * T * TWO_PI / o.per;
       // ellipse in its own plane, then pitch (X), yaw (Y), roll (Z)
@@ -480,7 +443,6 @@
 
     stepPalette(dt);
     stepShoot(dt);
-    stepArrival(dt);
     updateAstronaut(dt);
 
     bctx.clearRect(0, 0, W, H);

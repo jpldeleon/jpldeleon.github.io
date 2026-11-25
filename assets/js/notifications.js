@@ -65,15 +65,15 @@
   }
 
   /* ===================== sound + bell shake =====================
-   * Every new notification rings the bell (a short shake) and plays a Japanese-style koto chime.
-   * Theme changes play a koi splash; restarting the desktop plays a falling koto phrase (off) and
-   * the boot finishing plays a rising koto strum over a shō pad (on).
+   * Every new notification rings the bell (a short shake) and plays a soft Ghibli / lofi felt-piano chime.
+   * Theme changes shake the bell but stay silent (the ink transition plays the one theme sound); restarting the desktop plays a falling felt-piano phrase (off) and
+   * the boot finishing plays a rising arpeggio over a warm pad (on).
    * The sounds are synthesised with the Web Audio API, so there are no audio files to ship.
    * To use real recordings instead, put your own files in SOUND_FILES (for example 'assets/audio/notify.ogg');
    * an empty string keeps the built-in sound. A speaker button in the notification header mutes everything
    * (remembered in localStorage). Browsers only allow sound after a click or key press, so a sound that
    * fires before the first interaction is simply skipped. */
-  const SOUND_FILES = { notify: '', exit: '', welcome: '', theme: '' };
+  const SOUND_FILES = { notify: '', exit: '', welcome: '' };
   const SOUND_KEY = 'notif-sound';
   const VOLUME = 0.2;
   const reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -130,142 +130,69 @@
     tone(freq, at, dur, vol);
     tone(freq * 2, at, dur * 0.5, vol * 0.1);
   }
-  /* ---- Japanese-style sounds ----
-   * Notes come from the hirajoshi scale on A (A B C E F), the classic koto tuning, so everything sounds
-   * pentatonic and "Japanese" whichever notes are picked. Three building blocks:
-   *   pluck = a koto string (bright attack, quick pitch bend down, harmonics that die away)
-   *   furin = a wind chime / small temple bell (inharmonic partials, long shimmer)
-   *   sho   = a soft sustained pad like the shō mouth organ (used for the boot sound)               */
-  const N = { A3: 220, E4: 329.63, A4: 440, B4: 493.88, C5: 523.25, E5: 659.25, F5: 698.46, A5: 880, C6: 1046.5, E6: 1318.5 };
+  /* ---- Ghibli / lofi sounds ----
+   * Low, mellow felt-piano notes (mostly 260-500 Hz, a full octave below before) with a dark low-pass filter, a
+   * slow tape-style pitch wobble and a slightly detuned double: the dusty, warm sound of a lofi record. Chords are
+   * major-7 (C E G B): the soft, dreamy sound of a Ghibli film score. No high notes, no noise, no sharp attacks.
+   *   keys = a felt-piano note      pad = a warm, slow-swelling chord                                      */
+  const N = { C3: 130.81, G3: 196, C4: 261.63, D4: 293.66, E4: 329.63, G4: 392, B4: 493.88 };
 
-  function pluck(freq, at, dur, vol) {
+  function keys(freq, at, dur, vol) {
     const t = ctx.currentTime + at;
-    [[1, 1, 'triangle'], [2, 0.35, 'sine'], [3, 0.14, 'sine']].forEach(([m, v, type], k) => {
-      const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = type;
-      o.frequency.setValueAtTime(freq * m * 1.018, t);                 // koto "pitch bend": starts a hair sharp
-      o.frequency.exponentialRampToValueAtTime(freq * m, t + 0.07);
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol * v, t + 0.004);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur / (1 + k * 0.6));
-      o.connect(g); g.connect(master);
-      o.start(t); o.stop(t + dur + 0.05);
-    });
-  }
-  function furin(freq, at, dur, vol) {
-    const t = ctx.currentTime + at;
-    [[1, 1], [2.76, 0.4], [5.4, 0.15]].forEach(([m, v], k) => {
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1300; lp.Q.value = 0.5;
+    lp.connect(master);
+    const lfo = ctx.createOscillator(), lfoG = ctx.createGain();       // tape wobble, shared by the note's partials
+    lfo.frequency.value = 0.9; lfoG.gain.value = 9;
+    lfo.connect(lfoG);
+    lfo.start(t); lfo.stop(t + dur + 0.05);
+    [[1, 1, 0], [2, 0.18, 0], [1, 0.5, 6]].forEach(([m, v, cents], k) => {
       const o = ctx.createOscillator(), g = ctx.createGain();
       o.type = 'sine';
       o.frequency.value = freq * m;
+      o.detune.value = cents;                                           // lofi chorus warmth
+      lfoG.connect(o.detune);
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol * v, t + 0.003);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur / (1 + k * 0.8));
-      o.connect(g); g.connect(master);
+      g.gain.exponentialRampToValueAtTime(vol * v, t + 0.025);          // soft felt attack
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur / (1 + k * 0.3));
+      o.connect(g); g.connect(lp);
       o.start(t); o.stop(t + dur + 0.05);
     });
   }
-  function sho(freqs, at, dur, vol) {
+  function pad(freqs, at, dur, vol) {
     const t = ctx.currentTime + at;
     freqs.forEach(f => {
-      const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = 'triangle';
-      o.frequency.value = f;
+      const o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+      o.type = 'triangle'; o.frequency.value = f;
+      lp.type = 'lowpass'; lp.frequency.value = 600;
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol, t + dur * 0.4);
+      g.gain.exponentialRampToValueAtTime(vol, t + dur * 0.4);          // slow swell
       g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g); g.connect(master);
+      o.connect(lp); lp.connect(g); g.connect(master);
       o.start(t); o.stop(t + dur + 0.05);
-    });
-  }
-
-  /* fish-drop splash for the theme toggle: a fish breaking the water, then ripple waves lapping outward */
-  let splashBuf = null;
-  function koiSplash() {
-    const c = ctx, t0 = c.currentTime + 0.01;
-    if (!splashBuf) {
-      splashBuf = c.createBuffer(1, Math.floor(c.sampleRate * 0.6), c.sampleRate);
-      const d = splashBuf.getChannelData(0);
-      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    }
-    /* the slap: a short burst of band-passed noise that sweeps up then settles */
-    const n = c.createBufferSource(); n.buffer = splashBuf;
-    const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1;
-    bp.frequency.setValueAtTime(700, t0);
-    bp.frequency.exponentialRampToValueAtTime(3200, t0 + 0.06);
-    bp.frequency.exponentialRampToValueAtTime(1100, t0 + 0.4);
-    const ng = c.createGain();
-    ng.gain.setValueAtTime(0.0001, t0);
-    ng.gain.exponentialRampToValueAtTime(0.9, t0 + 0.006);
-    ng.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.42);
-    n.connect(bp); bp.connect(ng); ng.connect(master);
-    n.start(t0); n.stop(t0 + 0.5);
-
-    /* the body going under: a low, quick "plop" */
-    const o = c.createOscillator(), g = c.createGain();
-    o.type = 'sine';
-    o.frequency.setValueAtTime(280, t0);
-    o.frequency.exponentialRampToValueAtTime(85, t0 + 0.14);
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(0.55, t0 + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.2);
-    o.connect(g); g.connect(master);
-    o.start(t0); o.stop(t0 + 0.25);
-
-    /* two quick droplets falling back after the fish goes under */
-    [[0.10, 1250, 0.28], [0.19, 940, 0.16]].forEach(([at, f, v]) => {
-      const r = c.createOscillator(), rg = c.createGain(), t = t0 + at;
-      r.type = 'sine';
-      r.frequency.setValueAtTime(f * 0.7, t);
-      r.frequency.exponentialRampToValueAtTime(f * 1.3, t + 0.05);
-      rg.gain.setValueAtTime(0.0001, t);
-      rg.gain.exponentialRampToValueAtTime(v, t + 0.006);
-      rg.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
-      r.connect(rg); rg.connect(master);
-      r.start(t); r.stop(t + 0.18);
-    });
-
-    /* ripple waves spreading across the water: soft low noise that laps in and fades, three times, each smaller.
-       Pure noise, no pitch, so nothing at the end can sound like a beep. */
-    [[0.22, 0.20, 0.45], [0.52, 0.13, 0.5], [0.88, 0.07, 0.55]].forEach(([at, v, len]) => {
-      const w = c.createBufferSource(); w.buffer = splashBuf;
-      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.5;
-      const t = t0 + at;
-      lp.frequency.setValueAtTime(260, t);
-      lp.frequency.exponentialRampToValueAtTime(900, t + len * 0.4);
-      lp.frequency.exponentialRampToValueAtTime(240, t + len);
-      const wg = c.createGain();
-      wg.gain.setValueAtTime(0.0001, t);
-      wg.gain.exponentialRampToValueAtTime(v, t + len * 0.35);
-      wg.gain.exponentialRampToValueAtTime(0.0001, t + len);
-      w.connect(lp); lp.connect(wg); wg.connect(master);
-      w.start(t); w.stop(t + len + 0.05);
     });
   }
 
   const SYNTH = {
-    theme: koiSplash,
-
-    /* notification: two koto plucks rising (E → A) with a tiny wind-chime sparkle on top */
+    /* notification (every other type): a slow, mellow C-E-G-B arpeggio over a low warm pad */
     notify: () => {
-      pluck(N.E5, 0, 0.7, 0.45);
-      pluck(N.A5, 0.13, 1.0, 0.45);
-      furin(N.E6, 0.16, 1.1, 0.07);
+      keys(N.C4, 0, 1.3, 0.34);
+      keys(N.E4, 0.14, 1.3, 0.32);
+      keys(N.G4, 0.28, 1.6, 0.3);
+      keys(N.B4, 0.42, 1.9, 0.14);
+      pad([N.C3, N.G3], 0, 2.0, 0.06);
     },
 
-    /* desktop off / restart: a slow koto phrase falling back to A, a low drum, then a last chime */
+    /* desktop off / restart: a slow lofi "goodnight" phrase falling G-E-D-C, a deep low note, a pad that fades out */
     exit: () => {
-      [N.A5, N.F5, N.E5, N.C5, N.A4].forEach((f, i) => pluck(f, i * 0.2, 1.1, 0.4));
-      tone(70, 0.9, 1.2, 0.3, 'sine');                                  // soft taiko-like "don"
-      furin(N.A5, 1.05, 1.8, 0.08);
+      [N.G4, N.E4, N.D4, N.C4].forEach((f, i) => keys(f, i * 0.26, 1.5, 0.3));
+      keys(N.C3, 0.85, 2.2, 0.3);
+      pad([N.C3, N.G3], 0.3, 2.4, 0.06);
     },
 
-    /* desktop on / boot finished: a shō pad swells, a koto strum rises, wind chimes sparkle */
+    /* desktop on / boot finished: a warm pad swells and a soft arpeggio rises, like a quiet morning scene */
     welcome: () => {
-      sho([N.A3, N.E4, N.A4], 0, 2.4, 0.12);
-      [N.A4, N.C5, N.E5, N.A5].forEach((f, i) => pluck(f, 0.25 + i * 0.11, 1.2, 0.4));
-      furin(N.E6, 0.75, 1.8, 0.08);
-      furin(N.C6, 0.95, 1.8, 0.06);
+      pad([N.C3, N.G3, N.E4], 0, 2.8, 0.08);
+      [N.C4, N.E4, N.G4, N.B4].forEach((f, i) => keys(f, 0.3 + i * 0.17, 1.8, i === 3 ? 0.16 : 0.32));
     }
   };
 
@@ -313,7 +240,14 @@
      after a restart too. If the browser still blocks audio (no click yet on a fresh load), the welcome
      sound plays on the first click or key press within 20 seconds. */
   document.addEventListener('desktop:restart', () => playSound('exit'));
-  document.addEventListener('desktop:restart', () => add('restart', 'Restarting desktop', 'restart', { silent: true }));
+  /* Restart: wipe every notification (the list, the unread badge and any pill that is still on screen) and do not
+     add a "Restarting desktop" one, so the desktop comes back with a completely clean slate. */
+  document.addEventListener('desktop:restart', () => {
+    items = [];
+    save();
+    render();
+    if (pillHost) pillHost.querySelectorAll('.taskbar-pill').forEach(closePill);
+  });
 
   let welcomed = false;
   document.addEventListener('desktop:restart', () => { welcomed = false; });
@@ -434,7 +368,7 @@
     render();
     announce(text);
     showPill(type, text);
-    if (!(opts && opts.silent)) { if (opts && opts.sound) { shakeBell(); playSound(opts.sound); } else alertUser(); }   // opts.sound: own sound instead of the chime
+    if (!(opts && opts.silent)) { if (opts && opts.quiet) shakeBell(); else if (opts && opts.sound) { shakeBell(); playSound(opts.sound); } else alertUser(); }   // quiet: bell shake only; sound: own sound instead of the chime
     document.dispatchEvent(new CustomEvent('notif:added', { detail: { type: type, text: text, key: key || text } }));
   }
 
@@ -560,7 +494,7 @@
     const now = currentTheme();
     if (now === themePending.from) return;
     themePending = null;
-    add('theme', 'Theme changed to ' + (THEME_NAMES[now] || now), now, { sound: 'theme' });   // koi splash (see koiSplash())
+    add('theme', 'Theme changed to ' + (THEME_NAMES[now] || now), now, { quiet: true });   // no sound here: the ink transition (ink-transition.js) plays the one theme-toggle sound
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   /* 2) Copy buttons: main.js fires "copy:result" once the clipboard write has succeeded or failed.
