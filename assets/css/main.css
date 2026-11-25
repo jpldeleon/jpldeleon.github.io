@@ -1,5 +1,6 @@
 /* Fonts */
 :root {
+  --side-w: clamp(300px, 27vw, 380px); /* desktop sidebar: shrinks on hiDPI-scaled / narrow laptop windows */
   --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --heading-font: "Ubuntu", sans-serif;
   --nav-font: "Nunito", sans-serif;
@@ -1167,7 +1168,7 @@ section,
   position: fixed;
   top: 0;
   left: 0;
-  width: 380px;
+  width: var(--side-w);
   height: 100vh;
   z-index: 10;
   display: flex;
@@ -1961,36 +1962,18 @@ section,
   position: relative;
 }
 
-@media (min-width: 992px) {
-
-  .hero-sidebar~main,
-  .hero-sidebar~#footer {
-    margin-left: 380px;
-  }
+/* ANDROID MODE query lives in android.css (top of file). Desktop view = everything that is NOT android mode. Android mode hides .hero-sidebar, main.main and #footer
+   (android.css), so these rules can be unconditional: no 769-991px gap where the old stacked sidebar shows up. */
+.hero-sidebar~main,
+.hero-sidebar~#footer {
+  margin-left: var(--side-w);
 }
 
-@media (max-width: 991px) {
-  .hero-sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 70px 30px 40px;
-  }
-
-  .hero-sidebar h1 {
-    font-size: 32px;
-  }
-
-  .hero-sidebar .social-links {
-    justify-content: center;
-  }
-
-  .sidebar-avatar {
-    margin: 0 auto 28px;
-  }
+@media (max-height: 760px) {
+  .hero-sidebar { padding: 32px 28px; }
+  .hero-sidebar-inner { gap: 12px; }
+  .sidebar-avatar { width: 180px; height: 180px; margin-bottom: 16px; }
+  .sidebar-avatar .profile-image { width: 205px; height: 205px; }
 }
 
 @media (max-width: 480px) {

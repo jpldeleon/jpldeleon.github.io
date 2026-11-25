@@ -35,7 +35,7 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   color: var(--accent-highlight);
 }
 
-/* ----- Ask Jampol search bar (far left of the taskbar, before the social links) ----- */
+/* ----- Ask Jampol search bar (far left of the taskbar, followed by the theme button) ----- */
 .taskbar-search {
   display: flex;
   align-items: center;
@@ -43,7 +43,7 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   flex: 0 1 190px;
   min-width: 120px;
   height: 26px;
-  margin: 0 4px 0 0;                    /* first item on the left: the social links follow it */
+  margin: 0 4px 0 0;                    /* first item on the left: the theme button follows it */
   padding: 0 10px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--default-color), transparent 90%);
@@ -95,16 +95,30 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   background: color-mix(in srgb, var(--accent-highlight), transparent 88%);
 }
 
-/* narrow desktops: the social links give up their room (they live in the Socials app and the Menu) */
+/* ----- left group: Ask Jampol search bar, then the theme button (its panel opens upward, anchored left) ----- */
+.top-panel.taskbar .panel-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.top-panel.taskbar .panel-left .panel-menu { position: relative; flex: none; }
+.top-panel.taskbar .panel-left #panel-theme-pop.panel-popover,
+.top-panel.taskbar .panel-left .panel-popover {
+  left: 0;
+  right: auto;
+  transform-origin: bottom left;
+}
+
+/* narrow desktops: a slimmer search bar */
 @media (max-width: 1024px) {
-  .top-panel.taskbar .panel-connect { display: none; }
   .taskbar-search { flex-basis: 160px; }
 }
 
 /* ----- open apps (center) ----- */
 .top-panel.taskbar .panel-center {
   display: flex !important;
-  flex: 1 1 0;
+  flex: 0 1 auto;                       /* left and right groups split the rest equally: Start stays centred */
   min-width: 0;
   justify-content: center;
 }
@@ -191,8 +205,6 @@ html body .top-panel.taskbar .panel-popover[hidden] {
   .taskbar-item { padding: 0 9px; }
   .taskbar-label { display: none; }
   .taskbar-item.is-active::after { left: 8px; right: 8px; }
-  /* room for Menu + apps + applets + clock: the social links live in the Socials app and the Menu */
-  .top-panel.taskbar .panel-connect { display: none; }
   /* the phone layout has its own bottom search bar */
   .taskbar-search { display: none; }
 }

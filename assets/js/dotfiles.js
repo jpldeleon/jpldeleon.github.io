@@ -1,7 +1,7 @@
 /**
- * Hobbies & Interests: a tab inside the clock applet (#clock-popover), next to Why hire me.
+ * Hobbies & Interests: a tab inside the clock applet (#clock-popover).
  * Search entry on top, categories on the left, content on the right. Vanilla JS.
- * app.js owns open/close of the applet; this file wires the two tabs and the hobbies panes.
+ * app.js owns open/close of the applet; this file wires the applet tab and the hobbies panes.
  */
 (function () {
   'use strict';

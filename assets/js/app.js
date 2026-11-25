@@ -85,7 +85,10 @@
    * ===================================================================== */
   const EASE = 'cubic-bezier(.4, 0, .2, 1)';
   const POP = 'cubic-bezier(.2, .8, .2, 1)';
-  const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+  /* ANDROID MODE: must stay identical to the query at the top of android.css.
+     Phones, phones in landscape and touch-only tablets in portrait. Everything else (laptops, touch laptops, tablets in landscape) is desktop. */
+  const ANDROID_MQ = '(max-width: 768px), (hover: none) and (pointer: coarse) and (orientation: portrait) and (max-width: 1100px), (hover: none) and (pointer: coarse) and (max-height: 500px)';
+  const isMobile = () => window.matchMedia(ANDROID_MQ).matches;
   const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), Math.max(lo, hi));
   const MIN_W = 380, MIN_H = 260;      // smallest a desktop window can be resized to
@@ -879,22 +882,23 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     });
   }
 
-  /* Desktop layout (>= 992px): widgets + notification panel.
+  /* Desktop layout (everything that is not android mode): widgets + notification panel.
      Small layout: everything stacks in the page (hero with About, widgets). */
-  let desktopMode = window.innerWidth >= 992;
+  let desktopMode = !isMobile();
 
   function syncMode() {
-    const d = window.innerWidth >= 992;
+    const d = !isMobile();
     if (d === desktopMode) return;
     desktopMode = d;
     if (!d) window.scrollTo(0, 0);
     refreshTaskbar();
   }
 
-  window.matchMedia('(min-width: 992px)').addEventListener('change', () => syncMode());
+  window.matchMedia(ANDROID_MQ).addEventListener('change', () => syncMode());
   window.addEventListener('load', () => { syncMode(); });
 
-  window.matchMedia('(max-width: 768px)').addEventListener('change', () => {
+  window.matchMedia(ANDROID_MQ).addEventListener('change', () => {
+    syncMode();
     refreshTaskbar();
     wins.forEach(w => { fitToViewport(w); applyRect(w); if (w.def.adopt) setTimeout(() => relayout(w), 60); });
   });
@@ -1154,7 +1158,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
         });
         /* phones show only the time (CSS reads data-short) */
         clock.setAttribute('data-short', now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
-        clock.title = 'Why hire me and hobbies';
+        clock.title = 'Clock and hobbies';
       };
       tick();
       setInterval(tick, 15000);
@@ -1183,7 +1187,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
    * 8c. ABOUT CARD (terminal card inside the hero sidebar)
    *     The header toggle collapses it. Restart re-opens it.
    * ===================================================================== */
-  const isDesk = () => window.innerWidth >= 992;
+  const isDesk = () => !isMobile();
 
   function setAbout(open) {
     const card = document.getElementById('about');
@@ -1197,7 +1201,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
   }
 
   /* Hero as a 2-pane applet: [headerbar] / [hero (left) | About inspector (right)].
-     Pure re-parenting, so every id, listener and class keeps working. Below 992px the
+     Pure re-parenting, so every id, listener and class keeps working. In android mode the
      wrapper is display:contents and the headerbar is hidden, so mobile is unchanged. */
   function initHeroApplet() {
     const hero = document.getElementById('hero'), about = document.getElementById('about');
@@ -1216,15 +1220,52 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     hero.append(card, about);                  // About is its own applet, beside the profile (stacked on phones)
   }
 
-  /* Keep the hero panel clear of the taskbar along the bottom edge. */
+  /* Keep the hero panel and the Conky widget clear of the taskbar along the bottom edge.
+     - --conky-bottom : where the Conky sits (just above the taskbar). The taskbar is measured, never guessed.
+     - Conky is scaled down (never hidden) when the screen is short: laptops at 125-200% HiDPI scaling
+       or 1366x768 only have ~600-650 CSS px of height.
+     - --hero-reserve : bottom space the hero must leave free (taskbar, plus the Conky if the hero still has room). */
   function initHeroReserve() {
+    const root = document.documentElement;
+    const conky = document.querySelector('.conky');
+    const TOP_SAFE = 66;          // panel height + gap: nothing may creep above this line
+    const MIN_HERO = 280;         // below this the hero would be useless, so the Conky floats over the free corner instead
+    const MIN_K = 0.6;
+    const bottomInset = () => {
+      const p = document.getElementById('top-panel');
+      if (!p) return 16;
+      const r = p.getBoundingClientRect();
+      /* only treat the panel as a taskbar when it really sits in the lower half of the screen */
+      return (r.height && r.top > window.innerHeight / 2) ? Math.round(window.innerHeight - r.top) + 8 : 16;
+    };
     const fit = () => {
-      const root = document.documentElement;
-      if (window.innerWidth < 992) { root.style.removeProperty('--hero-reserve'); return; }
-      root.style.setProperty('--hero-reserve', taskbarSpace() + 'px');
+      if (isMobile()) {
+        root.style.removeProperty('--hero-reserve');
+        root.style.removeProperty('--conky-bottom');
+        if (conky) { conky.style.transform = ''; conky.classList.remove('is-clipped'); }
+        return;
+      }
+      const tb = taskbarSpace(), inset = bottomInset();
+      let reserve = tb;
+      if (conky) {
+        conky.classList.remove('is-clipped');
+        conky.style.transform = '';
+        root.style.setProperty('--conky-bottom', inset + 'px');
+        const h = conky.offsetHeight;
+        if (h) {
+          const avail = window.innerHeight - inset - TOP_SAFE;
+          const k = clamp(avail / h, MIN_K, 1);
+          if (k < 1) conky.style.transform = 'scale(' + k.toFixed(3) + ')';
+          if (avail < h * MIN_K) conky.classList.add('is-clipped');       // truly no room: hide cleanly
+          else if (window.innerHeight - TOP_SAFE - (inset + h * k + 16) >= MIN_HERO) reserve = inset + Math.round(h * k) + 16;
+        }
+      }
+      root.style.setProperty('--hero-reserve', reserve + 'px');
     };
     window.addEventListener('resize', fit);
     window.addEventListener('load', fit);
+    document.addEventListener('desktop:booted', fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
     fit();
   }
 
@@ -1252,7 +1293,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
 
   /* Start panel: on desktop the hero card (profile + About) lives INSIDE the Mint start menu, above the
      search bar and the app launchers. One panel, opened from the Mint button, and open on first load
-     (it grows out of the button). Below 992px the hero goes back to being page content. */
+     (it grows out of the button). In android mode the hero goes back to being page content. */
   function initStartPanel() {
     const hero = document.getElementById('hero'), menu = document.getElementById('app-menu'),
       btn = document.getElementById('taskbar-menu-btn');
@@ -1288,7 +1329,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     let touched = false;
     if (bell) bell.addEventListener('click', () => { touched = true; });
     const open = () => {
-      if (touched || window.innerWidth < 992 || !b.classList.contains('sidebar-collapsed')) return;
+      if (touched || isMobile() || !b.classList.contains('sidebar-collapsed')) return;
       b.classList.add('sidebar-noanim');
       b.classList.remove('sidebar-collapsed');
       requestAnimationFrame(() => requestAnimationFrame(() => b.classList.remove('sidebar-noanim')));
@@ -1362,16 +1403,54 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
       const bar = b.querySelector('.cky-bar');
       if (bar) bar.style.setProperty('--p', clamp(months / 63, 0, 1).toFixed(3));
     });
+    /* Experience sits on the left, Skills on the right at EVERY desktop size (laptop mdpi / hiDPI / touch
+       included, same as the wide layout). Each widget is scaled to the free height on its own. Experience
+       also has to clear the Conky (bottom-left): when there is no room above it, the Conky is parked to
+       the right of Experience instead (--conky-left). */
+    const exp = col.querySelector('.exp-widget');
+    const skl = col.querySelector('.skl-widget');
+    const conky = document.querySelector('.conky');
+    const root = document.documentElement;
+    const reset = el => {
+      if (!el) return;
+      el.style.transform = '';
+      el.style.maxHeight = '';
+      el.classList.remove('is-fit-clipped');
+    };
+    const scaleTo = (el, avail) => {
+      const h = el.scrollHeight;
+      if (!h) return 1;
+      const k = clamp(avail / h, 0.55, 1);
+      if (k < 1) el.style.transform = 'scale(' + k.toFixed(3) + ')';
+      if (avail < h * 0.55) {                        // even at 55% it does not fit: soft fade instead of overlapping
+        el.style.maxHeight = Math.max(80, Math.floor(avail / k)) + 'px';
+        el.classList.add('is-fit-clipped');
+      }
+      return k;
+    };
     const fit = () => {
-      col.style.transform = '';
+      reset(exp); reset(skl);
+      root.style.removeProperty('--conky-left');
       if (!isDesk()) return;
-      const avail = window.innerHeight - col.getBoundingClientRect().top - taskbarSpace();
-      const k = clamp(avail / col.offsetHeight, 0.6, 1);
-      if (k < 1) col.style.transform = 'scale(' + k.toFixed(3) + ')';
+      const tb = taskbarSpace();
+      if (skl) scaleTo(skl, window.innerHeight - skl.getBoundingClientRect().top - tb);
+      if (!exp) return;
+      const top = exp.getBoundingClientRect().top;
+      const full = window.innerHeight - top - tb;
+      const cr = (conky && !conky.classList.contains('is-clipped')) ? conky.getBoundingClientRect() : null;
+      const stacked = (cr && cr.height) ? cr.top - 12 - top : full;
+      const h = exp.scrollHeight;
+      if (cr && h && stacked < h * 0.8 && full > stacked) {
+        const k = scaleTo(exp, full);
+        root.style.setProperty('--conky-left', Math.round(exp.getBoundingClientRect().left + exp.offsetWidth * k + 24) + 'px');
+      } else {
+        scaleTo(exp, stacked);
+      }
     };
     fit();
     window.addEventListener('resize', fit);
     window.addEventListener('load', fit);
+    document.addEventListener('desktop:booted', fit);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   }
 
@@ -1397,7 +1476,7 @@ return { x: L, y: Math.round(top + (availH - h) / 2), w: availW, h };
     initHeroReserve();
     initStartPanel();
     initRightColumn();
-    desktopMode = window.innerWidth >= 992;
+    desktopMode = !isMobile();
     const h = location.hash;                       // shareable deep links: /#resume, /#portfolio
     if (h === '#resume' || h === '#portfolio') openWindow(h.slice(1));
 

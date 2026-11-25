@@ -34,6 +34,7 @@
       <span class="adr-sep" aria-hidden="true"></span>
       ${PROJECTS.map(p => `<a href="${p[0]}/" data-app="project:${p[0]}" aria-label="${esc(p[1])}" title="${esc(p[1])}"><i class="${p[2]}"></i></a>`).join('')}
     </nav>
+    <div class="adr-dockbar" aria-hidden="true"><i></i></div>
     <form class="adr-search" data-ask role="search" action="#" autocomplete="off">
       <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
       <input type="text" placeholder="Ask Jampol or type help" aria-label="Ask Jampol" autocomplete="off" spellcheck="false">
@@ -60,6 +61,33 @@
       <span class="adr-sys"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-signal"></i><i class="fa-solid fa-battery-three-quarters"></i></span></div>`;
 
   document.body.append(home, top);
+
+  /* ───────── dock "there is more" guide: a compact scroll bar under the dock, only while the icons overflow ───────── */
+  (() => {
+    const dock = $('.adr-dock', home), bar = $('.adr-dockbar', home), thumb = bar && bar.firstElementChild;
+    if (!dock || !bar || !thumb) return;
+    let nudged = false;
+    const upd = () => {
+      const over = dock.scrollWidth - dock.clientWidth;
+      const on = over > 2;
+      bar.classList.toggle('on', on);
+      if (!on) return;
+      const w = Math.max(18, dock.clientWidth / dock.scrollWidth * 100);     // thumb width in %: smaller = more icons off screen
+      const x = dock.scrollLeft / over * (100 - w);
+      thumb.style.width = w + '%'; thumb.style.transform = 'translateX(' + (x / w * 100) + '%)';
+      bar.classList.toggle('at-start', dock.scrollLeft < 2);
+      bar.classList.toggle('at-end', dock.scrollLeft > over - 2);
+      if (!nudged && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) && dock.animate) {                          // one small nudge so people notice the dock scrolls
+        nudged = true;
+        setTimeout(() => { if (dock.scrollLeft < 2) dock.scrollTo({ left: 28, behavior: 'smooth' }); setTimeout(() => { if (dock.scrollLeft < 40) dock.scrollTo({ left: 0, behavior: 'smooth' }); }, 650); }, 1800);
+      }
+    };
+    dock.addEventListener('scroll', upd, { passive: true });
+    window.addEventListener('resize', upd);
+    window.addEventListener('orientationchange', upd);
+    if (window.ResizeObserver) new ResizeObserver(upd).observe(dock);
+    upd(); setTimeout(upd, 600); setTimeout(upd, 2500);                         // icon fonts load late
+  })();
 
   const scrim = $('#adr-scrim', top), shade = $('#adr-shade'), list = $('.adr-list', shade), heads = $('#adr-heads'), scroller = $('#adr-home');
 
@@ -514,10 +542,19 @@
   const mq = window.matchMedia('(max-width:768px)');
   const still = () => window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   const KINDS = /^(?:(?:project|cert):.+|resume|portfolio)$/;
-  const S = 56, M = 6, TOP = 40, BOTTOM = 130;       // floating chat head: size, edge margin, top limit, space kept for dock + search
-  const R = 46, G = 10, ROWTOP = 40;                  // bubble row: size, gap, y
-  const PANEL_TOP = 106, PANEL_BOTTOM = 126;          // sheet sits between the bubble row and the dock
-  const XS = 60, XB = 100;                            // close target size + distance from the bottom
+  /* sizes come from the --adr-* CSS variables (android.css "AUTO-FIT"), so short / narrow phones get smaller bubbles automatically */
+  let S = 56, M = 6, TOP = 40, BOTTOM = 130;         // floating chat head: size, edge margin, top limit, space kept for dock + search
+  let R = 46, G = 10, ROWTOP = 40;                    // bubble row: size, gap, y
+  let PANEL_TOP = 106, PANEL_BOTTOM = 126;            // sheet sits between the bubble row and the dock
+  let XS = 60, XB = 100;                              // close target size + distance from the bottom
+  const metrics = () => {
+    const cs = getComputedStyle(document.documentElement), v = (n, d) => { const x = parseFloat(cs.getPropertyValue(n)); return x > 0 ? x : d; };
+    S = v('--adr-bub', 56); R = v('--adr-bub-row', 46); XS = S + 4;
+    const dockB = v('--adr-dock-b', 62), dockH = v('--adr-dock-h', 52);
+    G = Math.round(R * 0.22); BOTTOM = dockB + dockH + 16; PANEL_BOTTOM = dockB + dockH + 12;
+    PANEL_TOP = ROWTOP + R + 20; XB = dockB + 38;
+  };
+  metrics();
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const vw = () => window.innerWidth, vh = () => window.innerHeight;
   const STEP = 6, STEPY = 5, MAXSTEP = 3;            // stacked chat heads: how far each one peeks out behind the front one
@@ -538,23 +575,31 @@
   const active = () => { for (const r of recs.values()) if (!r.collapsed && r.el.isConnected) return r; return null; };
 
   /* ───────── layout: bubble row while a sheet is open, floating chat heads otherwise ───────── */
+  let dragging = false;                                 // a bubble is being dragged: layout() waits
   const layout = () => {
+    if (dragging) return;
     const act = mq.matches ? active() : null, list = [...recs.values()].filter(r => r.bub);
     host.classList.toggle('row', !!act);
     document.documentElement.classList.toggle('adr-sheet-chat', !!act && act.kind === 'chat');
     if (act) {
-      const showPlus = !recs.has('portfolio'), n = list.length + (showPlus ? 1 : 0), x0 = Math.round((vw() - (n * R + (n - 1) * G)) / 2);
+      metrics();
+      const showPlus = !recs.has('portfolio'), n = list.length + (showPlus ? 1 : 0), room = vw() - 24;
+      /* many projects: tighten the gap, then let the bubbles overlap like a stack (the open one stays on top) so the row never leaves the screen */
+      let step = R + G;
+      if (n > 1 && n * R + (n - 1) * G > room) step = Math.max(14, Math.min(R + 4, (room - R) / (n - 1)));
+      const total = R + (n - 1) * step, x0 = Math.round((vw() - total) / 2), ovl = step < R;
+      host.classList.toggle('ovl', ovl);
       list.forEach((r, i) => {
-        r.tx = x0 + i * (R + G); r.ty = ROWTOP; r.ts = R;
+        r.tx = Math.round(x0 + i * step); r.ty = ROWTOP; r.ts = R;
         const b = r.bub;
         b.classList.add('show', 'inrow'); b.classList.toggle('active', r === act);
-        b.style.zIndex = ''; b.style.filter = ''; b.style.setProperty('--sc', '1');
+        b.style.zIndex = r === act ? String(60) : (ovl ? String(10 + i) : ''); b.style.filter = ''; b.style.setProperty('--sc', '1');
         b.style.left = r.tx + 'px'; b.style.top = r.ty + 'px';
       });
-      plus.style.left = (x0 + list.length * (R + G)) + 'px'; plus.style.top = ROWTOP + 'px';
+      plus.style.left = Math.round(x0 + list.length * step) + 'px'; plus.style.top = ROWTOP + 'px'; plus.style.zIndex = ovl ? '70' : '';
       plus.classList.toggle('show', showPlus); plus.classList.add('inrow');
     } else {
-      plus.classList.remove('show', 'inrow');
+      plus.classList.remove('show', 'inrow'); host.classList.remove('ovl'); metrics();
       /* floating: every head sits on top of the others in ONE stack on a screen edge, newest in front */
       const col = list.filter(r => r.collapsed).sort((a, b) => b.seq - a.seq);
       list.forEach(r => { if (!r.collapsed) r.bub.classList.remove('show', 'inrow', 'active'); });
@@ -577,6 +622,7 @@
   const fit = rec => {
     const el = rec.el;
     if (!mq.matches || !el.isConnected) return;
+    metrics();
     const chat = rec.kind === 'chat', topY = PANEL_TOP;
     let avail = Math.max(240, vh() - PANEL_BOTTOM - PANEL_TOP);
     if (chat) {                                          // same left edge + width as the other sheets (read from an open window)
@@ -652,7 +698,8 @@
     let d = null;
     b.addEventListener('pointerdown', e => {
       if (e.button > 0) return;
-      d = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: b.offsetLeft, oy: b.offsetTop, moved: false, near: false, row: !!active() };
+      d = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: b.offsetLeft, oy: b.offsetTop, moved: false, near: false, row: !!active(), fol: [] };
+      if (!d.row) recs.forEach(o => { if (o !== rec && o.collapsed && o.bub) d.fol.push([o.bub, o.bub.offsetLeft, o.bub.offsetTop]); });   // the heads behind: where they were
       b.setPointerCapture(e.pointerId);
     });
     b.addEventListener('pointermove', e => {
@@ -660,7 +707,7 @@
       const dx = e.clientX - d.sx, dy = e.clientY - d.sy, sz = b.offsetWidth;
       if (!d.moved) {
         if (Math.hypot(dx, dy) < 8) return;
-        d.moved = true; b.classList.add('drag'); b.classList.remove('tipon'); xt.classList.add('show');
+        d.moved = true; dragging = true; host.classList.add('dragging'); b.classList.add('drag'); b.classList.remove('tipon'); xt.classList.add('show');
       }
       let x = clamp(d.ox + dx, 0, vw() - sz), y = clamp(d.oy + dy, TOP - 8, vh() - sz);
       const tx = vw() / 2, ty = vh() - XB - XS / 2;     // centre of the X target
@@ -668,16 +715,15 @@
       xt.classList.toggle('near', d.near);
       if (d.near) { x = tx - sz / 2; y = ty - sz / 2; } // magnet
       b.style.left = x + 'px'; b.style.top = y + 'px';
-      if (!d.row) recs.forEach(o => {                   // the heads behind follow, keeping their stacked offsets
-        if (o === rec || !o.collapsed || !o.bub) return;
-        o.bub.style.left = clamp(x + (o.tx - rec.tx), -24, vw() - S + 24) + 'px';
-        o.bub.style.top = clamp(y + (o.ty - rec.ty), 0, vh() - S) + 'px';
+      d.fol.forEach(f => {                              // the heads behind move by exactly the same distance, so the stack stays together
+        f[0].style.left = clamp(f[1] + (x - d.ox), -24, vw() - f[0].offsetWidth + 24) + 'px';
+        f[0].style.top = clamp(f[2] + (y - d.oy), 0, vh() - f[0].offsetHeight) + 'px';
       });
     });
     const up = (e, cancelled) => {
       if (!d || e.pointerId !== d.id) return;
       const dd = d; d = null;
-      b.classList.remove('drag'); xt.classList.remove('show', 'near');
+      b.classList.remove('drag'); xt.classList.remove('show', 'near'); dragging = false; host.classList.remove('dragging');
       if (!dd.moved) { if (!cancelled) (rec.collapsed ? expand(rec) : collapse(rec)); return; }   // tap: open, or fold the open one away
       if (dd.near && !cancelled) {
         if (dd.row) dismiss(rec); else [...recs.values()].filter(o => o.collapsed && o.bub).forEach(dismiss);

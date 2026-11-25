@@ -1042,7 +1042,10 @@
 .jpt *{box-sizing:border-box}
 .jpt.open{display:flex}
 .jpt-svg{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
-.jpt-back{position:absolute;inset:0;background:rgba(0,0,0,.22)}
+/* no focus mode: no dimming backdrop, and the page behind the chat stays fully clickable */
+.jpt{pointer-events:none}
+.jpt-win{pointer-events:auto}
+.jpt-back{display:none!important}
 
 /* the chat box: centered horizontally, just above the taskbar, translucent, frosted */
 .jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:min(540px,100%);max-height:none;padding:0!important;margin:0!important;background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}

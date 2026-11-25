@@ -6,13 +6,13 @@
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "url": "https://jpldeleon.github.io/",
-  "name": "John Paul De Leon | Technical SEO & WordPress Developer",
+  "name": "John Paul De Leon | SEO Specialist & WordPress Developer",
   "mainEntity": {
     "@type": "Person",
     "name": "John Paul De Leon",
     "alternateName": "JP De Leon",
-    "jobTitle": "Technical SEO Specialist",
-    "description": "Technical SEO specialist who builds in WordPress. Site audits, on-page SEO and hands-on WordPress and WooCommerce projects.",
+    "jobTitle": "SEO Specialist",
+    "description": "SEO specialist covering Technical, On-Page and Off-Page SEO, who builds in WordPress. Site audits, link research and hands-on WordPress and WooCommerce projects.",
     "url": "https://jpldeleon.github.io/",
     "image": "https://jpldeleon.github.io/assets/img/profile/jp_profile_1.webp",
     "address": {
@@ -22,6 +22,8 @@
     },
     "knowsAbout": [
       "Technical SEO",
+      "On-Page SEO",
+      "Off-Page SEO",
       "WordPress",
       "WooCommerce",
       "Link prospecting",
@@ -51,17 +53,17 @@
   </script>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>John Paul De Leon | Technical SEO &amp; WordPress Developer</title>
+  <title>John Paul De Leon | SEO Specialist &amp; WordPress Developer</title>
   <link rel="canonical" href="https://jpldeleon.github.io/" />
   <meta
-    content="Technical SEO specialist who builds in WordPress. Site audits, on-page SEO and hands-on WordPress and WooCommerce projects."
+    content="SEO specialist covering Technical, On-Page and Off-Page SEO, who builds in WordPress. Site audits, link research and hands-on WordPress and WooCommerce projects."
     name="description" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <!-- Universal Open Graph Tags -->
   <meta content="website" property="og:type" />
-  <meta content="John Paul De Leon | Technical SEO &amp; WordPress Developer" property="og:title" />
+  <meta content="John Paul De Leon | SEO Specialist &amp; WordPress Developer" property="og:title" />
   <meta
-    content="Technical SEO specialist who builds in WordPress. Site audits, on-page SEO and hands-on WordPress and WooCommerce projects."
+    content="SEO specialist covering Technical, On-Page and Off-Page SEO, who builds in WordPress. Site audits, link research and hands-on WordPress and WooCommerce projects."
     property="og:description" />
   <meta content="https://jpldeleon.github.io/" property="og:url" />
   <meta content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png" property="og:image" />
@@ -71,9 +73,9 @@
   <meta content="630" property="og:image:height" />
   <!-- Twitter / X Card Tags -->
   <meta content="summary_large_image" name="twitter:card" />
-  <meta content="John Paul De Leon | Technical SEO &amp; WordPress Developer" name="twitter:title" />
+  <meta content="John Paul De Leon | SEO Specialist &amp; WordPress Developer" name="twitter:title" />
   <meta
-    content="Technical SEO specialist who builds in WordPress. Site audits, on-page SEO and hands-on WordPress and WooCommerce projects."
+    content="SEO specialist covering Technical, On-Page and Off-Page SEO, who builds in WordPress. Site audits, link research and hands-on WordPress and WooCommerce projects."
     name="twitter:description" />
   <meta content="https://jpldeleon.github.io/assets/img/jpdeleon-og.png" name="twitter:image" />
   <!-- Favicons -->
@@ -796,7 +798,6 @@
         gap: 8px;
       }
 
-      .app-menu .hero-applet .sidebar-contact .sidebar-contact-item[href*="github"],
       .app-menu .hero-applet .sidebar-contact .sidebar-cta {
         display: none;
       }
@@ -910,6 +911,18 @@
   </style>
   <!-- Extended theme palette: per-theme hues applied to tags, icons, status, links (must load LAST, after every inline <style>) -->
   <link href="assets/css/theme-palette.css" rel="stylesheet" />
+  <!-- SEO expansion: emerging-area pill and "soon" project filters -->
+  <style id="seo-expansion-css">
+    .hero-sidebar.hero-applet .ab-tags li.is-emerging {
+      border-style: dashed;
+    }
+
+    #portfolio .pj-chip[disabled] {
+      opacity: .5;
+      cursor: default;
+      pointer-events: none;
+    }
+  </style>
 </head>
 
 <body class="index-page">
@@ -939,27 +952,6 @@
   <!-- Bottom panel: the taskbar (Menu, open apps, applets, clock) -->
   <header class="top-panel taskbar" id="top-panel">
     <div class="panel-left">
-      <nav aria-label="Connect" class="panel-connect">
-        <a aria-label="LinkedIn" href="https://www.linkedin.com/in/jpldl/" rel="noopener" target="_blank"
-          title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a aria-label="GitHub" href="https://github.com/jpldeleon" rel="noopener" target="_blank" title="GitHub"><i
-            class="fa-brands fa-github"></i></a>
-        <a aria-label="Upwork" href="https://www.upwork.com/freelancers/~01562764cad5d47331" rel="noopener"
-          target="_blank" title="Upwork"><i class="fa-brands fa-upwork"></i></a>
-        <a aria-label="GoLance" href="https://golance.com/freelancer/john.paul.leonard.de.leon" rel="noopener"
-          target="_blank" title="GoLance"><i class="fa-solid fa-circle-nodes"></i></a>
-      </nav>
-    </div>
-    <div class="panel-center">
-      <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" aria-label="Menu"
-        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><svg
-          aria-hidden="true" class="mint-ico" focusable="false" viewBox="0 0 24 24">
-          <path
-            d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875" />
-        </svg></button>
-      <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div>
-    </div>
-    <div class="panel-right">
       <div class="panel-menu">
         <button aria-controls="panel-theme-pop" aria-expanded="false" aria-haspopup="true"
           aria-label="Switch color theme" class="panel-btn panel-btn-icon" id="panel-theme-btn" title="Theme"
@@ -979,6 +971,17 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="panel-center">
+      <button aria-controls="app-menu" aria-expanded="false" aria-haspopup="true" aria-label="Menu"
+        class="panel-btn panel-btn-icon taskbar-menu" id="taskbar-menu-btn" title="Menu" type="button"><svg
+          aria-hidden="true" class="mint-ico" focusable="false" viewBox="0 0 24 24">
+          <path
+            d="M5.438 5.906v8.438c0 2.06 1.69 3.75 3.75 3.75h5.625c2.06 0 3.75-1.69 3.75-3.75V9.656a2.827 2.827 0 0 0-2.813-2.812 2.8 2.8 0 0 0-1.875.737A2.8 2.8 0 0 0 12 6.844a2.827 2.827 0 0 0-2.812 2.812v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688h1.875V9.656c0-.529.408-.937.937-.937s.938.408.938.937v4.688a1.86 1.86 0 0 1-1.875 1.875H9.188a1.86 1.86 0 0 1-1.875-1.875V5.906ZM12 0C5.384 0 0 5.384 0 12s5.384 12 12 12 12-5.384 12-12S18.616 0 12 0m0 1.875A10.11 10.11 0 0 1 22.125 12 10.11 10.11 0 0 1 12 22.125 10.11 10.11 0 0 1 1.875 12 10.11 10.11 0 0 1 12 1.875" />
+        </svg></button>
+      <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div>
+    </div>
+    <div class="panel-right">
       <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart" id="panel-restart-btn"
         title="Restart" type="button"><i aria-hidden="true" class="fa-solid fa-rotate-right"></i></button>
       <div class="panel-menu panel-notif-menu">
@@ -1002,8 +1005,8 @@
       </div>
       <div class="panel-menu panel-clock-menu">
         <button aria-controls="clock-popover" aria-expanded="false" aria-haspopup="dialog" class="panel-btn panel-clock"
-          id="panel-clock" title="Why hire me and hobbies" type="button"></button>
-        <div aria-label="Clock, why hire me and hobbies" class="panel-popover hub-popover" hidden id="clock-popover"
+          id="panel-clock" title="Clock and hobbies" type="button"></button>
+        <div aria-label="Clock and hobbies" class="panel-popover hub-popover" hidden id="clock-popover"
           role="dialog">
           <header class="hub-head">
             <div class="hub-clock">
@@ -1013,27 +1016,9 @@
             <span class="hub-status" title="Open to agency and remote work"><span aria-hidden="true" class="hub-dot"></span>Open to work</span>
           </header>
           <div aria-label="Applet sections" class="hub-tabs" role="tablist">
-            <button aria-controls="hub-why" aria-selected="true" class="hub-tab" id="hub-tab-why" role="tab" type="button">Why hire me</button>
-            <button aria-controls="hub-hobbies" aria-selected="false" class="hub-tab" id="hub-tab-hobbies" role="tab" tabindex="-1" type="button">Hobbies &amp; interests</button>
+            <button aria-controls="hub-hobbies" aria-selected="true" class="hub-tab" id="hub-tab-hobbies" role="tab" type="button">Hobbies &amp; interests</button>
           </div>
-          <section aria-labelledby="hub-tab-why" class="hub-panel wh" id="hub-why" role="tabpanel">
-            <p class="wh-sub">Early-career, research-driven, and already building.</p>
-            <ul class="wh-list">
-              <li class="wh-item"><i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
-                <div><b>Research first</b><span>Five years of link prospecting built the habit of digging into the data before acting.</span></div>
-              </li>
-              <li class="wh-item"><i aria-hidden="true" class="fa-solid fa-gears"></i>
-                <div><b>SEO that reads code</b><span>Technical SEO plus hands-on WordPress projects: I can diagnose an issue and ship the fix.</span></div>
-              </li>
-              <li class="wh-item"><i aria-hidden="true" class="fa-solid fa-folder-open"></i>
-                <div><b>Work you can review</b><span>WordPress builds on LocalWP and bootcamp capstones. Open any one to see what I built and how.</span></div>
-              </li>
-              <li class="wh-item"><i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i>
-                <div><b>AI-assisted, human-checked</b><span>Faster audits, research and builds, with judgement kept in the loop.</span></div>
-              </li>
-            </ul>
-          </section>
-          <div aria-labelledby="hub-tab-hobbies" class="hub-panel hub-panel-df" hidden id="hub-hobbies" role="tabpanel">
+          <div aria-labelledby="hub-tab-hobbies" class="hub-panel hub-panel-df" id="hub-hobbies" role="tabpanel">
             <section aria-label="Hobbies and interests" class="dotfiles" id="dotfiles">
             <div class="df-wrap">
               <div aria-label="Categories" aria-orientation="vertical" class="df-files" role="tablist">
@@ -1236,16 +1221,16 @@
       <div class="sidebar-header-block">
         <h1>John Paul <span class="accent-text">De Leon</span></h1>
         <div aria-hidden="true" class="code-container role-code">
-          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>technicalSeoSpecialist<span
+          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>seoSpecialist<span
               class="quote">"</span><span class="brace">}</span></span>
           <span class="role-comment">// <span class="typed"
-              data-typed-items="seoSpecialist,wordpressDeveloper,webDeveloper"></span></span>
+              data-typed-items="technicalSeo,onPageSeo,offPageSeo,wordpressDeveloper,exploringAeoGeo"></span></span>
         </div>
-        <p class="sidebar-role">Technical SEO Specialist</p>
+        <p class="sidebar-role">Technical, On-Page and Off-Page SEO Specialist</p>
       </div>
-      <p class="sidebar-summary">Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation
-        and speed issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects,
-        backed by a research-heavy SEO background.</p>
+      <p class="sidebar-summary">SEO specialist across Technical, On-Page and Off-Page SEO, who builds in WordPress. I
+        diagnose crawlability, indexation and speed issues, then fix them in the theme, plugins or code. Backed by five
+        years of link research, and now exploring AEO and GEO as AI search grows.</p>
       <p class="sidebar-open"><span aria-hidden="true" class="open-dot"></span>Open to agency and remote work</p>
       <div class="sidebar-contact contact-block">
         <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
@@ -1259,6 +1244,9 @@
         <a aria-label="GitHub profile" class="sidebar-contact-item" href="https://github.com/jpldeleon" rel="noopener"
           target="_blank" title="GitHub"><i class="fa-brands fa-github"></i><span
             class="sidebar-link-label">GitHub</span></a>
+        <a aria-label="LinkedIn profile" class="sidebar-contact-item" href="https://www.linkedin.com/in/jpldl/" rel="noopener"
+          target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i><span
+            class="sidebar-link-label">LinkedIn</span></a>
         <!-- TODO: set the real resume path -->
         <a aria-label="Download resume" class="sidebar-cta" download="" href="assets/johnpauldeleon_resume.pdf"
           title="Download Resume"><i class="fa-solid fa-download"></i><span
@@ -1274,18 +1262,20 @@
         </div>
         <div class="ab-term-body" id="about-body">
           <h2>Connecting search strategy with technical execution</h2>
-          <p>I started in link prospecting, got curious about the data behind the worksheets, and turned that curiosity
-            into research-driven SEO, Technical SEO, and web development.</p>
-          <p>My foundation in web development allows me to read and diagnose site architecture issues directly in code.
-            Rather than guessing, I focus on root-cause troubleshooting and leverage AI-assisted workflows to accelerate
-            audits, research, and technical builds.</p>
+          <p>I come from a research background: over a decade of web research, including more than five years of
+            Off-Page SEO work in link prospecting, qualification and vetting. Along the way I got curious about what
+            happens on the site itself.</p>
+          <p>Now I'm building on that with Technical and On-Page SEO and front-end web development (HTML, CSS and
+            JavaScript). Being able to read a site's code helps me trace problems to their cause and fix them, not
+            just report them.</p>
           <p class="ab-plain-label">What I focus on</p>
           <ul aria-label="Focus areas" class="ab-tags">
-            <li><span>SEO</span></li>
             <li><span>Technical SEO</span></li>
-            <li><span>WordPress</span></li>
-            <li><span>Web Development</span></li>
-            <li><span>AI Workflows</span></li>
+            <li><span>On-Page SEO</span></li>
+            <li><span>Off-Page SEO</span></li>
+            <li><span>Front-End Web Development</span></li>
+            <li class="is-emerging" title="Emerging area I'm exploring"><span>AEO / GEO (exploring)</span></li>
+            <li class="is-emerging" title="Emerging area I'm exploring"><span>AI Search (exploring)</span></li>
           </ul>
         </div>
       </section><!-- /About card -->
@@ -1301,19 +1291,19 @@
           <div class="cky-row"><span class="cky-label">Self-Directed Learning &amp; Upskilling</span><span
               class="cky-val" data-months>18 mos</span></div>
           <span class="cky-bar" style="--p:0.286"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Full-Stack Bootcamp · Technical SEO Sprint · AI
-              Workflows</span><span>May 2025 – Present</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Front-End Development · Technical &amp; On-Page SEO
+              · Site Optimization</span><span>May 2025 – Present</span></div>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">SEO Outreach Specialist</span><span class="cky-val">5 mos</span>
           </div>
           <span class="cky-bar" style="--p:0.079"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Awisee</span><span>Jan 2025 – May 2025</span></div>
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Awisee · Off-Page SEO</span><span>Jan 2025 – May 2025</span></div>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Research Analyst</span><span class="cky-val">47 mos</span></div>
           <span class="cky-bar" style="--p:0.746"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · SEO Link
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Intelligent.com LLC · Off-Page SEO Link
               Prospecting</span><span>Nov 2020 – Sep 2024</span></div>
         </div>
         <div class="cky-block">
@@ -1326,13 +1316,13 @@
           <div class="cky-row"><span class="cky-label">Freelance Research Consultant</span><span class="cky-val">17
               mos</span></div>
           <span class="cky-bar" style="--p:0.270"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Independent / Referral-based</span><span>Jan 2019 – May
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Independent · Web &amp; Market Research</span><span>Jan 2019 – May
               2020</span></div>
         </div>
         <div class="cky-block">
           <div class="cky-row"><span class="cky-label">Research Analyst</span><span class="cky-val">63 mos</span></div>
           <span class="cky-bar" style="--p:1.000"><i></i></span>
-          <div class="cky-row cky-sub-row"><span class="cky-ell">Straive · Web Researcher</span><span>Sep 2013 – Nov
+          <div class="cky-row cky-sub-row"><span class="cky-ell">Straive · Web Research</span><span>Sep 2013 – Nov
               2018</span></div>
         </div>
       </aside><!-- /Professional Experience -->
@@ -1457,15 +1447,17 @@
                 width="112" />
               <div class="rv-id">
                 <h2 class="rv-person">John Paul De Leon</h2>
-                <p class="rv-role">Technical SEO Specialist</p>
+                <p class="rv-role">Technical, On-Page &amp; Off-Page SEO Specialist</p>
                 <p aria-hidden="true" class="rv-typed"><span class="rv-typed-text"
-                    data-items="SEO Specialist|WordPress Developer|Web Developer">SEO Specialist</span></p>
+                    data-items="Technical SEO|On-Page SEO|Off-Page SEO|WordPress Developer|Exploring AEO / GEO">Technical SEO</span></p>
               </div>
             </div>
             <h3 class="rv-h">Professional Summary</h3>
-            <p>Technical SEO specialist who builds in WordPress. I diagnose crawlability, indexation and speed
-              issues, then fix them in the theme, plugins or code. Hands-on with WordPress and WooCommerce projects,
-              backed by a research-heavy SEO background.</p>
+            <p>SEO specialist across Technical, On-Page and Off-Page SEO, who builds in WordPress. I diagnose
+              crawlability, indexation and speed issues, then fix them in the theme, plugins or code. Technical and
+              On-Page work is hands-on through WordPress and WooCommerce projects. Off-Page comes from five years of
+              link prospecting and research. Currently exploring AEO and GEO, which cover how answer engines and AI
+              search surface content.</p>
             <h3 class="rv-h rv-contact-title">Contact Information</h3>
             <div class="contact-block">
               <ul class="rv-contact">
@@ -1499,10 +1491,11 @@
               <ul>
                 <li>Completed the Complete Full-Stack Web Development Bootcamp</li>
                 <li>Completed Technical SEO and SEO Sprint certification</li>
-                <li>Practiced technical SEO and WordPress development through hands-on projects</li>
+                <li>Practiced technical SEO, on-page SEO and WordPress development through hands-on projects</li>
                 <li>Built web apps and capstone projects with Node.js, Express.js, and PostgreSQL</li>
                 <li>Used AI-assisted workflows (prompt and context engineering) for development, SEO research, and
                   analysis</li>
+                <li>Exploring AEO and GEO: how answer engines and AI search surface and cite content</li>
                 <li>Exploring LLM API integration and local models</li>
               </ul>
             </article>
@@ -1611,11 +1604,20 @@
                   <li>Technical SEO</li>
                   <li>On-Page SEO</li>
                   <li>Off-Page SEO</li>
+                  <li>Keyword Research</li>
+                  <li>Link Prospecting &amp; Backlink Research</li>
                   <li>Site Architecture</li>
                   <li>Core Web Vitals</li>
                   <li>Performance Optimization</li>
                   <li>Structured Data / Schema Markup</li>
                   <li>Email Verification / List Qualification</li>
+                </ul>
+              </section>
+              <section class="rv-card">
+                <h3><i class="fa-solid fa-compass"></i> AI Search (Exploring)</h3>
+                <ul class="rv-chips">
+                  <li>Answer Engine Optimization (AEO)</li>
+                  <li>Generative Engine Optimization (GEO)</li>
                 </ul>
               </section>
               <section class="rv-card">
@@ -1745,6 +1747,12 @@
       <div aria-label="Filter projects" class="pj-filters" role="group">
         <button aria-pressed="true" class="pj-chip" data-filter="all" type="button">All <span>10</span></button>
         <button aria-pressed="false" class="pj-chip" data-filter="seo" type="button">SEO <span>5</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="onpage" type="button">On-Page SEO
+          <span>2</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="offpage" disabled title="Case studies coming soon"
+          type="button">Off-Page SEO <span>Soon</span></button>
+        <button aria-pressed="false" class="pj-chip" data-filter="aeo-geo" disabled title="Case studies coming soon"
+          type="button">AEO / GEO <span>Soon</span></button>
         <button aria-pressed="false" class="pj-chip" data-filter="wordpress" type="button">WordPress
           <span>2</span></button>
         <button aria-pressed="false" class="pj-chip" data-filter="webdev" type="button">Web Dev <span>5</span></button>
@@ -1752,13 +1760,13 @@
           <span>2</span></button>
       </div>
       <div class="pj-grid">
-        <a class="pj-card" data-app="project:nothingtechblob" data-cats="seo wordpress" href="nothingtechblob/">
+        <a class="pj-card" data-app="project:nothingtechblob" data-cats="seo onpage wordpress" href="nothingtechblob/">
           <span class="pj-text"><strong class="pj-name">NothingTechBlob</strong><span class="pj-sub">Technical and
               on-page SEO with WordPress development</span></span>
           <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span
               class="pj-open">Open project</span></span>
         </a>
-        <a class="pj-card" data-app="project:badlands-ink" data-cats="seo wordpress" href="badlands-ink/">
+        <a class="pj-card" data-app="project:badlands-ink" data-cats="seo onpage wordpress" href="badlands-ink/">
           <span class="pj-text"><strong class="pj-name">Badlands Ink</strong><span class="pj-sub">Technical, local and
               e-commerce SEO with WordPress development</span></span>
           <span class="pj-foot"><span class="pj-tags"><span>SEO</span><span>WordPress</span></span><span
@@ -1814,6 +1822,17 @@
           <span class="pj-foot"><span class="pj-tags"><span>Certificate</span></span><span class="pj-open">View
               certificate</span></span>
         </a>
+        <!-- NEW CASE STUDY TEMPLATE (copy, fill in, paste above this comment).
+             1. Change data-cats to one or more of: seo onpage offpage aeo-geo wordpress webdev
+             2. In the filter row above, remove "disabled" and replace "Soon" with the count for that chip.
+             3. Bump the "All" count.
+        <a class="pj-card" data-app="project:your-slug" data-cats="seo offpage" href="your-slug/">
+          <span class="pj-text"><strong class="pj-name">Project name</strong><span class="pj-sub">One line on what it
+              shows</span></span>
+          <span class="pj-foot"><span class="pj-tags"><span>Off-Page SEO</span></span><span class="pj-open">Open
+              project</span></span>
+        </a>
+        -->
       </div>
     </section><!-- /Projects window -->
     <!-- Contact & Socials: GNOME Contacts style. Rendered inside the Contact & Socials window by app.js.
@@ -1824,7 +1843,7 @@
         <img alt="" class="sc-avatar" height="56" src="assets/img/profile/jp-profile-3.webp" width="56" />
         <div class="sc-id">
           <h2 class="sc-name">John Paul De Leon</h2>
-          <p class="sc-role">Technical SEO Specialist</p>
+          <p class="sc-role">SEO Specialist</p>
         </div>
       </header>
 

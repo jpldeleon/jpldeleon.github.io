@@ -1,9 +1,12 @@
+/* ANDROID MODE = phones, phones in landscape, and TOUCH-ONLY TABLETS IN PORTRAIT (iPad Pro 11, iPad 10/11th gen, Galaxy Tab S9+).
+   (hover:none)+(pointer:coarse) is the primary input, so touch laptops (mouse/trackpad is primary) always get the DESKTOP view.
+   Everything else, including tablets in landscape, is desktop. If you change this query, change it in main.css (marked ANDROID MODE) and android.js too. */
 /* Android-style phone layout (<= 768px): status bar, swipe-down notification shade + quick tiles,
    scrolling home (hero applet, about applet, conky-style experience + skills), floating icon dock, bottom search. */
 .adr-layer{display:none}
-@media (max-width:768px){
+@media (max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px),(hover:none) and (pointer:coarse) and (max-height:500px){
 html,body{height:100%;height:100dvh;overflow:hidden!important;overscroll-behavior:none}
-.top-panel.taskbar,.hero-sidebar,.desk-right,.scroll-top,#footer,.app-menu,main.main{display:none!important}
+.top-panel.taskbar,.hero-sidebar,.desk-right,.conky,.scroll-top,#footer,.app-menu,main.main{display:none!important}
 html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 /* flat everything: no gradient backgrounds, no gradient fade masks, no gradient-filled text */
 .adr-layer,.adr-layer *,.adr-layer *::before,.adr-layer *::after,
@@ -75,6 +78,14 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-conky .cky-sub-row .cky-ell{flex:1 1 100%}
 .adr-conky .cky-sub-row>span:last-child{margin-left:auto}
 .adr-conky .cky-label{white-space:normal}
+/* Skills = same card as Experience: full width, same padding/type, never positioned, scaled or capped by the desktop rules */
+.adr-conky .cky-widget,.adr-conky .skl-widget{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:none!important;max-height:none!important;margin:0!important;box-sizing:border-box;overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;align-self:stretch;font-size:12px;line-height:1.35}
+.adr-conky .skl-widget{padding:18px 18px 6px}
+.adr-conky .skl-widget .cky-head{margin-bottom:14px}
+.adr-conky .skl-widget .cky-block{margin-bottom:11px}
+.adr-conky .skl-list li{margin-bottom:10px;column-gap:4px}
+.adr-conky .skl-name{font-size:12px}
+.adr-conky .skl-desc{font-size:11px;line-height:1.4;opacity:.7;display:block}
 
 /* floating icon dock above the search bar: stays put while the home scrolls */
 .adr-dock{position:absolute;left:12px;right:12px;bottom:62px;height:52px;background:none;border:0;display:flex;align-items:center;gap:6px;padding:7px 10px;overflow-x:auto;overflow-y:hidden;pointer-events:auto;scrollbar-width:none;touch-action:pan-x;-webkit-overflow-scrolling:touch}
@@ -83,7 +94,7 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-dock a,.adr-dock button{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:0;display:grid;place-items:center;font-size:20px;color:var(--a);text-decoration:none;cursor:pointer;background:none;filter:drop-shadow(0 1px 4px rgba(0,0,0,.6));-webkit-tap-highlight-color:transparent}
 .adr-dock a:active,.adr-dock button:active{background:color-mix(in srgb,var(--a),transparent 80%)}
 .adr-dock .adr-sep{flex:0 0 1px;width:1px;height:22px;background:var(--line)}
-.adr-search{pointer-events:auto;position:absolute;left:12px;right:12px;bottom:8px;height:46px;border-radius:999px;display:flex;align-items:center;gap:10px;padding:0 18px;background:none;border:1px solid var(--line)}
+.adr-search{pointer-events:auto;position:absolute;left:0;right:0;margin:0 auto;width:calc(100% - 64px);max-width:340px;box-sizing:border-box;bottom:8px;height:46px;border-radius:999px;display:flex;align-items:center;gap:10px;padding:0 18px;background:none;border:1px solid var(--line)}
 .adr-search i{opacity:.7}
 .adr-send{flex:none;width:34px;height:34px;margin-right:-10px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--a);color:var(--on-accent-color,var(--bg));font-size:14px;cursor:pointer;opacity:.45;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
 .adr-search.has-text .adr-send{opacity:1}
@@ -174,7 +185,7 @@ html.desk-pre #adr-top,body:has(#boot-screen) #adr-top{visibility:hidden!importa
    ====================================================================== */
 #adr-bubbles{display:none}
 .adr-rv-name{display:none}
-@media (max-width:768px){
+@media (max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px),(hover:none) and (pointer:coarse) and (max-height:500px){
 #adr-bubbles{display:block;position:fixed;inset:0;z-index:2147481000;pointer-events:none}
 html.boot-on #adr-bubbles{visibility:hidden}
 
@@ -320,7 +331,7 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
    These rules are inside the phone media query on purpose: android.js puts .adr-sheet on the Resume window on desktop too, so
    unscoped they pushed the Text / PDF / Download CV buttons into one cramped row that spilled out of the desktop sidebar,
    where they belong (stacked, at the bottom of the left sidebar, styled by resume-viewer.css). */
-@media (max-width:768px){
+@media (max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px),(hover:none) and (pointer:coarse) and (max-height:500px){
 .adr-sheet .rv-profile .rv-person{display:block;margin:0 0 .15em;font-size:19px;font-weight:700;line-height:1.2;color:var(--heading-color);overflow-wrap:anywhere}
 .adr-sheet .rv-profile > div > .rv-role,.adr-sheet .rv-profile > div > .rv-typed{grid-column:1/-1;margin:0}
 .adr-sheet .rv-profile > div > .rv-role{margin-top:.2em}
@@ -330,4 +341,90 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .rv .rv-mode{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;gap:6px;width:auto;height:auto;min-height:34px;padding:0 14px;border-radius:999px;white-space:nowrap}
 .adr-sheet .rv .rv-mode span{display:inline}
 .adr-sheet .rv .rv-actions .btn-live{flex:0 0 auto;white-space:nowrap}
+}
+/* ======================================================================
+   AUTO-FIT for short / narrow phones (phone mode only)
+   Sizes are CSS variables. Defaults equal the original look; the steps below shrink them
+   as the screen gets shorter or narrower. Apply to: dock + project icons, app bubbles,
+   notification shade and quick-settings tiles. Keep this block LAST in the file.
+   ====================================================================== */
+@media (max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px),(hover:none) and (pointer:coarse) and (max-height:500px){
+:root{
+  --adr-ico:38px;--adr-ico-fs:20px;--adr-dock-h:52px;--adr-dock-b:62px;--adr-search-h:46px;
+  --adr-pj-ico:40px;--adr-pj-ico-fs:18px;--adr-pj-pad:14px 16px;
+  --adr-bub:44px;--adr-bub-fs:18px;--adr-bub-row:38px;--adr-bub-row-fs:15px;
+  --adr-tile-h:64px;--adr-tile-ic:36px;--adr-tile-ic-fs:17px;--adr-tile-pad:0 16px 0 14px;--adr-tile-gap:12px;--adr-tiles-gap:8px;--adr-tile-b:14px;--adr-tile-s:12px;
+  --adr-shade-pt:38px;--adr-shade-max:72dvh;--adr-n-pad:12px 14px;
+}
+
+/* ---- apply the variables ---- */
+.adr-dock{bottom:var(--adr-dock-b);height:var(--adr-dock-h)}
+.adr-dock a,.adr-dock button{width:var(--adr-ico);height:var(--adr-ico);font-size:var(--adr-ico-fs)}
+.adr-search{height:var(--adr-search-h)}
+.adr-home{bottom:calc(var(--adr-dock-b) + var(--adr-dock-h) + 8px)}
+
+.adr-sheet .pj-card{padding:var(--adr-pj-pad)}
+.adr-sheet .pj-icon,.adr-sheet .pj-ico,.adr-sheet .pj-ic,.adr-sheet .pj-logo{width:var(--adr-pj-ico);height:var(--adr-pj-ico);flex:none;font-size:var(--adr-pj-ico-fs)}
+.adr-sheet .pj-icon img,.adr-sheet .pj-ico img,.adr-sheet .pj-ic img,.adr-sheet .pj-logo img,.adr-sheet .pj-icon svg,.adr-sheet .pj-ico svg{width:100%;height:100%;object-fit:contain}
+
+.adr-bub{width:var(--adr-bub);height:var(--adr-bub);font-size:var(--adr-bub-fs)}
+.adr-bub.inrow{width:var(--adr-bub-row);height:var(--adr-bub-row);font-size:var(--adr-bub-row-fs)}
+.adr-bub .tip{font-size:clamp(9px,calc(var(--adr-bub) * .2),11px)}
+.adr-bx{width:calc(var(--adr-bub) + 4px);height:calc(var(--adr-bub) + 4px);margin-left:calc(var(--adr-bub) / -2 - 2px);bottom:calc(var(--adr-dock-b) + 38px)}
+
+.adr-shade{padding-top:var(--adr-shade-pt);max-height:var(--adr-shade-max)}
+.adr-tiles{gap:var(--adr-tiles-gap);padding-bottom:calc(var(--adr-tiles-gap) + 2px)}
+.adr-tile{min-height:var(--adr-tile-h);gap:var(--adr-tile-gap);padding:var(--adr-tile-pad);border-radius:calc(var(--adr-tile-h) / 2)}
+.adr-tile .ic{width:var(--adr-tile-ic);height:var(--adr-tile-ic);font-size:var(--adr-tile-ic-fs)}
+.adr-tile b{font-size:var(--adr-tile-b)}
+.adr-tile small{font-size:var(--adr-tile-s)}
+.adr-n{padding:var(--adr-n-pad)}
+
+/* while a stack of heads is dragged, every head follows instantly (no spring lag) */
+#adr-bubbles.dragging .adr-bub{transition:width .25s ease,height .25s ease,transform .16s ease,opacity .18s ease,background .2s,color .2s}
+
+/* ---- "there is more" guide ---- */
+/* dock: a compact scroll bar under the icons, only shown while they overflow (android.js .adr-dockbar) */
+.adr-dockbar{display:none;position:absolute;left:50%;bottom:calc(var(--adr-dock-b) - 5px);width:44px;height:3px;margin-left:-22px;border-radius:2px;overflow:hidden;background:color-mix(in srgb,var(--f) 18%,transparent);pointer-events:none;opacity:.9}
+.adr-dockbar.on{display:block}
+.adr-dockbar i{display:block;height:100%;width:40%;border-radius:2px;background:var(--a);transition:transform .08s linear}
+/* bubble row with many projects: bubbles overlap like a stack, a ring keeps each one readable */
+#adr-bubbles.ovl .adr-bub.inrow{box-shadow:0 0 0 2px color-mix(in srgb,var(--bg) 92%,transparent),0 3px 8px rgba(0,0,0,.35)}
+
+/* ---- step 1: a bit short (<=740px tall) or narrow (<=375px wide) ---- */
+@media (max-height:740px),(max-width:375px){
+:root{
+  --adr-ico:34px;--adr-ico-fs:18px;--adr-dock-h:46px;--adr-dock-b:56px;--adr-search-h:42px;
+  --adr-pj-ico:36px;--adr-pj-ico-fs:16px;--adr-pj-pad:12px 14px;
+  --adr-bub:40px;--adr-bub-fs:16px;--adr-bub-row:34px;--adr-bub-row-fs:14px;
+  --adr-tile-h:56px;--adr-tile-ic:32px;--adr-tile-ic-fs:15px;--adr-tile-pad:0 12px 0 12px;--adr-tile-gap:10px;--adr-tiles-gap:6px;--adr-tile-b:13px;--adr-tile-s:11px;
+  --adr-shade-pt:36px;--adr-shade-max:76dvh;--adr-n-pad:10px 12px;
+}
+}
+
+/* ---- step 2: very short (<=620px tall) or very narrow (<=340px wide) ---- */
+@media (max-height:620px),(max-width:340px){
+:root{
+  --adr-ico:30px;--adr-ico-fs:16px;--adr-dock-h:40px;--adr-dock-b:50px;--adr-search-h:38px;
+  --adr-pj-ico:32px;--adr-pj-ico-fs:14px;--adr-pj-pad:10px 12px;
+  --adr-bub:36px;--adr-bub-fs:15px;--adr-bub-row:31px;--adr-bub-row-fs:13px;
+  --adr-tile-h:48px;--adr-tile-ic:28px;--adr-tile-ic-fs:13px;--adr-tile-pad:0 10px 0 10px;--adr-tile-gap:8px;--adr-tiles-gap:5px;--adr-tile-b:12px;--adr-tile-s:10px;
+  --adr-shade-pt:34px;--adr-shade-max:82dvh;--adr-n-pad:8px 10px;
+}
+.adr-tile small{display:none}
+.adr-tile .tx{justify-content:center}
+}
+
+/* ---- phone in landscape (<=500px tall): 4 tile columns, shade can use almost the full height ---- */
+@media (max-height:500px){
+:root{
+  --adr-ico:28px;--adr-ico-fs:15px;--adr-dock-h:36px;--adr-dock-b:46px;--adr-search-h:34px;
+  --adr-pj-ico:30px;--adr-pj-ico-fs:13px;--adr-pj-pad:8px 12px;
+  --adr-bub:32px;--adr-bub-fs:14px;--adr-bub-row:28px;--adr-bub-row-fs:12px;
+  --adr-tile-h:42px;--adr-tile-ic:26px;--adr-tile-ic-fs:12px;--adr-tile-pad:0 8px 0 8px;--adr-tile-gap:6px;--adr-tiles-gap:4px;--adr-tile-b:11px;
+  --adr-shade-pt:32px;--adr-shade-max:92dvh;--adr-n-pad:8px 10px;
+}
+.adr-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+.adr-heads{top:34px}
+}
 }

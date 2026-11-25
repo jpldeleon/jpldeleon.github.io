@@ -4,6 +4,7 @@
 #
 # - The wrapper (.hero-sidebar.hero-applet) is the card; the hero part and
 #   the About part inside it are transparent sections divided by a hairline.
+# - Compact layout: small photo beside the name + role, then the summary, the contact chips (Email, Phone, GitHub, LinkedIn) and the About row.
 # - The "About me" row has the toggle on its LEFT; the whole row is the click target.
 # - Opens above the bar, flush with its left end (same 8px gap as the other applets).
 #   Bell toggle: it rises out of the bar (open) and sinks back into it (close).
@@ -39,9 +40,9 @@
 @media (min-width: 992px) {
 
   :root {
-    --hero-card-w: 360px;
-    --notif-w: 360px;                 /* one card now: Conky / Experience / windows follow this width */
-    --sidebar-w: 378px;
+    --hero-card-w: 320px;
+    --notif-w: 320px;                 /* one card now: Conky / Experience / windows follow this width */
+    --sidebar-w: 338px;
     /* bar bottom offset + bar height + the shared popover gap */
     --hero-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--panel-bar-h) + var(--panel-pop-gap, 8px));
     --hero-h: calc(100dvh - var(--hero-bottom) - 18px);
@@ -75,7 +76,7 @@
     scrollbar-width: thin;
     scrollbar-color: color-mix(in srgb, var(--default-color), transparent 75%) transparent;
     border: 1px solid var(--hero-hairline);
-    border-radius: 18px;
+    border-radius: 16px;
     background: color-mix(in srgb, var(--surface-color), transparent var(--glass-transparency));
     -webkit-backdrop-filter: var(--glass-filter);
     backdrop-filter: var(--glass-filter);
@@ -118,26 +119,30 @@
   .hero-sidebar.hero-applet .hero-body {
     flex: 0 0 auto;
     overflow: visible;
-    padding: 30px 24px 20px;          /* top room so the hover rings are never clipped */
+    padding: 18px 18px 14px;          /* top room so the photo's hover rings are never clipped */
   }
 
-  /* ----- hero part: centred profile ----- */
+  /* ----- hero part: [photo | name + role], then full-width rows ----- */
   .hero-sidebar.hero-applet .hero-sidebar-inner {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 14px;
+    column-gap: 14px;
+    row-gap: 10px;
     width: 100%;
     max-width: none;
     margin: 0;
     padding: 0;
-    text-align: center;
+    text-align: left;
   }
+  .hero-sidebar.hero-applet .hero-sidebar-inner > * { grid-column: 1 / -1; min-width: 0; }
+  .hero-sidebar.hero-applet .hero-sidebar-inner > .sidebar-avatar { grid-column: 1; grid-row: 1; }
+  .hero-sidebar.hero-applet .hero-sidebar-inner > .sidebar-header-block { grid-column: 2; grid-row: 1; }
 
-  /* bigger photo; its hover rings come from desktop.css untouched */
+  /* small photo; its hover rings come from desktop.css untouched */
   .hero-sidebar.hero-applet .sidebar-avatar {
-    --avatar: 148px;
-    margin: 0 auto 4px;
+    --avatar: 68px;
+    margin: 0;
   }
 
   .hero-sidebar.hero-applet .orbit-sys { display: none; }
@@ -145,53 +150,69 @@
   .hero-sidebar.hero-applet .sidebar-header-block {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2px;
+    align-items: flex-start;
+    gap: 0;
     width: 100%;
     margin: 0;
     padding: 0;
-    text-align: center;
+    text-align: left;
   }
 
-  /* name: the biggest thing on the card */
   .hero-sidebar.hero-applet h1 {
     margin: 0;
-    font-size: 27px;
-    line-height: 1.15;
-    letter-spacing: -.02em;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -.01em;
     white-space: normal;
     text-wrap: balance;
   }
 
-  /* title + typed subtitle: shown again, second in the hierarchy */
+  /* title + typed subtitle: tight, left aligned */
   .hero-sidebar.hero-applet .role-code {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 0 0;
+    align-items: flex-start;
+    gap: 1px;
+    padding: 4px 0 0;
   }
-  .hero-sidebar.hero-applet .role-code .role-string { font-size: 17px; }
+  .hero-sidebar.hero-applet .role-code .role-string { font-size: 14px; }
   .hero-sidebar.hero-applet .role-code .role-comment,
   .hero-sidebar.hero-applet .role-code .role-comment .typed,
-  .hero-sidebar.hero-applet .role-code .role-comment .typed-cursor { font-size: 14px; }
+  .hero-sidebar.hero-applet .role-code .role-comment .typed-cursor { font-size: 12px; }
   .hero-sidebar.hero-applet .role-code .role-comment { min-height: 1.4em; }   /* no jump while the text types */
 
   .hero-sidebar.hero-applet .sidebar-summary {
     max-width: none;
-    margin: 4px 0 0;
+    margin: 0;
+    font-size: var(--fs-xs);
+    line-height: 1.55;
     text-align: left;
   }
 
+  .hero-sidebar.hero-applet .sidebar-open {
+    justify-content: flex-start;
+    width: auto;
+    font-size: var(--fs-xs);
+  }
+
+  /* contact chips: one wrapped row, no heavy 48px rows */
   .hero-sidebar.hero-applet .sidebar-contact {
     position: relative;
-    gap: 2px;
-    margin-top: 2px;
-    padding-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding-top: 10px;
     border-top: 1px solid var(--hero-hairline);
   }
   .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item,
-  .hero-sidebar.hero-applet .sidebar-contact .sidebar-cta { height: 48px; }
+  .hero-sidebar.hero-applet .sidebar-contact .sidebar-cta {
+    flex: 1 1 auto;
+    width: auto;
+    height: 34px;
+    padding: 0 12px;
+    font-size: var(--fs-xs);
+  }
 
   /* ----- About part ----- */
   .hero-sidebar.hero-applet .hero-inspector { border-top: 1px solid var(--hero-hairline); }
@@ -202,9 +223,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 8px;
-    min-height: 46px;
-    padding: 0 18px 0 14px;
+    gap: 6px;
+    min-height: 38px;
+    padding: 0 16px 0 12px;
     border: 0;
     background: none;
   }
@@ -216,10 +237,10 @@
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 7px;
     background: transparent;
     color: color-mix(in srgb, var(--default-color), transparent 30%);
   }
@@ -239,7 +260,7 @@
   .hero-sidebar.hero-applet .hero-inspector .ab-term-title {
     flex: 1 1 auto;
     font-family: inherit;
-    font-size: var(--fs-base);
+    font-size: var(--fs-sm);
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0;
@@ -250,35 +271,35 @@
   .hero-sidebar.hero-applet .hero-inspector .ab-term-body {
     max-height: none;
     overflow: visible;
-    padding: 0 24px 22px;
+    padding: 0 18px 14px;
   }
   .hero-sidebar.hero-applet .hero-inspector.is-collapsed .ab-term-body { display: none; }
 
   .hero-sidebar.hero-applet .ab-term-body h2 {
-    margin: 0 0 8px;
-    font-size: var(--fs-read);
+    margin: 0 0 6px;
+    font-size: var(--fs-sm);
     font-weight: 600;
     line-height: 1.35;
     color: var(--heading-color);
   }
   .hero-sidebar.hero-applet .ab-term-body > p:not(.ab-cmd) {
-    margin: 0 0 10px;
-    font-size: var(--fs-sm);
-    line-height: 1.65;
+    margin: 0 0 8px;
+    font-size: var(--fs-xs);
+    line-height: 1.55;
     color: color-mix(in srgb, var(--default-color), transparent 15%);
   }
   .hero-sidebar.hero-applet .ab-term-body > p.ab-plain-label {
-    margin: 14px 0 8px;
+    margin: 10px 0 6px;
     font-size: var(--fs-xs);
     color: color-mix(in srgb, var(--default-color), transparent 40%);
   }
-  .hero-sidebar.hero-applet .ab-tags { gap: 6px; margin: 0; }
+  .hero-sidebar.hero-applet .ab-tags { gap: 5px; margin: 0; }
   .hero-sidebar.hero-applet .ab-tags li {
-    padding: 4px 10px;
+    padding: 3px 9px;
     border: 1px solid var(--hero-hairline);
     border-radius: 999px;
     background: transparent;
-    font-size: var(--fs-xs);
+    font-size: 11px;
     line-height: 1.2;
     color: var(--default-color);
   }
