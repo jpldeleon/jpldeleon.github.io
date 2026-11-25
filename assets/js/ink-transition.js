@@ -1,5 +1,5 @@
 /*!
- * ink-transition.js: ink-in-water theme switch (~800 ms), desktop + phone layouts. No hard edges, no solid colour.
+ * ink-transition.js: ink-in-water theme switch (~1.8 s), desktop + phone layouts. No hard edges, no solid colour.
  *
  * How it works
  *  - A click on any [data-theme-choice] (desktop dots, panel menu, Android Theme tile) is intercepted in the capture
@@ -16,7 +16,7 @@
  * Behaviour
  *  - Pointer events pass through during the animation (the live page underneath is already in the new theme).
  *  - prefers-reduced-motion, hidden tabs and browsers without View Transitions: instant switch, nothing breaks.
- *  - Phones (<= 768px) and low-core devices render a smaller sprite and fewer drops, same 800 ms.
+ *  - Phones (<= 768px) and low-core devices render a smaller sprite and fewer drops, same 1.8 s.
  *  - Sound: the ONE sound of the theme toggle (the theme notification is silent). Low, mellow lofi / Ghibli felt-piano in
  *    the same register and key as the notifications: a soft note for every ink drop, a slow C-E-G-B phrase, a warm pad.
  *    The notification panel's speaker button mutes it as well.
@@ -30,7 +30,7 @@
   if (window.__inkTheme) return;
 
   const root = document.documentElement;
-  const DUR = 800;
+  const DUR = 1800;
   const TAU = Math.PI * 2;
   const clamp = (v, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
   const sstep = (a, b, v) => { const x = clamp((v - a) / (b - a)); return x * x * (3 - 2 * x); };
@@ -259,41 +259,41 @@ html.ink-switching::view-transition-new(root){animation:none;mix-blend-mode:norm
     };
     const out = (node, x) => { const p = x == null ? null : pan(x); if (p) { node.connect(p); p.connect(master); } else node.connect(master); };
 
-    /* Theme-toggle sound, one voice only: the same low, mellow lofi / Ghibli felt-piano as the notifications
-       (C major-7, 260-500 Hz, dark filter, slow tape wobble). Every ink drop is a soft note as it appears (panned to
-       where it lands), a slow C-E-G-B phrase rises and settles, and a warm low pad sits underneath. The theme
-       notification itself is silent (see notifications.js), so nothing else plays at the toggle. */
-    const KEYS = [261.63, 329.63, 392, 493.88, 293.66, 392];
+    /* Theme-toggle sound, one voice only: a slow, sparse lofi / Ghibli felt-piano phrase. Four soft notes
+       (C pentatonic, 260-440 Hz, one octave low), each given room to ring and fade before the next lands, so
+       nothing stacks on top of anything else. Dark low-pass, slow attack, long tail, gentle tape wobble, and a
+       quiet low pad underneath. The theme notification itself is silent (see notifications.js). */
+    const PENT = [261.63, 293.66, 329.63, 392, 440];
+    const PHRASES = [[0, 2, 3, 2], [0, 3, 2, 4], [1, 2, 4, 3]];
+    const phrase = PHRASES[h % PHRASES.length];
     const keys = (when, f, dur, vol, x) => {
-      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1300; lp.Q.value = 0.5;
+      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 850; lp.Q.value = 0.4;
       const lfo = c.createOscillator(), lfoG = c.createGain();          // tape wobble
-      lfo.frequency.value = 0.9; lfoG.gain.value = 9; lfo.connect(lfoG);
+      lfo.frequency.value = 0.7; lfoG.gain.value = 7; lfo.connect(lfoG);
       lfo.start(when); lfo.stop(when + dur + 0.05);
-      [[1, 1, 0], [2, 0.18, 0], [1, 0.5, 6]].forEach(([m, v, cents], k) => {
+      [[1, 1, 0], [2, 0.08, 0], [1, 0.45, 5]].forEach(([m, v, cents], k) => {
         const o = c.createOscillator(), a = c.createGain();
         o.type = 'sine'; o.frequency.value = f * m; o.detune.value = cents;
         lfoG.connect(o.detune);
         a.gain.setValueAtTime(0.0001, when);
-        a.gain.exponentialRampToValueAtTime(vol * v, when + 0.025);
-        a.gain.exponentialRampToValueAtTime(0.0001, when + dur / (1 + k * 0.3));
+        a.gain.exponentialRampToValueAtTime(vol * v, when + 0.07);          // soft attack, no pluck
+        a.gain.exponentialRampToValueAtTime(0.0001, when + dur / (1 + k * 0.25));
         o.connect(a); a.connect(lp);
         o.start(when); o.stop(when + dur + 0.05);
       });
       out(lp, x);
     };
-    plan.drops.forEach((d, i) => keys(t0 + d.delay * DUR / 1000, KEYS[i % KEYS.length], 0.8, i === 0 ? 0.11 : 0.07 * (1 - i * 0.08), d.x));
+    phrase.forEach((n, i) => keys(t0 + 0.1 + i * 0.42, PENT[n], 1.5, i === 2 ? 0.07 : 0.085, plan.W * (0.35 + 0.3 * (i / 3))));
 
-    [261.63, 329.63, 392, 493.88, 392, 329.63].forEach((f, i) => keys(t0 + 0.05 + i * 0.14, f, 1.1, i === 3 ? 0.06 : 0.1, plan.W * (0.3 + 0.4 * (i / 5))));
-
-    [130.81, 196, 329.63].forEach(f => {                                  // warm low pad
+    [130.81, 196].forEach(f => {                                           // warm low pad
       const o = c.createOscillator(), og = c.createGain(), lp = c.createBiquadFilter();
       o.type = 'triangle'; o.frequency.value = f;
-      lp.type = 'lowpass'; lp.frequency.value = 600;
+      lp.type = 'lowpass'; lp.frequency.value = 450;
       og.gain.setValueAtTime(0.0001, t0);
-      og.gain.exponentialRampToValueAtTime(0.03, t0 + 0.4);
-      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.2);
+      og.gain.exponentialRampToValueAtTime(0.022, t0 + 0.7);
+      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
       o.connect(lp); lp.connect(og); out(og);
-      o.start(t0); o.stop(t0 + 1.25);
+      o.start(t0); o.stop(t0 + 2.25);
     });
   }
 
@@ -320,7 +320,7 @@ html.ink-switching::view-transition-new(root){animation:none;mix-blend-mode:norm
 
     let mask = null, st = null, plan = null, key = '';
     const sound = soundOn();
-    if (sound) { audio(); hush(1500); }   // silences any other theme-toggle sound (other scripts, cached files) while the ink plays
+    if (sound) { audio(); hush(DUR + 800); }   // silences any other theme-toggle sound (other scripts, cached files) while the ink plays
     root.classList.add('ink-switching');
     const vt = document.startViewTransition(async () => {
       const w = watchTheme();
