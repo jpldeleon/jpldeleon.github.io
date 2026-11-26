@@ -1196,9 +1196,9 @@
       </li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-app="socials" role="menuitem" type="button"><i
-            class="fa-solid fa-share-nodes"></i>Contact &amp; Socials</button></li>
+            class="fa-solid fa-share-nodes"></i>Contact</button></li>
       <li><a class="app-menu-dl" download="" href="assets/johnpauldeleon_resume.pdf" role="menuitem"><i
-            class="fa-solid fa-download"></i>Download Resume</a></li>
+            class="fa-solid fa-download"></i>Download CV</a></li>
       <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
       <li><button data-power="restart" role="menuitem" type="button"><i
             class="fa-solid fa-rotate-right"></i>Restart</button></li>
@@ -1221,10 +1221,10 @@
       <div class="sidebar-header-block">
         <h1>John Paul <span class="accent-text">De Leon</span></h1>
         <div aria-hidden="true" class="code-container role-code">
-          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>seoSpecialist<span
+          <span class="role-string"><span class="brace">{</span><span class="quote">"</span>technicalSeoSpecialist<span
               class="quote">"</span><span class="brace">}</span></span>
           <span class="role-comment">// <span class="typed"
-              data-typed-items="technicalSeo,onPageSeo,offPageSeo,wordpressDeveloper,exploringAeoGeo"></span></span>
+              data-typed-items="onPageSeoSpecialist,offPageSeoSpecialist,wordpressDeveloper,webDeveloper"></span></span>
         </div>
         <p class="sidebar-role">Technical, On-Page and Off-Page SEO Specialist</p>
       </div>
@@ -1232,19 +1232,24 @@
         diagnose crawlability, indexation and speed issues, then fix them in the theme, plugins or code. Backed by five
         years of link research, and now exploring AEO and GEO as AI search grows.</p>
       <p class="sidebar-open"><span aria-hidden="true" class="open-dot"></span>Open to agency and remote work</p>
+      <!-- Location + live local time (Asia/Manila) -->
+      <div class="sidebar-local" aria-label="Location and local time">
+        <span class="sidebar-local-place"><i aria-hidden="true" class="fa-solid fa-location-dot"></i>Manila, PH · UTC+8</span>
+        <span class="sidebar-local-time"><i aria-hidden="true" class="fa-regular fa-clock"></i><time id="manila-time">--:--</time></span>
+      </div>
       <div class="sidebar-contact contact-block">
-        <button aria-label="Copy email" class="sidebar-contact-item js-copy-trigger" data-copy-type="email"
+        <button aria-label="Copy email" class="sidebar-contact-item chip-email js-copy-trigger" data-copy-type="email"
           title="Copy email" data-copy-value="jpleonard.deleon@gmail.com" type="button">
           <i class="fa-solid fa-envelope"></i><span class="sidebar-link-label">Email</span>
         </button>
-        <button aria-label="Copy phone number" class="sidebar-contact-item js-copy-trigger" data-copy-type="phone"
+        <button aria-label="Copy phone number" class="sidebar-contact-item chip-phone js-copy-trigger" data-copy-type="phone"
           title="Copy phone number" data-copy-value="+639760109942" type="button">
           <i class="fa-solid fa-phone"></i><span class="sidebar-link-label">Phone</span>
         </button>
-        <a aria-label="GitHub profile" class="sidebar-contact-item" href="https://github.com/jpldeleon" rel="noopener"
+        <a aria-label="GitHub profile" class="sidebar-contact-item chip-github" href="https://github.com/jpldeleon" rel="noopener"
           target="_blank" title="GitHub"><i class="fa-brands fa-github"></i><span
             class="sidebar-link-label">GitHub</span></a>
-        <a aria-label="LinkedIn profile" class="sidebar-contact-item" href="https://www.linkedin.com/in/jpldl/" rel="noopener"
+        <a aria-label="LinkedIn profile" class="sidebar-contact-item chip-linkedin" href="https://www.linkedin.com/in/jpldl/" rel="noopener"
           target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i><span
             class="sidebar-link-label">LinkedIn</span></a>
         <!-- TODO: set the real resume path -->
@@ -1269,14 +1274,22 @@
             JavaScript). Being able to read a site's code helps me trace problems to their cause and fix them, not
             just report them.</p>
           <p class="ab-plain-label">What I focus on</p>
-          <ul aria-label="Focus areas" class="ab-tags">
-            <li><span>Technical SEO</span></li>
-            <li><span>On-Page SEO</span></li>
-            <li><span>Off-Page SEO</span></li>
-            <li><span>Front-End Web Development</span></li>
-            <li class="is-emerging" title="Emerging area I'm exploring"><span>AEO / GEO (exploring)</span></li>
-            <li class="is-emerging" title="Emerging area I'm exploring"><span>AI Search (exploring)</span></li>
-          </ul>
+          <div class="ab-tag-group">
+            <p class="ab-tag-label">Core</p>
+            <ul aria-label="Core focus areas" class="ab-tags">
+              <li><span>Technical SEO</span></li>
+              <li><span>On-Page SEO</span></li>
+              <li><span>Off-Page SEO</span></li>
+              <li><span>Front-End Web Development</span></li>
+            </ul>
+          </div>
+          <div class="ab-tag-group">
+            <p class="ab-tag-label">Exploring</p>
+            <ul aria-label="Exploring" class="ab-tags">
+              <li class="is-emerging" title="Emerging area I'm exploring"><span>AEO / GEO</span></li>
+              <li class="is-emerging" title="Emerging area I'm exploring"><span>AI Search</span></li>
+            </ul>
+          </div>
         </div>
       </section><!-- /About card -->
     </div>
@@ -1747,12 +1760,6 @@
       <div aria-label="Filter projects" class="pj-filters" role="group">
         <button aria-pressed="true" class="pj-chip" data-filter="all" type="button">All <span>10</span></button>
         <button aria-pressed="false" class="pj-chip" data-filter="seo" type="button">SEO <span>5</span></button>
-        <button aria-pressed="false" class="pj-chip" data-filter="onpage" type="button">On-Page SEO
-          <span>2</span></button>
-        <button aria-pressed="false" class="pj-chip" data-filter="offpage" disabled title="Case studies coming soon"
-          type="button">Off-Page SEO <span>Soon</span></button>
-        <button aria-pressed="false" class="pj-chip" data-filter="aeo-geo" disabled title="Case studies coming soon"
-          type="button">AEO / GEO <span>Soon</span></button>
         <button aria-pressed="false" class="pj-chip" data-filter="wordpress" type="button">WordPress
           <span>2</span></button>
         <button aria-pressed="false" class="pj-chip" data-filter="webdev" type="button">Web Dev <span>5</span></button>
@@ -1971,6 +1978,20 @@
   </script>
   <script src="assets/js/android.js" defer></script>
   <script src="assets/js/jpt-chat.js" defer></script>
+  <script>
+    /* live Manila time in the hero card */
+    (function () {
+      var el = document.getElementById('manila-time');
+      if (!el) return;
+      var fmt;
+      try {
+        fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', hour: 'numeric', minute: '2-digit' });
+      } catch (e) { return; }
+      function tick() { el.textContent = fmt.format(new Date()); }
+      tick();
+      setInterval(tick, 15000);
+    })();
+  </script>
   <script>
     (function () {
       var meta = document.querySelector('meta[name="theme-color"]');

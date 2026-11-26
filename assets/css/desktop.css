@@ -288,6 +288,33 @@
   font-size: 18px;
 }
 
+/* location + live local time: plain muted text, theme palette colours */
+.hero-sidebar .sidebar-local {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px 14px;
+  width: 100%;
+  margin: 0;
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+  color: var(--muted-color, color-mix(in srgb, var(--default-color), transparent 40%));
+}
+.hero-sidebar .sidebar-local > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.hero-sidebar .sidebar-local i { margin: 0; font-size: 11px; }
+.hero-sidebar .sidebar-local-place i { color: var(--pal-orange, var(--quote-color)); }
+.hero-sidebar .sidebar-local-time i { color: var(--pal-blue, var(--typed-color)); }
+.hero-sidebar .sidebar-local time {
+  font-variant-numeric: tabular-nums;
+  color: var(--pal-blue, var(--typed-color));
+}
+
 @media (max-height: 720px) {
   .hero-sidebar-inner {
     gap: 10px;
@@ -699,7 +726,7 @@ html body .lightbox-window-panel .win-btn:focus-visible {
   height: 1px;
   margin: 6px 8px;
   list-style: none;
-  background: color-mix(in srgb, var(--default-color), transparent 80%);
+  background: none;
 }
 
 /* Role: a string literal (dominant) with the typed roles as a comment beneath */
@@ -1601,6 +1628,23 @@ body.sidebar-collapsed {
   color: var(--accent-highlight);
   background: color-mix(in srgb, var(--accent-highlight), transparent 88%);
   border: 1px solid color-mix(in srgb, var(--accent-highlight), transparent 72%);
+}
+
+/* focus tags: Core / Exploring groups with a quiet label */
+.ab-tag-group + .ab-tag-group {
+  margin-top: 8px;
+}
+
+.ab-tag-label {
+  margin: 0 0 4px;
+  font: 500 10px/1.2 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted-color, var(--default-color)), transparent 25%);
+}
+
+.ab-term .ab-tag-group .ab-tags {
+  margin-top: 0;
 }
 
 .ab-term.is-flash {

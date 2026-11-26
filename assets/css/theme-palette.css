@@ -560,6 +560,22 @@ html body .hero-sidebar.hero-applet .ab-tags li {
 .hero-sidebar .sidebar-contact .sidebar-contact-item:nth-child(odd) { --ct: var(--series-1); }
 .hero-sidebar .sidebar-contact .sidebar-contact-item:nth-child(even) { --ct: var(--series-2); }
 
+/* one palette colour per contact chip (beats the odd/even series pair above) */
+.hero-sidebar .sidebar-contact .sidebar-contact-item.chip-email { --ct: var(--pal-orange); }
+.hero-sidebar .sidebar-contact .sidebar-contact-item.chip-phone { --ct: var(--pal-green); }
+.hero-sidebar .sidebar-contact .sidebar-contact-item.chip-github { --ct: var(--pal-purple); }
+.hero-sidebar .sidebar-contact .sidebar-contact-item.chip-linkedin { --ct: var(--pal-blue); }
+.hero-sidebar .sidebar-contact .sidebar-cta { --ct: var(--pal-yellow); }
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item,
+.hero-sidebar .sidebar-contact .sidebar-cta {
+  border-color: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 78%);
+}
+
+.hero-sidebar .sidebar-contact .sidebar-cta i {
+  color: var(--ct, var(--accent-highlight));
+}
+
 .hero-sidebar .sidebar-contact .sidebar-contact-item {
   background: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 88%);
 }
@@ -569,8 +585,17 @@ html body .hero-sidebar.hero-applet .ab-tags li {
 }
 
 .hero-sidebar .sidebar-contact .sidebar-contact-item:hover,
-.hero-sidebar .sidebar-contact .sidebar-contact-item:focus-visible {
+.hero-sidebar .sidebar-contact .sidebar-contact-item:focus-visible,
+.hero-sidebar .sidebar-contact .sidebar-cta:hover,
+.hero-sidebar .sidebar-contact .sidebar-cta:focus-visible {
   background: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 78%);
+  border-color: color-mix(in srgb, var(--ct, var(--accent-highlight)), transparent 50%);
+  color: var(--ct, var(--accent-highlight));
+}
+
+.hero-sidebar .sidebar-contact .sidebar-contact-item:focus-visible,
+.hero-sidebar .sidebar-contact .sidebar-cta:focus-visible {
+  outline-color: var(--ct, var(--accent-highlight));
 }
 
 .hero-sidebar .sidebar-contact .sidebar-contact-item:active {
@@ -1066,4 +1091,97 @@ html.dev .rv-h::before {
   .wm-window.adr-sheet .wm-title {
     color: var(--heading-color);
   }
+}
+
+/* ---------- Start panel launcher row: minimal, icon over label ----------
+   Resume + Projects are the primary pair (a touch brighter); the rest are quieter.
+   Desktop only: below 992px the launcher stays the plain vertical list. */
+@media (min-width: 992px) {
+  html body .app-menu > ul {
+    gap: 2px;
+    padding: 4px 12px 8px;
+  }
+
+  html body .app-menu > ul button,
+  html body .app-menu > ul .app-menu-dl {
+    gap: 3px;
+    min-width: 0;
+    padding: 6px 2px;
+    border-radius: 6px;
+    background: transparent;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    line-height: 1.25;
+    white-space: nowrap;
+    color: color-mix(in srgb, var(--default-color), transparent 38%);
+  }
+
+  html body .app-menu > ul button i,
+  html body .app-menu > ul .app-menu-dl i {
+    font-size: 14px;
+    opacity: .6;
+    transition: opacity .15s ease;
+  }
+
+  /* primary pair */
+  html body .app-menu > ul button[data-app="resume"],
+  html body .app-menu > ul button[data-app="portfolio"] {
+    font-weight: 600;
+    color: var(--accent-highlight);
+  }
+
+  html body .app-menu > ul button[data-app="resume"] i,
+  html body .app-menu > ul button[data-app="portfolio"] i {
+    font-size: 16px;
+    color: var(--accent-highlight);
+    opacity: 1;
+  }
+
+  /* hover / keyboard focus: a faint tint, brighter label and icon */
+  html body .app-menu > ul button:hover,
+  html body .app-menu > ul button:focus-visible,
+  html body .app-menu > ul .app-menu-dl:hover,
+  html body .app-menu > ul .app-menu-dl:focus-visible {
+    background: color-mix(in srgb, var(--default-color), transparent 93%);
+    color: var(--default-color);
+  }
+
+  html body .app-menu > ul button:hover i,
+  html body .app-menu > ul button:focus-visible i,
+  html body .app-menu > ul .app-menu-dl:hover i,
+  html body .app-menu > ul .app-menu-dl:focus-visible i {
+    opacity: 1;
+  }
+
+  html body .app-menu > ul button[data-app="resume"]:hover,
+  html body .app-menu > ul button[data-app="resume"]:focus-visible,
+  html body .app-menu > ul button[data-app="portfolio"]:hover,
+  html body .app-menu > ul button[data-app="portfolio"]:focus-visible {
+    background: color-mix(in srgb, var(--accent-highlight), transparent 86%);
+    color: var(--accent-highlight);
+  }
+
+  html body .app-menu > ul button:focus-visible,
+  html body .app-menu > ul .app-menu-dl:focus-visible {
+    outline: 2px solid var(--focus-ring-color, var(--accent-highlight));
+    outline-offset: -2px;
+  }
+}
+
+/* ---------- Applets: no outer border (loads after the inline hero / start-panel styles) ---------- */
+html body .hero-sidebar.hero-applet,
+html body .app-menu {
+  border: 0;
+}
+
+/* ---------- No divider lines inside the hero card / start panel ---------- */
+html body .hero-sidebar.hero-applet .sidebar-contact,
+html body .hero-sidebar.hero-applet .hero-inspector,
+html body .app-menu .hero-applet .hero-inspector {
+  border-top: 0;
+  border-left: 0;
+}
+
+html body .app-menu .app-menu-header {
+  border-bottom: 0;
 }

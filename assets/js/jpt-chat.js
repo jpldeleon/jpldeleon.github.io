@@ -1048,7 +1048,7 @@
 .jpt-back{display:none!important}
 
 /* the chat box: centered horizontally, just above the taskbar, translucent, frosted */
-.jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:min(540px,100%);max-height:none;padding:0!important;margin:0!important;background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid color-mix(in srgb,var(--fg) 16%,transparent);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}
+.jpt-win{position:relative;display:flex;flex-direction:column;width:min(560px,100%);height:min(540px,100%);max-height:none;padding:0!important;margin:0!important;background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:0;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);overflow:hidden;animation:jpt-in .15s ease-out}
 @keyframes jpt-in{from{opacity:0}to{opacity:1}}
 
 /* taskbar mode (desktop): the box is a flyout anchored above the taskbar search bar. its left edge follows the bar (--jpt-left),
@@ -1061,7 +1061,7 @@
 @keyframes jpt-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* header: the astronaut, static (no animation, no hover effect) */
-.jpt-bar{display:flex;align-items:center;gap:10px;padding:12px 10px 10px 16px;flex:none;border-bottom:1px solid color-mix(in srgb,var(--fg) 10%,transparent)}
+.jpt-bar{display:flex;align-items:center;gap:10px;padding:12px 10px 10px 16px;flex:none}
 .jpt-ico{display:block;width:36px;height:36px;flex:none;object-fit:contain;filter:url(#jpt-tint);user-select:none;-webkit-user-drag:none}
 .jpt-ttl{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
 .jpt-ttl b{font-weight:600;font-size:15px;color:var(--fg)}
@@ -1089,8 +1089,8 @@
 @media (min-width:769px){.jpt-chips{flex-wrap:wrap;overflow-x:visible}}
 .jpt-chips .jpt-cmd{white-space:nowrap;flex:none;color:var(--dim);text-decoration:none;padding:3px 11px;border-radius:999px;background:color-mix(in srgb,var(--fg) 9%,transparent)}
 .jpt-chips .jpt-cmd:hover,.jpt-chips .jpt-cmd:focus-visible{color:var(--g)}
-.jpt-in{display:flex;gap:6px;align-items:center;margin:0 12px 12px;padding:0 4px 0 16px;flex:none;border-radius:999px;background:color-mix(in srgb,var(--fg) 10%,transparent);border:1px solid var(--bd)}
-.jpt-in:focus-within{border-color:var(--g)}
+.jpt-in{display:flex;gap:6px;align-items:center;margin:0 12px 12px;padding:0 4px 0 16px;flex:none;border-radius:999px;background:color-mix(in srgb,var(--fg) 10%,transparent);border:0}
+.jpt-in:focus-within{background:color-mix(in srgb,var(--fg) 15%,transparent)}
 .jpt-in input{flex:1;min-width:0;height:40px;background:none;border:0;outline:0;color:var(--fg);font:inherit;caret-color:var(--g)}
 .jpt-in input::placeholder{color:var(--dim)}
 .jpt-send:not(:disabled){color:var(--g)}

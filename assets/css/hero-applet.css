@@ -195,6 +195,9 @@
     font-size: var(--fs-xs);
   }
 
+  /* this compact layout is left aligned */
+  .hero-sidebar.hero-applet .sidebar-local { justify-content: flex-start; }
+
   /* contact chips: one wrapped row, no heavy 48px rows */
   .hero-sidebar.hero-applet .sidebar-contact {
     position: relative;

@@ -74,14 +74,14 @@
   flex-direction: column;
   gap: .9em;
   padding: 1.2em;
-  border: 1px solid var(--pj-line);
+  border: 0;
   border-radius: .8em;
   background: var(--surface-color);
   color: var(--default-color);
   transition: box-shadow .15s ease, transform .15s ease;
 }
 .pj-card:hover,
-.pj-card:focus-visible { box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 6px 18px rgba(0, 0, 0, .14); transform: translateY(-2px); color: var(--default-color); }
+.pj-card:focus-visible { background: var(--pj-hover); box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 6px 18px rgba(0, 0, 0, .14); transform: translateY(-2px); color: var(--default-color); }
 .pj-card[hidden] { display: none; }
 
 .pj-text { display: flex; flex-direction: column; gap: .25em; flex: 1; }
@@ -178,7 +178,6 @@
     grid-row: 1 / -1;
     grid-column: 1;
     background: var(--pj-sidebar-bg);
-    border-right: 1px solid var(--pj-line);
   }
 
   /* ---------- Sidebar top: title, lead, resume button ---------- */
@@ -190,7 +189,6 @@
     gap: 1em;
     margin: 0;
     padding: 1.3em 1.1em 1.1em;
-    border-bottom: 1px solid var(--pj-line);
   }
   .pj-title { margin: 0 0 .35em; font-size: 1.45em; }
   .pj-lead { max-width: none; font-size: .9em; line-height: 1.55; }

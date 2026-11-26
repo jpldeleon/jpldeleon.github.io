@@ -84,7 +84,6 @@
   min-width: 0;
   min-height: 0;
   background: var(--rv-sidebar-bg);
-  border-right: 1px solid var(--rv-line);
 }
 
 /* the old path bar is gone (the sections already say where you are) */
@@ -155,7 +154,6 @@
   align-items: stretch;
   gap: .6em;
   padding: .8em .7em .9em;
-  border-top: 1px solid var(--rv-line);
 }
 
 /* Text | PDF as a small segmented switch */
@@ -163,7 +161,6 @@
   display: flex;
   gap: .2em;
   padding: .2em;
-  border: 1px solid var(--rv-line-strong);
   border-radius: calc(var(--rv-r) + .2em);
   background: color-mix(in srgb, var(--default-color), transparent 95%);
 }
@@ -234,7 +231,7 @@
 }
 
 /* the Text tab is one long page: sections are stacked, with a divider between them */
-.rv-view + .rv-view { margin-top: 2.6em; padding-top: 2.2em; border-top: 1px solid var(--rv-line); }
+.rv-view + .rv-view { margin-top: 2.6em; padding-top: 2.2em; }
 
 /* one centred column, about 70 characters wide */
 .rv-doc { max-width: 46em; margin-inline: auto; line-height: 1.65; }
@@ -274,7 +271,6 @@ html.dev .rv-h::before { content: '## '; font-family: var(--rv-mono); font-weigh
 
 .rv-contact { margin: 0; padding: 0; list-style: none; max-width: 35em; border: 0; border-radius: .9em; background: var(--rv-card-bg); overflow: hidden; }
 .rv-contact li { display: flex; align-items: center; padding: .7em 1.1em; border: 0; font-size: .97em; overflow-wrap: anywhere; }
-.rv-contact li + li { border-top: 1px solid var(--rv-line) !important; }
 .rv-contact i { width: 1.7em; flex: 0 0 auto; margin-right: .4em; color: var(--accent-color); }
 .rv-contact a { color: var(--accent-color); }
 .rv-contact a:hover,
