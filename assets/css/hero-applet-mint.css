@@ -1,0 +1,333 @@
+/*--------------------------------------------------------------
+# Hero applet, Mint redesign (desktop start panel)
+# Load LAST: after theme-palette.css, panel-applets.css, hero-applet.css.
+#
+# Direction: Linux Mint "Welcome" window. Flat, quiet, one green accent.
+# - Left pane: photo, name, typed role, one summary, status, four round icon buttons.
+# - Right pane: no title bar. A heading, two short paragraphs, plain outline tags.
+# - Colour: neutral text; Mint green (--pal-green) only on the typed role, the
+#   status dot and hover states. No tinted tiles, no dark code box, no underline.
+# - Space does the grouping, so dividers are almost invisible.
+# - The profile photo and its hover animation are NOT touched (no rules here
+#   for .sidebar-avatar ::before/::after, .profile-image, .orbit-sys).
+--------------------------------------------------------------*/
+
+@media (min-width: 992px) {
+
+  /* a little wider so both panes can breathe */
+  html body .app-menu {
+    --sp-w: min(720px, calc(100vw - 28px));
+    --mint: var(--pal-green, var(--success-color));
+    --mint-soft: color-mix(in srgb, var(--mint), transparent 82%);
+    --ink: var(--heading-color);
+    --ink-2: color-mix(in srgb, var(--default-color), transparent 20%);
+    --ink-3: color-mix(in srgb, var(--default-color), transparent 50%);
+    --line: transparent;
+    --fill: color-mix(in srgb, var(--default-color), transparent 94%);
+    --fill-hover: color-mix(in srgb, var(--mint), transparent 84%);
+  }
+
+  /* ---------- left pane ---------- */
+  html body .app-menu .hero-applet .hero-card {
+    flex: 0 0 320px;
+    width: 320px;
+  }
+
+  html body .app-menu .hero-applet .hero-body {
+    padding: 44px 32px 28px;   /* top room keeps the photo's hover rings unclipped */
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .hero-sidebar-inner {
+    gap: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* only the size and spacing: the rings/hover come from desktop.css */
+  html body .app-menu .hero-applet .sidebar-avatar {
+    --avatar: 128px;
+    margin: 0 auto 22px;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-header-block {
+    gap: 6px;
+    min-height: 0;
+  }
+
+  /* name: one colour, no underline */
+  html body .app-menu .hero-applet h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    color: var(--ink);
+  }
+
+  html body .app-menu .hero-applet h1 .accent-text {
+    color: inherit;
+    background: none;
+    border: 0;
+    border-bottom: 0;
+    box-shadow: none;
+    text-decoration: none;
+    padding: 0;
+  }
+
+  html body .app-menu .hero-applet h1 .accent-text::before,
+  html body .app-menu .hero-applet h1 .accent-text::after {
+    display: none;
+  }
+
+  /* role: a small terminal. The title is the prompt line, the typed text is its comment */
+  html body .app-menu .hero-sidebar.hero-applet .role-code {
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+    width: calc(100% + 24px);      /* a little wider than the text column so the title never clips */
+    max-width: none;
+    margin: 14px -12px 0;
+    padding: 16px 10px 14px;
+    overflow: visible;
+    background: color-mix(in srgb, var(--surface-sunken-color, #000), transparent 12%);
+    border: 0;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  /* main title: the biggest, brightest thing in the box */
+  html body .app-menu .hero-applet .role-code .role-string {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+    white-space: nowrap;
+    color: var(--mint);            /* green title, gold name: two clearly different colours */
+  }
+
+  html body .app-menu .hero-applet .role-code .role-string .brace,
+  html body .app-menu .hero-applet .role-code .role-string .quote {
+    color: var(--pal-orange);
+  }
+
+  /* typed text reads as a code comment on the title: smaller, italic, green */
+  html body .app-menu .hero-applet .role-code .role-comment,
+  html body .app-menu .hero-applet .role-code .role-comment .typed,
+  html body .app-menu .hero-applet .role-code .role-comment .typed-cursor {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  /* summary: short measure, centred, quiet */
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-summary {
+    max-width: 32ch;
+    margin: 20px auto 0;
+    font-size: var(--fs-xs);
+    line-height: 1.7;
+    text-align: center;
+    color: var(--ink-2);
+  }
+
+  /* status + place: two small muted lines */
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-open {
+    justify-content: center;
+    margin-top: 22px;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-open .open-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--mint);
+    box-shadow: 0 0 0 3px var(--mint-soft);
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-local {
+    justify-content: center;
+    gap: 14px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-local i {
+    color: inherit;
+    opacity: .8;
+  }
+
+  /* contact: four round icon buttons (labels stay for screen readers) */
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+    padding: 0;
+    border: 0;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 0;
+    background: var(--fill);
+    color: var(--ink-2);
+    transition: background .18s ease, color .18s ease;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item i {
+    margin: 0;
+    font-size: 15px;
+    color: var(--ink-2);
+    transition: color .18s ease;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-link-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item:hover,
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item:focus-visible {
+    background: var(--fill-hover);
+    border-color: transparent;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item:hover i,
+  html body .app-menu .hero-sidebar.hero-applet .sidebar-contact .sidebar-contact-item:focus-visible i {
+    color: var(--mint);
+  }
+
+  /* ---------- right pane ---------- */
+  html body .app-menu .hero-sidebar.hero-applet .hero-inspector {
+    border-left: 0;
+    background: none;
+  }
+
+  /* no title bar: the heading below is the title (section keeps its aria-label) */
+  html body .app-menu .hero-applet .hero-inspector .ab-term-bar {
+    display: none;
+  }
+
+  html body .app-menu .hero-applet .hero-inspector .ab-term-body {
+    padding: 48px 36px 32px 40px;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-term-body h2 {
+    margin: 0 0 20px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -.01em;
+    color: var(--ink);
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-term-body > p:not(.ab-cmd) {
+    margin: 0 0 14px;
+    font-size: var(--fs-xs);
+    line-height: 1.75;
+    color: var(--ink-2);
+  }
+
+  /* focus areas: sentence-case labels, plain outline tags, no colour fills */
+  html body .app-menu .hero-sidebar.hero-applet .ab-term-body > p.ab-plain-label {
+    margin: 30px 0 14px;
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-tag-group + .ab-tag-group {
+    margin-top: 14px;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-tag-label {
+    margin: 0 0 8px;
+    font-size: 11px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink-3);
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-tags {
+    gap: 8px;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-tags li {
+    padding: 4px 11px;
+    font-size: 11px;
+    color: var(--ink-2);
+    background: var(--fill);
+    border: 0;
+    border-radius: 999px;
+  }
+
+  html body .app-menu .hero-sidebar.hero-applet .ab-tags li.is-emerging {
+    color: var(--ink-3);
+    background: color-mix(in srgb, var(--default-color), transparent 97%);
+  }
+}
+
+/* ---------- launcher row: Resume and Projects only (Contact moved to the taskbar) ---------- */
+@media (min-width: 992px) {
+  html body .app-menu > ul {
+    display: flex;
+    gap: 12px;
+    padding: 4px 32px 28px;
+  }
+
+  html body .app-menu > ul > li {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  html body .app-menu > ul li > button,
+  html body .app-menu > ul li > .app-menu-dl {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 44px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--fill);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--ink-2);
+    transition: background .18s ease, color .18s ease;
+  }
+
+  html body .app-menu > ul li > button i,
+  html body .app-menu > ul li > .app-menu-dl i {
+    font-size: 14px;
+    opacity: 1;
+    color: var(--mint);
+  }
+
+  html body .app-menu > ul li > button[data-app="resume"],
+  html body .app-menu > ul li > button[data-app="portfolio"] {
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  html body .app-menu > ul li > button:hover,
+  html body .app-menu > ul li > button:focus-visible,
+  html body .app-menu > ul li > .app-menu-dl:hover,
+  html body .app-menu > ul li > .app-menu-dl:focus-visible {
+    background: var(--fill-hover);
+    border-color: transparent;
+    color: var(--ink);
+  }
+}

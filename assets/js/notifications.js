@@ -270,7 +270,7 @@
   /* ===================== card above the bell =====================
    * Desktop only (the phone layout has its own shade + heads-up banner, see android.js). A small rounded card
    * slides up right above the bell on the taskbar, like a Windows / Linux Mint notification: icon, message,
-   * close button and a thin timer line. Every card is the same size and takes its colours from the theme
+   * close button. Every card is the same size and takes its colours from the theme
    * variables (taskbar.css). Hovering a card keeps it open; click it or its close button to dismiss it;
    * Escape dismisses all of them. */
   const PILL_MS = 4200;
@@ -328,9 +328,7 @@
     x.type = 'button';
     x.setAttribute('aria-label', 'Dismiss');
     x.appendChild(el('i', 'fa-solid fa-xmark'));
-    const bar = el('span', 'taskbar-pill-timer');
-    bar.style.animationDuration = PILL_MS + 'ms';
-    p.append(ico, msg, x, bar);
+    p.append(ico, msg, x);
     p.addEventListener('click', () => closePill(p));
     host.appendChild(p);
 

@@ -42,7 +42,7 @@
   <script>
     (function () {
       var saved = localStorage.getItem('site-theme');
-      if (['aurora', 'gruvbox', 'monokai', 'draculapro', 'nordfrost', 'miasma', 'kanagawadragon', 'flexoki'].indexOf(saved) !== -1) {
+      if (['aurora', 'gruvbox', 'monokai', 'draculapro', 'nordfrost', 'miasma', 'kanagawadragon', 'flexoki', 'matte', 'colorpaper', 'inkpaper'].indexOf(saved) !== -1) {
         document.documentElement.setAttribute('data-theme', saved);
       }
     })();
@@ -856,8 +856,7 @@
         display: none;
       }
 
-      .app-menu>ul button,
-      .app-menu>ul .app-menu-dl {
+      .app-menu>ul button {
         flex-direction: column;
         justify-content: center;
         gap: 6px;
@@ -866,32 +865,9 @@
         text-align: center;
       }
 
-      .app-menu>ul button i,
-      .app-menu>ul .app-menu-dl i {
+      .app-menu>ul button i {
         width: auto;
         font-size: 18px;
-      }
-
-      .app-menu .app-menu-dl {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        border-radius: 6px;
-        color: var(--default-color);
-        font-family: var(--nav-font);
-        text-decoration: none;
-        transition: background-color .15s ease, color .15s ease;
-      }
-
-      .app-menu .app-menu-dl i {
-        color: var(--accent-color);
-      }
-
-      .app-menu .app-menu-dl:hover,
-      .app-menu .app-menu-dl:focus-visible {
-        background: color-mix(in srgb, var(--accent-highlight), transparent 85%);
-        color: var(--accent-highlight);
-        outline: none;
       }
 
       /* the card is gone from the left: windows centre on the full width */
@@ -911,6 +887,8 @@
   </style>
   <!-- Extended theme palette: per-theme hues applied to tags, icons, status, links (must load LAST, after every inline <style>) -->
   <link href="assets/css/theme-palette.css" rel="stylesheet" />
+  <!-- Hero applet Mint redesign (must load after theme-palette.css) -->
+  <link href="assets/css/hero-applet-mint.css" rel="stylesheet" />
   <!-- SEO expansion: emerging-area pill and "soon" project filters -->
   <style id="seo-expansion-css">
     .hero-sidebar.hero-applet .ab-tags li.is-emerging {
@@ -968,6 +946,9 @@
             <button aria-label="Miasma theme" aria-pressed="false" class="theme-dot dot-miasma" data-theme-choice="miasma" title="Miasma theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Miasma</span></button>
             <button aria-label="Kanagawa Dragon theme" aria-pressed="false" class="theme-dot dot-kanagawadragon" data-theme-choice="kanagawadragon" title="Kanagawa Dragon theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Kanagawa Dragon</span></button>
             <button aria-label="Flexoki theme" aria-pressed="false" class="theme-dot dot-flexoki" data-theme-choice="flexoki" title="Flexoki theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Flexoki</span></button>
+            <button aria-label="Matte theme" aria-pressed="false" class="theme-dot dot-matte" data-theme-choice="matte" title="Matte theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Matte</span></button>
+            <button aria-label="Color Paper theme" aria-pressed="false" class="theme-dot dot-colorpaper" data-theme-choice="colorpaper" title="Color Paper theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Color Paper</span></button>
+            <button aria-label="Ink Paper theme" aria-pressed="false" class="theme-dot dot-inkpaper" data-theme-choice="inkpaper" title="Ink Paper theme" type="button"><span aria-hidden="true" class="tsw"><b class="s"></b><b class="f"></b><b class="a"></b><b class="h"></b><b class="q"></b><b class="t"></b></span><span class="tname">Ink Paper</span></button>
           </div>
         </div>
       </div>
@@ -982,6 +963,8 @@
       <div aria-label="Open applications" class="taskbar-apps" id="taskbar-apps" role="toolbar"></div>
     </div>
     <div class="panel-right">
+      <button aria-label="Contact" class="panel-btn panel-btn-icon" data-app="socials" id="panel-contact-btn"
+        title="Contact" type="button"><i aria-hidden="true" class="fa-solid fa-share-nodes"></i></button>
       <button aria-label="Restart desktop" class="panel-btn panel-btn-icon" data-power="restart" id="panel-restart-btn"
         title="Restart" type="button"><i aria-hidden="true" class="fa-solid fa-rotate-right"></i></button>
       <div class="panel-menu panel-notif-menu">
@@ -1186,7 +1169,7 @@
       </div>
     </div>
   </header>
-  <!-- App Menu (opened from the taskbar Menu button: apps, projects, socials, restart) -->
+  <!-- App Menu (opened from the taskbar Menu button: apps, projects, socials) -->
   <div aria-hidden="true" class="app-menu" id="app-menu" role="menu">
     <div class="app-menu-header">Apps</div>
     <ul>
@@ -1194,14 +1177,6 @@
       </li>
       <li><button data-app="portfolio" role="menuitem" type="button"><i class="fa-solid fa-flask"></i>Projects</button>
       </li>
-      <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
-      <li><button data-app="socials" role="menuitem" type="button"><i
-            class="fa-solid fa-share-nodes"></i>Contact</button></li>
-      <li><a class="app-menu-dl" download="" href="assets/johnpauldeleon_resume.pdf" role="menuitem"><i
-            class="fa-solid fa-download"></i>Download CV</a></li>
-      <li aria-hidden="true" class="app-menu-sep" role="separator"></li>
-      <li><button data-power="restart" role="menuitem" type="button"><i
-            class="fa-solid fa-rotate-right"></i>Restart</button></li>
     </ul>
   </div>
   <!-- Hero Sidebar (notification panel, right side) -->
@@ -1267,9 +1242,8 @@
         </div>
         <div class="ab-term-body" id="about-body">
           <h2>Connecting search strategy with technical execution</h2>
-          <p>I come from a research background: over a decade of web research, including more than five years of
-            Off-Page SEO work in link prospecting, qualification and vetting. Along the way I got curious about what
-            happens on the site itself.</p>
+          <p>I started in web research, including more than five years of Off-Page SEO work in link prospecting,
+            qualification and vetting. Along the way I got curious about what happens on the site itself.</p>
           <p>Now I'm building on that with Technical and On-Page SEO and front-end web development (HTML, CSS and
             JavaScript). Being able to read a site's code helps me trace problems to their cause and fix them, not
             just report them.</p>

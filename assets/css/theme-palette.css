@@ -1185,3 +1185,216 @@ html body .app-menu .hero-applet .hero-inspector {
 html body .app-menu .app-menu-header {
   border-bottom: 0;
 }
+
+:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) {
+  --glass-transparency: 0%;
+  --glass-filter: none;
+}
+
+:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) :is(.top-panel, .panel-popover, .panel-dropdown, .clock-popover, .hero-sidebar, .hero-applet .hero-inspector, .ab-term, .app-menu, .wm-window, .wm-window.is-focused, .wm-cert-img, .portfolio-window, .portfolio .portfolio-wrap, .portfolio .portfolio-wrap:hover, .theme-controls .theme-notice) {
+  box-shadow: none;
+}
+
+:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) .about .profile-header .profile-image {
+  --shadow-extra: 0 0 0 0 transparent;
+}
+
+:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) :is(.theme-notice, #boot #bt-screen) {
+  text-shadow: none;
+}
+
+:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) .boot-logo {
+  --glow-lo: transparent;
+  --glow-hi: transparent;
+}
+
+[data-theme="colorpaper"] .space-astronaut-img {
+  filter: url(#space-tint);
+}
+
+html[data-theme="inkpaper"] body .top-panel.taskbar {
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.22), 0 1px 3px rgba(0, 0, 0, 0.16) !important;
+}
+
+[data-theme="inkpaper"] .space-astronaut-img {
+  filter: grayscale(1);
+}
+
+[data-theme="matte"] .space-astronaut-img {
+  filter: grayscale(1) brightness(0.92);
+}
+
+html :is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) body .glightbox-container .gslide.current :is(.gslide-image, .gslide-video) {
+  box-shadow: none !important;
+}
+
+@media (max-width: 768px) {
+  :is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) .wm-window.is-focused {
+    box-shadow: 0 0 0 2px var(--wh, var(--accent-highlight));
+  }
+}
+
+:is([data-theme="colorpaper"], [data-theme="inkpaper"]) :is(.panel-dropdown, .panel-popover, .clock-popover, .desk-right .cky-widget, .hero-sidebar .sidebar-contact .sidebar-contact-item, .hero-sidebar .sidebar-contact .sidebar-cta, .ab-term, .ab-term-bar, .ab-tags li, .terminal-window, .terminal-titlebar, .terminal-footer, .hero-applet .hero-bar, .notif-head, .notif-item, .cp-list li, .taskbar-pill, .pj-card, .pj-chip, .pj-tags span, .pi-filter, .pi-feature, .sc-list):not(:hover):not(:focus-visible) {
+  border-color: transparent;
+}
+
+[data-theme="inkpaper"] :is(img, video, .pj-peek):not(.space-astronaut-img) {
+  filter: grayscale(1);
+}
+
+html[data-theme="matte"] {
+  --applet-hairline: transparent;
+  --hero-hairline: transparent;
+  --panel-pop-shadow: none;
+}
+
+html[data-theme="matte"] .clock-popover {
+  --cp-line: var(--surface-raised-color);
+}
+
+html[data-theme="matte"] body :is(.top-panel, .panel-popover, .panel-dropdown, .clock-popover, .hero-sidebar, .hero-sidebar.hero-applet, .hero-applet .hero-inspector, .ab-term, .app-menu, .wm-window, .wm-window.is-focused, .wm-cert-img, .portfolio-window, .portfolio .portfolio-wrap, .portfolio .portfolio-wrap:hover, .theme-controls .theme-notice, .terminal-window, .ginlined-content, .sidebar-avatar .profile-image, .about .profile-card, .about .stats-grid, .about .profile-details .detail-card:hover, .stats .stats-item, .stats .stats-item:hover, .skills .skills-category, .skills-specialization, .skills-specialization:hover, .skills .skill-box, .resume .resume-side, .portfolio .filters-wrapper, .contact .contact-form, .portfolio-details .portfolio-details-slider, .portfolio-details .portfolio-info, .portfolio-details .portfolio-description .features .feature-item, .service-details .content .features .feature-box, .service-details .service-info, .service-details .related-services, .features .feature-item:hover, .hero-sidebar .project-links a:hover, .hero-sidebar .sidebar-contact-item:hover, .hero .hero-actions .btn.btn-primary:hover, .hero .social-links a:hover, .about .profile-cta .btn-primary:hover, .about .profile-cta .btn-github:hover, .about .cta-section .btn.btn-primary:hover, .hero-sidebar .sidebar-open .open-dot, .clock-popover .cp-day:not(.is-today):hover) {
+  box-shadow: none;
+  text-shadow: none;
+}
+
+html[data-theme="matte"] body :is(.glightbox-clean .gslide-image, .glightbox-container .gslide-image, .glightbox-container .gslide.current .gslide-image, .glightbox-container .gslide.current .gslide-video, .lightbox-window-panel .win-btn:not(:focus-visible), .glightbox-container .gslide.current .lightbox-window-panel .win-btn:not(:focus-visible), .portfolio-terminal-controls .portfolio-command-btn:not(:focus-visible)) {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="matte"] body :is(.top-panel, .panel-popover, .panel-dropdown, .clock-popover, .app-menu, .hero-sidebar.hero-applet, .wm-window, .terminal-window, .portfolio-window) {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-theme="matte"] body :is(.panel-dropdown, .panel-popover, .clock-popover, .desk-right .cky-widget, .hero-sidebar .sidebar-contact .sidebar-contact-item, .hero-sidebar .sidebar-contact .sidebar-cta, .ab-term, .ab-term-bar, .ab-tags li, .terminal-window, .terminal-titlebar, .terminal-footer, .hero-applet .hero-bar, .notif-head, .notif-item, .clock-popover .cp-list li, .taskbar-pill, .pj-card, .pj-chip, .pj-tags span, .pi-filter, .pi-feature, .sc-list, .top-panel, .app-menu, .wm-window, .wm-titlebar, .portfolio-window, .portfolio .portfolio-wrap, .theme-controls .theme-notice) {
+  border-color: transparent;
+}
+
+html[data-theme="matte"] body :is(.pj-card, .pj-chip, .pi-filter, .hero-sidebar .sidebar-contact .sidebar-contact-item, .hero-sidebar .sidebar-contact .sidebar-cta, .clock-popover .cp-list li, .taskbar-pill):is(:hover, :focus-visible):not([aria-pressed="true"]) {
+  background: var(--surface-raised-color);
+}
+/* ---------- Conky widgets (Experience + Skills): paper-theme readability ----------
+   Light touch: keep the widgets looking like part of the desktop, but make the text
+   dark enough to read and give it a soft, padded backing so stars/planets don't cut through. */
+:is([data-theme="colorpaper"], [data-theme="inkpaper"]) {
+  --cky-text: var(--default-color);
+  --cky-text-soft: color-mix(in srgb, var(--default-color) 78%, var(--background-color));
+  --cky-track: color-mix(in srgb, var(--default-color) 12%, transparent);
+}
+
+/* 1. Soft backing: page colour, mostly opaque, padded, rounded, no border or shadow */
+html[data-theme] body :is(.exp-widget, .skl-widget) {
+  background: color-mix(in srgb, var(--background-color) 90%, transparent);
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: none;
+  text-shadow: none;
+  color: var(--cky-text);
+}
+
+/* 2. Text: full strength body, slightly softer secondary, never faded */
+html[data-theme] body :is(.exp-widget, .skl-widget) :is(.cky-row, .cky-line, .cky-value, p, li) {
+  color: var(--cky-text);
+  opacity: 1;
+}
+
+html[data-theme] body :is(.exp-widget, .skl-widget) :is(.skl-desc, .cky-sub-row, .cky-sub-row *) {
+  color: var(--cky-text-soft);
+  opacity: 1;
+  line-height: 1.5;
+}
+
+html[data-theme] body :is(.exp-widget, .skl-widget) .skl-desc {
+  font-size: 12px;
+}
+
+/* 3. Labels: darker than the raw series hue */
+html[data-theme] body :is(.skl-widget, .exp-widget) .cky-block .cky-label {
+  color: color-mix(in srgb, var(--grp, var(--heading-color)) 70%, var(--heading-color));
+  opacity: 1;
+}
+
+/* 4. Bars: quiet track, fill in the entry colour (no outlines) */
+html[data-theme] body :is(.exp-widget, .skl-widget) .cky-bar {
+  background: var(--cky-track);
+  box-shadow: none;
+}
+
+html[data-theme] body :is(.exp-widget, .skl-widget) .cky-bar > i {
+  background: color-mix(in srgb, var(--bar, var(--accent-highlight)) 85%, var(--default-color));
+  opacity: 1;
+}
+
+/* 5. Dots: solid, no rings */
+html[data-theme] body .skl-widget .cky-block .skl-dot {
+  background: color-mix(in srgb, var(--grp, var(--accent-highlight)) 85%, var(--default-color));
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* 6. Inkpaper: series are near-identical greys, so use the ink colour for labels
+      and step the dots through a few distinct greys */
+html[data-theme="inkpaper"] body :is(.skl-widget, .exp-widget) .cky-block .cky-label {
+  color: var(--heading-color);
+}
+
+html[data-theme="inkpaper"] body .skl-widget .cky-block:nth-of-type(5n+2) { --grp: #1F1F1F; }
+html[data-theme="inkpaper"] body .skl-widget .cky-block:nth-of-type(5n+3) { --grp: #4A4A4A; }
+html[data-theme="inkpaper"] body .skl-widget .cky-block:nth-of-type(5n+4) { --grp: #333333; }
+html[data-theme="inkpaper"] body .skl-widget .cky-block:nth-of-type(5n+5) { --grp: #5A5A5A; }
+html[data-theme="inkpaper"] body .skl-widget .cky-block:nth-of-type(5n+6) { --grp: #262626; }
+
+/* 7. Colorpaper: push pale yellow/cyan labels darker */
+html[data-theme="colorpaper"] body :is(.skl-widget, .exp-widget) .cky-block .cky-label {
+  color: color-mix(in srgb, var(--grp, var(--heading-color)) 62%, #2E2820);
+}
+
+/* ---------- Matte / Colorpaper / Inkpaper: shadows back on floating surfaces ----------
+   The flat block above sets box-shadow: none on all of these, which leaves windows, the hero
+   applet and popovers with no separation from the page. These rules come last and use
+   !important so no earlier flat rule can win. Same strength as the taskbar shadow, or more. */
+html[data-theme="colorpaper"] { --sh-rgb: 74, 66, 55; --sh-a: 1; }
+html[data-theme="inkpaper"]   { --sh-rgb: 0, 0, 0;    --sh-a: 1; }
+html[data-theme="matte"]      { --sh-rgb: 0, 0, 0;    --sh-a: 1.6; }
+
+html:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) body :is(.hero-sidebar.hero-applet, .app-menu, .panel-popover, .panel-dropdown, .clock-popover) {
+  box-shadow:
+    0 2px 4px rgba(var(--sh-rgb), calc(0.16 * var(--sh-a))),
+    0 12px 32px rgba(var(--sh-rgb), calc(0.22 * var(--sh-a))) !important;
+}
+
+@media (min-width: 769px) {
+  html:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) body .wm-window {
+    box-shadow:
+      0 2px 4px rgba(var(--sh-rgb), calc(0.16 * var(--sh-a))),
+      0 12px 32px rgba(var(--sh-rgb), calc(0.22 * var(--sh-a))) !important;
+  }
+
+  html:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) body .wm-window.is-focused {
+    box-shadow:
+      0 4px 8px rgba(var(--sh-rgb), calc(0.2 * var(--sh-a))),
+      0 20px 48px rgba(var(--sh-rgb), calc(0.3 * var(--sh-a))) !important;
+  }
+}
+
+/* colorpaper has no taskbar shadow of its own (inkpaper already has one) */
+html[data-theme="colorpaper"] body .top-panel.taskbar,
+html[data-theme="matte"] body .top-panel.taskbar {
+  box-shadow:
+    0 0 16px rgba(var(--sh-rgb), calc(0.22 * var(--sh-a))),
+    0 1px 3px rgba(var(--sh-rgb), calc(0.16 * var(--sh-a))) !important;
+}
+
+/* The hero applet sits inside the start panel (.app-menu), which already carries the shadow.
+   Without this the applet drew a second shadow inside the panel. */
+html:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) body .app-menu .hero-sidebar.hero-applet,
+html:is([data-theme="colorpaper"], [data-theme="inkpaper"], [data-theme="matte"]) body .app-menu .hero-applet .hero-inspector {
+  box-shadow: none !important;
+}
+
+/* Notification pill: no timer / progress line (also removed in notifications.js) */
+.taskbar-pill-timer {
+  display: none !important;
+}

@@ -185,7 +185,10 @@
       nordfrost: 'Nord Frost',
       miasma: 'Miasma',
       kanagawadragon: 'Kanagawa Dragon',
-      flexoki: 'Flexoki'
+      flexoki: 'Flexoki',
+      matte: 'Matte',
+      colorpaper: 'Color Paper',
+      inkpaper: 'Ink Paper'
     };
 
     function getCurrentTheme() {

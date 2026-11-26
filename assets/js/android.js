@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const txt = el => (el ? el.textContent.trim() : '');
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const THEMES = [['everforest', 'Everforest'], ['aurora', 'Aurora'], ['gruvbox', 'Gruvbox'], ['monokai', 'Monokai Pro'], ['draculapro', 'Dracula Pro Nosferatu'], ['nordfrost', 'Nord Frost'], ['miasma', 'Miasma'], ['kanagawadragon', 'Kanagawa Dragon'], ['flexoki', 'Flexoki']];
+  const THEMES = [['everforest', 'Everforest'], ['aurora', 'Aurora'], ['gruvbox', 'Gruvbox'], ['monokai', 'Monokai Pro'], ['draculapro', 'Dracula Pro Nosferatu'], ['nordfrost', 'Nord Frost'], ['miasma', 'Miasma'], ['kanagawadragon', 'Kanagawa Dragon'], ['flexoki', 'Flexoki'], ['colorpaper', 'Color Paper'], ['inkpaper', 'Ink Paper'], ['matte', 'Matte']];
   const theme = () => document.documentElement.getAttribute('data-theme') || 'everforest';
   const themeName = () => (THEMES.find(t => t[0] === theme()) || THEMES[0])[1];
   const PROJECTS = [

@@ -537,6 +537,189 @@
   --surface-color: #100F0F;
 }
 
+[data-theme="matte"] {
+  --background-color: #1C1C1C;
+  --default-color: #D4D4D2;
+  --heading-color: #ECECEA;
+  --accent-color: #9C9388;
+  --accent-highlight: #B8AD9E;
+  --accent-highlight-rgb: 184, 173, 158;
+  --nav-color: #C2C2C0;
+  --nav-hover-color: #B8AD9E;
+  --nav-mobile-background-color: #1C1C1C;
+  --nav-dropdown-background-color: #2A2A2A;
+  --nav-dropdown-color: #D4D4D2;
+  --nav-dropdown-hover-color: #B8AD9E;
+  --surface-color: #242424;
+  --contrast-color: #1C1C1C;
+  --quote-color: #A19A90;
+  --typed-color: #B8AD9E;
+
+  --pal-red: #C09B98;
+  --pal-orange: #C2A58D;
+  --pal-yellow: #C4B592;
+  --pal-green: #A2AD98;
+  --pal-cyan: #9BADA9;
+  --pal-blue: #9CA7B3;
+  --pal-purple: #ABA5B4;
+  --pal-pink: var(--pal-purple);
+  --muted-color: #9A9A98;
+  --faint-color: #727270;
+  --border-color: #2E2E2E;
+  --border-strong-color: #383838;
+  --surface-raised-color: #2E2E2E;
+  --surface-sunken-color: #171717;
+  --selection-bg-color: #3A3A3A;
+  --link-color: #C9BDAB;
+  --link-hover-color: #E2D8C8;
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-yellow);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: #B8AD9E;
+  --on-accent-color: #1C1C1C;
+  --series-1: #B8AD9E;
+  --series-2: var(--pal-blue);
+  --series-3: var(--pal-green);
+  --series-4: var(--pal-orange);
+  --series-5: var(--pal-cyan);
+  --series-6: var(--pal-purple);
+}
+
+[data-theme="matte"] .light-background {
+  --background-color: #222222;
+  --surface-color: #2B2B2B;
+}
+
+[data-theme="matte"] .dark-background {
+  --background-color: #171717;
+  --default-color: #D4D4D2;
+  --surface-color: #202020;
+  --contrast-color: #D4D4D2;
+}
+
+[data-theme="colorpaper"] {
+  --background-color: #EDE6D6;
+  --default-color: #4A4237;
+  --heading-color: #6B5438;
+  --accent-color: #3C6E62;
+  --accent-highlight: #566B30;
+  --accent-highlight-rgb: 86, 107, 48;
+  --nav-color: #4A4237;
+  --nav-hover-color: #566B30;
+  --nav-mobile-background-color: #EDE6D6;
+  --nav-dropdown-background-color: #F4EEE1;
+  --nav-dropdown-color: #4A4237;
+  --nav-dropdown-hover-color: #3C6E62;
+  --surface-color: #F4EEE1;
+  --contrast-color: #F4EEE1;
+  --quote-color: #8F562F;
+  --typed-color: #44688A;
+  
+  --pal-red: #9C4A45;
+  --pal-orange: #8F562F;
+  --pal-yellow: #7A6019;
+  --pal-green: #526F36;
+  --pal-cyan: #386B66;
+  --pal-blue: #44688A;
+  --pal-purple: #6E5A8A;
+  --pal-pink: var(--pal-purple);
+  --muted-color: #6A6254;
+  --faint-color: #968D7C;
+  --border-color: #E2DACA;
+  --border-strong-color: #D6CCB7;
+  --surface-raised-color: #F9F5EC;
+  --surface-sunken-color: #E3DBC9;
+  --selection-bg-color: #D9CFB6;
+  --link-color: #44688A;
+  --link-hover-color: #386B66;
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-yellow);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: var(--pal-blue);
+  --on-accent-color: #F6F1E5;
+  --series-1: var(--pal-green);
+  --series-2: var(--pal-blue);
+  --series-3: var(--pal-purple);
+  --series-4: var(--pal-orange);
+  --series-5: var(--pal-cyan);
+  --series-6: var(--pal-yellow);
+}
+
+[data-theme="colorpaper"] .light-background {
+  --background-color: #F4EEE1;
+  --surface-color: #F9F5EC;
+}
+
+[data-theme="colorpaper"] .dark-background {
+  --background-color: #E3DBC9;
+  --default-color: #4A4237;
+  --surface-color: #EAE2D1;
+  --contrast-color: #4A4237;
+}
+
+[data-theme="inkpaper"] {
+  --background-color: #F4F4F4;
+  --default-color: #2A2A2A;
+  --heading-color: #1A1A1A;
+  --accent-color: #3A3A3A;
+  --accent-highlight: #474747;
+  --accent-highlight-rgb: 71, 71, 71;
+  --nav-color: #2A2A2A;
+  --nav-hover-color: #474747;
+  --nav-mobile-background-color: #F4F4F4;
+  --nav-dropdown-background-color: #FAFAFA;
+  --nav-dropdown-color: #2A2A2A;
+  --nav-dropdown-hover-color: #3A3A3A;
+  --surface-color: #FAFAFA;
+  --contrast-color: #F4F4F4;
+  --quote-color: #5C5C5C;
+  --typed-color: #4A4A4A;
+  
+  --pal-red: #2E2E2E;
+  --pal-orange: #404040;
+  --pal-yellow: #525252;
+  --pal-green: #5A5A5A;
+  --pal-cyan: #666666;
+  --pal-blue: #383838;
+  --pal-purple: #4A4A4A;
+  --pal-pink: var(--pal-purple);
+  --muted-color: #666666;
+  --faint-color: #9C9C9C;
+  --border-color: #E8E8E8;
+  --border-strong-color: #DCDCDC;
+  --surface-raised-color: #FFFFFF;
+  --surface-sunken-color: #E9E9E9;
+  --selection-bg-color: #D9D9D9;
+  --link-color: #2E2E2E;
+  --link-hover-color: #000000;
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-yellow);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: #1A1A1A;
+  --on-accent-color: #F4F4F4;
+  --series-1: var(--pal-green);
+  --series-2: var(--pal-blue);
+  --series-3: var(--pal-purple);
+  --series-4: var(--pal-orange);
+  --series-5: var(--pal-cyan);
+  --series-6: var(--pal-yellow);
+}
+
+[data-theme="inkpaper"] .light-background {
+  --background-color: #FAFAFA;
+  --surface-color: #FFFFFF;
+}
+
+[data-theme="inkpaper"] .dark-background {
+  --background-color: #E9E9E9;
+  --default-color: #2A2A2A;
+  --surface-color: #EFEFEF;
+  --contrast-color: #2A2A2A;
+}
+
 /* Smooth scroll */
 :root {
   scroll-behavior: smooth;
@@ -723,6 +906,42 @@ main,
   --t-fg: #CECDC3;
   --t-q: #A699D0;
   --t-t: #A699D0;
+}
+
+.theme-dots .theme-dot.dot-colorpaper {
+  background: #566B30;
+  --dot-hi: #566B30;
+  --t-bg: #EDE6D6;
+  --t-surf: #F4EEE1;
+  --t-acc: #3C6E62;
+  --t-hi: #566B30;
+  --t-fg: #4A4237;
+  --t-q: #8F562F;
+  --t-t: #44688A;
+}
+
+.theme-dots .theme-dot.dot-inkpaper {
+  background: #474747;
+  --dot-hi: #474747;
+  --t-bg: #F4F4F4;
+  --t-surf: #FAFAFA;
+  --t-acc: #3A3A3A;
+  --t-hi: #474747;
+  --t-fg: #2A2A2A;
+  --t-q: #5C5C5C;
+  --t-t: #4A4A4A;
+}
+
+.theme-dots .theme-dot.dot-matte {
+  background: #B8AD9E;
+  --dot-hi: #B8AD9E;
+  --t-bg: #1C1C1C;
+  --t-surf: #242424;
+  --t-acc: #9C9388;
+  --t-hi: #B8AD9E;
+  --t-fg: #D4D4D2;
+  --t-q: #A19A90;
+  --t-t: #9CA7B3;
 }
 
 @media (max-width: 480px) {
@@ -6225,6 +6444,27 @@ Map to active/hover color .typed,
   --cmd-yellow: #ffed72;
   --cmd-green: #a2e57b;
   --cmd-on: #1d2528;
+}
+
+[data-theme="matte"] {
+  --cmd-red: #A68A87;
+  --cmd-yellow: #B0A387;
+  --cmd-green: #93A08B;
+  --cmd-on: #1C1C1C;
+}
+
+[data-theme="colorpaper"] {
+  --cmd-red: #C4766F;
+  --cmd-yellow: #CBAA62;
+  --cmd-green: #86A066;
+  --cmd-on: #3B352C;
+}
+
+[data-theme="inkpaper"] {
+  --cmd-red: #8C8C8C;
+  --cmd-yellow: #A6A6A6;
+  --cmd-green: #C0C0C0;
+  --cmd-on: #1F1F1F;
 }
 
 /* Action -> color aliases (change here to remap) */
