@@ -180,7 +180,7 @@
       everforest: 'Everforest',
       aurora: 'Aurora',
       gruvbox: 'Gruvbox',
-      monokai: 'Monokai Pro',
+      monokai: 'Monokai Pro Sun',
       draculapro: 'Dracula Pro Nosferatu',
       nordfrost: 'Nord Frost',
       miasma: 'Miasma',
