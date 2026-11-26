@@ -421,7 +421,7 @@
     showHeads(n.icon, n.title, 3200);
   });
 
-  /* ───────── shade: swipe DOWN from the status bar to open, swipe UP inside the shade to close ───────── */
+  /* ───────── shade: swipe DOWN from the status bar (or from anywhere when the home is at the top) to open, swipe UP anywhere to close ───────── */
   function setShade(open) {
     shadeOpen = open; shade.classList.remove('drag'); shade.style.transform = '';
     shade.classList.toggle('open', open); shade.inert = !open; scrim.classList.toggle('show', open);
@@ -452,27 +452,64 @@
   status.addEventListener('pointerup', endStatus);
   status.addEventListener('pointercancel', endStatus);
 
-  /* close: swipe up anywhere inside the open shade (the notification list keeps its own scrolling first) */
-  let tc = null;
-  shade.addEventListener('touchstart', ev => {
-    if (!shadeOpen || ev.touches.length !== 1) { tc = null; return; }
-    tc = { y: ev.touches[0].clientY, live: false, dy: 0 };
-  }, { passive: true });
-  shade.addEventListener('touchmove', ev => {
-    if (!tc) return;
-    const dy = ev.touches[0].clientY - tc.y; tc.dy = dy;
-    const inList = ev.target.closest && ev.target.closest('.adr-list');
-    const listCanScrollDown = inList && list.scrollTop + list.clientHeight < list.scrollHeight - 2;
-    if (!tc.live && dy < -10 && !listCanScrollDown) { tc.live = true; shade.classList.add('drag'); }
-    if (tc.live) shade.style.transform = `translateY(${Math.min(0, dy)}px)`;
-  }, { passive: true });
-  const endTouch = () => {
-    if (!tc) return;
-    const was = tc; tc = null;
-    if (was.live) setShade(was.dy > -70);
+  /* close: swipe up anywhere while the shade is open, on the shade itself (the notification list keeps its own scrolling first)
+     or on the dimmed screen below it (the scrim) */
+  const closeSwipe = el => {
+    let tc = null;
+    el.addEventListener('touchstart', ev => {
+      if (!shadeOpen || ev.touches.length !== 1) { tc = null; return; }
+      tc = { y: ev.touches[0].clientY, live: false, dy: 0 };
+    }, { passive: true });
+    el.addEventListener('touchmove', ev => {
+      if (!tc) return;
+      const dy = ev.touches[0].clientY - tc.y; tc.dy = dy;
+      const inList = ev.target.closest && ev.target.closest('.adr-list');
+      const listCanScrollDown = inList && list.scrollTop + list.clientHeight < list.scrollHeight - 2;
+      if (!tc.live && dy < -10 && !listCanScrollDown) { tc.live = true; shade.classList.add('drag'); }
+      if (tc.live) shade.style.transform = `translateY(${Math.min(0, dy)}px)`;
+    }, { passive: true });
+    const end = () => {
+      if (!tc) return;
+      const was = tc; tc = null;
+      if (was.live) setShade(was.dy > -70);
+    };
+    el.addEventListener('touchend', end);
+    el.addEventListener('touchcancel', end);
   };
-  shade.addEventListener('touchend', endTouch);
-  shade.addEventListener('touchcancel', endTouch);
+  scrim.style.touchAction = 'none';                        // the scrim is only a swipe / tap target: no native scrolling on it
+  closeSwipe(shade); closeSwipe(scrim);
+
+  /* open: swipe down from anywhere on the home screen while it sits at the very top (like pulling the shade down on a phone).
+     Sideways drags (the dock), inputs and anything that has scrolled down are left alone. */
+  scroller.style.overscrollBehaviorY = 'contain';          // no browser pull-to-refresh bounce on the home
+  const homeAtTop = t => { for (let n = t; n && n !== home; n = n.parentElement) if (n.scrollTop > 0) return false; return true; };
+  let po = null;
+  document.addEventListener('touchstart', ev => {
+    po = null;
+    if (shadeOpen || ev.touches.length !== 1) return;
+    const t = ev.target;
+    if (!t || !t.closest || !home.contains(t) || t.closest('input, textarea, [contenteditable]') || !homeAtTop(t)) return;
+    po = { x: ev.touches[0].clientX, y: ev.touches[0].clientY, live: false, dy: 0, h: shade.offsetHeight || innerHeight };
+  }, { passive: true });
+  document.addEventListener('touchmove', ev => {
+    if (!po) return;
+    if (shadeOpen || ev.touches.length !== 1) { po = null; return; }
+    const t = ev.touches[0], dx = t.clientX - po.x, dy = t.clientY - po.y;
+    if (!po.live) {
+      if (dy < -10 || (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) || !homeAtTop(ev.target)) { po = null; return; }   // scrolling up / sideways / not at the top any more
+      if (dy < 12) return;
+      po.live = true; po.y = t.clientY; po.dy = 0; shade.classList.add('drag');                                            // the drag starts from here, so the shade does not jump
+    } else po.dy = dy;
+    shade.style.transform = `translateY(${Math.min(0, -po.h + Math.max(0, po.live ? t.clientY - po.y : dy))}px)`;
+    if (ev.cancelable) ev.preventDefault();
+  }, { passive: false });
+  const endPull = () => {
+    if (!po) return;
+    const was = po; po = null;
+    if (was.live) setShade(was.dy > 70);
+  };
+  document.addEventListener('touchend', endPull);
+  document.addEventListener('touchcancel', endPull);
   scrim.addEventListener('click', () => setShade(false));
   $('.adr-grab', shade).addEventListener('click', () => setShade(false));
   $('.adr-grab', shade).addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') setShade(false); });

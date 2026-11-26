@@ -1,0 +1,5 @@
+# https://jpldeleon.github.io/robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://jpldeleon.github.io/sitemap.xml
