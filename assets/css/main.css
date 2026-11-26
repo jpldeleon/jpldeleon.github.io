@@ -908,6 +908,28 @@ main,
   --t-t: #A699D0;
 }
 
+/* Light-mode previews: use the actual light surfaces, not the dark source backgrounds. */
+.theme-dots .theme-dot.dot-monokai {
+  --t-bg: #E9F0EC;
+  --t-surf: #F3F8F5;
+  --t-fg: #34443F;
+}
+.theme-dots .theme-dot.dot-miasma {
+  --t-bg: #E8E5D8;
+  --t-surf: #F2F0E6;
+  --t-fg: #45483A;
+}
+.theme-dots .theme-dot.dot-kanagawadragon {
+  --t-bg: #E8E3D8;
+  --t-surf: #F2EEE5;
+  --t-fg: #49463F;
+}
+.theme-dots .theme-dot.dot-flexoki {
+  --t-bg: #F0EEE5;
+  --t-surf: #F8F6EE;
+  --t-fg: #3D3A32;
+}
+
 .theme-dots .theme-dot.dot-colorpaper {
   background: #566B30;
   --dot-hi: #566B30;
@@ -7201,4 +7223,303 @@ html body .portfolio-window-controls .portfolio-close {
   border: 0 !important;
   outline: 0 !important;
   box-shadow: none !important;
+}
+
+/* -------------------------------------------------------------------------
+   Coding palette light variants
+   Keep the established palette identities; only move the surfaces and
+   foregrounds into a light reading scheme. Paper themes remain independent.
+   ------------------------------------------------------------------------- */
+
+/* Monokai Pro Sun — warm light surface with the Machine palette */
+[data-theme="monokai"] {
+  color-scheme: light;
+  --background-color: #f7f6f2;
+  --default-color: #343a3d;
+  --heading-color: #6f7f32;
+  --accent-color: #397b91;
+  --accent-highlight: #a66a16;
+  --accent-highlight-rgb: 166, 106, 22;
+  --nav-color: #343a3d;
+  --nav-hover-color: #a66a16;
+  --nav-mobile-background-color: #f1f0e9;
+  --nav-dropdown-background-color: #e9e8df;
+  --nav-dropdown-color: #343a3d;
+  --nav-dropdown-hover-color: #397b91;
+  --surface-color: #eeede5;
+  --contrast-color: #f7f6f2;
+  --quote-color: #6f7f32;
+  --typed-color: #7560a8;
+  --pal-red: #c94d5d;
+  --pal-orange: #b96522;
+  --pal-yellow: #8c7410;
+  --pal-green: #617c27;
+  --pal-cyan: #287b91;
+  --pal-blue: #287b91;
+  --pal-purple: #7655a5;
+  --pal-pink: var(--pal-orange);
+  --muted-color: #686f70;
+  --faint-color: #858b88;
+  --border-color: #d4d3ca;
+  --border-strong-color: #b9b9af;
+  --surface-raised-color: #e5e4db;
+  --surface-sunken-color: #e2e1d8;
+  --selection-bg-color: #d8e2df;
+  --link-color: var(--pal-blue);
+  --link-hover-color: var(--pal-purple);
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-orange);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: var(--pal-blue);
+  --on-accent-color: #ffffff;
+  --series-1: var(--pal-blue); --series-2: var(--pal-purple);
+  --series-3: var(--pal-green); --series-4: var(--pal-orange);
+  --series-5: var(--pal-red); --series-6: var(--pal-yellow);
+}
+
+/* Miasma — warm mineral paper, olive and copper remain the signatures */
+[data-theme="miasma"] {
+  color-scheme: light;
+  --background-color: #f1f0e9;
+  --default-color: #34352f;
+  --heading-color: #75602b;
+  --accent-color: #496b4b;
+  --accent-highlight: #8a6a27;
+  --accent-highlight-rgb: 138, 106, 39;
+  --nav-color: #34352f;
+  --nav-hover-color: #8a6a27;
+  --nav-mobile-background-color: #e9e8df;
+  --nav-dropdown-background-color: #e2e1d8;
+  --nav-dropdown-color: #34352f;
+  --nav-dropdown-hover-color: #496b4b;
+  --surface-color: #e9e8df;
+  --contrast-color: #f1f0e9;
+  --quote-color: #99572f;
+  --typed-color: #66713b;
+  --pal-red: #99572f;
+  --pal-orange: #a45d2b;
+  --pal-yellow: #80631d;
+  --pal-green: #496b4b;
+  --pal-cyan: #496b4b;
+  --pal-blue: #66713b;
+  --pal-purple: #a45d2b;
+  --pal-pink: var(--pal-orange);
+  --muted-color: #696a60;
+  --faint-color: #858579;
+  --border-color: #d3d1c6;
+  --border-strong-color: #b8b6a9;
+  --surface-raised-color: #e2e1d8;
+  --surface-sunken-color: #e6e4da;
+  --selection-bg-color: #dfe2d1;
+  --link-color: var(--pal-blue);
+  --link-hover-color: var(--pal-yellow);
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-yellow);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: var(--pal-green);
+  --on-accent-color: #ffffff;
+  --series-1: var(--pal-green); --series-2: var(--pal-red);
+  --series-3: var(--pal-blue); --series-4: var(--pal-yellow);
+  --series-5: var(--pal-orange); --series-6: #71634b;
+}
+
+/* Kanagawa Dragon — pale washi, muted dragon greens, blue-grey and gold */
+[data-theme="kanagawadragon"] {
+  color-scheme: light;
+  --background-color: #f1eee6;
+  --default-color: #393b38;
+  --heading-color: #8a653b;
+  --accent-color: #58775f;
+  --accent-highlight: #496d83;
+  --accent-highlight-rgb: 73, 109, 131;
+  --nav-color: #393b38;
+  --nav-hover-color: #496d83;
+  --nav-mobile-background-color: #e9e5dc;
+  --nav-dropdown-background-color: #e1ddd3;
+  --nav-dropdown-color: #393b38;
+  --nav-dropdown-hover-color: #58775f;
+  --surface-color: #e9e5dc;
+  --contrast-color: #f1eee6;
+  --quote-color: #986e50;
+  --typed-color: #77708b;
+  --pal-red: #a34f4b;
+  --pal-orange: #986e50;
+  --pal-yellow: #80652e;
+  --pal-green: #58775f;
+  --pal-cyan: #527a78;
+  --pal-blue: #496d83;
+  --pal-purple: #686b83;
+  --pal-pink: #68675f;
+  --muted-color: #686c68;
+  --faint-color: #85847d;
+  --border-color: #d2cec4;
+  --border-strong-color: #b6b1a5;
+  --surface-raised-color: #e1ddd3;
+  --surface-sunken-color: #e5e1d7;
+  --selection-bg-color: #d9e0df;
+  --link-color: var(--pal-blue);
+  --link-hover-color: var(--pal-green);
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-yellow);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: var(--pal-blue);
+  --on-accent-color: #ffffff;
+  --series-1: var(--pal-green); --series-2: var(--pal-orange);
+  --series-3: var(--pal-blue); --series-4: var(--pal-yellow);
+  --series-5: var(--pal-cyan); --series-6: var(--pal-purple);
+}
+
+/* Flexoki Light — official warm base and ink scale, with its original accents */
+[data-theme="flexoki"] {
+  color-scheme: light;
+  --background-color: #fffcf0;
+  --default-color: #282726;
+  --heading-color: #8b6b08;
+  --accent-color: #24837b;
+  --accent-highlight: #bc5215;
+  --accent-highlight-rgb: 188, 82, 21;
+  --nav-color: #282726;
+  --nav-hover-color: #bc5215;
+  --nav-mobile-background-color: #f2f0e5;
+  --nav-dropdown-background-color: #e6e4d9;
+  --nav-dropdown-color: #282726;
+  --nav-dropdown-hover-color: #24837b;
+  --surface-color: #f2f0e5;
+  --contrast-color: #fffcf0;
+  --quote-color: #66800b;
+  --typed-color: #5e409d;
+  --pal-red: #af3029;
+  --pal-orange: #bc5215;
+  --pal-yellow: #8b6b08;
+  --pal-green: #66800b;
+  --pal-cyan: #24837b;
+  --pal-blue: #205ea6;
+  --pal-purple: #5e409d;
+  --pal-pink: var(--pal-orange);
+  --muted-color: #6f6e69;
+  --faint-color: #878580;
+  --border-color: #dad8ce;
+  --border-strong-color: #cecdc3;
+  --surface-raised-color: #e6e4d9;
+  --surface-sunken-color: #f2f0e5;
+  --selection-bg-color: #e6e4d9;
+  --link-color: var(--pal-blue);
+  --link-hover-color: var(--pal-cyan);
+  --success-color: var(--pal-green);
+  --warning-color: var(--pal-yellow);
+  --danger-color: var(--pal-red);
+  --info-color: var(--pal-blue);
+  --focus-ring-color: var(--pal-blue);
+  --on-accent-color: #fffcf0;
+  --series-1: var(--pal-cyan); --series-2: var(--pal-orange);
+  --series-3: var(--pal-green); --series-4: var(--pal-purple);
+  --series-5: var(--pal-blue); --series-6: var(--pal-yellow);
+}
+
+/* Light surfaces also need matching terminal/action icon contrast */
+[data-theme="monokai"] { --cmd-red: #c94d5d; --cmd-yellow: #8c7410; --cmd-green: #617c27; --cmd-on: #f7f6f2; }
+[data-theme="miasma"] { --cmd-red: #99572f; --cmd-yellow: #80631d; --cmd-green: #496b4b; --cmd-on: #f1f0e9; }
+[data-theme="kanagawadragon"] { --cmd-red: #a34f4b; --cmd-yellow: #80652e; --cmd-green: #58775f; --cmd-on: #f1eee6; }
+[data-theme="flexoki"] { --cmd-red: #af3029; --cmd-yellow: #8b6b08; --cmd-green: #66800b; --cmd-on: #fffcf0; }
+
+
+/* Desktop theme picker: separate dark and light palettes into clear sections.
+   Android builds its own alternating picker from android.js and is intentionally unaffected. */
+.panel-popover .theme-dots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: min(340px, calc(100vw - 36px));
+  padding: 12px;
+  border-radius: 14px;
+}
+.panel-popover .theme-group-label {
+  grid-column: 1 / -1;
+  margin: 2px 2px 0;
+  padding: 2px 0 5px;
+  color: var(--muted-color, var(--default-color));
+  font: 700 10px/1.2 "JetBrains Mono", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.panel-popover .theme-group-label:not(:first-child) {
+  margin-top: 5px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 86%);
+}
+.panel-popover .theme-dots .theme-dot {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 82%);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--surface-color), transparent 12%);
+  color: var(--default-color);
+}
+.panel-popover .theme-dots .theme-dot.active {
+  border-color: var(--accent-highlight);
+  box-shadow: 0 0 0 1px var(--accent-highlight);
+  transform: none;
+}
+.panel-popover .theme-dots .theme-dot .tsw {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  height: 28px;
+  padding: 5px;
+  border-radius: 6px;
+  background: var(--t-bg);
+}
+.panel-popover .theme-dots .theme-dot .tsw b {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: var(--t-fg);
+}
+.panel-popover .theme-dots .theme-dot .tsw b.s { background: var(--t-surf); }
+.panel-popover .theme-dots .theme-dot .tsw b.f { background: var(--t-fg); }
+.panel-popover .theme-dots .theme-dot .tsw b.a { background: var(--t-acc); }
+.panel-popover .theme-dots .theme-dot .tsw b.h { background: var(--t-hi); }
+.panel-popover .theme-dots .theme-dot .tsw b.q { background: var(--t-q); }
+.panel-popover .theme-dots .theme-dot .tsw b.t { background: var(--t-t); }
+.panel-popover .theme-dots .theme-dot .tname {
+  display: block;
+  color: inherit;
+  font: 500 10px/1.25 "JetBrains Mono", monospace;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Light-theme switcher previews: show the light canvas and surface, not their dark bases. */
+.theme-dots .theme-dot.dot-monokai {
+  --t-bg: #E9F0EC;
+  --t-surf: #F3F8F5;
+  --t-fg: #34443F;
+}
+.theme-dots .theme-dot.dot-miasma {
+  --t-bg: #E8E5D8;
+  --t-surf: #F2F0E6;
+  --t-fg: #45483A;
+}
+.theme-dots .theme-dot.dot-kanagawadragon {
+  --t-bg: #E8E3D8;
+  --t-surf: #F2EEE5;
+  --t-fg: #49463F;
+}
+.theme-dots .theme-dot.dot-flexoki {
+  --t-bg: #F0EEE5;
+  --t-surf: #F8F6EE;
+  --t-fg: #3D3A32;
 }
