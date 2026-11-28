@@ -50,6 +50,7 @@
       <div class="adr-tiles">
         <button class="adr-tile" data-tile="theme" type="button"><span class="ic"><i class="fa-solid fa-palette"></i></span><span class="tx"><b>Theme</b><small></small></span></button>
         <button class="adr-tile" data-tile="hire" type="button"><span class="ic"><i class="fa-solid fa-user-check"></i></span><span class="tx"><b>Why hire me</b><small>Tap to view</small></span></button>
+        <button class="adr-tile" data-toolbox-open type="button"><span class="ic"><i class="fa-solid fa-gear"></i></span><span class="tx"><b>Tools</b><small>Software manager</small></span></button>
         <button class="adr-tile" data-tile="restart" type="button"><span class="ic"><i class="fa-solid fa-rotate-right"></i></span><span class="tx"><b>Restart</b><small>Reload page</small></span></button>
         <button class="adr-tile" data-tile="hobbies" type="button" aria-label="Hobbies &amp; Interests"><span class="ic"><i class="fa-solid fa-guitar"></i></span><span class="tx"><b>Hobbies</b><small>&amp; Interests</small></span></button>
       </div>
