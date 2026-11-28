@@ -278,48 +278,67 @@
   }
 }
 
-/* ---------- launcher row: Resume and Projects only (Contact moved to the taskbar) ---------- */
+/* ---------- launcher row: Resume and Projects only ----------
+   The App Manager / toolbox entry is gone from the hero applet (it now lives in the Resume window),
+   so the row is exactly two equal buttons. */
 @media (min-width: 992px) {
+  /* belt and braces: any toolbox / update-manager entry that is still in the markup stays out of the row */
+  html body .app-menu > ul > li:has([data-toolbox-open], [data-app="toolbox"], [data-app="tools"], [data-app="updates"]),
+  html body .app-menu > ul [data-toolbox-open] {
+    display: none !important;
+  }
+
   html body .app-menu > ul {
     display: flex;
+    align-items: stretch;
     gap: 12px;
+    margin: 0;
     padding: 4px 32px 28px;
+    list-style: none;
   }
 
   html body .app-menu > ul > li {
     flex: 1 1 0;
     min-width: 0;
+    margin: 0;
+    padding: 0;
   }
 
   html body .app-menu > ul li > button,
   html body .app-menu > ul li > .app-menu-dl {
+    box-sizing: border-box;
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 10px;
     width: 100%;
     height: 44px;
+    min-height: 44px;
+    margin: 0;
     padding: 0 16px;
     border: 0;
     border-radius: 12px;
     background: var(--fill);
+    font: inherit;
     font-size: var(--fs-sm);
     font-weight: 500;
+    line-height: 1;
     color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
     transition: background .18s ease, color .18s ease;
   }
 
   html body .app-menu > ul li > button i,
   html body .app-menu > ul li > .app-menu-dl i {
+    flex: none;
+    width: auto;
+    margin: 0;
     font-size: 14px;
     opacity: 1;
     color: var(--mint);
-  }
-
-  html body .app-menu > ul li > button[data-app="resume"],
-  html body .app-menu > ul li > button[data-app="portfolio"] {
-    font-weight: 500;
-    color: var(--ink-2);
   }
 
   html body .app-menu > ul li > button:hover,
@@ -327,7 +346,12 @@
   html body .app-menu > ul li > .app-menu-dl:hover,
   html body .app-menu > ul li > .app-menu-dl:focus-visible {
     background: var(--fill-hover);
-    border-color: transparent;
     color: var(--ink);
+  }
+
+  html body .app-menu > ul li > button:focus-visible,
+  html body .app-menu > ul li > .app-menu-dl:focus-visible {
+    outline: 2px solid var(--mint);
+    outline-offset: 2px;
   }
 }

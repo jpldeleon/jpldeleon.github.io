@@ -60,6 +60,76 @@
   var root = document.getElementById('resume');
   if (!root || !root.classList.contains('rv')) return;
 
+  /* TOOLS section: the catalogue that used to open from the hero applet's App Manager.
+     Built from window.ToolboxManager.tools (so toolbox.js must load BEFORE this file).
+     Shows icon + name only, grouped by category. Adds a "Tools" entry to the sidebar and a view to the text page. */
+  (function () {
+    var TM = window.ToolboxManager, list = TM && TM.tools;
+    if (!list || !list.length || root.querySelector('#rv-view-tools')) return;
+    var tplTab = root.querySelector('.rv-item[data-view]'), allViews = root.querySelectorAll('.rv-view');
+    /* placed right after Skills (falls back to the end if there is no Skills section) */
+    var lastTab = root.querySelector('.rv-item[data-view="skills"]') || Array.prototype.slice.call(root.querySelectorAll('.rv-item[data-view]')).pop();
+    var lastView = root.querySelector('#rv-view-skills') || allViews[allViews.length - 1];
+    if (!tplTab || !lastView || !lastTab) return;
+
+    var tab = tplTab.cloneNode(true);
+    tab.removeAttribute('id');
+    tab.setAttribute('data-view', 'tools');
+    tab.setAttribute('data-dir', '~/cv/');
+    tab.setAttribute('data-file', 'tools.md');
+    tab.setAttribute('data-label', 'Tools');
+    tab.setAttribute('data-meta', list.length + ' tools');
+    tab.setAttribute('aria-selected', 'false');
+    tab.tabIndex = -1;
+    if (tab.hasAttribute('aria-controls')) tab.setAttribute('aria-controls', 'rv-view-tools');
+    tab.removeAttribute('aria-label');
+    var ti = tab.querySelector('i'); if (ti) ti.className = 'fa-solid fa-toolbox';
+    var tn = tab.querySelector('.rv-name'); if (tn) tn.textContent = 'Tools';
+    var tc = tab.querySelector('.rv-count'); if (tc) tc.textContent = String(list.length);
+    lastTab.parentNode.insertBefore(tab, lastTab.nextSibling);
+
+    var view = lastView.cloneNode(false);
+    view.id = 'rv-view-tools';
+    view.hidden = false;
+    var h = document.createElement('h3'); h.className = 'rv-h'; h.textContent = 'Tools';
+    view.appendChild(h);
+    var sub = document.createElement('p'); sub.className = 'rv-sub'; sub.textContent = 'Software I use, grouped by area.';
+    view.appendChild(sub);
+
+    var cats = [];
+    list.forEach(function (t) { if (cats.indexOf(t.cat) < 0) cats.push(t.cat); });
+    cats.forEach(function (cat) {
+      var group = document.createElement('div'); group.className = 'rv-tool-group';
+      var gh = document.createElement('h3'); gh.className = 'rv-tool-cat'; gh.textContent = cat;
+      var ul = document.createElement('ul'); ul.className = 'rv-tools';
+      list.filter(function (t) { return t.cat === cat; }).forEach(function (t) {
+        var li = document.createElement('li'); li.className = 'rv-tool';
+        var ic = document.createElement('i'); ic.className = t.ic[0]; ic.setAttribute('aria-hidden', 'true');
+        ic.setAttribute('data-fb', t.ic.slice(1).join('|'));
+        var nm = document.createElement('span'); nm.textContent = t.name;
+        li.appendChild(ic); li.appendChild(nm); ul.appendChild(li);
+      });
+      group.appendChild(gh); group.appendChild(ul); view.appendChild(group);
+    });
+    lastView.parentNode.insertBefore(view, lastView.nextSibling);
+
+    /* an icon missing from the loaded Font Awesome draws nothing: walk down the fallback list (same idea as toolbox.js) */
+    function fixIcons() {
+      view.querySelectorAll('i[data-fb]').forEach(function (i) {
+        if (!i.getClientRects().length) return;           /* not on screen yet: try again later */
+        var rest = i.getAttribute('data-fb').split('|').filter(Boolean); i.removeAttribute('data-fb');
+        while (i.getBoundingClientRect().width === 0 && rest.length) i.className = rest.shift();
+        if (i.getBoundingClientRect().width === 0) { i.className = ''; i.textContent = '\u25C8'; }
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (en) {
+        if (en.some(function (e) { return e.isIntersecting; })) { fixIcons(); if (!view.querySelector('i[data-fb]')) io.disconnect(); }
+      });
+      io.observe(view);
+    } else { setTimeout(fixIcons, 800); }
+  })();
+
   var tabs = Array.prototype.slice.call(root.querySelectorAll('.rv-item[data-view]'));
   var views = Array.prototype.slice.call(root.querySelectorAll('.rv-view'));
   var modeBtns = Array.prototype.slice.call(root.querySelectorAll('.rv-mode[data-mode]'));

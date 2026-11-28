@@ -1,2 +1,136 @@
-/* Toolbox catalog UI */
-#toolbox-ui{display:none;position:fixed;inset:0;z-index:2147483000;color:var(--default-color);font-family:var(--nav-font,system-ui)}#toolbox-ui.open{display:block}.tb-scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(5px)}.tb-window{position:absolute;inset:6vh 7vw;display:flex;flex-direction:column;background:var(--surface-color,var(--background-color));border:1px solid var(--border-color,rgba(128,128,128,.3));border-radius:16px;overflow:hidden;box-shadow:0 24px 70px #0005}.tb-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border-color,rgba(128,128,128,.2))}.tb-head div{display:flex;flex-direction:column}.tb-head small{opacity:.65;font-size:12px}.tb-close{font-size:24px;background:none;border:0;color:inherit;cursor:pointer}.tb-layout{display:grid;grid-template-columns:210px 1fr;min-height:0;flex:1}.tb-nav{padding:14px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--border-color,rgba(128,128,128,.2))}.tb-nav button{text-align:left;border:0;background:transparent;color:inherit;padding:10px;border-radius:9px;cursor:pointer}.tb-nav button.active,.tb-nav button:hover{background:color-mix(in srgb,var(--accent-highlight,var(--accent-color)) 18%,transparent);color:var(--accent-highlight,var(--accent-color))}.tb-main{overflow:auto;padding:18px}.tb-search input{width:100%;padding:10px 12px;border:1px solid var(--border-color,rgba(128,128,128,.25));border-radius:10px;background:transparent;color:inherit;margin-bottom:14px}.tb-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}.tb-card{display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border:1px solid var(--border-color,rgba(128,128,128,.2));border-radius:12px;background:transparent;color:inherit;cursor:pointer;min-width:0}.tb-card:hover{border-color:var(--accent-highlight,var(--accent-color));background:color-mix(in srgb,var(--accent-highlight,var(--accent-color)) 8%,transparent)}.tb-logo{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px}.tb-logo img{width:34px;height:34px;object-fit:contain}.tb-fallback{font-size:24px;opacity:.65}.tb-cardtxt{min-width:0;display:flex;flex-direction:column;gap:4px}.tb-cardtxt small{font-size:11px;opacity:.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.tb-cardtxt b{font-size:13px}.tb-level,.tb-chip{font-size:10px;padding:4px 7px;border-radius:999px;background:color-mix(in srgb,var(--accent-highlight,var(--accent-color)) 14%,transparent);margin-left:auto;white-space:nowrap}.tb-detail{padding:12px}.tb-back{border:0;background:none;color:inherit;cursor:pointer}.tb-detailhead{display:flex;align-items:center;gap:14px;margin:24px 0}.tb-detailhead h2{margin:0}.tb-detailhead small{opacity:.65}.tb-detail p{line-height:1.7;max-width:600px}.tb-empty{opacity:.65}.tb-results[hidden]{display:none}@media(max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px){.tb-window{inset:0;border-radius:0}.tb-layout{grid-template-columns:1fr}.tb-nav{display:flex;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--border-color,rgba(128,128,128,.2));padding:8px}.tb-nav button{white-space:nowrap;font-size:12px}.tb-main{padding:12px}.tb-results{grid-template-columns:1fr}.tb-card{padding:10px}.tb-level{font-size:9px}}
+/*--------------------------------------------------------------
+# Update Manager (toolbox) - compact desktop taskbar applet
+# One narrow column: search, category tabs, a tool list. Click a tool to
+# unfold what it is used for. Every colour is a theme variable.
+# The phone sheet (.um-sheet / .um-m-*) is styled in android.css.
+--------------------------------------------------------------*/
+
+/* ----- the taskbar icon, beside the theme button ----- */
+.um-menu { position: relative; flex: none; }
+.um-btn.um-plain {                       /* only used when the theme button could not be found to copy from */
+  display: grid; place-items: center;
+  width: 30px; height: 28px;
+  border: 0; border-radius: 6px;
+  background: transparent; color: var(--default-color); cursor: pointer;
+}
+.um-btn.um-plain:hover { background: color-mix(in srgb, var(--default-color), transparent 90%); }
+.top-panel.taskbar .um-btn[aria-expanded="true"],
+.um-btn.um-plain[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--accent-highlight), transparent 82%);
+  color: var(--accent-highlight);
+}
+
+/* the hero applet no longer carries an App Manager button */
+#hero [data-toolbox-open], .hero-sidebar [data-toolbox-open] { display: none !important; }
+
+/* ----- shared tokens ----- */
+.um-pop, .um-sheet {
+  --um-fg: var(--default-color, #d3c6aa);
+  --um-bg: var(--surface-color, var(--background-color, #2d353b));
+  --um-hl: var(--accent-highlight, var(--accent-color, #a7c080));
+  --um-line: color-mix(in srgb, var(--um-fg), transparent 86%);
+  --um-soft: color-mix(in srgb, var(--um-fg), transparent 92%);
+}
+
+/* ----- the popover: opens upward from the taskbar ----- */
+.um-pop {
+  position: fixed;
+  z-index: 5100;                          /* above the taskbar (5001), under notification pills (5200) */
+  left: 8px; bottom: 64px;
+  width: min(360px, calc(100vw - 16px));
+  height: min(480px, calc(100vh - 88px));
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  color: var(--um-fg);
+  background: var(--um-bg);
+  border: 1px solid var(--um-line);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3), 0 16px 40px rgba(0, 0, 0, .42);
+  font: 13px/1.35 var(--nav-font, system-ui, sans-serif);
+  visibility: hidden; opacity: 0;
+  transform: translateY(10px); transform-origin: bottom left;
+  transition: opacity .15s ease, transform .17s cubic-bezier(.2, .8, .3, 1), visibility 0s linear .17s;
+}
+.um-pop.open { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
+.um-pop * { box-sizing: border-box; }
+
+/* ----- search + category tabs ----- */
+.um-top { flex: none; padding: 10px 10px 0; }
+.um-find {
+  display: flex; align-items: center; gap: 8px;
+  height: 30px; padding: 0 12px;
+  border: 1px solid var(--um-line); border-radius: 999px;
+  background: var(--um-soft);
+}
+.um-find:focus-within { border-color: var(--um-hl); }
+.um-find i { flex: none; color: var(--um-hl); font-size: 12px; }
+.um-find input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; color: inherit; font: inherit; }
+.um-find input::placeholder { color: inherit; opacity: .55; }
+.um-tabs { flex: none; display: flex; gap: 6px; padding: 8px 10px 10px; overflow-x: auto; scrollbar-width: none; }
+.um-tabs::-webkit-scrollbar { display: none; }
+.um-tab {
+  flex: none; height: 28px; padding: 0 13px;
+  border: 0; border-radius: 999px;
+  background: transparent; color: inherit; opacity: .75;
+  font: inherit; font-size: 12.5px; white-space: nowrap; cursor: pointer;
+}
+.um-tab:hover { opacity: 1; background: var(--um-soft); }
+.um-tab:focus-visible { outline: 2px solid var(--um-hl); outline-offset: 1px; }
+.um-tab[aria-selected="true"] {
+  opacity: 1; font-weight: 600; color: var(--um-hl);
+  background: color-mix(in srgb, var(--um-hl), transparent 82%);
+}
+
+/* ----- list ----- */
+.um-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 4px 4px; overscroll-behavior: contain; }
+.um-grp {
+  position: sticky; top: 0; z-index: 1;
+  padding: 6px 8px 3px;
+  background: var(--um-bg);
+  font-size: 11px; font-weight: 600; opacity: .85; color: var(--um-hl);
+}
+.um-row {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; height: 32px; padding: 0 8px;
+  border: 0; border-radius: 7px;
+  background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
+}
+.um-row:hover { background: var(--um-soft); }
+.um-row:focus-visible { outline: 2px solid var(--um-hl); outline-offset: -2px; }
+.um-row[aria-current="true"] { background: color-mix(in srgb, var(--um-hl), transparent 84%); }
+.um-nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.um-row .um-chip { font-size: 10px; padding: 2px 7px; opacity: .85; }
+.um-none { margin: 28px 8px; text-align: center; opacity: .65; }
+
+/* details of the selected tool: fixed pane under the list (no expand / collapse) */
+.um-detail {
+  flex: none; max-height: 30%; overflow-y: auto;
+  padding: 8px 12px 10px;
+  background: var(--um-soft); border-top: 1px solid var(--um-line);
+}
+.um-detail p { margin: 0; font-size: 12px; line-height: 1.45; }
+.um-hint { opacity: .65; }
+.um-dhead .um-chip { margin-left: auto; }
+
+/* ----- shared: level chip + Font Awesome tool logo ----- */
+.um-chip {
+  display: inline-block; padding: 3px 9px; border-radius: 999px;
+  font-size: 11px; white-space: nowrap;
+  background: color-mix(in srgb, var(--um-hl), transparent 82%);
+  color: var(--um-fg);
+}
+.um-logo {
+  display: grid; place-items: center; flex: none;
+  width: 22px; height: 22px; border-radius: 6px;
+  background: color-mix(in srgb, var(--um-hl), transparent 84%);
+  color: var(--um-hl); font-size: 12px; line-height: 1;
+}
+.um-logo i { color: inherit; }
+.um-logo.lg { width: 28px; height: 28px; border-radius: 8px; font-size: 14px; }
+.um-dhead { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+.um-dhead h3 { margin: 0; font-size: 13px; line-height: 1.2; }
+.um-dhead small { opacity: .65; font-size: 11px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .um-pop { transition: none; }
+}

@@ -843,7 +843,7 @@
 
       .app-menu>ul {
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 6px;
         padding: 10px 12px 12px;
       }
@@ -1179,7 +1179,6 @@
       </li>
       <li><button data-app="portfolio" role="menuitem" type="button"><i class="fa-solid fa-flask"></i>Projects</button>
       </li>
-      <li><button data-toolbox-open role="menuitem" type="button"><i class="fa-solid fa-box"></i>App Manager</button></li>
     </ul>
   </div>
   <!-- Hero Sidebar (notification panel, right side) -->
@@ -1586,7 +1585,7 @@
           <!-- Skills -->
           <div aria-label="Skills" class="rv-view rv-doc" id="rv-view-skills" role="tabpanel">
             <h3 class="rv-h">Technical Skills</h3>
-            <p class="rv-sub">What I use day to day.</p>
+            <p class="rv-sub">What I can do. The software I use for it is under Tools.</p>
             <div class="rv-skills">
               <section class="rv-card">
                 <h3><i class="fa-solid fa-magnifying-glass"></i> SEO Expertise</h3>
@@ -1601,13 +1600,20 @@
                   <li>Performance Optimization</li>
                   <li>Structured Data / Schema Markup</li>
                   <li>Email Verification / List Qualification</li>
+                  <li>Answer Engine Optimization (AEO)</li>
+                  <li>Generative Engine Optimization (GEO)</li>
                 </ul>
               </section>
               <section class="rv-card">
-                <h3><i class="fa-solid fa-compass"></i> AI Search (Exploring)</h3>
+                <h3><i class="fa-brands fa-wordpress"></i> WordPress Development</h3>
                 <ul class="rv-chips">
-                  <li>Answer Engine Optimization (AEO)</li>
-                  <li>Generative Engine Optimization (GEO)</li>
+                  <li>WordPress Site Development</li>
+                  <li>Theme Customization</li>
+                  <li>Page Building</li>
+                  <li>E-Commerce Setup</li>
+                  <li>Plugin Configuration</li>
+                  <li>WordPress SEO Setup</li>
+                  <li>Local Development &amp; Testing</li>
                 </ul>
               </section>
               <section class="rv-card">
@@ -1620,36 +1626,8 @@
                   <li>Node.js</li>
                   <li>Express.js</li>
                   <li>Responsive Design</li>
-                  <li>Git/GitHub</li>
                   <li>Semantic HTML</li>
                   <li>API Integration / REST APIs</li>
-                </ul>
-              </section>
-              <section class="rv-card">
-                <h3><i class="fa-brands fa-wordpress"></i> WordPress Development</h3>
-                <ul class="rv-chips">
-                  <li>Elementor</li>
-                  <li>WooCommerce</li>
-                  <li>Rank Math</li>
-                  <li>Yoast SEO</li>
-                  <li>WPForms</li>
-                  <li>WP Optimize</li>
-                  <li>Theme Customization</li>
-                  <li>LocalWP</li>
-                </ul>
-              </section>
-              <section class="rv-card">
-                <h3><i class="fa-solid fa-arrow-trend-up"></i> Tools &amp; Analytics</h3>
-                <ul class="rv-chips">
-                  <li>Google Analytics</li>
-                  <li>Screaming Frog</li>
-                  <li>SEMrush</li>
-                  <li>Ahrefs</li>
-                  <li>Google Search Console</li>
-                  <li>Data Studio</li>
-                  <li>RustySEO</li>
-                  <li>PageSpeed Insights</li>
-                  <li>Lighthouse</li>
                 </ul>
               </section>
               <section class="rv-card">
@@ -1660,8 +1638,6 @@
                   <li>AI-Assisted SEO &amp; Research</li>
                   <li>LLM API Integration</li>
                   <li>Local Models</li>
-                  <li>OpenAI Codex</li>
-                  <li>Claude / Claude Code</li>
                 </ul>
               </section>
             </div>
@@ -1914,6 +1890,8 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/notifications.js"></script>
   <script src="assets/js/dotfiles.js"></script>
+  <!-- toolbox.js must load before resume-viewer.js (the Resume window's Tools section reads ToolboxManager.tools) -->
+  <script src="assets/js/toolbox.js"></script>
   <script src="assets/js/resume-viewer.js"></script>
   <!-- Projects window filters -->
   <script src="assets/js/portfolio.js"></script>
@@ -1954,7 +1932,6 @@
       });
     })();
   </script>
-  <script src="assets/js/toolbox.js"></script>
   <script src="assets/js/android.js" defer></script>
   <script src="assets/js/jpt-chat.js" defer></script>
   <script>

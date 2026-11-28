@@ -1,6 +1,6 @@
 /*!
  * android.js: phone layout (<= 768px). Builds the Android-style home screen on top of the existing desktop page:
- * status bar + swipe-down notification shade with quick-settings tiles, a scrolling home (hero applet, About me applet,
+ * status bar + swipe-down notification shade with quick-settings tiles, a contrast slider and the Update Manager tile, a scrolling home (hero applet, About me applet,
  * conky-style Experience + Skills), a floating icon dock above the "Ask Jampol" search.
  * It reuses the page's own pieces (theme dots, copy buttons, data-app windows, #restart button); it adds no dependencies.
  */
@@ -49,14 +49,24 @@
     <section class="adr-shade" id="adr-shade" inert aria-label="Notifications and quick settings">
       <div class="adr-tiles">
         <button class="adr-tile" data-tile="theme" type="button"><span class="ic"><i class="fa-solid fa-palette"></i></span><span class="tx"><b>Theme</b><small></small></span></button>
-        <button class="adr-tile" data-tile="hire" type="button"><span class="ic"><i class="fa-solid fa-user-check"></i></span><span class="tx"><b>Why hire me</b><small>Tap to view</small></span></button>
-        <button class="adr-tile" data-toolbox-open type="button"><span class="ic"><i class="fa-solid fa-gear"></i></span><span class="tx"><b>Tools</b><small>Software manager</small></span></button>
+        <button class="adr-tile" data-toolbox-open type="button" aria-label="Update Manager"><span class="ic"><i class="fa-solid fa-toolbox"></i></span><span class="tx"><b>Update Manager</b><small>Tap to open</small></span></button>
         <button class="adr-tile" data-tile="restart" type="button"><span class="ic"><i class="fa-solid fa-rotate-right"></i></span><span class="tx"><b>Restart</b><small>Reload page</small></span></button>
         <button class="adr-tile" data-tile="hobbies" type="button" aria-label="Hobbies &amp; Interests"><span class="ic"><i class="fa-solid fa-guitar"></i></span><span class="tx"><b>Hobbies</b><small>&amp; Interests</small></span></button>
       </div>
+      <div class="adr-cs" role="group" aria-label="Contrast">
+        <i class="adr-cs-ic fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+        <div class="adr-cs-rail">
+          <span class="adr-cs-bar"><span class="adr-cs-fill"></span></span>
+          <span class="adr-cs-thumb" aria-hidden="true"></span>
+          <input type="range" min="50" max="150" step="1" value="100" aria-label="Contrast">
+          <button class="adr-cs-reset" type="button" aria-label="Reset contrast" title="Reset contrast" disabled><i class="fa-solid fa-rotate-left" aria-hidden="true"></i></button>
+        </div>
+      </div>
       <div class="adr-nhead"><span class="adr-lab">Notifications</span><button class="adr-clear" type="button">CLEAR ALL</button></div>
       <div class="adr-list" role="log" aria-live="polite"></div>
-      <div class="adr-grab" tabindex="0" role="button" aria-label="Close notification shade"><i></i></div>
+      <div class="adr-foot">
+        <div class="adr-grab" tabindex="0" role="button" aria-label="Close notification shade"><i></i></div>
+      </div>
     </section>
     <div class="adr-status" id="adr-status"><span class="adr-time"></span><span class="adr-date" aria-hidden="true"></span><span class="adr-nicons"></span>
       <span class="adr-sys"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-signal"></i><i class="fa-solid fa-battery-three-quarters"></i></span></div>`;
@@ -183,7 +193,6 @@
 
   /* ───────── notifications ───────── */
   const events = [];                       // everything notifications.js reports
-  const cards = [];                        // tile cards (hire / hobbies) in the shade, newest first; the latest tap sits on top
   let hobTab = null, shadeOpen = false, headsT = 0;
   const when = ts => { const m = Math.round((Date.now() - ts) / 60000); return m < 1 ? 'now' : m + 'm'; };
 
@@ -206,11 +215,6 @@
   }
   const card = (icon, app, title, body, x, cls) => `<div class="adr-n${cls ? ' ' + cls : ''}"><div class="t"><i class="fa-solid ${icon}"></i>${app}</div><h4>${title}</h4>${body}${x ? `<button class="x" type="button" data-dismiss="${x}" aria-label="Dismiss">✕</button>` : ''}</div>`;
 
-  function hireCard() {
-    const items = $$('.wh-item').map(li => `<li><i class="${esc(($('i', li) || {}).className || 'fa-solid fa-check')}"></i><div><b>${esc(txt($('b', li)))}</b><span>${esc(txt($('span', li)))}</span></div></li>`).join('');
-    return card('fa-user-check', 'Why hire me', 'Why hire me now?', `<p>${esc(txt($('.wh-sub')) || 'Early-career, research-driven, and already building.')}</p><ul class="adr-hire">${items}</ul>
-      <div class="adr-acts"><button class="adr-btn p" data-app="resume" type="button">Resume</button><button class="adr-btn" data-app="portfolio" type="button">Projects</button></div>`, 'hire');
-  }
   /* Font Awesome icon for a hobby, picked from keywords in its name (first match wins) */
   const HOB_ICONS = [
     [/linux|ubuntu|mint|arch\b|distro/i, 'fa-brands fa-linux'],
@@ -250,32 +254,33 @@
     return 'fa-solid fa-circle-dot';
   };
 
-  /* Non-Font-Awesome icons: Simple Icons (real brand logos) and Material Design Icons, served by Iconify.
+  /* Non-Font-Awesome icons: brand logos from thesvg.org ('thesvg:slug/variant'), plus Material Design Icons and a few leftover
+     Simple Icons from Iconify. thesvg.org first, its jsDelivr mirror second.
      The SVG is fetched once, cached, and drawn inline so it takes the badge's theme colour. If a name does not
      exist or the network fails, the Font Awesome icon above stays, so a badge is never empty. First match wins. */
   const HOB_ART = [
-    [/linux/i, 'simple-icons:linux'],
-    [/custom rom|rom\b|firmware/i, 'simple-icons:lineageos'],
-    [/android|mobile tech/i, 'simple-icons:android'],
+    [/linux/i, 'thesvg:linux/mono'],
+    [/custom rom|rom\b|firmware/i, 'thesvg:lineageos/mono'],
+    [/android|mobile tech/i, 'thesvg:android/mono'],
     [/pc hardware|hardware/i, 'mdi:expansion-card'],
-    [/open[- ]?source|foss/i, 'simple-icons:opensourceinitiative'],
-    [/llm|\bai\b|ai tools|ai engineer/i, 'simple-icons:ollama'],
+    [/open[- ]?source|foss/i, 'thesvg:open-source-initiative/mono'],
+    [/llm|\bai\b|ai tools|ai engineer/i, 'thesvg:ollama/mono'],
     [/web build|web dev/i, 'mdi:web'],
     [/coding|software dev/i, 'mdi:code-braces'],
     [/tech news|emerging/i, 'mdi:newspaper-variant-outline'],
-    [/ui\/?ux/i, 'simple-icons:figma'],
-    [/photoshop/i, 'simple-icons:adobephotoshop'],
-    [/lightroom/i, 'simple-icons:adobelightroomclassic'],
-    [/davinci/i, 'simple-icons:davinciresolve'],
+    [/ui\/?ux/i, 'thesvg:figma/mono'],
+    [/photoshop/i, 'thesvg:photoshop/default'],
+    [/lightroom/i, 'thesvg:lightroom-classic/default'],
+    [/davinci/i, 'thesvg:davinci-resolve/mono'],
     [/graphic design/i, 'mdi:vector-curve'],
     [/photograph/i, 'mdi:camera-outline'],
-    [/seo/i, 'simple-icons:googlesearchconsole'],
+    [/seo/i, 'thesvg:google-search-console/mono'],
     [/web developer/i, 'mdi:web'],
     [/data scien/i, 'mdi:chart-scatter-plot'],
-    [/dota/i, 'simple-icons:dota2'],
-    [/counter-?strike/i, 'simple-icons:counterstrike'],
+    [/dota/i, 'thesvg:dota-2/mono'],
+    [/counter-?strike/i, 'thesvg:counter-strike/mono'],
     [/call of duty/i, 'simple-icons:callofduty'],
-    [/pubg/i, 'simple-icons:pubg'],
+    [/pubg/i, 'thesvg:pubg/mono'],
     [/nba/i, 'mdi:basketball'],
     [/need for speed/i, 'simple-icons:ea'],
     [/left 4 dead/i, 'mdi:biohazard'],
@@ -304,14 +309,18 @@
     [/off-grid/i, 'mdi:solar-power'],
     [/dream motorcycles/i, 'mdi:motorbike']
   ];
-  const ART_URL = n => 'https://api.iconify.design/' + n.replace(':', '/') + '.svg';
+  const ART_URLS = n => {
+    if (n.indexOf('thesvg:') === 0) { const p = n.slice(7); return ['https://thesvg.org/icons/' + p + '.svg', 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/' + p + '.svg']; }
+    return ['https://api.iconify.design/' + n.replace(':', '/') + '.svg'];
+  };
+  const artFetch = n => ART_URLS(n).reduce((p, u) => p.catch(() => fetch(u).then(r => r.ok ? r.text() : Promise.reject())), Promise.reject());
   const art = new Map();                              // iconify name -> cleaned inline <svg> markup, or false when it failed
   const artName = t => { for (let i = 0; i < HOB_ART.length; i++) if (HOB_ART[i][0].test(t)) return HOB_ART[i][1]; return ''; };
   /* the SVG is drawn inline (not as a CSS mask), so it always fills the badge and follows the text colour */
   const cleanSvg = svg => {
     if (!/^\s*<svg[\s>]/i.test(svg)) return '';
-    return svg.replace(/<\?xml[^>]*>/g, '').replace(/<script[\s\S]*?<\/script>/gi, '').replace(/\son\w+="[^"]*"/gi, '')
-      .replace(/^\s*<svg([^>]*)>/i, (m, at) => '<svg' + at.replace(/\s(width|height|style|class)="[^"]*"/gi, '') + ' aria-hidden="true" focusable="false">');
+    return svg.replace(/<\?xml[^>]*>/g, '').replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<title>[\s\S]*?<\/title>/gi, '').replace(/\son\w+="[^"]*"/gi, '')
+      .replace(/^\s*<svg([^>]*)>/i, (m, at) => '<svg' + at.replace(/\s(width|height|style|class)="[^"]*"/gi, '') + (/\sfill=/i.test(at) ? '' : ' fill="currentColor"') + ' aria-hidden="true" focusable="false">');
   };
   const hobGlyph = t => {
     const n = artName(t), svg = n && art.get(n);
@@ -326,7 +335,7 @@
         const sp = document.createElement('span'); sp.className = 'adr-art'; sp.innerHTML = svg; el.replaceWith(sp);
       };
       if (art.has(n)) { done(art.get(n)); return; }
-      fetch(ART_URL(n)).then(r => r.ok ? r.text() : Promise.reject()).then(t => {
+      artFetch(n).then(t => {
         const svg = cleanSvg(t); if (!svg) throw 0;
         art.set(n, svg); done(svg);
       }).catch(() => { art.set(n, false); });
@@ -336,64 +345,61 @@
   artCss.textContent = '.adr-hob .lg .adr-art{display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;line-height:1}.adr-hob .lg .adr-art svg{display:block;width:100%;height:100%;fill:currentColor}';
   document.head.appendChild(artCss);
 
-  function hobCard() {
-    const tabs = $$('#dotfiles .df-file').map(b => [b.id.replace('df-tab-', ''), txt(b)]);
-    if (!tabs.length) return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests', '<p>Nothing to show yet.</p>', 'hobbies', 'adr-lin');
-    if (!tabs.some(t => t[0] === hobTab)) hobTab = tabs[0][0];
+  /* ───────── Hobbies & Interests: a bubble sheet, same format as the Update Manager / Projects sheets ───────── */
+  const HOB_ID = 'hobbies';
+  let hobSheet = null;
+  const hobTabs = () => $$('#dotfiles .df-file').map(b => [b.id.replace('df-tab-', ''), txt(b)]);
+  const hobChips = tabs => tabs.map(t => `<button type="button" role="tab" class="um-m-chip" aria-selected="${t[0] === hobTab}" data-hob="${t[0]}">${esc(t[1])}</button>`).join('');
+  function hobBody() {
     const pane = $('#df-pane-' + hobTab);
     const desc = pane ? txt($('.df-desc', pane)) : '';
     const rows = pane ? $$('.df-list li', pane).map(li => txt(li)).filter(Boolean) : [];
-    /* settings-style grouped list: a round badge with a Font Awesome icon, rows joined into one rounded group */
-    const list = rows.length
+    /* settings-style grouped list: a round badge with the hobby's icon, rows joined into one rounded group */
+    return (desc ? `<p class="adr-hobdesc">${esc(desc)}</p>` : '') + (rows.length
       ? `<ul class="adr-hob">${rows.map(r => `<li><span class="lg" aria-hidden="true">${hobGlyph(r)}</span><span class="tx">${esc(r)}</span></li>`).join('')}</ul>`
-      : '<p>Nothing to show yet.</p>';
-    return card('fa-guitar', 'Hobbies &amp; Interests', 'Hobbies &amp; Interests',
-      `<div class="adr-hobtabs" role="tablist">${tabs.map(t => `<button type="button" role="tab" aria-selected="${t[0] === hobTab}" data-hob="${t[0]}" class="${t[0] === hobTab ? 'on' : ''}">${t[0] === hobTab ? '<i class="fa-solid fa-check" aria-hidden="true"></i>' : ''}${esc(t[1])}</button>`).join('')}</div>${desc ? `<p class="adr-hobdesc">${esc(desc)}</p>` : ''}${list}`,
-      'hobbies', 'adr-lin');
+      : '<p class="adr-hobdesc">Nothing to show yet.</p>');
   }
-
-  /* tapping a category only swaps the description + list inside the existing card: the tab strip, the notification list
-     and every other card keep their scroll position (a full render() rebuilt them all and snapped them back to 0) */
-  function pickHob(id) {
-    const tabsEl = $('.adr-hobtabs', list);
-    if (!tabsEl) { hobTab = id; render(); return; }
-    hobTab = id;
-    $$('button[data-hob]', tabsEl).forEach(b => {
-      const on = b.dataset.hob === id, ic = $('i', b);
-      b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on));
-      if (on && !ic) b.insertAdjacentHTML('afterbegin', '<i class="fa-solid fa-check" aria-hidden="true"></i>');
-      if (!on && ic) ic.remove();
+  function openHobbies() {
+    const B = window.adrBubbles; if (!B) return;
+    if (hobSheet && hobSheet.isConnected) { if (B.isCollapsed(HOB_ID)) B.open(HOB_ID); return; }   // already open: just bring it back
+    const tabs = hobTabs();
+    if (tabs.length && !tabs.some(t => t[0] === hobTab)) hobTab = tabs[0][0];
+    const el = document.createElement('div');
+    el.className = 'hb-sheet adr-layer'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Hobbies & Interests');
+    el.innerHTML = `<div class="um-m-bar"><span>Hobbies &amp; Interests</span></div>
+      <div class="um-m-body"><div class="um-m-chips" role="tablist">${hobChips(tabs)}</div><div class="um-m-list">${tabs.length ? hobBody() : '<p class="adr-hobdesc">Nothing to show yet.</p>'}</div></div>`;
+    document.body.appendChild(el); hobSheet = el;
+    hydrateArt(el);
+    el.addEventListener('click', ev => { const b = ev.target.closest('[data-hob]'); if (b) pickHob(b.dataset.hob); });
+    B.add({
+      id: HOB_ID, el, kind: 'hobbies', icon: 'fa-solid fa-guitar', title: 'Hobbies & Interests', bar: $('.um-m-bar', el),
+      close: () => { B.remove(HOB_ID); el.remove(); if (hobSheet === el) hobSheet = null; }
     });
-    const keepL = tabsEl.scrollLeft, keepT = list.scrollTop;
-    const tmp = document.createElement('div'); tmp.innerHTML = hobCard();
-    const fresh = $('.adr-hobtabs', tmp), old = tabsEl;
-    /* everything under the tab strip comes from the freshly built card; the strip itself stays in the DOM */
-    while (old.nextSibling) old.nextSibling.remove();
-    let n = fresh.nextSibling; while (n) { const nx = n.nextSibling; old.parentNode.appendChild(n); n = nx; }
-    tabsEl.scrollLeft = keepL; list.scrollTop = keepT;
-    hydrateArt(list);
+  }
+  /* tapping a category swaps the description + list; the chip strip keeps its scroll position */
+  function pickHob(id) {
+    if (!hobSheet) return;
+    hobTab = id;
+    $$('[data-hob]', hobSheet).forEach(b => b.setAttribute('aria-selected', String(b.dataset.hob === id)));
+    const lst = $('.um-m-list', hobSheet); lst.innerHTML = hobBody(); lst.scrollTop = 0;
+    hydrateArt(lst);
   }
 
   function render() {
-    /* tile cards are ordinary notifications now: the most recently tapped one is on top, the event notifications stay below */
-    let html = cards.map(k => k === 'hire' ? hireCard() : hobCard()).join('');
-    html += events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), e.text ? `<p>${esc(e.text)}</p>` : '')).join('');
-    const keep = list.scrollTop, kt = $('.adr-hobtabs', list), ks = kt ? kt.scrollLeft : 0, kh = $('.adr-hob', list), kv = kh ? kh.scrollTop : 0;
+    const html = events.map(e => card(e.icon, 'Portfolio · ' + when(e.ts), esc(e.title), e.text ? `<p>${esc(e.text)}</p>` : '')).join('');
+    const keep = list.scrollTop;
     list.innerHTML = html || '<div class="adr-empty">No notifications</div>';
     list.scrollTop = keep;
-    const nt = $('.adr-hobtabs', list), nh = $('.adr-hob', list);   // the hobbies card is rebuilt: put its scroll positions back
-    if (nt) nt.scrollLeft = ks; if (nh) nh.scrollTop = kv;
     hydrateArt(list);
-    $('.adr-clear', shade).style.display = events.length || cards.length ? '' : 'none';
+    $('.adr-clear', shade).style.display = events.length ? '' : 'none';
     $('.adr-nicons', top).innerHTML = events.slice(0, 3).map(e => `<i class="fa-solid ${e.icon}"></i>`).join('');
     $('[data-tile="theme"] small', shade).textContent = themeName();
-    /* quick tile state: Theme is always lit; Why hire me / Hobbies are lit while their card is open in the shade
-       (tapping brings it back to the top, dismissing it or closing the shade turns the tile off); Restart stays momentary */
+    /* quick tile state: Theme is always lit; Hobbies, Restart and Update Manager are momentary */
     $$('.adr-tile[data-tile]', shade).forEach(b => {
       const k = b.dataset.tile;
-      const on = k === 'theme' || ((k === 'hire' || k === 'hobbies') && cards.includes(k));
+      const on = k === 'theme';
       b.classList.toggle('on', on);
-      if (k !== 'restart') b.setAttribute('aria-pressed', String(on));
+      if (k === 'theme') b.setAttribute('aria-pressed', String(on));
     });
   }
 
@@ -409,9 +415,9 @@
     push(d.type + '|' + d.key, N_ICONS[d.type] || 'fa-bell', d.text, '');
     leftFor = (d.type === 'link' || d.type === 'social') ? { icon: N_ICONS[d.type], title: d.text, ts: Date.now() } : null;
   });
-  /* Restart: the phone shade starts clean too (events, tile cards and any heads-up pill still showing). */
+  /* Restart: the phone shade starts clean too (events and any heads-up pill still showing). */
   document.addEventListener('desktop:restart', () => {
-    events.length = 0; cards.length = 0; leftFor = null;
+    events.length = 0; leftFor = null;
     clearTimeout(headsT); heads.classList.remove('show');
     render();
   });
@@ -428,7 +434,7 @@
     shade.classList.toggle('open', open); shade.inert = !open; scrim.classList.toggle('show', open);
     $('#adr-status', top).classList.toggle('shade-open', open);
     if (open) { heads.classList.remove('show'); render(); }
-    else { cards.length = 0; render(); }   // tile cards go away with the shade; events are kept
+    else render();                          // events are kept
   }
 
   /* open: pointer drag that starts on the status bar (the very top of the screen). A plain tap does nothing. */
@@ -523,26 +529,47 @@
         const i = THEMES.findIndex(x => x[0] === theme()); const n = $(`[data-theme-choice="${THEMES[(i + 1) % THEMES.length][0]}"]`);
         if (n) {
           n.click();
+          closeWindows(); resetContrast();
           /* the shade closes with the theme change: inside the ink transition when one is playing (it vanishes behind the
              spreading ink), straight away otherwise */
           if (window.InkTheme && InkTheme.active()) InkTheme.queue(() => setShade(false)); else setShade(false);
         }
       }
-      else if (k === 'hire' || k === 'hobbies') {
-        const i = cards.indexOf(k), already = i === 0; if (i > -1) cards.splice(i, 1);
-        cards.unshift(k);                                      // latest tapped goes to the very top (tapping again just brings it back up)
-        render(); if (!already) list.scrollTop = 0;
-        t.blur();                                              // the tile stays lit through render() while its card is open
-      }
-      else if (k === 'restart') { setShade(false); const r = $('#panel-restart-btn'); if (r) r.click(); else location.reload(); }
+      else if (k === 'hobbies') { setShade(false); openHobbies(); }
+      else if (k === 'restart') { setShade(false); closeWindows(); resetContrast(); const r = $('#panel-restart-btn'); if (r) r.click(); else location.reload(); }
       return;
     }
-    if (ev.target.closest('.adr-clear')) { events.length = 0; cards.length = 0; render(); return; }
-    const x = ev.target.closest('[data-dismiss]'); if (x) { const i = cards.indexOf(x.dataset.dismiss); if (i > -1) cards.splice(i, 1); render(); return; }
-    const h = ev.target.closest('[data-hob]'); if (h) { pickHob(h.dataset.hob); return; }
-    if (ev.target.closest('[data-app]')) setShade(false);       // Resume / Projects buttons: the window opens, the shade closes
+    if (ev.target.closest('.adr-clear')) { events.length = 0; render(); return; }
+    if (ev.target.closest('[data-app],[data-toolbox-open]')) setShade(false);       // Resume / Projects buttons: the window opens, the shade closes
   });
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && shadeOpen) setShade(false); });
+
+  /* ───────── contrast slider (replaces the Tools tile): thin bar 50%-150%, reset button sits on the end of the bar, remembered ───────── */
+  const PHONE_Q = '(max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px),(hover:none) and (pointer:coarse) and (max-height:500px)';
+  const phoneMQ = window.matchMedia(PHONE_Q);
+  const CS_KEY = 'jp-contrast';
+  const csBox = $('.adr-cs', shade), csRail = $('.adr-cs-rail', shade), csIn = $('input', csRail), csReset = $('.adr-cs-reset', shade);
+  let contrast = 100;
+  try { const v = parseInt(localStorage.getItem(CS_KEY), 10); if (v >= 50 && v <= 150) contrast = v; } catch (e) { /* storage blocked: start at 100% */ }
+  const applyContrast = () => { document.documentElement.style.filter = phoneMQ.matches && contrast !== 100 ? 'contrast(' + (contrast / 100) + ')' : ''; };
+  const paintContrast = () => {
+    csRail.style.setProperty('--p', String(contrast - 50));   // 50% -> 0, 100% -> 50, 150% -> 100
+    csIn.value = String(contrast);
+    csIn.setAttribute('aria-valuetext', contrast + ' percent');
+    csReset.disabled = contrast === 100;
+    csBox.classList.toggle('changed', contrast !== 100);
+  };
+  const saveContrast = () => { try { localStorage.setItem(CS_KEY, String(contrast)); } catch (e) { /* ignore */ } };
+  csIn.addEventListener('input', () => { contrast = +csIn.value; paintContrast(); applyContrast(); });
+  csIn.addEventListener('change', saveContrast);
+  const resetContrast = () => { contrast = 100; paintContrast(); applyContrast(); saveContrast(); };
+  csReset.addEventListener('click', resetContrast);
+  /* theme change / restart: every open window (Project, Certificate, Resume, Projects, chat, Update Manager) closes and contrast goes back to 100% */
+  const closeWindows = () => { if (window.adrBubbles && window.adrBubbles.closeAll) window.adrBubbles.closeAll(); };
+  /* dragging the slider must not be read as a swipe-up that closes the shade */
+  ['touchstart', 'touchmove'].forEach(t => csBox.addEventListener(t, ev => ev.stopPropagation(), { passive: true }));
+  phoneMQ.addEventListener ? phoneMQ.addEventListener('change', applyContrast) : phoneMQ.addListener(applyContrast);
+  paintContrast(); applyContrast();
 
   /* send button: lit up only when there is text */
   const askForm = $('.adr-search', home), askInput = $('input', askForm);
@@ -899,6 +926,15 @@
     window.adrBubbles = {                               // used by jpt-chat.js (Ask Jampol) to become a chat head too
       add: register, remove: teardown,
       has: id => recs.has(id),
+      closeAll: () => {                                 // theme change / restart: close every sheet, tracked or not
+        const done = new Set();
+        [...recs.values()].forEach(r => {
+          done.add(r.el);
+          if (r.closing) return; r.closing = true; setTimeout(() => { r.closing = false; }, 800);
+          try { if (r.close) r.close(); else { const c = r.el.querySelector('.wm-close'); if (c) c.click(); } } catch (e) { /* ignore */ }
+        });
+        document.querySelectorAll('.wm-window').forEach(w => { if (done.has(w)) return; const c = w.querySelector('.wm-close'); if (c) c.click(); });
+      },
       open: id => { const r = recs.get(id); if (r) expand(r); },
       isCollapsed: id => { const r = recs.get(id); return !!(r && r.collapsed); },
       badge: (id, on) => { const r = recs.get(id); if (r && r.bub) r.bub.classList.toggle('unread', !!on); }

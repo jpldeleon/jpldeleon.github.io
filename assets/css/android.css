@@ -128,24 +128,7 @@ html.boot-on .adr-layer,html.boot-ui-in .adr-layer{visibility:hidden}
 .adr-n h4{margin:0 0 2px;font-size:14px;font-weight:700}
 .adr-n p{margin:0;font-size:13px;color:var(--dim)}
 .adr-n .x{position:absolute;top:8px;right:8px;background:none;border:0;color:var(--dim);width:28px;height:28px;cursor:pointer}
-/* Why hire me (LineageOS / Material You): tonal icon circles, quiet text, pill actions */
-.adr-hire{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
-.adr-hire li{display:flex;align-items:flex-start;gap:12px;padding:9px 0;font-size:12px;line-height:1.45}
-.adr-hire li i{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;margin-top:1px;background:color-mix(in srgb,var(--a) 22%,transparent);color:var(--a)}
-.adr-hire b{display:block;font-size:13px;font-weight:600;line-height:1.3;color:var(--f)}
-.adr-hire span{display:block;margin-top:1px;color:var(--dim)}
-.adr-acts{display:flex;gap:8px;margin-top:12px}
-.adr-btn{flex:1;height:40px;border-radius:999px;padding:0 12px;border:1px solid var(--line);background:none;color:var(--f);font:inherit;font-size:13px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.adr-btn:active{background:color-mix(in srgb,var(--a),transparent 82%)}
-.adr-btn.p{background:var(--a);color:var(--on-accent-color,var(--bg));border-color:var(--a)}
-/* hobbies & interests, LineageOS / Android settings style: filter chips on top, rows joined into one rounded group */
-.adr-lin{border-radius:28px;padding:14px 12px 12px}
-.adr-lin h4{padding-right:30px}
-.adr-hobtabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:10px 0 8px}
-.adr-hobtabs::-webkit-scrollbar{display:none}
-.adr-hobtabs button{flex:none;display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--f);font:600 12px/1 inherit;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.adr-hobtabs button i{font-size:10px;margin-right:6px;color:var(--a)}
-.adr-hobtabs button.on{background:color-mix(in srgb,var(--a) 26%,transparent);border-color:transparent}
+/* hobbies & interests rows: settings-style group (the sheet itself is styled with the Update Manager sheet below) */
 .adr-hobdesc{margin:0 4px 8px!important;font-size:12px!important;line-height:1.45}
 .adr-hob{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:34vh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
 .adr-hob::-webkit-scrollbar{display:none}
@@ -341,6 +324,60 @@ html.adr-sheet-chat .adr-search{visibility:hidden}
 .adr-sheet .rv .rv-mode span{display:inline}
 .adr-sheet .rv .rv-actions .btn-live{flex:0 0 auto;white-space:nowrap}
 }
+@media (max-width:768px),(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1100px),(hover:none) and (pointer:coarse) and (max-height:500px){
+/* ---- shade: contrast slider. A thin bar; the reset button sits ON the end of it ---- */
+.adr-cs{display:flex;align-items:center;gap:10px;height:36px;margin:0 2px 10px}
+.adr-cs-ic{flex:none;width:20px;text-align:center;font-size:15px;color:var(--dim)}
+.adr-cs.changed .adr-cs-ic{color:var(--a)}
+.adr-cs-rail{--p:50;position:relative;flex:1;min-width:0;height:36px;touch-action:pan-x}
+.adr-cs-bar{position:absolute;left:0;right:38px;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:color-mix(in srgb,var(--f) 22%,transparent);overflow:hidden}
+.adr-cs-fill{position:absolute;left:0;top:0;bottom:0;width:calc((100% - 18px) * var(--p) / 100 + 9px);background:var(--a)}
+.adr-cs-thumb{position:absolute;top:50%;left:calc((100% - 56px) * var(--p) / 100);width:18px;height:18px;margin-top:-9px;border-radius:50%;background:var(--a);box-shadow:0 0 0 3px color-mix(in srgb,var(--bg) 70%,transparent);pointer-events:none}
+.adr-cs-rail input{position:absolute;left:9px;top:0;width:calc(100% - 56px);max-width:none;height:100%;margin:0;padding:0;opacity:0;cursor:pointer;-webkit-appearance:none;appearance:none;background:transparent}
+.adr-cs-rail input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1px;height:100%;border:0;background:transparent}
+.adr-cs-rail input::-moz-range-thumb{width:1px;height:100%;border:0;background:transparent}
+.adr-cs-rail:has(input:focus-visible) .adr-cs-thumb{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--a)}
+.adr-cs-reset{position:absolute;right:0;top:50%;width:28px;height:28px;margin-top:-14px;padding:0;border:0;border-radius:50%;display:grid;place-items:center;font-size:12px;color:var(--on-accent-color,var(--bg));background:var(--a);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,color .15s,transform .12s}
+.adr-cs-reset:disabled{color:var(--dim);background:color-mix(in srgb,var(--f) 16%,var(--bg));cursor:default}
+.adr-cs-reset:not(:disabled):active{transform:scale(.9)}
+
+/* ---- shade footer: grab handle in the middle ---- */
+.adr-foot{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:44px}
+.adr-foot .adr-grab{grid-column:2;padding:12px 18px 8px}
+
+/* ---- Hobbies & Interests bubble sheet: borrows the Update Manager sheet (bar, chips, scrolling list) ---- */
+.hb-sheet .um-m-list{gap:10px}
+.hb-sheet .adr-hobdesc{flex:none;margin:0 4px!important;font-size:12px!important;line-height:1.45;color:var(--dim)}
+.hb-sheet .adr-hob{flex:none;max-height:none;overflow:visible}
+
+/* ---- Update Manager bubble sheet: same format as the Projects sheet (chips, rounded cards, accent tags) ---- */
+.um-sheet.adr-layer,.hb-sheet.adr-layer{position:fixed;top:var(--adr-top,106px);height:var(--adr-h,calc(100dvh - 232px));left:var(--adr-left,10px);width:var(--adr-w,calc(100vw - 20px));display:flex;flex-direction:column;margin:0;padding:0;z-index:2147480000;overflow:hidden;border-radius:28px;color:var(--f);background:var(--background-color,var(--bg));box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.um-m-bar{flex:none;min-height:54px;display:flex;align-items:center;margin:0;padding:6px 20px;font-size:13px;font-weight:700;background:color-mix(in srgb,var(--accent-highlight) 30%,var(--background-color));touch-action:none}
+.um-m-body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:12px 16px 0}
+.um-m-find{flex:none;display:flex;align-items:center;gap:10px;height:40px;margin:0 0 10px;padding:0 16px;border-radius:999px;background:color-mix(in srgb,var(--f) 9%,transparent)}
+.um-m-find i{flex:none;color:var(--a);font-size:14px}
+.um-m-find input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--f);font:inherit;font-size:16px}
+.um-m-find input::placeholder{color:var(--dim)}
+.um-m-chips{flex:none;display:flex;flex-wrap:nowrap;gap:8px;margin:0 -16px 12px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.um-m-chips::-webkit-scrollbar{display:none}
+.um-m-chip{flex:none;height:36px;padding:0 14px;border:0;border-radius:999px;white-space:nowrap;font:inherit;font-size:13px;color:var(--f);background:color-mix(in srgb,var(--f) 9%,transparent);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.um-m-chip[aria-selected="true"]{background:var(--a);color:var(--on-accent-color,var(--bg))}
+.um-m-list{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:0 -16px;padding:0 16px 12px;overscroll-behavior:contain}
+.um-m-row{flex:none;display:flex;align-items:center;gap:12px;width:100%;min-width:0;padding:var(--adr-pj-pad,14px 16px);border:0;border-radius:24px;font:inherit;text-align:left;color:inherit;background:color-mix(in srgb,var(--f) 8%,transparent);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.um-m-row:active{background:color-mix(in srgb,var(--f) 14%,transparent)}
+.um-m-row[aria-current="true"]{background:color-mix(in srgb,var(--a) 22%,transparent)}
+.um-m-row .um-logo{width:var(--adr-pj-ico,40px);height:var(--adr-pj-ico,40px);border-radius:50%;font-size:var(--adr-pj-ico-fs,18px)}
+.um-m-nm{flex:1;min-width:0;font-size:15px;font-weight:700;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.um-m-row .um-chip{flex:none;max-width:92px;padding:3px 10px;font-size:10.5px;font-weight:600;line-height:1.3;text-align:center;white-space:normal;background:color-mix(in srgb,var(--a) 16%,transparent);color:var(--a)}
+.um-m-empty{margin:24px auto;color:var(--dim);font-size:13px;text-align:center}
+/* the selected tool's description, in the free space at the bottom of the sheet */
+.um-m-detail{flex:none;max-height:26%;overflow-y:auto;margin:0 -16px;padding:10px 18px 12px;background:color-mix(in srgb,var(--f) 7%,var(--background-color))}
+.um-m-detail .um-dhead{gap:10px;margin-bottom:6px}
+.um-m-detail .um-dhead h3{font-size:14px}
+.um-m-detail .um-logo.lg{width:32px;height:32px;border-radius:50%;font-size:15px}
+.um-m-detail p{margin:0;font-size:13px;line-height:1.45}
+}
+
 /* ======================================================================
    AUTO-FIT for short / narrow phones (phone mode only)
    Sizes are CSS variables. Defaults equal the original look; the steps below shrink them
