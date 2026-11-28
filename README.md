@@ -1,6 +1,6 @@
-# John Paul De Leon | Portfolio & CV
+# John Paul De Leon | Portfolio & Resume
 
-A personal portfolio and interactive CV for a **Technical SEO specialist who builds in WordPress**. It shows my experience, skills, certifications and projects, and links out to the work behind each one.
+A personal portfolio and interactive resume for a **Technical SEO specialist who builds in WordPress**. It shows my experience, skills, certifications and projects, and links out to the work behind each one.
 
 **🔗 Live site:** [jpldeleon.github.io](https://jpldeleon.github.io/)
 **📄 Resume:** [Download PDF](https://jpldeleon.github.io/assets/johnpauldeleon_resume.pdf)
@@ -11,11 +11,11 @@ A personal portfolio and interactive CV for a **Technical SEO specialist who bui
 
 ## ✨ Features
 
-- **Linux Mint-inspired desktop (desktop view):** the CV is laid out like a Linux Mint desktop, with a taskbar and windowed apps for Resume, Projects and Contact & Socials.
+- **Linux Mint-inspired desktop (desktop view):** the resume is laid out like a Linux Mint desktop, with a taskbar and windowed apps for Resume, Projects and Contact & Socials.
 - **LineageOS-inspired mobile view:** on phones the layout switches to an Android/LineageOS-style interface instead of shrinking the desktop.
 - **Simple chatbot:** a built-in chatbot visitors can use to ask about me and my work.
 - **Theme toggle:** switch between color themes such as Everforest, Gruvbox, Monokai Pro, Dracula Pro, Nord Frost, Kanagawa Dragon and Flexoki.
-- **Resume view:** professional summary, work history, skills, education and certifications, with a one-click PDF download.
+- **Resume view:** professional summary, work history, skills, a tools section (icons and names), education and certifications, with a one-click PDF download.
 - **Filterable projects:** browse by category (SEO, WordPress, Web Dev, Certificates) and open each project to see what it does and how it was built.
 - **Responsive and SEO-ready:** semantic HTML, canonical URL, Open Graph and Twitter Card metadata.
 
@@ -36,6 +36,7 @@ This site started from **Bootstrap**. From there I vibe coded it into something 
 | --- | --- |
 | [NothingTechBlob](https://jpldeleon.github.io/nothingtechblob/) | Technical and on-page SEO with WordPress development |
 | [Badlands Ink](https://jpldeleon.github.io/badlands-ink/) | Technical, local and e-commerce SEO with WordPress and WooCommerce |
+| [SuperbDan Audit](https://jpldeleon.github.io/superbdan/) | Technical SEO audit of a WordPress tech news site, with a prioritized roadmap |
 | [AuditKit](https://jpldeleon.github.io/auditkit/) | Simple technical SEO checker (Node.js, Express) |
 | [Route 196](https://jpldeleon.github.io/route196/) | Node.js, Express and EJS capstone |
 | [PixelLog](https://jpldeleon.github.io/pixellog/) | Node.js, Express and EJS capstone |
