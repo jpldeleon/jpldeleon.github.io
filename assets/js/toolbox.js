@@ -1,4 +1,4 @@
-/* Toolbox catalog: shared data + desktop Software Manager and Android Settings-style view. */
+/* Toolbox catalog: shared data + desktop App Manager applet. */
 (() => {
  'use strict';
  const TOOLS = [
@@ -36,8 +36,8 @@
  {name:'CapCut',cat:'Creative & Media',desc:'Video editing for personal projects.',level:'Personal projects',slug:'capcut'},
  {name:'Lightroom',cat:'Creative & Media',desc:'Photo processing and editing for personal projects.',level:'Personal projects',slug:'adobelightroom'}
  ];
- const cats=['SEO & Analytics','Web Development & CMS','AI & AI-assisted Workflow','Creative & Media'];
- const root=document.createElement('div');root.id='toolbox-ui';root.innerHTML='<div class="tb-scrim"></div><section class="tb-window" role="dialog" aria-modal="true" aria-label="Software Manager and tools"><header class="tb-head"><div><b>Software Manager</b><small>My tools and workflow</small></div><button class="tb-close" aria-label="Close">×</button></header><div class="tb-layout"><nav class="tb-nav"></nav><main class="tb-main"><div class="tb-search"><input type="search" placeholder="Search tools…" aria-label="Search tools"></div><div class="tb-results"></div><div class="tb-detail" hidden></div></main></div></section>';
+ const cats=['SEO & Analytics','Web Development & CMS','AI & AI-assisted Workflow'];
+ const root=document.createElement('div');root.id='toolbox-ui';root.innerHTML='<div class="tb-scrim"></div><section class="tb-window" role="dialog" aria-modal="true" aria-label="App Manager"><header class="tb-head"><div><b>App Manager</b><small>My tools and workflow</small></div><button class="tb-close" aria-label="Close">×</button></header><div class="tb-layout"><nav class="tb-nav"></nav><main class="tb-main"><div class="tb-search"><input type="search" placeholder="Search tools…" aria-label="Search tools"></div><div class="tb-results"></div><div class="tb-detail" hidden></div></main></div></section>';
  document.body.append(root);
  const nav=root.querySelector('.tb-nav'),results=root.querySelector('.tb-results'),search=root.querySelector('input'),detail=root.querySelector('.tb-detail');
  cats.forEach((c,i)=>{let b=document.createElement('button');b.textContent=c;b.dataset.cat=c;b.className=i===0?'active':'';nav.append(b)});
